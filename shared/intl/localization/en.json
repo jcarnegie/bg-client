@@ -1,0 +1,49 @@
+{
+  "components": {
+    "switchLanguage": "Switch Language",
+    "language": {
+      "en": "English"
+    },
+    "buttons": {
+      "submit": "Submit",
+      "register": "Register"
+    },
+    "menu": {
+      "games": "Games",
+      "inventory": "Inventory",
+      "exchange": "Exchange",
+      "community": "Community"
+    }
+  },
+  "forms": {
+    "nickName": "Nick name",
+    "email": "Email",
+    "wallet": "ERC-20 Wallet Address"
+  },
+  "fields": {
+    "nickName": {
+      "required": "Please enter your nick name."
+    },
+    "email": {
+      "required": "Please enter your email address.",
+      "invalid": "Please enter a valid email address format such as yourname@email.com.",
+      "conflict": "This email already exists"
+    },
+    "wallet": {
+      "required": "Please enter your wallet address.",
+      "minlength": "The wallet address you entered is incomplete, please check this field and try again.",
+      "maxlength": "Wallet address is too long.",
+      "invalid": "The wallet address you entered is invalid. Please make sure you are using only alphanumeric characters."
+    }
+  },
+  "errors": {
+    "method-not-allowed": "Method not allowed",
+    "page-not-found": "Page Not Found",
+    "invalid-param": "Invalid param `{name}`, {reason}",
+    "required-param": "Required param `{name}` missing",
+    "access-denied": "Access denied",
+    "not-found": "`{name}` not found",
+    "conflict": "This {name} already exists in db",
+    "server-error": "Internal Server Error"
+  }
+}

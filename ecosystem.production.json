@@ -1,0 +1,13 @@
+{
+  "apps": [
+    {
+      "name": "PortalClient",
+      "script": "build/server/server.js",
+      "exec_mode": "cluster",
+      "env": {
+        "NODE_ENV": "production",
+        "PORT": "7000"
+      }
+    }
+  ]
+}

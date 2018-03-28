@@ -1,0 +1,28 @@
+{
+  "apps": [
+    {
+      "name": "PortalClient",
+      "watch": [
+        "server"
+      ],
+      "cwd": "/Users/trejgun/projects/BitGuildPlatform/PortalClient1",
+      "script": "server/server.js",
+      "exec_interpreter": "node_modules/.bin/babel-node",
+      "exec_mode": "fork",
+      "env": {
+        "NODE_ENV": "development",
+        "PORT": "7000"
+      }
+    },
+    {
+      "name": "TestRPC",
+      "watch": [
+        "server"
+      ],
+      "cwd": "/Users/trejgun/projects/BitGuildPlatform/PortalClient1",
+      "script": "node_modules/ethereumjs-testrpc/build/cli.node.js",
+      "args": "-m 'lady slam tomato mosquito bulb price cart mobile loud buzz pitch cloud'",
+      "exec_mode": "fork"
+    }
+  ]
+}
