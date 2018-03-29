@@ -22,7 +22,7 @@ function * fetchUser(action) {
     const user = yield call(callAPI, `/users?wallet=${action.payload.wallet}`);
     yield put({
       type: "USER_CHANGED",
-      payload: user
+      payload: user[0] || null
     });
   } catch (error) {
     yield put({
