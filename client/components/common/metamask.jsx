@@ -48,7 +48,7 @@ export default class MetaMaskPopup extends Component {
     return (
       <Modal show={!this.isMetaMaskInstalled()}>
         <Modal.Body>
-          You have to install <a href="https://metamask.io/" target="_blank" >MetaMask</a> to use this site.
+          You have to install <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a> to use this site.
         </Modal.Body>
       </Modal>
     );

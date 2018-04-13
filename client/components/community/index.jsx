@@ -5,7 +5,7 @@ export default class Community extends Component {
   render() {
     return (
       <div>
-        Community
+        <h2>Community</h2>
       </div>
     );
   }

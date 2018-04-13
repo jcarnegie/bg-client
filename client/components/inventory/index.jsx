@@ -5,7 +5,7 @@ export default class Inventory extends Component {
   render() {
     return (
       <div>
-        Inventory
+        <h2>Inventory</h2>
       </div>
     );
   }
