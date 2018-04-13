@@ -8,7 +8,7 @@ export default class Games extends Component {
       <div>
         <Init />
         <h2>Games</h2>
-        <iframe src="http://bitguild.info/" />
+        <iframe src="https://bitguild.info/" />
       </div>
     );
   }
