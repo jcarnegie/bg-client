@@ -19,7 +19,7 @@
       "watch": [
         "server"
       ],
-      "cwd": "/Users/trejgun/projects/BitGuildPlatform/PortalClient1",
+      "cwd": "/Users/trejgun/projects/BitGuildPlatform/PortalClient",
       "script": "node_modules/ethereumjs-testrpc/build/cli.node.js",
       "args": "-m 'lady slam tomato mosquito bulb price cart mobile loud buzz pitch cloud'",
       "exec_mode": "fork"
