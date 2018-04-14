@@ -20,7 +20,7 @@
   },
   {
     "constant": true,
-    "inputs": [ ],
+    "inputs": [],
     "name": "totalWhitelisted",
     "outputs": [
       {
@@ -34,7 +34,7 @@
   },
   {
     "constant": true,
-    "inputs": [ ],
+    "inputs": [],
     "name": "admin",
     "outputs": [
       {
@@ -76,13 +76,13 @@
       }
     ],
     "name": "whitelistAddress",
-    "outputs": [ ],
+    "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [ ],
+    "inputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "constructor"

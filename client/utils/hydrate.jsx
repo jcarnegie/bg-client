@@ -12,7 +12,7 @@ export default (App, store) => {
       <Provider store={store}>
         <IntlWrapper>
           <BrowserRouter>
-            <App/>
+            <App />
           </BrowserRouter>
         </IntlWrapper>
       </Provider>

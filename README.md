@@ -1,12 +1,15 @@
-# CrowdsaleClient
+# PortalClient
 
-## Node
+## Installation
 
-edit config file
+### Node
+
+1. edit config file
 ```sh
 nano ecosystem.development.json
 ```
-run
+
+2. run
 ```sh
 npm i
 
@@ -19,7 +22,8 @@ NODE_ENV=production npm start
 ```
 
 
-## Nginx
+### Nginx
+
 ```
 sudo nano /etc/nginx/sites-available/default
 sudo nginx -s reload

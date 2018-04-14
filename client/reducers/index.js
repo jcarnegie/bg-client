@@ -7,7 +7,7 @@ import user from "./user";
 
 
 export default combineReducers({
-	routing,
+  routing,
   account,
   messages,
   intl,
