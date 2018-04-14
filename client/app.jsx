@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Route, Switch} from "react-router";
 
-import Main from "./components/main";
 import Community from "./components/community";
 import Exchange from "./components/exchange";
 import Games from "./components/games";
@@ -25,10 +24,9 @@ export default class App extends Component {
         <Grid>
           <Message />
           <Switch>
-            <Route path="/" component={Main} exact />
+            <Route path="/" component={Games} exact />
             <Route path="/community" component={Community} />
             <Route path="/exchange" component={Exchange} />
-            <Route path="/games" component={Games} />
             <Route path="/inventory" component={Inventory} />
             <Route component={NotFound} />
           </Switch>
