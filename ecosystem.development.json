@@ -13,16 +13,6 @@
         "NODE_ENV": "development",
         "PORT": "7000"
       }
-    },
-    {
-      "name": "TestRPC",
-      "watch": [
-        "server"
-      ],
-      "cwd": "/Users/trejgun/projects/BitGuildPlatform/PortalClient",
-      "script": "node_modules/ethereumjs-testrpc/build/cli.node.js",
-      "args": "-m 'lady slam tomato mosquito bulb price cart mobile loud buzz pitch cloud'",
-      "exec_mode": "fork"
     }
   ]
 }

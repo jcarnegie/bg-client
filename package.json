@@ -66,7 +66,6 @@
     "@babel/preset-env": "7.0.0-beta.36",
     "@babel/preset-react": "7.0.0-beta.36",
     "@babel/runtime": "7.0.0-beta.36",
-    "@babel/polyfill": "7.0.0-beta.36",
     "babel-eslint": "8.2.2",
     "babel-loader": "8.0.0-beta.2",
     "babel-plugin-lodash": "3.3.2",
@@ -96,8 +95,7 @@
     "url-loader": "1.0.1",
     "webpack": "3.11.0",
     "webpack-dev-middleware": "2.0.6",
-    "webpack-hot-middleware": "2.21.2",
-    "ethereumjs-testrpc": "6.0.3"
+    "webpack-hot-middleware": "2.21.2"
   },
   "engines": {
     "node": ">=8.9.0"
