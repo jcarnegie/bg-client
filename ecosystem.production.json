@@ -6,7 +6,7 @@
       "exec_mode": "cluster",
       "env": {
         "NODE_ENV": "production",
-        "PORT": "7000"
+        "PORT": "5000"
       }
     }
   ]
