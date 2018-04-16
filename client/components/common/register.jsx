@@ -87,7 +87,7 @@ export default class RegisterPopup extends Component {
 
   render() {
     return (
-      <Modal show={this.props.account.isLoaded && !!this.props.account.wallet && !this.props.user}>
+      <Modal show={this.props.account.isLoaded && this.props.account.wallet && this.props.user.isLoaded && !this.props.user.data}>
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
             <FormGroup controlId="nickName">

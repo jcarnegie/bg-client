@@ -4,7 +4,7 @@ import {MESSAGE_ADD_ALL} from "../utils/constants/actions";
 
 
 function callAPI(url, options = {}) {
-  const prefix = (process.env.NODE_ENV === "development" ? "http://localhost:5000" : "") + "/api";
+  const prefix = (process.env.NODE_ENV === "development" ? "http://localhost:7000" : "") + "/api";
   return fetch(prefix + url, options)
     .then(response =>
       response.json().then(json => ({json, response}))

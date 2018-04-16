@@ -31,7 +31,7 @@ export default class MetaMaskPopup extends Component {
             this.props.dispatch({
               type: "CHANGE_ACCOUNT",
               payload: {
-                wallet: window.web3.eth.accounts[0]
+                wallet: window.web3.eth.accounts.length ? window.web3.eth.accounts[0] : void 0
               }
             });
           }
