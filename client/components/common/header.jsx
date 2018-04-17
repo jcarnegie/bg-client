@@ -29,9 +29,6 @@ export default class Header extends Component {
         <Navbar.Collapse href="#">
           <Navbar.Text pullRight>{this.props.user.isLoaded && this.props.user.data ? `You are logged in as ${this.props.user.data.nickName}` : "You are not logged in"}</Navbar.Text>
           <Nav navbar>
-            <LinkContainer to="/games">
-              <NavItem><FormattedMessage id="components.menu.games" /></NavItem>
-            </LinkContainer>
             <LinkContainer to="/inventory">
               <NavItem><FormattedMessage id="components.menu.inventory" /></NavItem>
             </LinkContainer>
