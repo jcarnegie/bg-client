@@ -3,7 +3,8 @@ import {Route, Switch} from "react-router";
 
 import Community from "./components/community";
 import Exchange from "./components/exchange";
-import Games from "./components/games";
+import GamesDev from "./components/games/index.development";
+import GamesProd from "./components/games/index.production";
 import Inventory from "./components/inventory";
 
 import Message from "./components/common/message";
@@ -24,7 +25,7 @@ export default class App extends Component {
         <Grid>
           <Message />
           <Switch>
-            <Route path="/" component={Games} exact />
+            <Route path="/" component={document.location.host === "bitguild.com" ? GamesProd : GamesDev} exact />
             <Route path="/community" component={Community} />
             <Route path="/exchange" component={Exchange} />
             <Route path="/inventory" component={Inventory} />

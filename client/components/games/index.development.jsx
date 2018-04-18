@@ -27,14 +27,13 @@ export default class Games extends Component {
     if (!this.state.url) {
       return null;
     }
-    return (<iframe src={this.state.url} />);
+    return (<iframe src={this.state.url} style={{height: "calc(100vh - 100px)", width: "100%"}} />);
   }
 
   render() {
     return (
       <div>
         <Init />
-        <h2>Games</h2>
         {this.renderIframe()}
       </div>
     );
