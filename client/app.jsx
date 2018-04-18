@@ -9,7 +9,8 @@ import Inventory from "./components/inventory";
 
 import Message from "./components/common/message";
 import NotFound from "./components/common/notfound";
-import Header from "./components/common/header";
+import HeaderDev from "./components/common/header.development";
+import HeaderProd from "./components/common/header.production";
 import MetaMask from "./components/common/metamask";
 import Register from "./components/common/register";
 import {Grid} from "react-bootstrap";
@@ -19,7 +20,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <Header />
+        {document.location.host === "bitguild.com" ? <HeaderProd /> : <HeaderDev />}
         <MetaMask />
         <Register />
         <Grid>
