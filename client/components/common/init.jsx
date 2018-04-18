@@ -33,7 +33,9 @@ export default class Init extends Component {
         }, () => {
           source.postMessage({
             type: "pong",
-            user: this.props.user
+            user: {
+              nickName: this.props.user.nickName
+            }
           }, origin);
         });
       }
