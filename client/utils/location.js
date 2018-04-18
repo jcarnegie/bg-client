@@ -9,10 +9,6 @@ export function readFromString(name, string, delimeter) {
   return "";
 }
 
-export function readFromCookies(name, cookie = document.cookie, delimeter = "; ") {
-  return readFromString(name, cookie, delimeter);
-}
-
 export function readFromQueryString(name, search = document.location.search, delimeter = "&") {
   return readFromString(name, search.slice(1), delimeter);
 }
