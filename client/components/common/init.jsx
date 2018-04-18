@@ -1,7 +1,18 @@
 import {Component} from "react";
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
 
 
+@connect(
+  state => ({
+    user: state.user
+  })
+)
 export default class Init extends Component {
+  static propTypes = {
+    user: PropTypes.object
+  };
+
   state = {
     isInitialized: false
   };
@@ -20,7 +31,10 @@ export default class Init extends Component {
         this.setState({
           isInitialized: true
         }, () => {
-          source.postMessage({type: "pong"}, origin);
+          source.postMessage({
+            type: "pong",
+            user: this.props.user
+          }, origin);
         });
       }
     }
