@@ -15,18 +15,19 @@ import MetaMask from "./components/common/metamask";
 import Register from "./components/common/register";
 import {Grid} from "react-bootstrap";
 
+const isProd = typeof window !== "undefined" && window.document.location.host === "bitguild.com";
 
 export default class App extends Component {
   render() {
     return (
       <div>
-        {document.location.host === "bitguild.com" ? <HeaderProd /> : <HeaderDev />}
+        {isProd ? <HeaderProd /> : <HeaderDev />}
         <MetaMask />
         <Register />
         <Grid>
           <Message />
           <Switch>
-            <Route path="/" component={document.location.host === "bitguild.com" ? GamesProd : GamesDev} exact />
+            <Route path="/" component={isProd ? GamesProd : GamesDev} exact />
             <Route path="/community" component={Community} />
             <Route path="/exchange" component={Exchange} />
             <Route path="/inventory" component={Inventory} />
