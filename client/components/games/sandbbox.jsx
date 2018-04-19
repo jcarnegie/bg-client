@@ -19,7 +19,7 @@ export default class SandBox extends Component {
 
   componentDidMount() {
     this.setState({
-      url: readFromQueryString("sandbox_url", this.props.location.search) || "https://bitguild.info/"
+      url: readFromQueryString("url", this.props.location.search) || "https://bitguild.info/"
     });
   }
 
