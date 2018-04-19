@@ -1,2 +1,3 @@
 **/*.json
 **/*.less
+static/sdk/*.js
