@@ -1,14 +1,41 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
+import {withRouter} from "react-router";
+import Init from "../common/init";
+import {readFromQueryString} from "../../utils/location";
 
 
+@withRouter
 export default class Games extends Component {
+  static propTypes = {
+    location: PropTypes.shape({
+      search: PropTypes.string.isRequired
+    }).isRequired
+  };
+
+  state = {
+    url: ""
+  };
+
+  componentDidMount() {
+    this.setState({
+      url: readFromQueryString("sandbox_url", this.props.location.search) || "https://bitguild.info/"
+    });
+  }
+
+  renderIframe() {
+    if (!this.state.url) {
+      return null;
+    }
+    return (<iframe src={this.state.url} style={{height: "calc(100vh - 200px)", width: "100%"}} />);
+  }
+
   render() {
     return (
       <div>
-        <div style={{height: "calc(100vh - 100px)", paddingTop: "calc(50vh - 80px)", textAlign: "center", fontSize: "30px"}}>
-          <p>In Development, coming May 2018</p>
-          <p>Join our Telegram group: <a href="https://t.me/joinchat/At6RzE8YtEEnfWIPHIuL2A">BitGuild</a></p>
-        </div>
+        <Init />
+        <h2>Games</h2>
+        {this.renderIframe()}
       </div>
     );
   }
