@@ -5,7 +5,7 @@ import Community from "./components/community";
 import Exchange from "./components/exchange";
 import GamesDev from "./components/games/index.development";
 import GamesProd from "./components/games/index.production";
-import SandBox from "./components/games/sandbbox";
+import SandBox from "./components/games/sandbox";
 import Inventory from "./components/inventory";
 
 import Message from "./components/common/message";
