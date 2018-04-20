@@ -12,8 +12,8 @@ export default class HTML extends React.Component {
     if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
       return (
         <div>
-          <script src="https://unpkg.com/react@16.2.0/umd/react.production.min.js" type="text/javascript" crossOrigin="anonymous" />
-          <script src="https://unpkg.com/react-dom@16.2.0/umd/react-dom.production.min.js" type="text/javascript" crossOrigin="anonymous" />
+          <script src="https://unpkg.com/react@16.3.2/umd/react.production.min.js" type="text/javascript" crossOrigin="anonymous" />
+          <script src="https://unpkg.com/react-dom@16.3.2/umd/react-dom.production.min.js" type="text/javascript" crossOrigin="anonymous" />
         </div>
       );
     } else {

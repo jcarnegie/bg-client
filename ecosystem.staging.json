@@ -6,7 +6,9 @@
       "exec_mode": "cluster",
       "env": {
         "NODE_ENV": "staging",
-        "PORT": "5000"
+        "PORT": "5000",
+        // TODO switch back to 'server' once we have proper staging
+        "RENDERING": "client"
       }
     }
   ]

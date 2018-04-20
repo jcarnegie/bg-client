@@ -1,16 +1,16 @@
 import "./styles.less";
 import "../static/favicon.ico";
 import App from "./app";
-import hydrate from "./utils/hydrate";
+import render from "./utils/render";
 import configureStore from "./store";
 
 
 const store = configureStore(window.__INITIAL_STATE__);
 
-hydrate(App, store);
+render(App, store);
 
 if (module.hot) {
   module.hot.accept("./app", () => {
-    hydrate(App, store);
+    render(App, store);
   });
 }
