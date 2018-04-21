@@ -9,15 +9,20 @@ import {connect} from "react-redux";
 
 @connect(
   state => ({
-    user: state.user
+    user: state.user,
+    balanceETH: state.balanceETH,
+    balancePLAT: state.balancePLAT
   })
 )
 export default class Header extends Component {
   static propTypes = {
-    user: PropTypes.object
+    user: PropTypes.object,
+    balanceETH: PropTypes.object,
+    balancePLAT: PropTypes.object
   };
 
   render() {
+    const {user, balanceETH, balancePLAT} = this.props;
     return (
       <Navbar inverse>
         <Navbar.Header>
@@ -27,7 +32,13 @@ export default class Header extends Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse href="#">
-          <Navbar.Text pullRight>{this.props.user.isLoaded && this.props.user.data ? `You are logged in as ${this.props.user.data.nickName}` : "You are not logged in"}</Navbar.Text>
+          <Navbar.Text pullRight>
+            {!balanceETH.isLoading && balanceETH.success ? `${balanceETH.data.toFixed(2)} ETH` : ""}
+            {" "}
+            {!balancePLAT.isLoading && balancePLAT.success ? `${balancePLAT.data.toFixed(0)} PLAT` : ""}
+            {" "}
+            {!user.isLoading && user.success ? user.data.nickName : "You are not logged in"}
+            </Navbar.Text>
           <Nav navbar>
             <LinkContainer to="/inventory">
               <NavItem><FormattedMessage id="components.menu.inventory" /></NavItem>

@@ -88,7 +88,8 @@ export default {
     }),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
-      "process.env.RENDERING": JSON.stringify(process.env.RENDERING)
+      "process.env.RENDERING": JSON.stringify(process.env.RENDERING),
+      "process.env.TOKEN_CONTRACT_ADDR": JSON.stringify(process.env.TOKEN_CONTRACT_ADDR)
     }),
     new webpack.HotModuleReplacementPlugin()
   ],
