@@ -90,53 +90,51 @@ function * createUser(action) {
 }
 
 function * getBalanceETH() {
-  try {
-    const user = yield select(state => state.user);
-    if (user.isLoading && !user.success) {
-      return;
+  const user = yield select(state => state.user);
+  if (!user.isLoading && user.success) {
+    try {
+      yield put({
+        type: BALANCE_ETH_LOADING
+      });
+      const balance = yield bluebird.promisify(window.web3.eth.getBalance)(user.data.wallet);
+      yield put({
+        type: BALANCE_ETH_CHANGED,
+        payload: window.web3.fromWei(balance, "ether").toNumber()
+      });
+    } catch (error) {
+      yield put({
+        type: BALANCE_ETH_ERROR
+      });
+      yield put({
+        type: MESSAGE_ADD,
+        payload: error
+      });
     }
-    yield put({
-      type: BALANCE_ETH_LOADING
-    });
-    const balance = yield bluebird.promisify(window.web3.eth.getBalance)(user.data.wallet);
-    yield put({
-      type: BALANCE_ETH_CHANGED,
-      payload: window.web3.fromWei(balance, "ether").toNumber()
-    });
-  } catch (error) {
-    yield put({
-      type: BALANCE_ETH_ERROR
-    });
-    yield put({
-      type: MESSAGE_ADD,
-      payload: error
-    });
   }
 }
 
 function * getBalancePLAT() {
-  try {
-    const user = yield select(state => state.user);
-    if (user.isLoading && !user.success) {
-      return;
+  const user = yield select(state => state.user);
+  if (!user.isLoading && user.success) {
+    try {
+      yield put({
+        type: BALANCE_PLAT_LOADING
+      });
+      const contract = window.web3.eth.contract(tokenABI).at(process.env.TOKEN_CONTRACT_ADDR);
+      const balance = yield bluebird.promisify(contract.balanceOf)(user.data.wallet);
+      yield put({
+        type: BALANCE_PLAT_CHANGED,
+        payload: window.web3.fromWei(balance, "ether").toNumber()
+      });
+    } catch (error) {
+      yield put({
+        type: BALANCE_PLAT_ERROR
+      });
+      yield put({
+        type: MESSAGE_ADD,
+        payload: error
+      });
     }
-    yield put({
-      type: BALANCE_PLAT_LOADING
-    });
-    const contract = window.web3.eth.contract(tokenABI).at(process.env.TOKEN_CONTRACT_ADDR);
-    const balance = yield bluebird.promisify(contract.balanceOf)(user.data.wallet);
-    yield put({
-      type: BALANCE_PLAT_CHANGED,
-      payload: window.web3.fromWei(balance, "ether").toNumber()
-    });
-  } catch (error) {
-    yield put({
-      type: BALANCE_PLAT_ERROR
-    });
-    yield put({
-      type: MESSAGE_ADD,
-      payload: error
-    });
   }
 }
 

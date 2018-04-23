@@ -1,3 +1,4 @@
+import "./modal.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Modal} from "react-bootstrap";
@@ -87,9 +88,14 @@ export default class RegisterPopup extends Component {
   }
 
   render() {
+    const {account, user} = this.props;
     return (
-      <Modal show={this.props.account.isLoaded && this.props.account.wallet && this.props.user.isLoaded && !this.props.user.data}>
+      <Modal show={account.wallet && !user.isLoading && !user.success}>
         <Modal.Body>
+          <h2>Welcome to BitGuild</h2>
+
+          <br />
+
           <Form onSubmit={::this.onSubmit}>
             <FormGroup controlId="wallet">
               <Col componentClass={ControlLabel}>
@@ -187,12 +193,16 @@ export default class RegisterPopup extends Component {
               </Col>
             </FormGroup>
 
-            <br />
+            <p className="note">
+              Make sure to save your MetaMask login information and account recovery details!
+              We can’t help you regain access if you lose it.
+            </p>
 
             <Button type="submit" className="btn-block text-uppercase">
               <FormattedMessage id="components.buttons.register" />
             </Button>
 
+            <br />
           </Form>
         </Modal.Body>
       </Modal>

@@ -1,8 +1,9 @@
+import "./modal.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Button, Modal} from "react-bootstrap";
+import {Button, Modal, Form} from "react-bootstrap";
 import {connect} from "react-redux";
-import {MESSAGE_ADD, NEW_BLOCK, CHANGE_ACCOUNT} from "../../../shared/constants/actions";
+import {CHANGE_ACCOUNT, MESSAGE_ADD, NEW_BLOCK} from "../../../shared/constants/actions";
 
 
 @connect(
@@ -65,10 +66,16 @@ export default class MetaMaskPopup extends Component {
       <Modal show={!this.isMetaMaskInstalled()}>
         <Modal.Body>
           <h2>Welcome to BitGuild</h2>
+          <br />
           <p>To enter BitGuild, you will need to install MetaMask, a digital wallet. </p>
           <p>This will also act as your login to the game (no extra password needed).</p>
-          <Button className="btn-block text-uppercase" href="https://metamask.io/" target="_blank" rel="noopener noreferrer">Install MetaMask</Button>
-          <p>Questions? <a href="#">FAQ</a></p>
+          <br />
+          <Form>
+            <Button className="btn-block text-uppercase" href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
+              Install MetaMask
+            </Button>
+          </Form>
+          <p className="note">Questions? <a href="#">FAQ</a></p>
         </Modal.Body>
       </Modal>
     );
