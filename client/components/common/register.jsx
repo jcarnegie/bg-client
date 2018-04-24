@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import {email, nickName, wallet} from "../../../shared/constants/placeholder";
 import {reEmail} from "../../../shared/constants/regexp";
-import {CREATE_USER} from "../../../shared/constants/actions";
+import {CREATE_USER, MESSAGE_ADD} from "../../../shared/constants/actions";
 
 
 @injectIntl
@@ -85,6 +85,46 @@ export default class RegisterPopup extends Component {
     }
 
     return isValid;
+  }
+
+  sign() {
+    const message = window.web3.toHex("BitGuild!");
+    const from = window.web3.eth.accounts[0];
+
+    window.web3.currentProvider.sendAsync({
+      method: "personal_sign",
+      params: [message, from],
+      from
+    }, (err, result) => {
+      if (err || result.error) {
+        this.props.dispatch({
+          type: MESSAGE_ADD,
+          payload: err || result.error
+        });
+        return;
+      }
+
+      window.web3.currentProvider.sendAsync({
+        method: "personal_ecRecover",
+        params: [message, result.result],
+        from
+      }, (err, recovered) => {
+        if (err || result.error) {
+          this.props.dispatch({
+            type: MESSAGE_ADD,
+            payload: err || result.error
+          });
+          return;
+        }
+
+        // TODO not sure what to do after this check
+        if (recovered.result === from) {
+          console.log("Successfully verified signer as " + from);
+        } else {
+          console.log("Failed to verify signer when comparing " + recovered.result + " to " + from);
+        }
+      });
+    });
   }
 
   render() {
