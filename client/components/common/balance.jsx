@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import {Navbar} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
+import topupABI from "../../../shared/contracts/topup";
 
 
 @connect(
@@ -13,10 +14,24 @@ import {connect} from "react-redux";
 )
 export default class Balance extends Component {
   static propTypes = {
+    dispatch: PropTypes.func,
     user: PropTypes.object,
     balanceETH: PropTypes.object,
     balancePLAT: PropTypes.object
   };
+
+  onClick(e) {
+    e.preventDefault();
+    const contract = window.web3.eth.contract(topupABI).at(process.env.TOPUP_CONTRACT_ADDR);
+    contract.buyTokens({
+        value: 1.1 * 1e18,
+        from: window.web3.eth.accounts[0],
+        gas: window.web3.toHex(15e4),
+        gasPrice: window.web3.toHex(1e10)
+      },
+      console.log
+    );
+  }
 
   render() {
     const {balanceETH, balancePLAT} = this.props;
@@ -26,7 +41,7 @@ export default class Balance extends Component {
         {" "}
         {!balancePLAT.isLoading && balancePLAT.success ? `${balancePLAT.data.toFixed(0)} PLAT` : ""}
         {" "}
-        <a href="#" className="plus">+</a>
+        <a href="#" className="plus" onClick={this.onClick}>+</a>
       </Navbar.Text>
     );
   }

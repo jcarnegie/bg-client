@@ -14,4 +14,4 @@ node_modules/.bin/babel -d ./build/client ./client --copy-files
 
 
 # TODO switch back to `server` once we have proper staging
-NODE_ENV=production RENDERING=client TOKEN_CONTRACT_ADDR=0x7E43581b19ab509BCF9397a2eFd1ab10233f27dE node_modules/.bin/webpack -p --config server/configs/webpack.production.js
+NODE_ENV=production RENDERING=client TOKEN_CONTRACT_ADDR=0x7E43581b19ab509BCF9397a2eFd1ab10233f27dE TOPUP_CONTRACT_ADDR=0x7f3bccf767a2c34a7bc020ef7fe1558afed5160a node_modules/.bin/webpack -p --config server/configs/webpack.production.js
