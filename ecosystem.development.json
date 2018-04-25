@@ -5,13 +5,18 @@
       "watch": [
         "server"
       ],
-      "cwd": "/Users/trejgun/projects/BitGuildPlatform/PortalClient",
+      "cwd": ".",
       "script": "server/server.js",
       "exec_interpreter": "node_modules/.bin/babel-node",
       "exec_mode": "fork",
       "env": {
         "NODE_ENV": "development",
         "PORT": "5000",
+        "MONGO_HOST": "localhost",
+        "MONGO_PORT": "27017",
+        "MONGO_DB_NAME": "whitelist",
+        "MONGO_DB_USER": "",
+        "MONGO_DB_PASS": "",
         // TODO switch back to 'server' once we have proper staging
         "RENDERING": "client",
         "TOKEN_CONTRACT_ADDR": "0x7E43581b19ab509BCF9397a2eFd1ab10233f27dE",

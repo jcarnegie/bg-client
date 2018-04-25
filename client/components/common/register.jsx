@@ -139,7 +139,7 @@ export default class RegisterPopup extends Component {
           <Form onSubmit={::this.onSubmit}>
             <FormGroup controlId="wallet">
               <Col componentClass={ControlLabel}>
-                <FormattedMessage id="forms.wallet" />
+                <FormattedMessage id="fields.wallet.label" />
               </Col>
               <Col>
                 <FormControl
@@ -179,7 +179,7 @@ export default class RegisterPopup extends Component {
             </FormGroup>
             <FormGroup controlId="email">
               <Col componentClass={ControlLabel}>
-                <FormattedMessage id="forms.email" />
+                <FormattedMessage id="fields.email.label" />
               </Col>
               <Col>
                 <FormControl
@@ -210,7 +210,7 @@ export default class RegisterPopup extends Component {
             </FormGroup>
             <FormGroup controlId="nickName">
               <Col componentClass={ControlLabel}>
-                <FormattedMessage id="forms.nickName" />
+                <FormattedMessage id="fields.nickName.label" />
               </Col>
               <Col>
                 <FormControl
@@ -239,7 +239,7 @@ export default class RegisterPopup extends Component {
             </p>
 
             <Button type="submit" className="btn-block text-uppercase">
-              <FormattedMessage id="components.buttons.register" />
+              <FormattedMessage id="buttons.register" />
             </Button>
 
             <br />

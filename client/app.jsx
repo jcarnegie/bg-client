@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import {Route, Switch} from "react-router";
 
-import Community from "./components/community";
-import Exchange from "./components/exchange";
 import GamesDev from "./components/games/index.development";
 import GamesProd from "./components/games/index.production";
 import SandBox from "./components/games/sandbox";
@@ -32,8 +30,6 @@ export default class App extends Component {
           <Switch>
             <Route path="/" component={isProd ? GamesProd : GamesDev} exact />
             <Route path="/sandbox" component={SandBox} exact />
-            <Route path="/community" component={Community} />
-            <Route path="/exchange" component={Exchange} />
             <Route path="/inventory" component={Inventory} />
             <Route component={NotFound} />
           </Switch>

@@ -22,9 +22,9 @@
 
   .navbar-text {
     color: #ffffff;
-      margin-top: 0;
-      margin-bottom: 0;
-      line-height: 50px;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 50px;
 
   }
 
@@ -33,6 +33,14 @@
       text-transform: uppercase;
       color: #ffffff !important;
       font-weight: bold;
+    }
+
+    .active {
+      a {
+        &, &:hover {
+          background-color: initial;
+        }
+      }
     }
   }
 }

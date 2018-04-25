@@ -16,7 +16,10 @@ import {
   NEW_BLOCK,
   USER_CHANGED,
   USER_ERROR,
-  USER_LOADING
+  USER_LOADING,
+INVENTORY_CHANGED,
+INVENTORY_ERROR,
+INVENTORY_LOADING,
 } from "../../shared/constants/actions";
 
 
@@ -138,6 +141,33 @@ function * getBalancePLAT() {
   }
 }
 
+function * getInventory(action) {
+  try {
+    yield put({
+      type: INVENTORY_LOADING
+    });
+    const inventory = yield call(callAPI, `/inventory?wallet=${action.payload.wallet}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    });
+    yield put({
+      type: INVENTORY_CHANGED,
+      payload: inventory
+    });
+  } catch (error) {
+    yield put({
+      type: INVENTORY_ERROR
+    });
+    yield put({
+      type: MESSAGE_ADD_ALL,
+      payload: [].concat(error)
+    });
+  }
+}
+
 function * userSaga() {
   yield takeEvery(CHANGE_ACCOUNT, fetchUser);
   yield takeEvery(CREATE_USER, createUser);
@@ -145,6 +175,7 @@ function * userSaga() {
   yield takeEvery(NEW_BLOCK, getBalanceETH);
   yield takeEvery(USER_CHANGED, getBalancePLAT);
   yield takeEvery(NEW_BLOCK, getBalancePLAT);
+  yield takeEvery(USER_CHANGED, getInventory);
 }
 
 export default userSaga;

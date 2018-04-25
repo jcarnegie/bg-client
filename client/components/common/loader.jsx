@@ -9,7 +9,7 @@ export default class Loader extends Component {
       <div>
         <Glyphicon glyph="refresh" className="gly-spin" />
         {" "}
-        <FormattedMessage id="misc.sending" />
+        <FormattedMessage id="components.loader.loading" />
       </div>
     );
   }

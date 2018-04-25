@@ -4,36 +4,39 @@
     "language": {
       "en": "English"
     },
-    "buttons": {
-      "submit": "Submit",
-      "register": "Register"
-    },
     "menu": {
       "inventory": "My Items",
       "exchange": "Exchange",
       "community": "Community"
+    },
+    "loader": {
+      "loading": "loading"
     }
-  },
-  "forms": {
-    "nickName": "Nick name",
-    "email": "Email",
-    "wallet": "ERC-20 Wallet Address"
   },
   "fields": {
     "nickName": {
+      "label": "Nick name",
       "required": "Please enter your nick name."
     },
     "email": {
+      "label": "Email",
       "required": "Please enter your email address.",
       "invalid": "Please enter a valid email address format such as yourname@email.com.",
       "conflict": "This email already exists"
     },
     "wallet": {
+      "label": "ERC-20 Wallet Address",
       "required": "Please enter your wallet address.",
       "minlength": "The wallet address you entered is incomplete, please check this field and try again.",
       "maxlength": "Wallet address is too long.",
       "invalid": "The wallet address you entered is invalid. Please make sure you are using only alphanumeric characters."
     }
+  },
+  "buttons": {
+    "submit": "Submit",
+    "register": "Register",
+    "sell": "Sell",
+    "gift": "Gift"
   },
   "errors": {
     "method-not-allowed": "Method not allowed",
