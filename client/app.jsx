@@ -5,6 +5,7 @@ import GamesDev from "./components/games/index.development";
 import GamesProd from "./components/games/index.production";
 import SandBox from "./components/games/sandbox";
 import Inventory from "./components/inventory";
+import Faq from "./components/faq";
 
 import Message from "./components/common/message";
 import NotFound from "./components/common/notfound";
@@ -31,6 +32,7 @@ export default class App extends Component {
             <Route path="/" component={isProd ? GamesProd : GamesDev} exact />
             <Route path="/sandbox" component={SandBox} exact />
             <Route path="/inventory" component={Inventory} />
+            <Route path="/faq" component={Faq} />
             <Route component={NotFound} />
           </Switch>
         </Grid>
