@@ -8,6 +8,7 @@ import topupABI from "../../../shared/contracts/topup";
 
 @connect(
   state => ({
+    user: state.user,
     balanceETH: state.balanceETH,
     balancePLAT: state.balancePLAT
   })
@@ -25,11 +26,11 @@ export default class Balance extends Component {
     const contract = window.web3.eth.contract(topupABI).at(process.env.TOPUP_CONTRACT_ADDR);
     contract.buyTokens({
         value: 1.1 * 1e18,
-        from: window.web3.eth.accounts[0],
+        from: this.props.user.wallet,
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(1e10)
       },
-      console.log
+      console.info
     );
   }
 

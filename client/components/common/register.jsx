@@ -55,25 +55,19 @@ export default class RegisterPopup extends Component {
 
     this.setState({
       formData: new FormData(e.target)
-    }, () => {
-      this.props.dispatch({
-        type: CREATE_USER,
-        payload: Array.from(this.state.formData.entries()).reduce((memo, pair) => ({
-          ...memo,
-          [pair[0]]: pair[1]
-        }), {})
-      });
-    });
+    }, this.sign);
   }
 
   isValid(a) {
+    const {intl} = this.props;
+
     let isValid = true;
     for (let e of a) {
       switch (e.name) {
         case "wallet":
           if (!window.web3.isAddress(e.value)) {
             e.parentNode.classList.add("has-error");
-            e.setCustomValidity(this.props.intl.formatMessage({
+            e.setCustomValidity(intl.formatMessage({
               id: "fields.wallet.invalid"
             }));
             isValid = false;
@@ -88,8 +82,10 @@ export default class RegisterPopup extends Component {
   }
 
   sign() {
+    const {dispatch, intl} = this.props;
+
     const message = window.web3.toHex("BitGuild!");
-    const from = window.web3.eth.accounts[0];
+    const from = this.state.formData.get("wallet");
 
     window.web3.currentProvider.sendAsync({
       method: "personal_sign",
@@ -97,7 +93,7 @@ export default class RegisterPopup extends Component {
       from
     }, (err, result) => {
       if (err || result.error) {
-        this.props.dispatch({
+        dispatch({
           type: MESSAGE_ADD,
           payload: err || result.error
         });
@@ -110,25 +106,39 @@ export default class RegisterPopup extends Component {
         from
       }, (err, recovered) => {
         if (err || result.error) {
-          this.props.dispatch({
+          dispatch({
             type: MESSAGE_ADD,
             payload: err || result.error
           });
           return;
         }
 
-        // TODO not sure what to do after this check
         if (recovered.result === from) {
-          console.log("Successfully verified signer as " + from);
+          dispatch({
+            type: CREATE_USER,
+            payload: Array.from(this.state.formData.entries()).reduce((memo, pair) => ({
+              ...memo,
+              [pair[0]]: pair[1]
+            }), {})
+          });
         } else {
-          console.log("Failed to verify signer when comparing " + recovered.result + " to " + from);
+          dispatch({
+            type: MESSAGE_ADD,
+            payload: new Error(intl.formatMessage({
+              id: "errors.spoofing-attempt"
+            }, {
+              wallet1: recovered.result,
+              wallet2: from
+            }))
+          });
         }
       });
     });
   }
 
   render() {
-    const {account, user} = this.props;
+    const {account, user, intl} = this.props;
+
     return (
       <Modal show={account.wallet && !user.isLoading && !user.success}>
         <Modal.Body>
@@ -152,15 +162,15 @@ export default class RegisterPopup extends Component {
                   onInvalid={e => {
                     e.target.parentNode.classList.add("has-error");
                     if (e.target.validity.valueMissing) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                      e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.wallet.required"
                       }));
                     } else if (e.target.validity.tooShort) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                      e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.wallet.minlength"
                       }));
                     } else if (e.target.validity.tooLong) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                      e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.wallet.maxlength"
                       }));
                     }
@@ -191,11 +201,11 @@ export default class RegisterPopup extends Component {
                   onInvalid={e => {
                     e.target.parentNode.classList.add("has-error");
                     if (e.target.validity.valueMissing) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                      e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.email.required"
                       }));
                     } else if (e.target.validity.typeMismatch) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                      e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.email.invalid"
                       }));
                     }
@@ -220,7 +230,7 @@ export default class RegisterPopup extends Component {
                   placeholder={nickName}
                   onInvalid={e => {
                     e.target.parentNode.classList.add("has-error");
-                    e.target.setCustomValidity(this.props.intl.formatMessage({
+                    e.target.setCustomValidity(intl.formatMessage({
                       id: "fields.nickName.required"
                     }));
                   }}
