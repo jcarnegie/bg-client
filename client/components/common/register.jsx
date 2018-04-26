@@ -84,7 +84,12 @@ export default class RegisterPopup extends Component {
   sign() {
     const {dispatch, intl} = this.props;
 
-    const message = window.web3.toHex("BitGuild!");
+    // don't add line breaks
+    const text = `BitGuild requires all users to sign with their private key in order to safeguard against spoofing attempts.
+
+Our mission is to revolutionize the global gaming industry by creating a platform for a brand new class of games that live on the blockchain. Blockchain games completely redefine the relationship between players and developers by facilitating full and true ownership of in-game assets, cheap & safe item trading, cross-game compatibility of items & currency, and more. BitGuild’s team consists of cryptocurrency and gaming veterans with decades of experience building international large-scale gaming platforms and communities. BitGuild aims to host the best blockchain games and the largest blockchain gamer community online.`;
+
+    const message = window.web3.toHex(text);
     const from = this.state.formData.get("wallet");
 
     window.web3.currentProvider.sendAsync({
