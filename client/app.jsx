@@ -17,7 +17,7 @@ import {Grid} from "react-bootstrap";
 
 
 // TODO remove this condition once we have proper staging
-const isProd = typeof window !== "undefined" && window.document.location.host === "bitguild.com";
+const isProd = true; // typeof window !== "undefined" && window.document.location.host === "bitguild.com";
 
 export default class App extends Component {
   render() {
@@ -25,7 +25,7 @@ export default class App extends Component {
       <div>
         {isProd ? <HeaderProd /> : <HeaderDev />}
         <MetaMask />
-        <Register />
+        {isProd ? null : <Register />}
         <Grid>
           <Message />
           <Switch>
