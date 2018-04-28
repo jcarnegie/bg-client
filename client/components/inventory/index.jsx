@@ -1,3 +1,4 @@
+import "./index.less";
 import React, {Component, Fragment} from "react";
 import {Row, Tab, Tabs} from "react-bootstrap";
 import {connect} from "react-redux";

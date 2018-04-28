@@ -28,10 +28,10 @@ export default class Inventory extends Component {
         <Thumbnail src={image}>
           <h4>{name}</h4>
           <ButtonGroup justified>
-            <Button href="#" onClick={::this.onSell}>
+            <Button href="#" onClick={::this.onSell} className="sell">
               <FormattedMessage id="buttons.sell" />
             </Button>
-            <Button href="#" onClick={::this.onGift}>
+            <Button href="#" onClick={::this.onGift} className="gift">
               <FormattedMessage id="buttons.gift" />
             </Button>
           </ButtonGroup>

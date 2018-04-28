@@ -30,13 +30,20 @@
       "minlength": "The wallet address you entered is incomplete, please check this field and try again.",
       "maxlength": "Wallet address is too long.",
       "invalid": "The wallet address you entered is invalid. Please make sure you are using only alphanumeric characters."
+    },
+    "eth": {
+      "label": "Ethereum (ETH)"
+    },
+    "plat": {
+      "label": "Platinum (PLAT)"
     }
   },
   "buttons": {
     "submit": "Submit",
     "register": "Register",
     "sell": "Sell",
-    "gift": "Gift"
+    "gift": "Gift",
+    "convert": "Convert"
   },
   "errors": {
     "method-not-allowed": "Method not allowed",

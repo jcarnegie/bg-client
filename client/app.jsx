@@ -11,8 +11,8 @@ import Message from "./components/common/message";
 import NotFound from "./components/common/notfound";
 import HeaderDev from "./components/common/header.development";
 import HeaderProd from "./components/common/header.production";
-import MetaMask from "./components/common/metamask";
-import Register from "./components/common/register";
+import MetaMask from "./components/popups/metamask";
+import Register from "./components/popups/register";
 import {Grid} from "react-bootstrap";
 
 

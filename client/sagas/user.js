@@ -2,6 +2,7 @@ import bluebird from "bluebird";
 import {call, put, select, takeEvery} from "redux-saga/effects";
 import fetch from "isomorphic-fetch";
 import tokenABI from "../../shared/contracts/token";
+import oracleABI from "../../shared/contracts/oracle";
 import {
   BALANCE_ETH_CHANGED,
   BALANCE_ETH_ERROR,
@@ -11,15 +12,19 @@ import {
   BALANCE_PLAT_LOADING,
   CHANGE_ACCOUNT,
   CREATE_USER,
+  INVENTORY_CHANGED,
+  INVENTORY_ERROR,
+  INVENTORY_LOADING,
   MESSAGE_ADD,
   MESSAGE_ADD_ALL,
   NEW_BLOCK,
+  RATE_CHANGED,
+  RATE_ERROR,
+  RATE_LOADING,
+  RATE_UPDATE,
   USER_CHANGED,
   USER_ERROR,
   USER_LOADING,
-INVENTORY_CHANGED,
-INVENTORY_ERROR,
-INVENTORY_LOADING,
 } from "../../shared/constants/actions";
 
 
@@ -88,6 +93,28 @@ function * createUser(action) {
     yield put({
       type: MESSAGE_ADD_ALL,
       payload: [].concat(error)
+    });
+  }
+}
+
+function * getRate() {
+  try {
+    yield put({
+      type: RATE_LOADING
+    });
+    const contract = window.web3.eth.contract(oracleABI).at(process.env.ORACLE_CONTRACT_ADDR);
+    const PLATprice = yield bluebird.promisify(contract.PLATprice)();
+    yield put({
+      type: RATE_CHANGED,
+      payload: 1 / PLATprice.toNumber() * 1e18
+    });
+  } catch (error) {
+    yield put({
+      type: RATE_ERROR
+    });
+    yield put({
+      type: MESSAGE_ADD,
+      payload: error
     });
   }
 }
@@ -176,6 +203,7 @@ function * userSaga() {
   yield takeEvery(USER_CHANGED, getBalancePLAT);
   yield takeEvery(NEW_BLOCK, getBalancePLAT);
   yield takeEvery(USER_CHANGED, getInventory);
+  yield takeEvery(RATE_UPDATE, getRate);
 }
 
 export default userSaga;

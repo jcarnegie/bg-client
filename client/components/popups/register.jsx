@@ -1,4 +1,5 @@
 import "./modal.less";
+import "./form.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Modal} from "react-bootstrap";
@@ -145,7 +146,7 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
     const {account, user, intl} = this.props;
 
     return (
-      <Modal show={account.wallet && !user.isLoading && !user.success}>
+      <Modal show={account.wallet && !user.isLoading && !user.success} className="register">
         <Modal.Body>
           <h2>Welcome to BitGuild</h2>
 
@@ -165,7 +166,7 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
                   maxLength="42"
                   minLength="42"
                   onInvalid={e => {
-                    e.target.parentNode.classList.add("has-error");
+                    e.target.parentNode.parentNode.classList.add("has-error");
                     if (e.target.validity.valueMissing) {
                       e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.wallet.required"
@@ -181,7 +182,7 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
                     }
                   }}
                   onInput={e => {
-                    e.target.parentNode.classList.remove("has-error");
+                    e.target.parentNode.parentNode.classList.remove("has-error");
                     e.target.setCustomValidity("");
                     this.setState({
                       walletLength: e.target.value.length
@@ -204,7 +205,7 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
                   defaultValue={this.state.formData.get("email")}
                   placeholder={email}
                   onInvalid={e => {
-                    e.target.parentNode.classList.add("has-error");
+                    e.target.parentNode.parentNode.classList.add("has-error");
                     if (e.target.validity.valueMissing) {
                       e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.email.required"
@@ -216,7 +217,7 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
                     }
                   }}
                   onInput={e => {
-                    e.target.parentNode.classList.remove("has-error");
+                    e.target.parentNode.parentNode.classList.remove("has-error");
                     e.target.setCustomValidity("");
                   }}
                   required
@@ -234,13 +235,13 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
                   defaultValue={this.state.formData.get("nickName")}
                   placeholder={nickName}
                   onInvalid={e => {
-                    e.target.parentNode.classList.add("has-error");
+                    e.target.parentNode.parentNode.classList.add("has-error");
                     e.target.setCustomValidity(intl.formatMessage({
                       id: "fields.nickName.required"
                     }));
                   }}
                   onInput={e => {
-                    e.target.parentNode.classList.remove("has-error");
+                    e.target.parentNode.parentNode.classList.remove("has-error");
                     e.target.setCustomValidity("");
                   }}
                   required
@@ -250,6 +251,7 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
 
             <p className="note">
               Make sure to save your MetaMask login information and account recovery details!
+              <br />
               We can’t help you regain access if you lose it.
             </p>
 

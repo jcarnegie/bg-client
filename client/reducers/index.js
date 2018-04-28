@@ -4,6 +4,7 @@ import intl from "./intl";
 import messages from "./messages";
 import account from "./account";
 import user from "./user";
+import rate from "./rate";
 import inventory from "./inventory";
 import balanceETH from "./balanceETH";
 import balancePLAT from "./balancePLAT";
@@ -17,5 +18,6 @@ export default combineReducers({
   balancePLAT,
   messages,
   intl,
+  rate,
   user
 });

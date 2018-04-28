@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import {Navbar} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import topupABI from "../../../shared/contracts/topup";
+import Convert from "../popups/convert";
 
 
 @connect(
@@ -21,28 +21,33 @@ export default class Balance extends Component {
     balancePLAT: PropTypes.object
   };
 
+  state = {
+    show: false
+  };
+
   onClick(e) {
     e.preventDefault();
-    const contract = window.web3.eth.contract(topupABI).at(process.env.TOPUP_CONTRACT_ADDR);
-    contract.buyTokens({
-        value: 1.1 * 1e18,
-        from: this.props.user.wallet,
-        gas: window.web3.toHex(15e4),
-        gasPrice: window.web3.toHex(1e10)
-      },
-      console.info
-    );
+    this.setState({
+      show: true
+    });
+  }
+
+  onHide() {
+    this.setState({
+      show: false
+    });
   }
 
   render() {
     const {balanceETH, balancePLAT} = this.props;
     return (
       <Navbar.Text pullRight>
+        <Convert show={this.state.show} onHide={::this.onHide} />
         {!balanceETH.isLoading && balanceETH.success ? `${balanceETH.data.toFixed(2)} ETH` : ""}
         {" "}
         {!balancePLAT.isLoading && balancePLAT.success ? `${balancePLAT.data.toFixed(0)} PLAT` : ""}
         {" "}
-        <a href="#" className="plus" onClick={this.onClick}>+</a>
+        <a href="#" className="plus" onClick={::this.onClick}>+</a>
       </Navbar.Text>
     );
   }
