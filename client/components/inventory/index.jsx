@@ -69,7 +69,7 @@ export default class Inventory extends Component {
               const categories = uniq([].concat(...items.map(item => item.categories)));
               return (
                 <Fragment key={game._id}>
-                  <div className="pull-right">
+                  <div className="arrow-right pull-right">
                     <Button onClick={::this.onClick(game, categories)} bsStyle="link">All</Button>
                     {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game, [category])} bsStyle="link">{category}</Button>)}
                   </div>
@@ -87,7 +87,7 @@ export default class Inventory extends Component {
             const categories = uniq([].concat(...items.map(item => item.categories)));
             return (
               <Tab eventKey={i + 2} title={game.name} key={game._id}>
-                <div className="pull-right">
+                <div className="arrow-right pull-right">
                   <Button onClick={::this.onClick(game, categories)} bsStyle="link">All</Button>
                   {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game, [category])} bsStyle="link">{category}</Button>)}
                 </div>
