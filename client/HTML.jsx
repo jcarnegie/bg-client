@@ -21,6 +21,25 @@ export default class HTML extends React.Component {
     }
   }
 
+  renderChat() {
+    if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
+      return (
+        <div>
+          <div id="sb_widget" />
+          <script src="https://cdn.jsdelivr.net/npm/sendbird@3.0.60/SendBird.min.js" type="text/javascript" crossOrigin="anonymous" />
+          <script src="/js/widget.SendBird.js" type="text/javascript" crossOrigin="anonymous" />
+          <script dangerouslySetInnerHTML={{
+            __html: `
+              sbWidget.start('9DA1B1F4-0BE6-4DA8-82C5-2E81DAB56F23');
+            `
+          }} />
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
     return (
       <html>
@@ -42,6 +61,7 @@ export default class HTML extends React.Component {
           <script dangerouslySetInnerHTML={{__html: `window.__INITIAL_STATE__ = ${JSON.stringify(this.props.initialState)}`}} />
           {this.renderScripts()}
           <script src={"/bundle/client.js"} type="text/javascript" crossOrigin="anonymous" />
+          {this.renderChat()}
         </body>
       </html>
     );
