@@ -1,6 +1,6 @@
 import "./user.less";
 import React, {Component} from "react";
-import {Navbar, Image} from "react-bootstrap";
+import {Image, Navbar} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
@@ -25,7 +25,7 @@ export default class User extends Component {
 
     return (
       <Navbar.Text pullRight>
-        {user.data.wallet.substring(0, 10)}
+        {user.data.wallet.substring(0, 10) + "..."}
         <Image src="/images/logo.png" className="avatar" />
       </Navbar.Text>
     );
