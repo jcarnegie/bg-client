@@ -1,6 +1,6 @@
 import "./balance.less";
 import React, {Component} from "react";
-import {Navbar} from "react-bootstrap";
+import {Navbar, Glyphicon} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import Convert from "../popups/convert";
@@ -47,7 +47,9 @@ export default class Balance extends Component {
         {" "}
         {!balancePLAT.isLoading && balancePLAT.success ? `${balancePLAT.data.toFixed(0)} PLAT` : ""}
         {" "}
-        <a href="#" className="plus" onClick={::this.onClick}>+</a>
+        <a href="#" className="plus" onClick={::this.onClick}>
+          <Glyphicon glyph="plus" />
+        </a>
       </Navbar.Text>
     );
   }
