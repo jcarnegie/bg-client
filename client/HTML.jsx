@@ -30,7 +30,7 @@ export default class HTML extends React.Component {
           <script src="/js/widget.SendBird.js" type="text/javascript" crossOrigin="anonymous" />
           <script dangerouslySetInnerHTML={{
             __html: `
-              sbWidget.start('9DA1B1F4-0BE6-4DA8-82C5-2E81DAB56F23');
+              sbWidget.start('BB1E0777-B8CE-44DF-BA37-63EBA2E858F1');
             `
           }} />
         </div>
