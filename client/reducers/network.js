@@ -1,4 +1,4 @@
-import {NETWORK_CHANGEDD, NETWORK_ERROR, NETWORK_LOADING} from "../../shared/constants/actions";
+import {NETWORK_CHANGED, NETWORK_ERROR, NETWORK_LOADING} from "../../shared/constants/actions";
 
 const network = {
   isLoading: false,
@@ -14,7 +14,7 @@ export default function rateReducer(state = network, action) {
         isLoading: true,
         success: false
       });
-    case NETWORK_CHANGEDD:
+    case NETWORK_CHANGED:
       return Object.assign({}, network, {
         data: action.payload,
         isLoading: false,

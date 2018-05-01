@@ -115,7 +115,7 @@ function * getRate() {
       type: RATE_LOADING
     });
     const network = yield select(state => state.network);
-    const contract = window.web3.eth.contract(oracleABI).at(networkConfig[network.id].oracle);
+    const contract = window.web3.eth.contract(oracleABI).at(networkConfig[network.data.id].oracle);
     const PLATprice = yield bluebird.promisify(contract.PLATprice)();
     yield put({
       type: RATE_CHANGED,
@@ -164,7 +164,7 @@ function * getBalancePLAT() {
         type: BALANCE_PLAT_LOADING
       });
       const network = yield select(state => state.network);
-      const contract = window.web3.eth.contract(tokenABI).at(networkConfig[network.id].token);
+      const contract = window.web3.eth.contract(tokenABI).at(networkConfig[network.data.id].token);
       const balance = yield bluebird.promisify(contract.balanceOf)(user.data.wallet);
       yield put({
         type: BALANCE_PLAT_CHANGED,
@@ -223,14 +223,7 @@ function * getNetwork() {
     const netId = yield bluebird.promisify(window.web3.version.getNetwork)();
     switch (netId) {
       case "1": // mainnet
-        yield put({
-          type: NETWORK_CHANGED,
-          payload: {
-            id: netId
-          }
-        });
-        break;
-      case "4": // Rinkeby
+      case "4": // rinkeby
         yield put({
           type: NETWORK_CHANGED,
           payload: {

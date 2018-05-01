@@ -59,7 +59,7 @@ export default class ConvertPopup extends Component {
   onSubmit(e) {
     const {network, user} = this.props;
     e.preventDefault();
-    const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.id].topup);
+    const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.data.id].topup);
     contract.buyTokens({
         value: this.state.eth * 1e18,
         from: user.wallet,
