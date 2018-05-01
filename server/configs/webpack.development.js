@@ -91,7 +91,8 @@ export default {
       "process.env.RENDERING": JSON.stringify(process.env.RENDERING),
       "process.env.TOKEN_CONTRACT_ADDR": JSON.stringify(process.env.TOKEN_CONTRACT_ADDR),
       "process.env.TOPUP_CONTRACT_ADDR": JSON.stringify(process.env.TOPUP_CONTRACT_ADDR),
-      "process.env.ORACLE_CONTRACT_ADDR": JSON.stringify(process.env.ORACLE_CONTRACT_ADDR)
+      "process.env.ORACLE_CONTRACT_ADDR": JSON.stringify(process.env.ORACLE_CONTRACT_ADDR),
+      "process.env.SENDBIRD_APP_ID": JSON.stringify(process.env.SENDBIRD_APP_ID)
     }),
     new webpack.HotModuleReplacementPlugin()
   ],

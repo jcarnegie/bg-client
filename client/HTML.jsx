@@ -28,11 +28,6 @@ export default class HTML extends React.Component {
           <div id="sb_widget" />
           <script src="https://cdn.jsdelivr.net/npm/sendbird@3.0.60/SendBird.min.js" type="text/javascript" crossOrigin="anonymous" />
           <script src="/js/widget.SendBird.js" type="text/javascript" crossOrigin="anonymous" />
-          <script dangerouslySetInnerHTML={{
-            __html: `
-              sbWidget.start('BB1E0777-B8CE-44DF-BA37-63EBA2E858F1');
-            `
-          }} />
         </div>
       );
     } else {

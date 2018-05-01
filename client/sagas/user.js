@@ -203,9 +203,16 @@ function * getInventory(action) {
   }
 }
 
+function * initChat(action) {
+  if (window.sbWidget) {
+    window.sbWidget.startWithConnect(process.env.SENDBIRD_APP_ID, action.payload.wallet, action.payload.nickName);
+  }
+}
+
 function * userSaga() {
   yield takeEvery(CHANGE_ACCOUNT, fetchUser);
   yield takeEvery(CREATE_USER, createUser);
+  yield takeEvery(USER_CHANGED, initChat);
   yield takeEvery(USER_CHANGED, getBalanceETH);
   yield takeEvery(NEW_BLOCK, getBalanceETH);
   yield takeEvery(USER_CHANGED, getBalancePLAT);
