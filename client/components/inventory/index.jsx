@@ -76,7 +76,7 @@ export default class Inventory extends Component {
                   <h3>{game.name}</h3>
                   <Row>
                     {items.filter(item => Object.keys(this.state.filters).includes(item.game._id) ? this.state.filters[item.game._id].filter(x => !!~item.categories.indexOf(x)).length : true)
-                      .map(item => <Item key={item._id} {...item} />)}
+                      .map(item => <Item key={item._id} {...item} onClick={::this.onClick} />)}
                   </Row>
                 </Fragment>
               );
@@ -94,7 +94,7 @@ export default class Inventory extends Component {
                 <h3>{game.name}</h3>
                 <Row>
                   {items.filter(item => Object.keys(this.state.filters).includes(item.game._id) ? this.state.filters[item.game._id].filter(x => !!~item.categories.indexOf(x)).length : true)
-                    .map(item => <Item key={item._id} {...item} />)}
+                    .map(item => <Item key={item._id} {...item} onClick={::this.onClick} />)}
                 </Row>
               </Tab>
             );

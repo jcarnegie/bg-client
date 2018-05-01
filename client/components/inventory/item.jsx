@@ -10,21 +10,25 @@ export default class Inventory extends Component {
     name: PropTypes.string,
     image: PropTypes.string,
     categories: PropTypes.array,
-    _id: PropTypes.string
+    _id: PropTypes.string,
+    game: PropTypes.object,
+    onClick: PropTypes.func
   };
 
   onSell(e) {
     e.preventDefault();
+    alert("Not implemented!");
   }
 
   onGift(e) {
     e.preventDefault();
+    alert("Not implemented!");
   }
 
   render() {
-    const {name, categories, image} = this.props;
+    const {name, categories, image, game, onClick} = this.props;
     return (
-      <Col md={3} className="item">
+      <Col xs={6} sm={4} md={3} className="item">
         <Thumbnail src={image}>
           <h4>{name}</h4>
           <ButtonGroup justified>
@@ -36,10 +40,9 @@ export default class Inventory extends Component {
             </Button>
           </ButtonGroup>
           <br />
-          {categories.map(category => <Badge key={category}>{category}</Badge>)}
+          {categories.map(category => <a href="#" onClick={onClick(game, [category])} key={category}><Badge>{category}</Badge></a>)}
         </Thumbnail>
       </Col>
     );
   }
-
 }
