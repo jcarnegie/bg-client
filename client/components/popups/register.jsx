@@ -148,11 +148,9 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
     return (
       <Modal show={account.wallet && !user.isLoading && !user.success} className="register">
         <Modal.Body>
-          <h2>Welcome to BitGuild</h2>
-
-          <br />
-
           <Form onSubmit={::this.onSubmit}>
+            <h2>Welcome to BitGuild</h2>
+            <br />
             <FormGroup controlId="wallet">
               <Col componentClass={ControlLabel}>
                 <FormattedMessage id="fields.wallet.label" />
@@ -258,8 +256,6 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
             <Button type="submit" className="btn-block text-uppercase">
               <FormattedMessage id="buttons.register" />
             </Button>
-
-            <br />
           </Form>
         </Modal.Body>
       </Modal>

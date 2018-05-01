@@ -29,10 +29,16 @@ export default class ConvertPopup extends Component {
     amount: 1
   };
 
+  static isMetaMaskInstalled() {
+    return typeof window !== "undefined" && window.web3;
+  }
+
   componentDidMount() {
-    this.props.dispatch({
-      type: RATE_UPDATE
-    });
+    if (ConvertPopup.isMetaMaskInstalled()) {
+      this.props.dispatch({
+        type: RATE_UPDATE
+      });
+    }
   }
 
   onInput(e) {
@@ -64,6 +70,8 @@ export default class ConvertPopup extends Component {
         <Modal.Header closeButton />
         <Modal.Body>
           <Form inline onSubmit={::this.onSubmit}>
+            <h2>1 ETH = {this.props.rate.data} PLAT</h2>
+            <br />
             <FormGroup controlId="email">
               <Col componentClass={ControlLabel}>
                 <FormattedMessage id="fields.eth.label" />
