@@ -24,7 +24,7 @@ import {
   RATE_UPDATE,
   USER_CHANGED,
   USER_ERROR,
-  USER_LOADING,
+  USER_LOADING
 } from "../../shared/constants/actions";
 
 
@@ -56,6 +56,14 @@ function * fetchUser(action) {
     } else {
       yield put({
         type: USER_ERROR
+      });
+      yield put({
+        type: BALANCE_ETH_CHANGED,
+        payload: 0
+      });
+      yield put({
+        type: BALANCE_PLAT_CHANGED,
+        payload: 0
       });
     }
   } catch (error) {
