@@ -26,11 +26,22 @@ export default class ConvertPopup extends Component {
   };
 
   state = {
-    amount: 1
+    eth: 1,
+    plat: this.props.rate.data
   };
 
   static isMetaMaskInstalled() {
     return typeof window !== "undefined" && window.web3;
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!nextProps.rate.isLoading && nextProps.rate.success && nextProps.rate.data * prevState.eth !== prevState.plat) {
+      return {
+        plat: nextProps.rate.data * prevState.eth
+      };
+    }
+
+    return null;
   }
 
   componentDidMount() {
@@ -41,9 +52,17 @@ export default class ConvertPopup extends Component {
     }
   }
 
-  onInput(e) {
+  onChangeETH(e) {
     this.setState({
-      amount: e.target.value
+      eth: e.target.value,
+      plat: this.props.rate.data * e.target.value
+    });
+  }
+
+  onChangePLAT(e) {
+    this.setState({
+      eth: e.target.value / this.props.rate.data,
+      plat: e.target.value
     });
   }
 
@@ -51,7 +70,7 @@ export default class ConvertPopup extends Component {
     e.preventDefault();
     const contract = window.web3.eth.contract(topupABI).at(process.env.TOPUP_CONTRACT_ADDR);
     contract.buyTokens({
-        value: this.state.amount * 1e18,
+        value: this.state.eth * 1e18,
         from: this.props.user.wallet,
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(1e10)
@@ -61,16 +80,18 @@ export default class ConvertPopup extends Component {
   }
 
   render() {
-    if (!this.props.rate.data) {
+    const {rate, show, onHide} = this.props;
+
+    if (!rate.data) {
       return null;
     }
 
     return (
-      <Modal show={this.props.show} className="convert" onHide={this.props.onHide}>
+      <Modal show={show} className="convert" onHide={onHide}>
         <Modal.Header closeButton />
         <Modal.Body>
           <Form inline onSubmit={::this.onSubmit}>
-            <h2>1 ETH = {this.props.rate.data} PLAT</h2>
+            <h2>1 ETH = {rate.data} PLAT</h2>
             <br />
             <FormGroup controlId="email">
               <Col componentClass={ControlLabel}>
@@ -79,9 +100,11 @@ export default class ConvertPopup extends Component {
               <Col>
                 <FormControl
                   type="number"
+                  step="0.1"
+                  min="0.1"
                   name="amount"
-                  defaultValue={this.state.amount}
-                  onInput={::this.onInput}
+                  value={this.state.eth}
+                  onChange={::this.onChangeETH}
                   required
                 />
               </Col>
@@ -96,9 +119,11 @@ export default class ConvertPopup extends Component {
               <Col>
                 <FormControl
                   type="number"
+                  min="5000"
+                  step="5000"
                   name="result"
-                  value={this.state.amount * this.props.rate.data}
-                  readOnly
+                  value={this.state.plat}
+                  onChange={::this.onChangePLAT}
                 />
               </Col>
             </FormGroup>
