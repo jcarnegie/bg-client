@@ -9,7 +9,8 @@ import {CHANGE_ACCOUNT, MESSAGE_ADD, NEW_BLOCK} from "../../../shared/constants/
 
 @connect(
   state => ({
-    account: state.account
+    account: state.account,
+    network: state.network
   })
 )
 export default class MetaMaskPopup extends Component {

@@ -4,7 +4,7 @@ const account = {
   wallet: null
 };
 
-export default function hashReducer(state = account, action) {
+export default function accountReducer(state = account, action) {
   switch (action.type) {
     case CHANGE_ACCOUNT:
       return Object.assign({}, state, {

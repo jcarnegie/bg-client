@@ -14,13 +14,15 @@ import {CREATE_USER, MESSAGE_ADD} from "../../../shared/constants/actions";
 @connect(
   state => ({
     user: state.user,
-    account: state.account
+    account: state.account,
+    network: state.network
   })
 )
 export default class RegisterPopup extends Component {
   static propTypes = {
     user: PropTypes.object,
     account: PropTypes.object,
+    network: PropTypes.object,
     dispatch: PropTypes.func,
     intl: intlShape
   };
@@ -143,10 +145,10 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
   }
 
   render() {
-    const {account, user, intl} = this.props;
+    const {user, intl, network} = this.props;
 
     return (
-      <Modal show={account.wallet && !user.isLoading && !user.success} className="register">
+      <Modal show={!network.isLoading && network.success && !user.isLoading && !user.success} className="register">
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
             <h2>Welcome to BitGuild</h2>

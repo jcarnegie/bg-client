@@ -6,7 +6,7 @@ const balance = {
   data: null
 };
 
-export default function updateInventory(state = balance, action) {
+export default function inventoryReducer(state = balance, action) {
   switch (action.type) {
     case INVENTORY_LOADING:
       return Object.assign({}, balance, {

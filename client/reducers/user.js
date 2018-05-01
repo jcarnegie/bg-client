@@ -6,7 +6,7 @@ const user = {
   data: null
 };
 
-export default function updateUser(state = user, action) {
+export default function userReducer(state = user, action) {
   switch (action.type) {
     case USER_LOADING:
       return Object.assign({}, user, {

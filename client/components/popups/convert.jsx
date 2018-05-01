@@ -5,34 +5,32 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Glyphicon, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
-import {RATE_UPDATE} from "../../../shared/constants/actions";
 import {FormattedMessage} from "react-intl";
 import topupABI from "../../../shared/contracts/topup";
+import networkConfig from "../../utils/network";
 
 
 @connect(
   state => ({
     rate: state.rate,
-    user: state.user
+    user: state.user,
+    network: state.network
   })
 )
 export default class ConvertPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
     rate: PropTypes.object,
-    user: PropTypes.object,
     dispatch: PropTypes.func,
-    onHide: PropTypes.func
+    onHide: PropTypes.func,
+    user: PropTypes.object,
+    network: PropTypes.object
   };
 
   state = {
     eth: 1,
     plat: this.props.rate.data
   };
-
-  static isMetaMaskInstalled() {
-    return typeof window !== "undefined" && window.web3;
-  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!nextProps.rate.isLoading && nextProps.rate.success && nextProps.rate.data * prevState.eth !== prevState.plat) {
@@ -42,14 +40,6 @@ export default class ConvertPopup extends Component {
     }
 
     return null;
-  }
-
-  componentDidMount() {
-    if (ConvertPopup.isMetaMaskInstalled()) {
-      this.props.dispatch({
-        type: RATE_UPDATE
-      });
-    }
   }
 
   onChangeETH(e) {
@@ -67,11 +57,12 @@ export default class ConvertPopup extends Component {
   }
 
   onSubmit(e) {
+    const {network, user} = this.props;
     e.preventDefault();
-    const contract = window.web3.eth.contract(topupABI).at(process.env.TOPUP_CONTRACT_ADDR);
+    const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.id].topup);
     contract.buyTokens({
         value: this.state.eth * 1e18,
-        from: this.props.user.wallet,
+        from: user.wallet,
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(1e10)
       },

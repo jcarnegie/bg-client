@@ -3,6 +3,7 @@ import {call, put, select, takeEvery} from "redux-saga/effects";
 import fetch from "isomorphic-fetch";
 import tokenABI from "../../shared/contracts/token";
 import oracleABI from "../../shared/contracts/oracle";
+import networkConfig from "../utils/network";
 import {
   BALANCE_ETH_CHANGED,
   BALANCE_ETH_ERROR,
@@ -17,11 +18,13 @@ import {
   INVENTORY_LOADING,
   MESSAGE_ADD,
   MESSAGE_ADD_ALL,
+  NETWORK_CHANGED,
+  NETWORK_ERROR,
+  NETWORK_LOADING,
   NEW_BLOCK,
   RATE_CHANGED,
   RATE_ERROR,
   RATE_LOADING,
-  RATE_UPDATE,
   USER_CHANGED,
   USER_ERROR,
   USER_LOADING
@@ -42,12 +45,13 @@ function callAPI(url, options = {}) {
     });
 }
 
-function * fetchUser(action) {
+function * fetchUser() {
   try {
     yield put({
       type: USER_LOADING
     });
-    const users = yield call(callAPI, `/users?wallet=${action.payload.wallet}`);
+    const account = yield select(state => state.account);
+    const users = yield call(callAPI, `/users?wallet=${account.wallet}`);
     if (users.length) {
       yield put({
         type: USER_CHANGED,
@@ -110,7 +114,8 @@ function * getRate() {
     yield put({
       type: RATE_LOADING
     });
-    const contract = window.web3.eth.contract(oracleABI).at(process.env.ORACLE_CONTRACT_ADDR);
+    const network = yield select(state => state.network);
+    const contract = window.web3.eth.contract(oracleABI).at(networkConfig[network.id].oracle);
     const PLATprice = yield bluebird.promisify(contract.PLATprice)();
     yield put({
       type: RATE_CHANGED,
@@ -158,7 +163,8 @@ function * getBalancePLAT() {
       yield put({
         type: BALANCE_PLAT_LOADING
       });
-      const contract = window.web3.eth.contract(tokenABI).at(process.env.TOKEN_CONTRACT_ADDR);
+      const network = yield select(state => state.network);
+      const contract = window.web3.eth.contract(tokenABI).at(networkConfig[network.id].token);
       const balance = yield bluebird.promisify(contract.balanceOf)(user.data.wallet);
       yield put({
         type: BALANCE_PLAT_CHANGED,
@@ -209,8 +215,50 @@ function * initChat(action) {
   }
 }
 
+function * getNetwork() {
+  try {
+    yield put({
+      type: NETWORK_LOADING
+    });
+    const netId = yield bluebird.promisify(window.web3.version.getNetwork)();
+    switch (netId) {
+      case "1": // mainnet
+        yield put({
+          type: NETWORK_CHANGED,
+          payload: {
+            id: netId
+          }
+        });
+        break;
+      case "4": // Rinkeby
+        yield put({
+          type: NETWORK_CHANGED,
+          payload: {
+            id: netId
+          }
+        });
+        break;
+      default:
+        yield put({
+          type: MESSAGE_ADD,
+          payload: new Error("This network is not supported by BitGuild portal. For actual experience please switch to main net. For testing purposes please use Rinkeby")
+        });
+        yield put({
+          type: NETWORK_ERROR
+        });
+        break;
+    }
+  } catch (error) {
+    yield put({
+      type: MESSAGE_ADD,
+      payload: error
+    });
+  }
+}
+
 function * userSaga() {
-  yield takeEvery(CHANGE_ACCOUNT, fetchUser);
+  yield takeEvery(CHANGE_ACCOUNT, getNetwork);
+  yield takeEvery(NETWORK_CHANGED, fetchUser);
   yield takeEvery(CREATE_USER, createUser);
   yield takeEvery(USER_CHANGED, initChat);
   yield takeEvery(USER_CHANGED, getBalanceETH);
@@ -218,7 +266,7 @@ function * userSaga() {
   yield takeEvery(USER_CHANGED, getBalancePLAT);
   yield takeEvery(NEW_BLOCK, getBalancePLAT);
   yield takeEvery(USER_CHANGED, getInventory);
-  yield takeEvery(RATE_UPDATE, getRate);
+  yield takeEvery(NETWORK_CHANGED, getRate);
 }
 
 export default userSaga;

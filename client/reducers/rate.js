@@ -6,7 +6,7 @@ const rate = {
   data: null
 };
 
-export default function updateRate(state = rate, action) {
+export default function rateReducer(state = rate, action) {
   switch (action.type) {
     case RATE_LOADING:
       return Object.assign({}, rate, {
