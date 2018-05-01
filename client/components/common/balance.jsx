@@ -64,10 +64,7 @@ export default class Balance extends Component {
         {!balanceETH.isLoading && balanceETH.success ? balanceETH.data.toFixed(2) : "0"} ETH
         {"\u00A0\u00A0\u00A0"}
         {!balancePLAT.isLoading && balancePLAT.success ? balancePLAT.data.toFixed(0) : "0"} PLAT
-        {" "}
-        <a href="#" className="plus" onClick={::this.onClick}>
-          <Glyphicon glyph="plus" />
-        </a>
+        <a href="#" className="plus" onClick={::this.onClick} />
       </Navbar.Text>
     );
   }
