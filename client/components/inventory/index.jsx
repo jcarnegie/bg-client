@@ -1,5 +1,4 @@
 import "./index.less";
-import "./flex.less";
 import React, {Component, Fragment} from "react";
 import {Button, Row, Tab, Tabs} from "react-bootstrap";
 import {connect} from "react-redux";
@@ -75,7 +74,7 @@ export default class Inventory extends Component {
                     {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game, [category])} bsStyle="link">{category}</Button>)}
                   </div>
                   <h3>{game.name}</h3>
-                  <Row className="flex-row">
+                  <Row>
                     {items.filter(item => Object.keys(this.state.filters).includes(item.game._id) ? this.state.filters[item.game._id].filter(x => !!~item.categories.indexOf(x)).length : true)
                       .map(item => <Item key={item._id} {...item} onClick={::this.onClick} />)}
                   </Row>
@@ -93,7 +92,7 @@ export default class Inventory extends Component {
                   {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game, [category])} bsStyle="link">{category}</Button>)}
                 </div>
                 <h3>{game.name}</h3>
-                <Row className="flex-row">
+                <Row>
                   {items.filter(item => Object.keys(this.state.filters).includes(item.game._id) ? this.state.filters[item.game._id].filter(x => !!~item.categories.indexOf(x)).length : true)
                     .map(item => <Item key={item._id} {...item} onClick={::this.onClick} />)}
                 </Row>
