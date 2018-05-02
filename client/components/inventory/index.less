@@ -1,15 +1,28 @@
 .nav-tabs {
   li {
     a {
-      color: #130029;
+      color: var(--main-color);
       font-size: 14px;
       line-height: 16px;
+
+      &:hover,
+      &:focus {
+        background: none;
+        border: 1px solid transparent;
+      }
     }
 
     &.active {
       a {
         font-size: 16px;
         font-weight: bolder;
+
+        &,
+        &:hover,
+        &:focus {
+          border: 0;
+          border-bottom: 2px solid var(--main-color);
+        }
       }
     }
   }
@@ -40,6 +53,7 @@ h3 {
 
   button {
     padding: 6px;
+    color: var(--main-color);
 
     &:first-child {
       font-weight: bold;

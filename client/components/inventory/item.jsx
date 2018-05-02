@@ -30,6 +30,7 @@ export default class Inventory extends Component {
     return (
       <Col xs={6} sm={4} md={3} className="item">
         <Thumbnail src={image}>
+          <p className="flex-text" />
           <h4>{name}</h4>
           <ButtonGroup justified>
             <Button href="#" onClick={::this.onSell} className="sell">
@@ -40,7 +41,9 @@ export default class Inventory extends Component {
             </Button>
           </ButtonGroup>
           <br />
-          {categories.map(category => <a href="#" onClick={onClick(game, [category])} key={category}><Badge>{category}</Badge></a>)}
+          <div>
+            {categories.map(category => <a href="#" onClick={onClick(game, [category])} key={category}><Badge>{category}</Badge></a>)}
+          </div>
         </Thumbnail>
       </Col>
     );
