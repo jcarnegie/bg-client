@@ -62,7 +62,7 @@ export default class ConvertPopup extends Component {
     const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.data.id].topup);
     contract.buyTokens({
         value: this.state.eth * 1e18,
-        from: user.wallet,
+        from: user.data.wallet,
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(1e10)
       },

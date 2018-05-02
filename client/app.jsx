@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Route, Switch} from "react-router";
+import {Grid} from "react-bootstrap";
 
 import GamesDev from "./components/games/index.development";
 import GamesProd from "./components/games/index.production";
@@ -11,9 +12,10 @@ import Message from "./components/common/message";
 import NotFound from "./components/common/notfound";
 import HeaderDev from "./components/common/header.development";
 import HeaderProd from "./components/common/header.production";
-import MetaMask from "./components/popups/metamask";
+
+import MetaMaskInstall from "./components/popups/metamask.install";
+import MetaMaskLogin from "./components/popups/metamask.login";
 import Register from "./components/popups/register";
-import {Grid} from "react-bootstrap";
 
 
 // TODO remove this condition once we have proper staging
@@ -24,7 +26,8 @@ export default class App extends Component {
     return (
       <div>
         {isProd ? <HeaderProd /> : <HeaderDev />}
-        <MetaMask />
+        {isProd ? null : <MetaMaskInstall />}
+        {isProd ? null : <MetaMaskLogin />}
         {isProd ? null : <Register />}
         <Grid>
           <Message />

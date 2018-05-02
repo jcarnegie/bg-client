@@ -250,9 +250,9 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
             </FormGroup>
 
             <p className="note">
-              Make sure to save your MetaMask login information and account recovery details!
+              Make sure you save your MetaMask login information and account recovery details!
               <br />
-              We can’t help you regain access if you lose it.
+              We can’t help you recover it if you lose access.
             </p>
 
             <Button type="submit" className="btn-block text-uppercase">

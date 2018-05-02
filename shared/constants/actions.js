@@ -10,7 +10,9 @@ export const USER_CHANGED = "USER_CHANGED";
 export const USER_ERROR = "USER_ERROR";
 
 export const CREATE_USER = "CREATE_USER";
-export const CHANGE_ACCOUNT = "CHANGE_ACCOUNT";
+
+export const ACCOUNT_CHANGED = "ACCOUNT_CHANGED";
+export const ACCOUNT_ERROR = "ACCOUNT_ERROR";
 
 export const NEW_BLOCK = "NEW_BLOCK";
 

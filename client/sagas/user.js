@@ -11,7 +11,7 @@ import {
   BALANCE_PLAT_CHANGED,
   BALANCE_PLAT_ERROR,
   BALANCE_PLAT_LOADING,
-  CHANGE_ACCOUNT,
+  ACCOUNT_CHANGED,
   CREATE_USER,
   INVENTORY_CHANGED,
   INVENTORY_ERROR,
@@ -51,6 +51,20 @@ function * fetchUser() {
       type: USER_LOADING
     });
     const account = yield select(state => state.account);
+    if (!account.wallet) {
+      yield put({
+        type: BALANCE_ETH_CHANGED,
+        payload: 0
+      });
+      yield put({
+        type: BALANCE_PLAT_CHANGED,
+        payload: 0
+      });
+      yield put({
+        type: INVENTORY_ERROR
+      });
+      return;
+    }
     const users = yield call(callAPI, `/users?wallet=${account.wallet}`);
     if (users.length) {
       yield put({
@@ -250,7 +264,7 @@ function * getNetwork() {
 }
 
 function * userSaga() {
-  yield takeEvery(CHANGE_ACCOUNT, getNetwork);
+  yield takeEvery(ACCOUNT_CHANGED, getNetwork);
   yield takeEvery(NETWORK_CHANGED, fetchUser);
   yield takeEvery(CREATE_USER, createUser);
   yield takeEvery(USER_CHANGED, initChat);

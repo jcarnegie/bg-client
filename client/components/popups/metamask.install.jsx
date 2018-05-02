@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {Button, Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {CHANGE_ACCOUNT, MESSAGE_ADD, NEW_BLOCK} from "../../../shared/constants/actions";
+import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../../shared/constants/actions";
 
 
 @connect(
@@ -23,21 +23,27 @@ export default class MetaMaskPopup extends Component {
     interval: null
   };
 
-  static isMetaMaskInstalled() {
+  static isInstalled() {
     return typeof window !== "undefined" && window.web3;
   }
 
   componentDidMount() {
-    if (MetaMaskPopup.isMetaMaskInstalled()) {
+    if (MetaMaskPopup.isInstalled()) {
       this.setState({
         interval: setInterval(() => {
           if (window.web3.eth.accounts[0] !== this.props.account.wallet) {
-            this.props.dispatch({
-              type: CHANGE_ACCOUNT,
-              payload: {
-                wallet: window.web3.eth.accounts.length ? window.web3.eth.accounts[0] : void 0
-              }
-            });
+            if (window.web3.eth.accounts.length) {
+              this.props.dispatch({
+                type: ACCOUNT_CHANGED,
+                payload: {
+                  wallet: window.web3.eth.accounts[0]
+                }
+              });
+            } else if (this.props.account.success) {
+              this.props.dispatch({
+                type: ACCOUNT_ERROR
+              });
+            }
           }
         }, 100)
       });
@@ -65,20 +71,20 @@ export default class MetaMaskPopup extends Component {
 
   render() {
     return (
-      <Modal show={!MetaMaskPopup.isMetaMaskInstalled()} className="metamask">
+      <Modal show={!MetaMaskPopup.isInstalled()} className="metamask-install">
         <Modal.Body>
           <div>
             <h2>Hello!</h2>
             <br />
-            <p>To enter BitGuild, you will need to install MetaMask, a digital wallet.</p>
-            <p>This will also act as your login to the game (no extra password needed).</p>
+            <p>To enter BitGuild, you must install MetaMask - a digital wallet for your browser.</p>
+            <p>This will also act as your login to the BitGuild Portal (no extra passwords!).</p>
             <br />
             <Form>
               <Button className="btn-block text-uppercase" href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
                 Install MetaMask
               </Button>
             </Form>
-            <p className="note">Questions? <Link to="/faq">FAQ</Link></p>
+            <p className="note">Questions? Check our <Link to="/faq">FAQ</Link></p>
           </div>
         </Modal.Body>
       </Modal>
