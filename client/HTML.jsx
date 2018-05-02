@@ -23,6 +23,11 @@ export default class HTML extends React.Component {
 
   renderChat() {
     if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
+      // TODO remove this condition once we have proper staging
+      const isProd = typeof window !== "undefined" && window.document.location.host === "bitguild.com";
+      if (isProd) {
+        return null;
+      }
       return (
         <div>
           <div id="sb_widget" />
