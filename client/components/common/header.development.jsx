@@ -20,12 +20,12 @@ export default class Header extends Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse href="#">
-          <User />
-          <Nav navbar pullRight>
+          <Nav navbar>
             <LinkContainer to="/inventory">
               <NavItem><FormattedMessage id="components.menu.inventory" /></NavItem>
             </LinkContainer>
           </Nav>
+          <User />
           <Balance />
         </Navbar.Collapse>
       </Navbar>
