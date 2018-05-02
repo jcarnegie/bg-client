@@ -3,15 +3,17 @@ form {
   margin: 0 auto;
 
   .form-group {
-    font-size: 10px;
     text-align: left;
 
     .control-label {
+      font-size: 11px;
       opacity: .35;
     }
 
     .form-control[type=text],
-    .form-control[type=email] {
+    .form-control[type=email],
+    .form-control[type=number] {
+      font-size: 13px;
       box-shadow: none;
       border: none;
       border-bottom: 1px solid #130029;
@@ -30,7 +32,8 @@ form {
       }
 
       .form-control[type=text],
-      .form-control[type=email] {
+      .form-control[type=email],
+      .form-control[type=number] {
         border-bottom: 1px solid #D0021B;
         background-color: #FBDFE4;
         opacity: .71;
@@ -43,7 +46,7 @@ form {
     background-color: #4D4B85;
     color: #ffffff;
     border: 0;
-    box-shadow: 1px 2px 5px 0 rgba(0,0,0,0.5);
+    box-shadow: 1px 2px 5px 0 rgba(0, 0, 0, 0.5);
 
     &:hover {
       background-color: #7D5EA2;
