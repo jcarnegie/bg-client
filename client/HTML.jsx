@@ -56,7 +56,7 @@ export default class HTML extends React.Component {
           <script dangerouslySetInnerHTML={{__html: `window.__INITIAL_STATE__ = ${JSON.stringify(this.props.initialState)}`}} />
           {this.renderScripts()}
           <script src={"/bundle/client.js"} type="text/javascript" crossOrigin="anonymous" />
-          {/* this.renderChat() */}
+          {this.renderChat()}
         </body>
       </html>
     );
