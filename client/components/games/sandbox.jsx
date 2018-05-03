@@ -19,9 +19,11 @@ export default class SandBox extends Component {
   };
 
   componentDidMount() {
-    this.setState({
-      url: readFromQueryString("url", this.props.location.search) || "https://bitguild.info/"
-    });
+    let url = readFromQueryString("url", this.props.location.search);
+    if (!/^https?:\/\//.test(url)) {
+      url = "https://bitguild.info/";
+    }
+    this.setState({url});
   }
 
   renderIframe() {
