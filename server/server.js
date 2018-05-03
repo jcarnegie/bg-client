@@ -11,7 +11,7 @@ app.use(main);
 app.use(fe);
 app.use(sendError);
 
-const listener = app.listen(process.env.PORT, () => {
+const listener = app.listen(process.env.PORT || 5000, () => {
   console.info(`Express server listening on port ${listener.address().port}`);
 });
 
