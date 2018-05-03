@@ -1,7 +1,7 @@
 import "./games.less";
 import "./chat.less";
 import React, {Component} from "react";
-import {Col, Image, Row} from "react-bootstrap";
+import {Button, Col, Image, Row} from "react-bootstrap";
 
 
 export default class Games extends Component {
@@ -16,10 +16,10 @@ export default class Games extends Component {
               portal that let's you find fantastic high-value items, show them<br />
               off to everyone, or barter them at the BitGuild marketplace.<br />
             </div>
-            <button>
-              <img src="/images/buttons/play/play.png" />
+            <Button>
+              <Image src="/images/buttons/play/play.png" />
               PLAY
-            </button>
+            </Button>
           </div>
           <Row>
             <Col md={5} className="preview">
