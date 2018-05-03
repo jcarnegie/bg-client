@@ -3,45 +3,49 @@
   border-radius: 0;
   border: 0;
   margin: 0;
-  position: relative;
-  z-index: 1050;
 
   .navbar-brand {
     padding: 13px 15px;
-  }
+    height: 62px;
 
-  .navbar-logo {
-    width: 20px;
-    display: inline-block;
-    float: left;
-  }
+    .navbar-logo {
+      margin-top: 4px;
+      width: 24px;
+      display: inline-block;
+      float: left;
+    }
 
-  .navbar-name {
-    font-weight: bold;
-    font-size: 20px;
-    margin-left: 10px;
-    line-height: 25px;
-    color: #FFD57D;
-    text-transform: uppercase;
-    letter-spacing: .04em;
+    .navbar-name {
+      font-weight: bold;
+      font-size: 20px;
+      margin-left: 10px;
+      line-height: 36px;
+      color: #FFD57D;
+      text-transform: uppercase;
+      letter-spacing: .04em;
 
-    &, &:hover {
-      text-decoration: none;
+      &, &:hover {
+        text-decoration: none;
+      }
     }
   }
 
   .navbar-text {
     color: #ffffff;
-    margin-top: 0;
-    margin-bottom: 0;
-    line-height: 50px;
+    line-height: 62px;
     font-size: 13px;
+    margin: 0 15px;
   }
 
   .navbar-nav {
-    .open {
-      a {
-        background: transparent !important;
+    > .open {
+      > a {
+        &,
+        &:hover,
+        &:focus {
+          color: #ffffff;
+          background-color: transparent;
+        }
       }
     }
   }
@@ -60,21 +64,31 @@
   }
 
   .navbar-nav {
-    a {
-      color: #ffffff !important;
-      font-weight: bold;
-      font-size: 15px;
-    }
+    > li {
+      > a {
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 32px;
 
-    .active {
-      a {
-        &, &:hover, &:focus {
-          background-color: initial;
+        &:hover, &:focus {
+          color: #ffffff;
         }
+      }
 
-        span {
-          border-bottom: 4px solid #ffd57d;
-          padding-bottom: 11px;
+      &.active {
+        > a {
+          &,
+          &:hover,
+          &:focus {
+            color: #ffffff;
+            background-color: initial;
+          }
+
+          span {
+            border-bottom: 4px solid #ffd57d;
+            padding-bottom: 17px;
+          }
         }
       }
     }

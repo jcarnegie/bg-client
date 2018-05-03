@@ -14,6 +14,7 @@
 
     &.active {
       a {
+        color: var(--main-color);
         font-size: 16px;
         font-weight: bolder;
 
@@ -36,12 +37,14 @@ h3 {
   font-size: 15px;
   font-weight: bold;
   line-height: 25px;
-  margin-top: 0;
+  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
 .arrow-right {
   font-size: 13px;
 
+  /*
   &:before {
     display: inline-block;
     content: "\A";
@@ -50,10 +53,15 @@ h3 {
     border-left: 7px solid #A2A3AD;
     vertical-align: middle;
   }
+  */
 
   button {
     padding: 6px;
     color: var(--main-color);
+
+    &:hover {
+      color: var(--main-color);
+    }
 
     &:first-child {
       font-weight: bold;

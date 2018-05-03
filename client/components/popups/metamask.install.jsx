@@ -14,7 +14,7 @@ import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../../s
     network: state.network
   })
 )
-export default class MetaMaskPopup extends Component {
+export default class MetaMaskInstallPopup extends Component {
   static propTypes = {
     account: PropTypes.object,
     dispatch: PropTypes.func
@@ -29,7 +29,7 @@ export default class MetaMaskPopup extends Component {
   }
 
   componentDidMount() {
-    if (MetaMaskPopup.isInstalled()) {
+    if (MetaMaskInstallPopup.isInstalled()) {
       this.setState({
         interval: setInterval(() => {
           if (window.web3.eth.accounts[0] !== this.props.account.wallet) {
@@ -40,7 +40,7 @@ export default class MetaMaskPopup extends Component {
                   wallet: window.web3.eth.accounts[0]
                 }
               });
-            } else if (this.props.account.success) {
+            } else if (this.props.account.isLoading || this.props.account.success) {
               this.props.dispatch({
                 type: ACCOUNT_ERROR
               });
@@ -72,7 +72,7 @@ export default class MetaMaskPopup extends Component {
 
   render() {
     return (
-      <Modal show={!MetaMaskPopup.isInstalled()} className="metamask-install">
+      <Modal show={!MetaMaskInstallPopup.isInstalled()} className="metamask-install">
         <Modal.Body>
           <div>
             <h2><FormattedMessage id="modals.metamask-install.title" /></h2>

@@ -29,7 +29,8 @@ import {
   SWITCH_LANGUAGE,
   USER_CHANGED,
   USER_ERROR,
-  USER_LOADING
+  USER_LOADING,
+  UPDATE_USER
 } from "../../shared/constants/actions";
 
 
@@ -207,7 +208,7 @@ function * getInventory(action) {
     yield put({
       type: INVENTORY_LOADING
     });
-    const inventory = yield call(callAPI, `/inventory?wallet=${action.payload.wallet}`, {
+    const inventory = yield call(callAPI, `/inventory/${action.payload.wallet}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -269,6 +270,31 @@ function * getNetwork() {
   }
 }
 
+function * updateUser(action) {
+  const user = yield select(state => state.user);
+  if (!user.isLoading && user.success) {
+    try {
+      const _user = yield call(callAPI, `/user/${user.data.wallet}`, {
+        method: "PUT",
+        body: JSON.stringify(action.payload),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      });
+      yield put({
+        type: USER_CHANGED,
+        payload: _user
+      });
+    } catch (error) {
+      yield put({
+        type: MESSAGE_ADD_ALL,
+        payload: [].concat(error)
+      });
+    }
+  }
+}
+
 function * userSaga() {
   yield takeEvery(ACCOUNT_CHANGED, getNetwork);
   yield takeEvery(NETWORK_CHANGED, fetchUser);
@@ -280,6 +306,7 @@ function * userSaga() {
   yield takeEvery(NEW_BLOCK, getBalancePLAT);
   yield takeEvery(USER_CHANGED, getInventory);
   yield takeEvery(NETWORK_CHANGED, getRate);
+  yield takeEvery(UPDATE_USER, updateUser);
 }
 
 export default userSaga;

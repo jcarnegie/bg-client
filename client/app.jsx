@@ -24,12 +24,12 @@ const isProd = typeof window !== "undefined" && window.document.location.host ==
 export default class App extends Component {
   render() {
     return (
-      <div>
+      <>
         {isProd ? <HeaderProd /> : <HeaderDev />}
         {isProd ? null : <MetaMaskInstall />}
         {isProd ? null : <MetaMaskLogin />}
         {isProd ? null : <Register />}
-        <Grid>
+        <Grid fluid>
           <Message />
           <Switch>
             <Route path="/" component={isProd ? GamesProd : GamesDev} exact />
@@ -39,7 +39,7 @@ export default class App extends Component {
             <Route component={NotFound} />
           </Switch>
         </Grid>
-      </div>
+      </>
     );
   }
 }

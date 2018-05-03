@@ -59,7 +59,7 @@ export default class Balance extends Component {
   render() {
     const {balanceETH, balancePLAT, show} = this.state;
     return (
-      <Navbar.Text pullRight>
+      <Navbar.Text>
         <Convert show={show} onHide={::this.onHide} />
         {!balanceETH.isLoading && balanceETH.success ? balanceETH.data.toFixed(2) : "0"} ETH
         {"\u00A0\u00A0\u00A0"}

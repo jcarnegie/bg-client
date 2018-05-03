@@ -11,7 +11,7 @@ import {FormattedMessage} from "react-intl";
     account: state.account
   })
 )
-export default class MetaMaskPopup2 extends Component {
+export default class MetaMaskLoginPopup extends Component {
   static propTypes = {
     account: PropTypes.object
   };

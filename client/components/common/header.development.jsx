@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import {Image, Nav, Navbar, NavItem} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
-import {FormattedMessage} from "react-intl";
+import {FormattedMessage, injectIntl} from "react-intl";
 import Language from "./language";
 import Balance from "./balance";
 import User from "./user";
@@ -11,6 +11,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 
 
+@injectIntl
 @connect(
   state => ({
     account: state.account
@@ -35,16 +36,18 @@ export default class Header extends Component {
             <NavItem><FormattedMessage id="components.menu.inventory" /></NavItem>
           </LinkContainer>
         </Nav>
-        <User />
-        <Balance />
-        <Language />
+        <Nav navbar pullRight>
+          <Language />
+          <Balance />
+          <User />
+        </Nav>
       </Navbar.Collapse>
     );
   }
 
   render() {
     return (
-      <Navbar>
+      <Navbar fixedTop fluid>
         <Navbar.Header>
           <Navbar.Brand>
             <Image src="/images/logo.png" className="navbar-logo" />
