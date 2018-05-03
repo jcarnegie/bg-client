@@ -67,15 +67,15 @@ function * fetchUser() {
       });
       return;
     }
-    const users = yield call(callAPI, `/users?wallet=${account.wallet}`);
-    if (users.length) {
+    const user = yield call(callAPI, `/user/${account.wallet}`);
+    if (user) {
       yield put({
         type: USER_CHANGED,
-        payload: users[0]
+        payload: user
       });
       yield put({
         type: SWITCH_LANGUAGE,
-        ...localization[users[0].language]
+        ...localization[user.language]
       });
     } else {
       yield put({
