@@ -37,9 +37,9 @@ export default class Header extends Component {
           </LinkContainer>
         </Nav>
         <Nav navbar pullRight>
-          <Language />
           <Balance />
           <User />
+          <Language />
         </Nav>
       </Navbar.Collapse>
     );
