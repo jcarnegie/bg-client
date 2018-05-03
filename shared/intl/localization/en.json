@@ -11,7 +11,8 @@
     },
     "loader": {
       "loading": "loading"
-    }
+    },
+    "title": "BitGuild"
   },
   "fields": {
     "nickName": {
@@ -43,7 +44,8 @@
     "register": "Register",
     "sell": "Sell",
     "gift": "Gift",
-    "convert": "Convert"
+    "convert": "Convert",
+    "install": "Install MetaMask"
   },
   "errors": {
     "method-not-allowed": "Method not allowed",
@@ -55,5 +57,35 @@
     "conflict": "This {name} already exists in db",
     "server-error": "Internal Server Error",
     "spoofing-attempt": "Failed to verify signer when comparing {wallet1} to {wallet2}"
+  },
+  "modals": {
+    "metamask-install": {
+      "title": "Hello!",
+      "p1": "To enter BitGuild, you must install MetaMask - a digital wallet for your browser.",
+      "p2": "This will also act as your login to the BitGuild Portal (no extra passwords!).",
+      "n1": "Questions? Check our",
+      "faq": "FAQ"
+    },
+    "metamask-login": {
+      "title": "You are not logged into MetaMask",
+      "p1": "Please open MetaMask and follow the instructions to log in."
+    },
+    "register": {
+      "title": "Welcome to BitGuild",
+      "n1": "Make sure you save your MetaMask login information and account recovery details!",
+      "n2": "We can’t help you recover it if you lose access."
+    }
+  },
+  "pages": {
+    "inventory": {
+      "title": "My Items",
+      "all-items": "All items"
+    },
+    "sandbox": {
+      "title": "Sandbox"
+    },
+    "faq": {
+      "title": "FAQ"
+    }
   }
 }

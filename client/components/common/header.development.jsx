@@ -15,7 +15,9 @@ export default class Header extends Component {
         <Navbar.Header>
           <Navbar.Brand>
             <Image src="/images/logo.png" className="navbar-logo" />
-            <Link to="/" className="navbar-name">BitGuild</Link>
+            <Link to="/" className="navbar-name">
+              <FormattedMessage id="components.title" />
+            </Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>

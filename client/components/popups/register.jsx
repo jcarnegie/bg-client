@@ -151,7 +151,9 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
       <Modal show={!network.isLoading && network.success && !user.isLoading && !user.success} className="register">
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
-            <h2>Welcome to BitGuild</h2>
+            <h2>
+              <FormattedMessage id="modals.register.title" />
+            </h2>
             <br />
             <FormGroup controlId="wallet">
               <Col componentClass={ControlLabel}>
@@ -249,12 +251,10 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
               </Col>
             </FormGroup>
 
-            <p className="note">
-              Make sure you save your MetaMask login information and account recovery details!
-              <br />
-              We can’t help you recover it if you lose access.
-            </p>
+            <p className="note"><FormattedMessage id="modals.register.n1" /></p>
+            <p className="note"><FormattedMessage id="modals.register.n2" /></p>
 
+            <br />
             <Button type="submit" className="btn-block text-uppercase">
               <FormattedMessage id="buttons.register" />
             </Button>

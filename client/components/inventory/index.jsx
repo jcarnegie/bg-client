@@ -59,11 +59,11 @@ export default class Inventory extends Component {
     return (
       <div>
         <h2>
-          <FormattedMessage id="components.menu.inventory" />
+          <FormattedMessage id="pages.inventory.title" />
         </h2>
 
         <Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
-          <Tab eventKey={1} title="All items">
+          <Tab eventKey={1} title={<FormattedMessage id="pages.inventory.all-items" />}>
             {games.map(game => {
               const items = inventory.data.filter(item => item.game._id === game._id);
               const categories = uniq([].concat(...items.map(item => item.categories)));

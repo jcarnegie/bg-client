@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {Button, Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
+import {FormattedMessage} from "react-intl";
 import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../../shared/constants/actions";
 
 
@@ -74,17 +75,22 @@ export default class MetaMaskPopup extends Component {
       <Modal show={!MetaMaskPopup.isInstalled()} className="metamask-install">
         <Modal.Body>
           <div>
-            <h2>Hello!</h2>
+            <h2><FormattedMessage id="modals.metamask-install.title" /></h2>
             <br />
-            <p>To enter BitGuild, you must install MetaMask - a digital wallet for your browser.</p>
-            <p>This will also act as your login to the BitGuild Portal (no extra passwords!).</p>
+            <p><FormattedMessage id="modals.metamask-install.p1" /></p>
+            <p><FormattedMessage id="modals.metamask-install.p2" /></p>
             <br />
             <Form>
               <Button className="btn-block text-uppercase" href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
-                Install MetaMask
+                <FormattedMessage id="buttons.install" />
               </Button>
             </Form>
-            <p className="note">Questions? Check our <Link to="/faq">FAQ</Link></p>
+            <p className="note">
+              <FormattedMessage id="modals.metamask-install.n1" />
+              {" "}
+              <Link to="/faq">
+                <FormattedMessage id="modals.metamask-install.faq" />
+              </Link></p>
           </div>
         </Modal.Body>
       </Modal>

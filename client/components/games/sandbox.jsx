@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router";
 import Init from "../common/init";
+import {FormattedMessage} from "react-intl";
 import {readFromQueryString} from "../../utils/location";
 
 
@@ -34,7 +35,9 @@ export default class SandBox extends Component {
     return (
       <div>
         <Init />
-        <h2>Sandbox</h2>
+        <h2>
+          <FormattedMessage id="pages.sandbox.title" />
+        </h2>
         {this.renderIframe()}
       </div>
     );

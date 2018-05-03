@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import {Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import {FormattedMessage} from "react-intl";
 
 
 @connect(
@@ -22,9 +23,9 @@ export default class MetaMaskPopup2 extends Component {
       <Modal show={!account.isLoading && !account.success} className="metamask-login">
         <Modal.Body>
           <div>
-            <h2>You are not logged into MetaMask</h2>
+            <h2><FormattedMessage id="modals.metamask-login.title" /></h2>
             <br />
-            <p>Please open MetaMask and follow the instructions to log in.</p>
+            <p><FormattedMessage id="modals.metamask-login.p1" /></p>
           </div>
         </Modal.Body>
       </Modal>
