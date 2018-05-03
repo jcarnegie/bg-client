@@ -4,14 +4,15 @@ import fetch from "isomorphic-fetch";
 import tokenABI from "../../shared/contracts/token";
 import oracleABI from "../../shared/contracts/oracle";
 import networkConfig from "../utils/network";
+import {localization} from "../../shared/intl/setup";
 import {
+  ACCOUNT_CHANGED,
   BALANCE_ETH_CHANGED,
   BALANCE_ETH_ERROR,
   BALANCE_ETH_LOADING,
   BALANCE_PLAT_CHANGED,
   BALANCE_PLAT_ERROR,
   BALANCE_PLAT_LOADING,
-  ACCOUNT_CHANGED,
   CREATE_USER,
   INVENTORY_CHANGED,
   INVENTORY_ERROR,
@@ -25,6 +26,7 @@ import {
   RATE_CHANGED,
   RATE_ERROR,
   RATE_LOADING,
+  SWITCH_LANGUAGE,
   USER_CHANGED,
   USER_ERROR,
   USER_LOADING
@@ -70,6 +72,10 @@ function * fetchUser() {
       yield put({
         type: USER_CHANGED,
         payload: users[0]
+      });
+      yield put({
+        type: SWITCH_LANGUAGE,
+        ...localization[users[0].language]
       });
     } else {
       yield put({

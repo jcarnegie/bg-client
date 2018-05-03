@@ -39,6 +39,27 @@
   }
 
   .navbar-nav {
+    .open {
+      a {
+        background: transparent !important;
+      }
+    }
+  }
+
+  .dropdown-menu {
+    li {
+      a {
+        color: var(--main-color) !important;
+
+        &:hover {
+          color: #ffffff !important;
+          background: var(--main-color) !important;
+        }
+      }
+    }
+  }
+
+  .navbar-nav {
     a {
       color: #ffffff !important;
       font-weight: bold;

@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {Image, Nav, Navbar, NavItem} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {FormattedMessage} from "react-intl";
+import Language from "./language";
 import Balance from "./balance";
 import User from "./user";
 
@@ -29,6 +30,7 @@ export default class Header extends Component {
           </Nav>
           <User />
           <Balance />
+          <Language />
         </Navbar.Collapse>
       </Navbar>
     );

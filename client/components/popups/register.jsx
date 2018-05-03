@@ -8,6 +8,7 @@ import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import {email, nickName, wallet} from "../../../shared/constants/placeholder";
 import {reEmail} from "../../../shared/constants/regexp";
 import {CREATE_USER, MESSAGE_ADD} from "../../../shared/constants/actions";
+import {enabledLanguages} from "../../../shared/constants/language";
 
 
 @injectIntl
@@ -33,7 +34,8 @@ export default class RegisterPopup extends Component {
       get(key) {
         return this[key];
       },
-      wallet: this.props.account.wallet
+      wallet: this.props.account.wallet,
+      language: this.props.intl.locale
     }
   };
 
@@ -43,7 +45,8 @@ export default class RegisterPopup extends Component {
         get(key) {
           return this[key];
         },
-        wallet: nextProps.account.wallet
+        wallet: nextProps.account.wallet,
+        language: nextProps.intl.locale
       }
     });
   }
@@ -86,13 +89,7 @@ export default class RegisterPopup extends Component {
 
   sign() {
     const {dispatch, intl} = this.props;
-
-    // don't add line breaks
-    const text = `BitGuild requires all users to sign with their private key in order to safeguard against spoofing attempts.
-
-Our mission is to revolutionize the global gaming industry by creating a platform for a brand new class of games that live on the blockchain. Blockchain games completely redefine the relationship between players and developers by facilitating full and true ownership of in-game assets, cheap & safe item trading, cross-game compatibility of items & currency, and more. BitGuild’s team consists of cryptocurrency and gaming veterans with decades of experience building international large-scale gaming platforms and communities. BitGuild aims to host the best blockchain games and the largest blockchain gamer community online.`;
-
-    const message = window.web3.toHex(text);
+    const message = window.web3.toHex(intl.formatMessage({id: "modals.register.text"}));
     const from = this.state.formData.get("wallet");
 
     window.web3.currentProvider.sendAsync({
@@ -155,6 +152,25 @@ Our mission is to revolutionize the global gaming industry by creating a platfor
               <FormattedMessage id="modals.register.title" />
             </h2>
             <br />
+            <FormGroup controlId="wallet">
+              <Col componentClass={ControlLabel}>
+                <FormattedMessage id="fields.language.label" />
+              </Col>
+              <Col>
+                <FormControl
+                  name="language"
+                  componentClass="select"
+                  defaultValue={this.state.formData.get("language")}
+                  required
+                >
+                  {enabledLanguages.map(language =>
+                    (<FormattedMessage key={language} id={`components.language.${language}`}>
+                      {formattedMessage => <option key={language} value={language}>{formattedMessage}</option>}
+                    </FormattedMessage>)
+                  )}
+                </FormControl>
+              </Col>
+            </FormGroup>
             <FormGroup controlId="wallet">
               <Col componentClass={ControlLabel}>
                 <FormattedMessage id="fields.wallet.label" />
