@@ -7,9 +7,41 @@ import {FormattedMessage} from "react-intl";
 import Language from "./language";
 import Balance from "./balance";
 import User from "./user";
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
 
 
+@connect(
+  state => ({
+    account: state.account
+  })
+)
 export default class Header extends Component {
+  static propTypes = {
+    account: PropTypes.object
+  };
+
+  renderNav() {
+    const {account} = this.props;
+
+    if (account.isLoading || !account.success) {
+      return null;
+    }
+
+    return (
+      <Navbar.Collapse href="#">
+        <Nav navbar>
+          <LinkContainer to="/inventory">
+            <NavItem><FormattedMessage id="components.menu.inventory" /></NavItem>
+          </LinkContainer>
+        </Nav>
+        <User />
+        <Balance />
+        <Language />
+      </Navbar.Collapse>
+    );
+  }
+
   render() {
     return (
       <Navbar>
@@ -22,16 +54,7 @@ export default class Header extends Component {
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
-        <Navbar.Collapse href="#">
-          <Nav navbar>
-            <LinkContainer to="/inventory">
-              <NavItem><FormattedMessage id="components.menu.inventory" /></NavItem>
-            </LinkContainer>
-          </Nav>
-          <User />
-          <Balance />
-          <Language />
-        </Navbar.Collapse>
+        {this.renderNav()}
       </Navbar>
     );
   }
