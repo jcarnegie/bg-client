@@ -49,8 +49,9 @@
     "register": "Register",
     "sell": "Sell",
     "gift": "Gift",
-    "convert": "Convert",
-    "install": "Install MetaMask"
+    "convert": "Purchase",
+    "install": "Install MetaMask",
+    "send": "Send"
   },
   "errors": {
     "method-not-allowed": "Method not allowed",
@@ -85,13 +86,17 @@
   "pages": {
     "inventory": {
       "title": "My Items",
-      "all-items": "All items"
+      "all-items": "All items",
+      "back-to-game": "Back to game"
     },
     "sandbox": {
       "title": "Sandbox"
     },
     "faq": {
       "title": "FAQ"
+    },
+    "games": {
+      "questions": "Have questions?"
     }
   }
 }

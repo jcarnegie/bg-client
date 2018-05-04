@@ -1,6 +1,6 @@
 import "./balance.less";
 import React, {Component} from "react";
-import {Glyphicon, Navbar} from "react-bootstrap";
+import {Navbar} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import Convert from "../popups/convert";

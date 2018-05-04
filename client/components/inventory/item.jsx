@@ -3,16 +3,22 @@ import React, {Component} from "react";
 import {Badge, Button, ButtonGroup, Col, Thumbnail} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
+import Gift from "../popups/gift";
 
 
 export default class Inventory extends Component {
   static propTypes = {
+    id: PropTypes.string,
     name: PropTypes.string,
     image: PropTypes.string,
     categories: PropTypes.array,
     _id: PropTypes.string,
     game: PropTypes.object,
     onClick: PropTypes.func
+  };
+
+  state = {
+    show: false
   };
 
   onSell(e) {
@@ -22,13 +28,22 @@ export default class Inventory extends Component {
 
   onGift(e) {
     e.preventDefault();
-    alert("Not implemented!");
+    this.setState({
+      show: true
+    });
+  }
+
+  onHide() {
+    this.setState({
+      show: false
+    });
   }
 
   render() {
-    const {name, categories, image, game, onClick} = this.props;
+    const {id, name, categories, image, game, onClick} = this.props;
     return (
       <Col xs={6} sm={4} md={3} className="item">
+        <Gift show={this.state.show} name={name} id={id} image={image} onHide={::this.onHide} />
         <Thumbnail src={image}>
           <h4>{name}</h4>
           <ButtonGroup justified>

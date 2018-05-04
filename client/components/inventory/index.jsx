@@ -58,37 +58,23 @@ export default class Inventory extends Component {
 
     return (
       <Row>
-        <Col md={9}>
-          <div>
-            <h2>
-              <FormattedMessage id="pages.inventory.title" />
-            </h2>
+        <Col className="grap gap">
+          <h2>
+            <FormattedMessage id="pages.inventory.title" />
+            <div className="pull-right">
+              <Button>
+                <FormattedMessage id="pages.inventory.back-to-game" />
+              </Button>
+            </div>
+          </h2>
 
-            <Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
-              <Tab eventKey={1} title={<FormattedMessage id="pages.inventory.all-items" />}>
-                {games.map(game => {
-                  const items = inventory.data.filter(item => item.game._id === game._id);
-                  const categories = uniq([].concat(...items.map(item => item.categories)));
-                  return (
-                    <Fragment key={game._id}>
-                      <div className="arrow-right pull-right">
-                        <Button onClick={::this.onClick(game, categories)} bsStyle="link">All</Button>
-                        {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game, [category])} bsStyle="link">{category}</Button>)}
-                      </div>
-                      <h3>{game.name}</h3>
-                      <Row>
-                        {items.filter(item => Object.keys(this.state.filters).includes(item.game._id) ? this.state.filters[item.game._id].filter(x => !!~item.categories.indexOf(x)).length : true)
-                          .map(item => <Item key={item._id} {...item} onClick={::this.onClick} />)}
-                      </Row>
-                    </Fragment>
-                  );
-                })}
-              </Tab>
-              {games.map((game, i) => {
+          <Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
+            <Tab eventKey={1} title={<FormattedMessage id="pages.inventory.all-items" />}>
+              {games.map(game => {
                 const items = inventory.data.filter(item => item.game._id === game._id);
                 const categories = uniq([].concat(...items.map(item => item.categories)));
                 return (
-                  <Tab eventKey={i + 2} title={game.name} key={game._id}>
+                  <Fragment key={game._id}>
                     <div className="arrow-right pull-right">
                       <Button onClick={::this.onClick(game, categories)} bsStyle="link">All</Button>
                       {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game, [category])} bsStyle="link">{category}</Button>)}
@@ -98,13 +84,30 @@ export default class Inventory extends Component {
                       {items.filter(item => Object.keys(this.state.filters).includes(item.game._id) ? this.state.filters[item.game._id].filter(x => !!~item.categories.indexOf(x)).length : true)
                         .map(item => <Item key={item._id} {...item} onClick={::this.onClick} />)}
                     </Row>
-                  </Tab>
+                  </Fragment>
                 );
               })}
-            </Tabs>
-          </div>
+            </Tab>
+            {games.map((game, i) => {
+              const items = inventory.data.filter(item => item.game._id === game._id);
+              const categories = uniq([].concat(...items.map(item => item.categories)));
+              return (
+                <Tab eventKey={i + 2} title={game.name} key={game._id}>
+                  <div className="arrow-right pull-right">
+                    <Button onClick={::this.onClick(game, categories)} bsStyle="link">All</Button>
+                    {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game, [category])} bsStyle="link">{category}</Button>)}
+                  </div>
+                  <h3>{game.name}</h3>
+                  <Row>
+                    {items.filter(item => Object.keys(this.state.filters).includes(item.game._id) ? this.state.filters[item.game._id].filter(x => !!~item.categories.indexOf(x)).length : true)
+                      .map(item => <Item key={item._id} {...item} onClick={::this.onClick} />)}
+                  </Row>
+                </Tab>
+              );
+            })}
+          </Tabs>
         </Col>
-        <Col md={3} className="chat">
+        <Col className="chat">
           Chat
         </Col>
       </Row>
