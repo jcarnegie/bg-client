@@ -2,7 +2,7 @@ import "./games.less";
 import "./chat.less";
 import React, {Component} from "react";
 import {Col, Row} from "react-bootstrap";
-
+import Chat from "./chat";
 
 export default class Games extends Component {
   render() {
@@ -21,7 +21,7 @@ export default class Games extends Component {
           </button>
         </Col>
         <Col md={3} className="chat">
-          Chat
+          <Chat />
         </Col>
       </Row>
     );
