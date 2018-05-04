@@ -72,7 +72,7 @@ export default class RegisterPopup extends Component {
       switch (e.name) {
         case "wallet":
           if (!window.web3.isAddress(e.value)) {
-            e.parentNode.classList.add("has-error");
+            e.parentNode.parentNode.classList.add("has-error");
             e.setCustomValidity(intl.formatMessage({
               id: "fields.wallet.invalid"
             }));
