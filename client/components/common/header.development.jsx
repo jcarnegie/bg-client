@@ -9,9 +9,11 @@ import Balance from "./balance";
 import User from "./user";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import {withRouter} from "react-router";
 
 
 @injectIntl
+@withRouter
 @connect(
   state => ({
     account: state.account

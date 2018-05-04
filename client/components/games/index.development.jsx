@@ -8,7 +8,7 @@ export default class Games extends Component {
   render() {
     return (
       <Row>
-        <Col md={9} className="gap">
+        <Col className="grap gap">
           <div className="iframe">
             <div className="title">BitSociety</div>
             <div className="description">
@@ -57,7 +57,7 @@ export default class Games extends Component {
             </Col>
           </Row>
         </Col>
-        <Col md={3} className="chat">
+        <Col className="chat">
           Chat
         </Col>
       </Row>

@@ -21,6 +21,7 @@
         &,
         &:hover,
         &:focus {
+          color: var(--main-color);
           border: 0;
           border-bottom: 2px solid var(--main-color);
         }
@@ -30,41 +31,46 @@
 }
 
 .tab-content {
-  padding-top: 12px;
-}
+  padding-top: 20px;
 
-h3 {
-  font-size: 15px;
-  font-weight: bold;
-  line-height: 25px;
-  margin-top: 20px;
-  margin-bottom: 15px;
-}
-
-.arrow-right {
-  font-size: 13px;
-
-  /*
-  &:before {
-    display: inline-block;
-    content: "\A";
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-    border-left: 7px solid #A2A3AD;
-    vertical-align: middle;
+  .row {
+    margin-top: 20px;
+    margin-bottom: 10px;
   }
-  */
 
-  button {
-    padding: 6px;
-    color: var(--main-color);
+  h3 {
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 34px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 
-    &:hover {
-      color: var(--main-color);
+  .arrow-right {
+    font-size: 13px;
+
+    /*
+    &:before {
+      display: inline-block;
+      content: "\A";
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-left: 7px solid #A2A3AD;
+      vertical-align: middle;
     }
+    */
 
-    &:first-child {
-      font-weight: bold;
+    button {
+      padding: 6px;
+      color: var(--main-color);
+
+      &:hover {
+        color: var(--main-color);
+      }
+
+      &:first-child {
+        font-weight: bold;
+      }
     }
   }
 }
