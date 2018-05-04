@@ -12,8 +12,8 @@ export default class HTML extends React.Component {
     if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
       return (
         <div>
-          <script src="https://unpkg.com/react@16.2.0/umd/react.production.min.js" type="text/javascript" crossOrigin="anonymous" />
-          <script src="https://unpkg.com/react-dom@16.2.0/umd/react-dom.production.min.js" type="text/javascript" crossOrigin="anonymous" />
+          <script src="https://unpkg.com/react@16.3.2/umd/react.production.min.js" type="text/javascript" crossOrigin="anonymous" />
+          <script src="https://unpkg.com/react-dom@16.3.2/umd/react-dom.production.min.js" type="text/javascript" crossOrigin="anonymous" />
         </div>
       );
     } else {
@@ -34,6 +34,7 @@ export default class HTML extends React.Component {
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
           <link rel="shortcut icon" href={"/favicon.ico"} />
           <link href={"/bundle/client.css"} rel="stylesheet" />
+          <link rel="stylesheet" href="https://use.typekit.net/woi6egk.css" />
           <title>BitGuild Crowdsale Whitelisting</title>
         </head>
         <body>

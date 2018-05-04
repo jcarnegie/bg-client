@@ -1,10 +1,11 @@
 const path = require("path");
 const webpack = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 
 
 module.exports = {
+  mode: process.env.NODE_ENV,
   devtool: "source-map",
   entry: {
     client: ["./client/client"]
@@ -13,13 +14,12 @@ module.exports = {
     path: path.join(__dirname, "..", "..", "build", "bundle"),
     filename: "[name].js",
     sourceMapFilename: "[file].map",
-    chunkFilename: "[id].js",
+    chunkFilename: "[name].js",
     publicPath: "/bundle/"
   },
   externals: {
     react: "React",
-    "react-dom": "ReactDOM",
-    Web3: "Web3"
+    "react-dom": "ReactDOM"
   },
   resolve: {
     extensions: [".json", ".jsx", ".js"],
@@ -29,22 +29,13 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.json$/,
-      use: [{
-        loader: "json-loader"
-      }]
-    }, {
-      test: /\.less$/,
-      use: ExtractTextPlugin.extract({
-        fallback: "style-loader",
-        use: [{
-          loader: "css-loader"
-        }, {
-          loader: "postcss-loader"
-        }, {
-          loader: "less-loader"
-        }]
-      })
+      test: /\.(le|c)ss$/,
+      use: [
+        MiniCssExtractPlugin.loader,
+        "css-loader",
+        "postcss-loader",
+        "less-loader"
+      ]
     }, {
       test: /\.(ttf|woff|woff2|eot|svg|gif|png|ico)(\?.+)?$/,
       use: [{
@@ -57,14 +48,17 @@ module.exports = {
         loader: "babel-loader",
         options: {
           babelrc: false,
-          presets: ["@babel/react", [
-            "@babel/env",
-            {
-              targets: {
-                browsers: ["last 2 versions"]
+          presets: [
+            "@babel/react",
+            [
+              "@babel/env",
+              {
+                targets: {
+                  browsers: ["last 2 versions"]
+                }
               }
-            }
-          ]],
+            ]
+          ],
           plugins: [
             "@babel/proposal-decorators",
             "@babel/proposal-class-properties",
@@ -78,18 +72,24 @@ module.exports = {
     }]
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}),
     new webpack.NoEmitOnErrorsPlugin(),
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: "[name].css",
-      allChunks: true
+      chunkFilename: "[name].css"
     }),
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+      "process.env.RENDERING": JSON.stringify(process.env.RENDERING),
+      "process.env.TOKEN_CONTRACT_ADDR": JSON.stringify(process.env.TOKEN_CONTRACT_ADDR),
+      "process.env.TOPUP_CONTRACT_ADDR": JSON.stringify(process.env.TOPUP_CONTRACT_ADDR)
     }),
     new ProgressBarPlugin()
   ],
   performance: {
     hints: false
+  },
+  optimization: {
+    minimize: true,
+    splitChunks: false
   }
 };

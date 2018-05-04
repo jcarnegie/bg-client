@@ -1,9 +1,10 @@
 import path from "path";
 import webpack from "webpack";
-import ExtractTextPlugin from "extract-text-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 
 export default {
+  mode: process.env.NODE_ENV,
   devtool: "cheap-module-source-map",
   entry: {
     client: ["@babel/polyfill", "react-hot-loader/patch", "webpack-hot-middleware/client", "./client/client"]
@@ -12,7 +13,7 @@ export default {
     path: path.join(__dirname, "..", "..", "build", "bundle"),
     filename: "[name].js",
     sourceMapFilename: "[file].map",
-    chunkFilename: "[id].js",
+    chunkFilename: "[name].js",
     publicPath: "/bundle/"
   },
   resolve: {
@@ -23,33 +24,26 @@ export default {
   },
   module: {
     rules: [{
-      test: /\.json$/,
-      use: [{
-        loader: "json-loader"
-      }]
-    }, {
       test: /\.(le|c)ss$/,
-      use: ExtractTextPlugin.extract({
-        fallback: "style-loader",
-        use: [{
-          loader: "css-loader",
-          options: {
-            importLoaders: 1
-            // sourceMap: true
-          }
-        }, {
-          // https://github.com/postcss/postcss-loader/issues/217
-          loader: "postcss-loader",
-          options: {
-            // sourceMap: true
-          }
-        }, {
-          loader: "less-loader",
-          options: {
-            // sourceMap: true
-          }
-        }]
-      })
+      use: [{
+        loader: MiniCssExtractPlugin.loader
+      }, {
+        loader: "css-loader",
+        options: {
+          importLoaders: 1,
+          sourceMap: true
+        }
+      }, {
+        loader: "postcss-loader",
+        options: {
+          sourceMap: true
+        }
+      }, {
+        loader: "less-loader",
+        options: {
+          sourceMap: true
+        }
+      }]
     }, {
       test: /\.(ttf|woff|woff2|eot|svg|gif|png|ico)(\?.+)?$/,
       use: [{
@@ -88,16 +82,23 @@ export default {
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: "[name].css",
-      allChunks: true
+      chunkFilename: "[name].css"
     }),
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+      "process.env.RENDERING": JSON.stringify(process.env.RENDERING),
+      "process.env.TOKEN_CONTRACT_ADDR": JSON.stringify(process.env.TOKEN_CONTRACT_ADDR),
+      "process.env.TOPUP_CONTRACT_ADDR": JSON.stringify(process.env.TOPUP_CONTRACT_ADDR)
     }),
     new webpack.HotModuleReplacementPlugin()
   ],
   performance: {
     hints: false
+  },
+  optimization: {
+    minimize: false,
+    splitChunks: false
   }
 };

@@ -1,10 +1,12 @@
+import "./modal.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Button, ButtonToolbar, Col, ControlLabel, Form, FormControl, FormGroup, Modal} from "react-bootstrap";
+import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import {email, nickName, wallet} from "../../../shared/constants/placeholder";
 import {reEmail} from "../../../shared/constants/regexp";
+import {CREATE_USER, MESSAGE_ADD} from "../../../shared/constants/actions";
 
 
 @injectIntl
@@ -55,7 +57,7 @@ export default class RegisterPopup extends Component {
       formData: new FormData(e.target)
     }, () => {
       this.props.dispatch({
-        type: "CREATE_USER",
+        type: CREATE_USER,
         payload: Array.from(this.state.formData.entries()).reduce((memo, pair) => ({
           ...memo,
           [pair[0]]: pair[1]
@@ -85,68 +87,56 @@ export default class RegisterPopup extends Component {
     return isValid;
   }
 
+  sign() {
+    const message = window.web3.toHex("BitGuild!");
+    const from = window.web3.eth.accounts[0];
+
+    window.web3.currentProvider.sendAsync({
+      method: "personal_sign",
+      params: [message, from],
+      from
+    }, (err, result) => {
+      if (err || result.error) {
+        this.props.dispatch({
+          type: MESSAGE_ADD,
+          payload: err || result.error
+        });
+        return;
+      }
+
+      window.web3.currentProvider.sendAsync({
+        method: "personal_ecRecover",
+        params: [message, result.result],
+        from
+      }, (err, recovered) => {
+        if (err || result.error) {
+          this.props.dispatch({
+            type: MESSAGE_ADD,
+            payload: err || result.error
+          });
+          return;
+        }
+
+        // TODO not sure what to do after this check
+        if (recovered.result === from) {
+          console.log("Successfully verified signer as " + from);
+        } else {
+          console.log("Failed to verify signer when comparing " + recovered.result + " to " + from);
+        }
+      });
+    });
+  }
+
   render() {
+    const {account, user} = this.props;
     return (
-      <Modal show={this.props.account.isLoaded && this.props.account.wallet && this.props.user.isLoaded && !this.props.user.data}>
+      <Modal show={account.wallet && !user.isLoading && !user.success}>
         <Modal.Body>
+          <h2>Welcome to BitGuild</h2>
+
+          <br />
+
           <Form onSubmit={::this.onSubmit}>
-            <FormGroup controlId="nickName">
-              <Col componentClass={ControlLabel}>
-                <FormattedMessage id="forms.nickName" />
-              </Col>
-              <Col>
-                <FormControl
-                  type="text"
-                  name="nickName"
-                  defaultValue={this.state.formData.get("nickName")}
-                  placeholder={nickName}
-                  onInvalid={e => {
-                    e.target.parentNode.classList.add("has-error");
-                    e.target.setCustomValidity(this.props.intl.formatMessage({
-                      id: "fields.nickName.required"
-                    }));
-                  }}
-                  onInput={e => {
-                    e.target.parentNode.classList.remove("has-error");
-                    e.target.setCustomValidity("");
-                  }}
-                  required
-                />
-              </Col>
-            </FormGroup>
-
-            <FormGroup controlId="email">
-              <Col componentClass={ControlLabel}>
-                <FormattedMessage id="forms.email" />
-              </Col>
-              <Col>
-                <FormControl
-                  type="email"
-                  name="email"
-                  pattern={reEmail.source.replace("a-z", "a-zA-Z")} // there is no `i` flag
-                  defaultValue={this.state.formData.get("email")}
-                  placeholder={email}
-                  onInvalid={e => {
-                    e.target.parentNode.classList.add("has-error");
-                    if (e.target.validity.valueMissing) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
-                        id: "fields.email.required"
-                      }));
-                    } else if (e.target.validity.typeMismatch) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
-                        id: "fields.email.invalid"
-                      }));
-                    }
-                  }}
-                  onInput={e => {
-                    e.target.parentNode.classList.remove("has-error");
-                    e.target.setCustomValidity("");
-                  }}
-                  required
-                />
-              </Col>
-            </FormGroup>
-
             <FormGroup controlId="wallet">
               <Col componentClass={ControlLabel}>
                 <FormattedMessage id="forms.wallet" />
@@ -187,15 +177,72 @@ export default class RegisterPopup extends Component {
                 />
               </Col>
             </FormGroup>
+            <FormGroup controlId="email">
+              <Col componentClass={ControlLabel}>
+                <FormattedMessage id="forms.email" />
+              </Col>
+              <Col>
+                <FormControl
+                  type="email"
+                  name="email"
+                  pattern={reEmail.source.replace("a-z", "a-zA-Z")} // there is no `i` flag
+                  defaultValue={this.state.formData.get("email")}
+                  placeholder={email}
+                  onInvalid={e => {
+                    e.target.parentNode.classList.add("has-error");
+                    if (e.target.validity.valueMissing) {
+                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                        id: "fields.email.required"
+                      }));
+                    } else if (e.target.validity.typeMismatch) {
+                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                        id: "fields.email.invalid"
+                      }));
+                    }
+                  }}
+                  onInput={e => {
+                    e.target.parentNode.classList.remove("has-error");
+                    e.target.setCustomValidity("");
+                  }}
+                  required
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup controlId="nickName">
+              <Col componentClass={ControlLabel}>
+                <FormattedMessage id="forms.nickName" />
+              </Col>
+              <Col>
+                <FormControl
+                  type="text"
+                  name="nickName"
+                  defaultValue={this.state.formData.get("nickName")}
+                  placeholder={nickName}
+                  onInvalid={e => {
+                    e.target.parentNode.classList.add("has-error");
+                    e.target.setCustomValidity(this.props.intl.formatMessage({
+                      id: "fields.nickName.required"
+                    }));
+                  }}
+                  onInput={e => {
+                    e.target.parentNode.classList.remove("has-error");
+                    e.target.setCustomValidity("");
+                  }}
+                  required
+                />
+              </Col>
+            </FormGroup>
+
+            <p className="note">
+              Make sure to save your MetaMask login information and account recovery details!
+              We can’t help you regain access if you lose it.
+            </p>
+
+            <Button type="submit" className="btn-block text-uppercase">
+              <FormattedMessage id="components.buttons.register" />
+            </Button>
 
             <br />
-
-            <ButtonToolbar>
-              <Button type="submit" className="pull-right">
-                <FormattedMessage id="components.buttons.register" />
-              </Button>
-            </ButtonToolbar>
-
           </Form>
         </Modal.Body>
       </Modal>

@@ -1,44 +1,32 @@
+import "./header.less";
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
-import {Nav, Navbar, NavItem} from "react-bootstrap";
+import {Image, Nav, Navbar, NavItem} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {FormattedMessage} from "react-intl";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
+import Balance from "./balance";
+import User from "./user";
 
 
-@connect(
-  state => ({
-    user: state.user
-  })
-)
 export default class Header extends Component {
-  static propTypes = {
-    user: PropTypes.object
-  };
-
   render() {
     return (
-      <Navbar inverse>
+      <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to="/" className="navbar-brand">BitGuild</Link>
+            <Image src="/images/logo.png" className="navbar-logo" />
+            <Link to="/" className="navbar-name">BitGuild</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse href="#">
-          <Navbar.Text pullRight>{this.props.user.isLoaded && this.props.user.data ? `You are logged in as ${this.props.user.data.nickName}` : "You are not logged in"}</Navbar.Text>
-          <Nav navbar>
+          <User />
+          <Nav navbar pullRight>
             <LinkContainer to="/inventory">
               <NavItem><FormattedMessage id="components.menu.inventory" /></NavItem>
             </LinkContainer>
-            <LinkContainer to="/exchange">
-              <NavItem><FormattedMessage id="components.menu.exchange" /></NavItem>
-            </LinkContainer>
-            <LinkContainer to="/community">
-              <NavItem><FormattedMessage id="components.menu.community" /></NavItem>
-            </LinkContainer>
           </Nav>
+          <Balance />
         </Navbar.Collapse>
       </Navbar>
     );

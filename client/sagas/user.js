@@ -1,6 +1,23 @@
-import {call, put, takeEvery} from "redux-saga/effects";
+import bluebird from "bluebird";
+import {call, put, select, takeEvery} from "redux-saga/effects";
 import fetch from "isomorphic-fetch";
-import {MESSAGE_ADD_ALL} from "../utils/constants/actions";
+import tokenABI from "../../shared/contracts/token";
+import {
+  BALANCE_ETH_CHANGED,
+  BALANCE_ETH_ERROR,
+  BALANCE_ETH_LOADING,
+  BALANCE_PLAT_CHANGED,
+  BALANCE_PLAT_ERROR,
+  BALANCE_PLAT_LOADING,
+  CHANGE_ACCOUNT,
+  CREATE_USER,
+  MESSAGE_ADD,
+  MESSAGE_ADD_ALL,
+  NEW_BLOCK,
+  USER_CHANGED,
+  USER_ERROR,
+  USER_LOADING
+} from "../../shared/constants/actions";
 
 
 function callAPI(url, options = {}) {
@@ -19,25 +36,36 @@ function callAPI(url, options = {}) {
 
 function * fetchUser(action) {
   try {
-    const user = yield call(callAPI, `/users?wallet=${action.payload.wallet}`);
     yield put({
-      type: "USER_CHANGED",
-      payload: user[0] || null
+      type: USER_LOADING
     });
+    const users = yield call(callAPI, `/users?wallet=${action.payload.wallet}`);
+    if (users.length) {
+      yield put({
+        type: USER_CHANGED,
+        payload: users[0]
+      });
+    } else {
+      yield put({
+        type: USER_ERROR
+      });
+    }
   } catch (error) {
     yield put({
-      type: "USER_CHANGED",
-      payload: null
+      type: USER_ERROR
     });
     yield put({
-      type: MESSAGE_ADD_ALL,
-      payload: [].concat(error)
+      type: MESSAGE_ADD,
+      payload: error
     });
   }
 }
 
 function * createUser(action) {
   try {
+    yield put({
+      type: USER_LOADING
+    });
     const user = yield call(callAPI, "/users", {
       method: "POST",
       body: JSON.stringify(action.payload),
@@ -47,13 +75,12 @@ function * createUser(action) {
       }
     });
     yield put({
-      type: "USER_CHANGED",
+      type: USER_CHANGED,
       payload: user
     });
   } catch (error) {
     yield put({
-      type: "USER_CHANGED",
-      payload: null
+      type: USER_ERROR
     });
     yield put({
       type: MESSAGE_ADD_ALL,
@@ -62,10 +89,62 @@ function * createUser(action) {
   }
 }
 
+function * getBalanceETH() {
+  const user = yield select(state => state.user);
+  if (!user.isLoading && user.success) {
+    try {
+      yield put({
+        type: BALANCE_ETH_LOADING
+      });
+      const balance = yield bluebird.promisify(window.web3.eth.getBalance)(user.data.wallet);
+      yield put({
+        type: BALANCE_ETH_CHANGED,
+        payload: window.web3.fromWei(balance, "ether").toNumber()
+      });
+    } catch (error) {
+      yield put({
+        type: BALANCE_ETH_ERROR
+      });
+      yield put({
+        type: MESSAGE_ADD,
+        payload: error
+      });
+    }
+  }
+}
+
+function * getBalancePLAT() {
+  const user = yield select(state => state.user);
+  if (!user.isLoading && user.success) {
+    try {
+      yield put({
+        type: BALANCE_PLAT_LOADING
+      });
+      const contract = window.web3.eth.contract(tokenABI).at(process.env.TOKEN_CONTRACT_ADDR);
+      const balance = yield bluebird.promisify(contract.balanceOf)(user.data.wallet);
+      yield put({
+        type: BALANCE_PLAT_CHANGED,
+        payload: window.web3.fromWei(balance, "ether").toNumber()
+      });
+    } catch (error) {
+      yield put({
+        type: BALANCE_PLAT_ERROR
+      });
+      yield put({
+        type: MESSAGE_ADD,
+        payload: error
+      });
+    }
+  }
+}
 
 function * userSaga() {
-  yield takeEvery("CHANGE_ACCOUNT", fetchUser);
-  yield takeEvery("CREATE_USER", createUser);
+  yield takeEvery(CHANGE_ACCOUNT, fetchUser);
+  yield takeEvery(CREATE_USER, createUser);
+  yield takeEvery(USER_CHANGED, getBalanceETH);
+  yield takeEvery(NEW_BLOCK, getBalanceETH);
+  yield takeEvery(USER_CHANGED, getBalancePLAT);
+  yield takeEvery(NEW_BLOCK, getBalancePLAT);
 }
 
 export default userSaga;
