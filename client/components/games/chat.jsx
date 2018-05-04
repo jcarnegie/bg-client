@@ -1,13 +1,14 @@
 import React, {Component} from "react";
-import {map} from "ramda";
+import StayScrolled, { scrolled } from "react-stay-scrolled";
+import {append, map} from "ramda";
 
 const styles = {
   container: {display: "flex", flexDirection: "column", height: "calc(100vh - 60px)"},
-  form: {display: "flex"},
+  form: {display: "flex", width: "auto"},
   header: {alignItems: "center", backgroundColor: "#DEE6F3", color: "#8CA2C7", display: "flex", fontSize: 18, height: 40, justifyContent: "center"},
-  messageInput: {flexGrow: 1},
-  messageButton: {backgroundColor: "#4D4D83", borderRadius: 3, color: "#F9F9FB", padding: "15px 10px"},
-  messageList: {flexGrow: 1},
+  messageInput: {border: "none", flexGrow: 6, outline: "none", padding: "0 10px"},
+  messageButton: {backgroundColor: "#4D4D83", borderRadius: 3, color: "#F9F9FB", flexGrow: 1, padding: "15px 10px"},
+  messageList: {flexGrow: 1, overflowY: "scroll", paddingBottom: "10px"},
   message: {display: "flex", marginTop: 20},
   avatarLeft: {alignSelf: "flex-end", flexGrow: 1, margin: "0 10px"},
   avatarIconLeft: {backgroundColor: "#5FD8BA", borderRadius: 40, display: "flex", alignItems: "center", justifyContent: "center", width: 40, height: 40, textAlign: "center"},
@@ -55,24 +56,44 @@ const Message = ({message}) => {
   );
 };
 
-export default class Chat extends Component {
+class Chat extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      newMessage: "",
       messages: [
-        {userId: "0xblah", contents: "Lorem ipsum is not simply random text. It has roots in a piece.", date: new Date()},
-        {userId: "0xfoo", contents: "foo", date: new Date()},
-        {userId: "0xbar", contents: "bar", date: new Date()},
+        {id: 1, userId: "0xblah", contents: "Lorem ipsum is not simply random text. It has roots in a piece.", date: new Date()},
+        {id: 2, userId: "0xfoo", contents: "foo", date: new Date()},
+        {id: 3, userId: "0xbar", contents: "bar", date: new Date()},
       ]
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
   }
+
+  componentDidMount() {
+  }
+
+  componentDidUpdate() {
+    this.scrollBottom();
+  }
+
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log("submitted message:", e.target.value);
+    const message = {userId: "0xfoo", contents: this.state.newMessage, date: new Date()};
+    this.setState({newMessage: "", messages: append(message, this.state.messages)});
+  }
+
+  handleMessageChange(e) {
+    this.setState({newMessage: e.target.value});
+  }
+
+  storeScrolledControllers = ({stayScrolled, scrollBottom}) => {
+    this.stayScrolled = stayScrolled;
+    this.scrollBottom = scrollBottom;
   }
 
   render() {
@@ -81,12 +102,12 @@ export default class Chat extends Component {
         <div style={styles.header}>
           <div>Chat</div>
         </div>
-        <div style={styles.messageList}>
-          { map(msg => <Message message={msg} />, this.state.messages) }
-        </div>
+        <StayScrolled component="div" provideControllers={this.storeScrolledControllers} style={styles.messageList}>
+          { map(msg => <Message key={msg.id} message={msg} />, this.state.messages) }
+        </StayScrolled>
         <div>
           <form onSubmit={this.handleSubmit} style={styles.form}>
-            <input style={styles.messageInput} type="text" />
+            <input onChange={this.handleMessageChange} style={styles.messageInput} type="text" value={this.state.newMessage}/>
             <button style={styles.messageButton}>Send</button>
           </form>
         </div>
@@ -94,3 +115,5 @@ export default class Chat extends Component {
     );
   }
 }
+
+export default scrolled(Chat);
