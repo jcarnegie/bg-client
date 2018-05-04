@@ -2,6 +2,8 @@ import "./games.less";
 import "./chat.less";
 import React, {Component} from "react";
 import {Button, Col, Image, Row} from "react-bootstrap";
+import {FormattedMessage} from "react-intl";
+import {Link} from "react-router-dom";
 
 
 export default class Games extends Component {
@@ -41,7 +43,6 @@ export default class Games extends Component {
                   </a>
                 </Col>
               </Row>
-              <a href="#" className="explore">Explore</a>
             </Col>
             <Col md={7} className="announce">
               <Row>
@@ -56,6 +57,11 @@ export default class Games extends Component {
               </Row>
             </Col>
           </Row>
+          <div className="explore">
+            <FormattedMessage id="pages.games.questions" />
+            <Link to="/faq">FAQ</Link>
+            <a href="https://discordapp.com/invite/pPC2frB">DISCORD</a>
+          </div>
         </Col>
         <Col className="chat">
           Chat

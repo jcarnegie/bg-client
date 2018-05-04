@@ -61,6 +61,11 @@ export default class Inventory extends Component {
         <Col className="grap gap">
           <h2>
             <FormattedMessage id="pages.inventory.title" />
+            <div className="pull-right">
+              <Button>
+                <FormattedMessage id="pages.inventory.back-to-game" />
+              </Button>
+            </div>
           </h2>
 
           <Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
