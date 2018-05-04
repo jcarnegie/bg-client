@@ -7,7 +7,7 @@ import {FormattedMessage} from "react-intl";
 export default class Header extends Component {
   render() {
     return (
-      <Navbar inverse>
+      <Navbar fixedTop inverse>
         <Navbar.Header>
           <Navbar.Brand>
             <Image src="/images/logo.png" className="navbar-logo" />
