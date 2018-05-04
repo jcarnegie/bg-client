@@ -8,7 +8,7 @@ export default class Games extends Component {
   render() {
     return (
       <Row>
-        <Col md={9}>
+        <Col md={9} className="gap">
           <div className="iframe">
             <div className="title">BitSociety</div>
             <div className="description">

@@ -58,7 +58,7 @@ export default class Inventory extends Component {
 
     return (
       <Row>
-        <Col md={9}>
+        <Col md={9} className="gap">
           <div>
             <h2>
               <FormattedMessage id="pages.inventory.title" />
