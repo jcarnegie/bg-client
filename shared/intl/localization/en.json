@@ -74,7 +74,9 @@
     },
     "metamask-login": {
       "title": "You are not logged into MetaMask",
-      "p1": "Please open MetaMask and follow the instructions to log in."
+      "p1": "Please open MetaMask and follow the instructions to log in.",
+      "n1": "Questions? Check our",
+      "faq": "FAQ"
     },
     "register": {
       "title": "Welcome to BitGuild",

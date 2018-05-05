@@ -90,7 +90,8 @@ export default class MetaMaskInstallPopup extends Component {
               {" "}
               <Link to="/faq">
                 <FormattedMessage id="modals.metamask-install.faq" />
-              </Link></p>
+              </Link>
+            </p>
           </div>
         </Modal.Body>
       </Modal>

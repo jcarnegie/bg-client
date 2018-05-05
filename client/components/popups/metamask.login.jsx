@@ -4,6 +4,7 @@ import {Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
+import {Link} from "react-router-dom";
 
 
 @connect(
@@ -26,6 +27,13 @@ export default class MetaMaskLoginPopup extends Component {
             <h2><FormattedMessage id="modals.metamask-login.title" /></h2>
             <br />
             <p><FormattedMessage id="modals.metamask-login.p1" /></p>
+            <p className="note">
+              <FormattedMessage id="modals.metamask-login.n1" />
+              {" "}
+              <Link to="/faq">
+                <FormattedMessage id="modals.metamask-login.faq" />
+              </Link>
+            </p>
           </div>
         </Modal.Body>
       </Modal>
