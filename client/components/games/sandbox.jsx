@@ -20,10 +20,12 @@ export default class SandBox extends Component {
 
   componentDidMount() {
     let url = readFromQueryString("url", this.props.location.search);
-    if (!/^https?:\/\//.test(url)) {
+    if (!url) {
       url = "https://bitguild.info/";
+      this.setState({url});
+    } else if (!/^https?:\/\//.test(url)) {
+      alert(`Url is invalid ${url}`);
     }
-    this.setState({url});
   }
 
   renderIframe() {
