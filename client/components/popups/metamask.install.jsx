@@ -79,7 +79,9 @@ export default class MetaMaskInstallPopup extends Component {
             <br />
             <p><FormattedMessage id="modals.metamask-install.p1" /></p>
             <p><FormattedMessage id="modals.metamask-install.p2" /></p>
+
             <br />
+
             <Form>
               <Button className="btn-block text-uppercase" href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
                 <FormattedMessage id="buttons.install" />

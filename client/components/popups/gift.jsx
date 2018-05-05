@@ -137,6 +137,9 @@ export default class ConvertPopup extends Component {
               </Col>
             </FormGroup>
 
+            <br />
+            <br />
+
             <Button type="submit" className="btn-block text-uppercase">
               <FormattedMessage id="buttons.send" />
             </Button>

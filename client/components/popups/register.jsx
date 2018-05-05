@@ -271,6 +271,7 @@ export default class RegisterPopup extends Component {
             <p className="note"><FormattedMessage id="modals.register.n2" /></p>
 
             <br />
+
             <Button type="submit" className="btn-block text-uppercase">
               <FormattedMessage id="buttons.register" />
             </Button>
