@@ -1,6 +1,10 @@
+import Promise from "bluebird";
+import SendBird from "sendbird";
+import PropTypes from "prop-types";
 import React, {Component} from "react";
-import StayScrolled, { scrolled } from "react-stay-scrolled";
-import {append, map} from "ramda";
+import StayScrolled from "react-stay-scrolled";
+import {connect} from "react-redux";
+import {append, map, prop} from "ramda";
 
 const styles = {
   container: {display: "flex", flexDirection: "column", height: "calc(100vh - 60px)"},
@@ -56,7 +60,17 @@ const Message = ({message}) => {
   );
 };
 
+// Note: sendbird callbacks put error at the end
+const sbp = fn => new Promise((resolve, reject) =>
+  fn((res, err) => (err) ? reject(err) : resolve(res))
+);
+
+@connect(state => ({user: state.user}))
 class Chat extends Component {
+  static propTypes = {
+    user: PropTypes.object
+  };
+
   constructor(props) {
     super(props);
 
@@ -73,17 +87,44 @@ class Chat extends Component {
     this.handleMessageChange = this.handleMessageChange.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    const sb = new SendBird({appId: "BB1E0777-B8CE-44DF-BA37-63EBA2E858F1"});
+
+    const doConnect = async() => {
+      if (this.props.user.data) {
+        try {
+          const {nickName, wallet} = this.props.user;
+          console.log('connecting to sendbird');
+          let sbUser = await sbp(cb => sb.connect(wallet, cb));
+          console.log('setting sendbird nickname');
+          sbUser = await sbp(cb => sb.updateCurrentUserInfo(nickName, null, cb));
+          console.log('sbUser:', sbUser);
+          this.setState({sbUser});
+        } catch (e) {
+          console.log("SendBird Error:", e.stack);
+        }
+      } else {
+        setTimeout(doConnect, 1000);
+      }
+    };
+
+    doConnect();
+  }
+
+  componentWillUnmount() {
+    this.state.sb.disconnect();
   }
 
   componentDidUpdate() {
     this.scrollBottom();
   }
 
-
   handleSubmit(e) {
     e.preventDefault();
-    const message = {userId: "0xfoo", contents: this.state.newMessage, date: new Date()};
+    const ids = map(prop("id"), this.state.messages);
+    const maxId = Math.max(...ids);
+    const id = maxId + 1;
+    const message = {id, userId: "0xfoo", contents: this.state.newMessage, date: new Date()};
     this.setState({newMessage: "", messages: append(message, this.state.messages)});
   }
 
@@ -116,4 +157,4 @@ class Chat extends Component {
   }
 }
 
-export default scrolled(Chat);
+export default Chat;
