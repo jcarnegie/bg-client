@@ -24,27 +24,27 @@ export default class Games extends Component {
             </Button>
           </div>
           <Row>
-            <Col md={5} className="preview">
+            <Col lg={5} className="preview">
               <h3>In-Game Items Preview</h3>
               <Row>
-                <Col md={4}>
+                <Col sm={4}>
                   <a href="#">
                     <Image src="/images/item_preview.png" />
                   </a>
                 </Col>
-                <Col md={4}>
+                <Col sm={4}>
                   <a href="#">
                     <Image src="/images/item_preview.png" />
                   </a>
                 </Col>
-                <Col md={4}>
+                <Col sm={4}>
                   <a href="#">
                     <Image src="/images/item_preview.png" />
                   </a>
                 </Col>
               </Row>
             </Col>
-            <Col md={7} className="announce">
+            <Col lg={7} className="announce">
               <Row>
                 <Col md={6}>
                   <h3>Coming soon</h3>
