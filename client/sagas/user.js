@@ -20,17 +20,16 @@ import {
   MESSAGE_ADD,
   MESSAGE_ADD_ALL,
   NETWORK_CHANGED,
-  NETWORK_ERROR,
   NETWORK_LOADING,
   NEW_BLOCK,
   RATE_CHANGED,
   RATE_ERROR,
   RATE_LOADING,
   SWITCH_LANGUAGE,
+  UPDATE_USER,
   USER_CHANGED,
   USER_ERROR,
-  USER_LOADING,
-  UPDATE_USER
+  USER_LOADING
 } from "../../shared/constants/actions";
 
 
@@ -137,12 +136,13 @@ function * getRate() {
     });
     const network = yield select(state => state.network);
     const contract = window.web3.eth.contract(oracleABI).at(networkConfig[network.data.id].oracle);
-    const PLATprice = yield bluebird.promisify(contract.PLATprice)();
+    const ETHPrice = yield bluebird.promisify(contract.ETHPrice)();
     yield put({
       type: RATE_CHANGED,
-      payload: 1 / PLATprice.toNumber() * 1e18
+      payload: ETHPrice.toNumber() / 1e18
     });
   } catch (error) {
+    console.log(error);
     yield put({
       type: RATE_ERROR
     });
