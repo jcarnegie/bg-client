@@ -242,26 +242,12 @@ function * getNetwork() {
       type: NETWORK_LOADING
     });
     const netId = yield bluebird.promisify(window.web3.version.getNetwork)();
-    switch (netId) {
-      case "1": // mainnet
-      case "4": // rinkeby
-        yield put({
-          type: NETWORK_CHANGED,
-          payload: {
-            id: netId
-          }
-        });
-        break;
-      default:
-        yield put({
-          type: MESSAGE_ADD,
-          payload: new Error("This network is not supported by BitGuild portal. For actual experience please switch to main net. For testing purposes please use Rinkeby")
-        });
-        yield put({
-          type: NETWORK_ERROR
-        });
-        break;
-    }
+    yield put({
+      type: NETWORK_CHANGED,
+      payload: {
+        id: netId
+      }
+    });
   } catch (error) {
     yield put({
       type: MESSAGE_ADD,

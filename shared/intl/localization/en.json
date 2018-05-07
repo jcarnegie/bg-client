@@ -78,6 +78,12 @@
       "n1": "Questions? Check our",
       "faq": "FAQ"
     },
+    "metamask-network": {
+      "title": "Sorry!",
+      "p1": "This network is not supported by BitGuild portal. For actual experience please switch to main net. For testing purposes please use Rinkeby",
+      "n1": "Questions? Check our",
+      "faq": "FAQ"
+    },
     "register": {
       "title": "Welcome to BitGuild",
       "n1": "Make sure you save your MetaMask login information and account recovery details!",
