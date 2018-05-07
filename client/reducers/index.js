@@ -9,7 +9,7 @@ import network from "./network";
 import inventory from "./inventory";
 import balanceETH from "./balanceETH";
 import balancePLAT from "./balancePLAT";
-
+import chat from "./chat";
 
 export default combineReducers({
   routing,
@@ -21,5 +21,6 @@ export default combineReducers({
   intl,
   network,
   rate,
-  user
+  user,
+  chat
 });

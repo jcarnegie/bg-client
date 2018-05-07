@@ -4,6 +4,13 @@ import fetch from "isomorphic-fetch";
 import tokenABI from "../../shared/contracts/token";
 import oracleABI from "../../shared/contracts/oracle";
 import networkConfig from "../utils/network";
+import {
+  init as chatInit,
+  channels as chatChannels,
+  setChannelByName,
+  messages as chatMessages,
+  sendMessage
+} from "../utils/chat";
 import {localization} from "../../shared/intl/setup";
 import {
   ACCOUNT_CHANGED,
@@ -14,6 +21,9 @@ import {
   BALANCE_PLAT_ERROR,
   BALANCE_PLAT_LOADING,
   CREATE_USER,
+  CHAT_INIT,
+  CHAT_LOAD_MESSAGES,
+  CHAT_SET_CHANNEL,
   INVENTORY_CHANGED,
   INVENTORY_ERROR,
   INVENTORY_LOADING,
@@ -231,9 +241,16 @@ function * getInventory(action) {
 }
 
 function * initChat(action) {
-  if (window.sbWidget) {
-    window.sbWidget.startWithConnect(process.env.SENDBIRD_APP_ID, action.payload.wallet, action.payload.nickName);
-  }
+  const {wallet, nickName} = action.payload;
+  const [sb, user] = yield chatInit(wallet, nickName);
+  yield put({type: CHAT_INIT, payload: {sb, user}});
+
+  const channels = yield chatChannels(sb);
+  const channel = yield setChannelByName("BitGuild", channels);
+  yield put({type: CHAT_SET_CHANNEL, payload: {channel}});
+
+  const messages = yield chatMessages(channel);
+  yield put({type: CHAT_LOAD_MESSAGES, payload: {messages}});
 }
 
 function * getNetwork() {
