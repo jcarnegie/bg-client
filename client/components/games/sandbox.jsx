@@ -1,8 +1,8 @@
+import "./sandbox.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router";
 import Init from "../common/init";
-import {FormattedMessage} from "react-intl";
 import {Col, Row} from "react-bootstrap";
 import {readFromQueryString} from "../../utils/location";
 
@@ -34,17 +34,14 @@ export default class SandBox extends Component {
     if (!this.state.url) {
       return null;
     }
-    return (<iframe src={this.state.url} style={{height: "calc(100vh - 200px)", width: "100%"}} />);
+    return (<iframe src={this.state.url} />);
   }
 
   render() {
     return (
       <Row>
-        <Col className="grap gap">
+        <Col className="grap sandbox">
           <Init />
-          <h2>
-            <FormattedMessage id="pages.sandbox.title" />
-          </h2>
           {this.renderIframe()}
         </Col>
         <Col className="chat">
