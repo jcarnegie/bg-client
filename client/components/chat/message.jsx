@@ -8,7 +8,7 @@ const styles = {
   messageBox: {backgroundColor: "#FFF", borderRadius: 5, flexGrow: 10, padding: "5px 10px 10px 10px", width: 185},
   messageBoxHeader: {color: "#E3E3E3", display: "flex", fontSize: 10, justifyContent: "space-between"},
   messageContents: {fontSize: 13, marginTop: 5},
-  avatarRight: {alignSelf: "flex-end", flexGrow: 1, margin: "0 10px", width: 34},
+  avatarRight: {alignSelf: "flex-end", flexGrow: 1, margin: "0 10px", width: 34}
 };
 
 const formatTime = date => {
