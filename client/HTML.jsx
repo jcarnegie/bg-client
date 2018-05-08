@@ -49,7 +49,7 @@ export default class HTML extends React.Component {
           <link rel="shortcut icon" href={"/favicon.png"} />
           <link href={"/bundle/client.css"} rel="stylesheet" />
           <link rel="stylesheet" href="https://use.typekit.net/woi6egk.css" />
-          <title>BitGuild Crowdsale Whitelisting</title>
+          <title>BitGuild</title>
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{__html: this.props.initialMarkup}} />
