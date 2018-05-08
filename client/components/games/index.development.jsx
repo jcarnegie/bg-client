@@ -4,7 +4,7 @@ import React, {Component} from "react";
 import {Button, Col, Image, Row} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import {Link} from "react-router-dom";
-import Chat from "./chat";
+import Chat from "../chat/chat";
 
 export default class Games extends Component {
   render() {

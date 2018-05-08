@@ -11,6 +11,7 @@ services:
         ports:
           - "7000:7000"
         environment:
+          - NODE_ENV=development
           - MONGO_HOST=mongo
           - MONGO_PORT=27017
           - MONGO_DB_NAME=bitguild
@@ -22,6 +23,7 @@ services:
         ports:
             - "5000:5000"
         environment:
+            - NODE_ENV=development
             - RENDERING=client
             - MAINNET_TOKEN_CONTRACT_ADDR=0x7E43581b19ab509BCF9397a2eFd1ab10233f27dE
             - MAINNET_TOPUP_CONTRACT_ADDR=0xb3bbc0cc040413a3e68dcaa8f2b6eac2957c5ce0
