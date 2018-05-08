@@ -24,8 +24,11 @@ export default class User extends Component {
     }
 
     return (
-      <Navbar.Text>
-        {user.data.wallet.substring(0, 10) + "..."}
+      <Navbar.Text className="user">
+        <span className="text">
+          <span className="name">{user.data.nickName}</span>
+          <span className="wallet">{user.data.wallet.substring(0, 10) + "..."}</span>
+        </span>
         <Image src="/images/avatar.png" className="avatar" />
       </Navbar.Text>
     );

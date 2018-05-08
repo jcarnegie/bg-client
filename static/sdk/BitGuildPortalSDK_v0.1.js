@@ -25,89 +25,114 @@
   function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
   var _default = new (
-  /*#__PURE__*/
-  function () {
-    function BitGuildSDK() {
-      _classCallCheck(this, BitGuildSDK);
+    /*#__PURE__*/
+    function () {
+      function BitGuildSDK() {
+        _classCallCheck(this, BitGuildSDK);
 
-      Object.defineProperty(this, "isBitGuildPortal", {
-        configurable: true,
-        enumerable: true,
-        writable: true,
-        value: false
-      });
-      Object.defineProperty(this, "isInitialized", {
-        configurable: true,
-        enumerable: true,
-        writable: true,
-        value: false
-      });
-      Object.defineProperty(this, "user", {
-        configurable: true,
-        enumerable: true,
-        writable: true,
-        value: null
-      });
-    }
-
-    _createClass(BitGuildSDK, [{
-      key: "init",
-      value: function init() {
-        var _this = this;
-
-        if (this.isInitialized) {
-          return Promise.resolve();
-        } else {
-          return new Promise(function (resolve, reject) {
-            setTimeout(function () {
-              reject(new Error("timeout!"));
-            }, 200);
-            window.addEventListener("message", _this.receiveMessage.call(_this, resolve), false);
-            window.top.postMessage({
-              type: "ping"
-            }, "*");
-          }).then(function () {
-            _this.isInitialized = true;
-          }).catch(function () {});
-        }
+        Object.defineProperty(this, "isBitGuildPortal", {
+          configurable: true,
+          enumerable: true,
+          writable: true,
+          value: false
+        });
+        Object.defineProperty(this, "isInitialized", {
+          configurable: true,
+          enumerable: true,
+          writable: true,
+          value: false
+        });
+        Object.defineProperty(this, "user", {
+          configurable: true,
+          enumerable: true,
+          writable: true,
+          value: null
+        });
+        Object.defineProperty(this, "subscribers", {
+          configurable: true,
+          enumerable: true,
+          writable: true,
+          value: []
+        });
       }
-    }, {
-      key: "receiveMessage",
-      value: function receiveMessage(resolve) {
-        var _this2 = this;
 
-        return function (_ref) {
-          var data = _ref.data;
+      _createClass(BitGuildSDK, [{
+        key: "init",
+        value: function init() {
+          var _this = this;
 
-          if (data.type === "pong") {
-            _this2.isBitGuildPortal = true;
-            _this2.user = data.user;
-            resolve();
+          if (this.isInitialized) {
+            return Promise.resolve();
+          } else {
+            return new Promise(function (resolve, reject) {
+              setTimeout(function () {
+                reject(new Error("timeout!"));
+              }, 200);
+              window.addEventListener("message", _this.receiveMessage.call(_this, resolve), false);
+              window.top.postMessage({
+                type: "ping"
+              }, "*");
+            }).then(function () {
+              _this.isInitialized = true;
+            }).catch(function () {});
           }
-        };
-      }
-    }, {
-      key: "isOnPortal",
-      value: function isOnPortal() {
-        var _this3 = this;
+        }
+      }, {
+        key: "receiveMessage",
+        value: function receiveMessage(resolve) {
+          var _this2 = this;
 
-        return this.init().then(function () {
-          return _this3.isBitGuildPortal;
-        });
-      }
-    }, {
-      key: "getUser",
-      value: function getUser() {
-        var _this4 = this;
+          return function (_ref) {
+            var data = _ref.data;
 
-        return this.init().then(function () {
-          return _this4.user;
-        });
-      }
-    }]);
+            switch (data.type) {
+              case "pong":
+                _this2.isBitGuildPortal = true;
+                break;
 
-    return BitGuildSDK;
-  }())();
+              case "user":
+                _this2.user = data.user;
+
+                _this2.subscribers.forEach(function (callback) {
+                  callback(data);
+                });
+
+                break;
+
+              default:
+                break;
+            }
+
+            resolve();
+          };
+        }
+      }, {
+        key: "isOnPortal",
+        value: function isOnPortal() {
+          var _this3 = this;
+
+          return this.init().then(function () {
+            return _this3.isBitGuildPortal;
+          });
+        }
+      }, {
+        key: "getUser",
+        value: function getUser() {
+          var _this4 = this;
+
+          return this.init().then(function () {
+            return _this4.user;
+          });
+        }
+      }, {
+        key: "subscribe",
+        value: function subscribe(callback) {
+          this.subscribers.push(callback);
+        }
+      }]);
+
+      return BitGuildSDK;
+    }())();
 
   _exports.default = _default;
 });

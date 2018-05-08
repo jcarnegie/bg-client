@@ -12,6 +12,21 @@
     box-shadow: none;
     border: 0;
 
+    .modal-header {
+      button {
+        span {
+          &:first-child {
+            background: url("/images/buttons/close.png");
+            width: 28px;
+            height: 28px;
+            display: block;
+            text-indent: 100%;
+            overflow: hidden;
+          }
+        }
+      }
+    }
+
     .modal-body {
       padding: 50px 25px;
       min-height: 310px;
@@ -48,5 +63,9 @@
 
   &.in {
     opacity: 1;
+  }
+
+  &.semi {
+    opacity: .9;
   }
 }

@@ -9,29 +9,29 @@ import {Link} from "react-router-dom";
 
 @connect(
   state => ({
-    account: state.account
+    network: state.network
   })
 )
-export default class MetaMaskLoginPopup extends Component {
+export default class MetaMaskNetworkPopup extends Component {
   static propTypes = {
-    account: PropTypes.object
+    network: PropTypes.object
   };
 
   render() {
-    const {account} = this.props;
+    const {network} = this.props;
 
     return (
-      <Modal show={!account.isLoading && !account.success} className="metamask-login">
+      <Modal show={!network.isLoading && network.success && !["1", "4"].includes(network.data.id)} className="metamask-network">
         <Modal.Body>
           <div>
-            <h2><FormattedMessage id="modals.metamask-login.title" /></h2>
+            <h2><FormattedMessage id="modals.metamask-network.title" /></h2>
             <br />
-            <p><FormattedMessage id="modals.metamask-login.p1" /></p>
+            <p><FormattedMessage id="modals.metamask-network.p1" /></p>
             <p className="note">
-              <FormattedMessage id="modals.metamask-login.n1" />
+              <FormattedMessage id="modals.metamask-network.n1" />
               {" "}
               <Link to="/faq">
-                <FormattedMessage id="modals.metamask-login.faq" />
+                <FormattedMessage id="modals.metamask-network.faq" />
               </Link>
             </p>
           </div>

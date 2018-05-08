@@ -2,6 +2,8 @@
 
 :root {
   --main-color: #130029;
+  --link-color: #4d4b85;
+  --link-hover-color: #7d5ea2;
 }
 
 body {
@@ -14,6 +16,14 @@ h2 {
   font-size: 24px;
 }
 
+a {
+  color: var(--link-color);
+
+  &:hover {
+    color: var(--link-hover-color);
+  }
+}
+
 
 .gap {
   padding-left: 90px;
@@ -21,6 +31,8 @@ h2 {
 }
 
 .grap {
+  position: relative;
   float: left;
   width: calc(100vw - 285px);
+  min-height: calc(100vh - 62px);
 }

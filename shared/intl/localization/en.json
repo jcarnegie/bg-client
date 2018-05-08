@@ -74,7 +74,15 @@
     },
     "metamask-login": {
       "title": "You are not logged into MetaMask",
-      "p1": "Please open MetaMask and follow the instructions to log in."
+      "p1": "Please open MetaMask and follow the instructions to log in.",
+      "n1": "Questions? Check our",
+      "faq": "FAQ"
+    },
+    "metamask-network": {
+      "title": "Sorry!",
+      "p1": "This network is not supported by BitGuild portal. For actual experience please switch to main net. For testing purposes please use Rinkeby",
+      "n1": "Questions? Check our",
+      "faq": "FAQ"
     },
     "register": {
       "title": "Welcome to BitGuild",
@@ -87,7 +95,10 @@
     "inventory": {
       "title": "My Items",
       "all-items": "All items",
-      "back-to-game": "Back to game"
+      "back-to-game": "Back to game",
+      "empty": "You have no items yet!",
+      "learn-more": "Learn more about items in",
+      "faq": "FAQ"
     },
     "sandbox": {
       "title": "Sandbox"

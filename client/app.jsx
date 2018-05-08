@@ -15,6 +15,7 @@ import HeaderProd from "./components/common/header.production";
 
 import MetaMaskInstall from "./components/popups/metamask.install";
 import MetaMaskLogin from "./components/popups/metamask.login";
+import MetaMaskNetwork from "./components/popups/metamask.network";
 import Register from "./components/popups/register";
 
 
@@ -28,6 +29,7 @@ export default class App extends Component {
         {isProd ? <HeaderProd /> : <HeaderDev />}
         {isProd ? null : <MetaMaskInstall />}
         {isProd ? null : <MetaMaskLogin />}
+        {isProd ? null : <MetaMaskNetwork />}
         {isProd ? null : <Register />}
         <Grid fluid>
           <Message />

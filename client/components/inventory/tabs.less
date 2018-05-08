@@ -1,0 +1,36 @@
+.nav-tabs {
+  li {
+    a {
+      color: var(--main-color);
+      font-size: 14px;
+      line-height: 16px;
+
+      &:hover,
+      &:focus {
+        background: none;
+        border: 1px solid transparent;
+        outline: 0;
+      }
+    }
+
+    &.active {
+      a {
+        color: var(--main-color);
+        font-size: 16px;
+        font-weight: bolder;
+
+        &,
+        &:hover,
+        &:focus {
+          color: var(--main-color);
+          border: 0;
+          border-bottom: 2px solid var(--main-color);
+        }
+      }
+    }
+  }
+}
+
+.tab-content {
+  padding-top: 20px;
+}

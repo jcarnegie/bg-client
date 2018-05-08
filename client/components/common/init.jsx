@@ -1,6 +1,7 @@
 import {Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import {isEqual} from "lodash";
 
 
 @connect(
@@ -14,8 +15,26 @@ export default class Init extends Component {
   };
 
   state = {
-    isInitialized: false
+    user: this.props.user.data,
+    sources: {}
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!nextProps.user.isLoading && nextProps.user.success && !isEqual(nextProps.user.data, prevState.user)) {
+      Object.keys(prevState.sources).forEach(origin => {
+        prevState.sources[origin].postMessage({
+          type: "user",
+          user: nextProps.user.data
+        }, origin);
+      });
+
+      return {
+        user: nextProps.user.data
+      };
+    }
+
+    return null;
+  }
 
   componentDidMount() {
     window.addEventListener("message", ::this.receiveMessage, false);
@@ -26,19 +45,29 @@ export default class Init extends Component {
   }
 
   receiveMessage({data, origin, source}) {
-    if (data.type === "ping") {
-      if (!this.state.isInitialized) {
-        this.setState({
-          isInitialized: true
-        }, () => {
-          source.postMessage({
-            type: "pong",
-            user: {
-              nickName: this.props.user.nickName
-            }
-          }, origin);
-        });
-      }
+    if (!this.state.sources[origin]) {
+      this.setState({
+        sources: {
+          ...this.state.sources,
+          [origin]: source
+        }
+      });
+    }
+
+    switch (data.type) {
+      case "ping":
+        source.postMessage({
+          type: "pong"
+        }, origin);
+      // eslint-disable-next-line no-fallthrough
+      case "user":
+        source.postMessage({
+          type: "user",
+          user: this.props.user.data
+        }, origin);
+        break;
+      default:
+        break;
     }
   }
 

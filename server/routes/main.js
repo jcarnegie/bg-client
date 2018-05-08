@@ -9,9 +9,9 @@ router.route("/ping")
     response.status(200).json({pong: true});
   });
 
-router.route("/favicon.ico")
+router.route("/favicon.png")
   .get((request, response) => {
-    response.sendFile(path.join(__dirname, "../../static/favicon.ico"));
+    response.sendFile(path.join(__dirname, "../../static/favicon.png"));
   });
 
 export default router;

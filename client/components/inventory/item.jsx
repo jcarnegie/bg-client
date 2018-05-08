@@ -42,7 +42,7 @@ export default class Inventory extends Component {
   render() {
     const {id, name, categories, image, game, onClick} = this.props;
     return (
-      <Col xs={6} sm={4} md={3} className="item">
+      <Col sm={6} md={4} lg={3} className="item">
         <Gift show={this.state.show} name={name} id={id} image={image} onHide={::this.onHide} />
         <Thumbnail src={image}>
           <h4>{name}</h4>

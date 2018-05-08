@@ -6,6 +6,7 @@ form {
     text-align: left;
 
     .control-label {
+      font-weight: 500;
       font-size: 11px;
       opacity: .35;
     }
@@ -13,12 +14,15 @@ form {
     .form-control[type=text],
     .form-control[type=email],
     .form-control[type=number] {
+      font-weight: 500;
       font-size: 13px;
       box-shadow: none;
       border: none;
       border-bottom: 1px solid var(--main-color);
       border-radius: 4px;
       background-color: #F3F4FA;
+      padding: 10px 12px;
+      height: 40px;
 
       &:focus {
         background-color: #DFDFF0;
@@ -47,6 +51,7 @@ form {
     color: #ffffff;
     border: 0;
     padding: 10px;
+    border-radius: 2px;
 
     &:hover {
       background-color: #71508C;

@@ -2,7 +2,7 @@ import "./language.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {Image, MenuItem, Nav, NavDropdown} from "react-bootstrap";
+import {Image, MenuItem, NavDropdown} from "react-bootstrap";
 import {defaultLanguage, enabledLanguages} from "../../../shared/constants/language";
 import {localization} from "../../../shared/intl/setup";
 import {SWITCH_LANGUAGE, UPDATE_USER} from "../../../shared/constants/actions";
@@ -39,15 +39,13 @@ export default class Language extends Component {
     const language = !user.isLoading && user.success ? user.data.language : defaultLanguage;
 
     return (
-      <Nav>
-        <NavDropdown title={<Image src={`/images/language/${language}.png`} />} id="lang_menu">
-          {enabledLanguages.map(language =>
-            (<MenuItem key={language} eventKey={language} onSelect={::this.onSelect}>
-              <Image src={`/images/language/${language}.png`} />
-            </MenuItem>)
-          )}
-        </NavDropdown>
-      </Nav>
+      <NavDropdown title={<Image src={`/images/language/${language}.png`} />} id="lang_menu">
+        {enabledLanguages.map(language =>
+          (<MenuItem key={language} eventKey={language} onSelect={::this.onSelect}>
+            <Image src={`/images/language/${language}.png`} />
+          </MenuItem>)
+        )}
+      </NavDropdown>
     );
   }
 }
