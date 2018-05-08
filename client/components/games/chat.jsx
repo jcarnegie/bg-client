@@ -5,6 +5,8 @@ import React, {Component} from "react";
 import StayScrolled from "react-stay-scrolled";
 import {connect} from "react-redux";
 import {map} from "ramda";
+import {sendChatMessage} from "../../actions/chat";
+import {sbp} from "../../utils/chat";
 
 const styles = {
   container: {display: "flex", flexDirection: "column", height: "calc(100vh - 60px)"},
@@ -60,7 +62,10 @@ const Message = ({message}) => {
   );
 };
 
-@connect(state => ({chat: state.chat, user: state.user}))
+@connect(
+  state => ({chat: state.chat, user: state.user}),
+  {sendChatMessage}
+)
 class Chat extends Component {
   static propTypes = {
     chat: PropTypes.object,
@@ -74,42 +79,16 @@ class Chat extends Component {
     this.handleMessageChange = this.handleMessageChange.bind(this);
   }
 
-  componentWillMount() {
-
-    //       const msg = await sbp(cb => currentChannel.sendUserMessage(`${nickName} joined`, null, null, cb));
-    //       console.log('msg:', msg);
-          
-    //       this.setState({sb:
-    //         {
-    //           connection: sb,
-    //           channels,
-    //           selectedChannel,
-    //           currentChannel,
-    //           messages,
-    //           user
-    //         }
-    //       });
-    //     } catch (e) {
-    //       console.log("SendBird Error:", e.stack);
-    //     }
-    //   } else {
-    //     setTimeout(doConnect, 1000);
-    //   }
-    // };
-
-    // doConnect();
-  }
-
-  componentWillUnmount() {
-  }
-
   componentDidUpdate() {
     this.scrollBottom();
   }
 
   async handleSubmit(e) {
+    const {sendChatMessage} = this.props;
     e.preventDefault();
-    // const msg = await sbp(cb => currentChannel.sendUserMessage(`${nickName} joined`, null, null, cb));
+    sendChatMessage(this.state.newMessage);
+    // clear the message input
+    this.setState({newMessage: ""});
   }
 
   handleMessageChange(e) {

@@ -1,11 +1,15 @@
 import Promise from "bluebird";
 import SendBird from "sendbird";
-import {find, propEq} from "ramda";
+import {find, propEq, reverse} from "ramda";
 
 export let _sb = null;
 export let _user = null;
 
-const sbp = fn => new Promise((resolve, reject) =>
+/**
+ * Simple utility function to promisify SendBird calls
+ * @param {*} fn 
+ */
+export const sbp = fn => new Promise((resolve, reject) =>
   fn((res, err) => (err) ? reject(err) : resolve(res))
 );
 
@@ -35,5 +39,9 @@ export const setChannelByName = async(name, channels) => {
 
 export const messages = async channel => {
   const query = channel.createPreviousMessageListQuery();
-  return sbp(cb => query.load(30, true, cb));
+  const messages = await sbp(cb => query.load(30, true, cb));
+  return reverse(messages);
 };
+
+export const sendMessage = async(msg, channel) =>
+  sbp(cb => channel.sendUserMessage(msg, null, null, cb));

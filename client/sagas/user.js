@@ -8,8 +8,7 @@ import {
   init as chatInit,
   channels as chatChannels,
   setChannelByName,
-  messages as chatMessages,
-  sendMessage
+  messages as chatMessages
 } from "../utils/chat";
 import {localization} from "../../shared/intl/setup";
 import {
@@ -247,10 +246,10 @@ function * initChat(action) {
 
   const channels = yield chatChannels(sb);
   const channel = yield setChannelByName("BitGuild", channels);
-  yield put({type: CHAT_SET_CHANNEL, payload: {channel}});
+  yield put({type: CHAT_SET_CHANNEL, payload: channel});
 
   const messages = yield chatMessages(channel);
-  yield put({type: CHAT_LOAD_MESSAGES, payload: {messages}});
+  yield put({type: CHAT_LOAD_MESSAGES, payload: messages});
 }
 
 function * getNetwork() {

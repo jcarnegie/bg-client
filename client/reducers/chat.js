@@ -1,3 +1,4 @@
+import { append } from "ramda";
 import {
   CHAT_INIT,
   CHAT_LOAD_MESSAGES,
@@ -25,7 +26,7 @@ export default function chatReducer(state = chat, action) {
     case CHAT_LOAD_MESSAGES:
       return {
         ...state,
-        messages: action.payload.messages
+        messages: action.payload
       }
     case CHAT_RECEIVE_MESSAGE:
       return {
@@ -35,11 +36,14 @@ export default function chatReducer(state = chat, action) {
         success: false
       };
     case CHAT_MESSAGE_SENT:
-      return state;
+      return {
+        ...state,
+        messages: append(action.payload, state.messages)
+      };
     case CHAT_SET_CHANNEL:
       return {
         ...state,
-        currentChannel: action.payload.channel
+        currentChannel: action.payload
       };
     default:
       return state;
