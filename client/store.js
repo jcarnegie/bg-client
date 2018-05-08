@@ -18,7 +18,7 @@ export default function(initialState = {}) {
   let composeEnhancers = compose;
 
   if (process.env.NODE_ENV === "development" && !process.env.PORT) {
-    // middlewares.push(createLogger());
+    middlewares.push(createLogger());
   }
 
   if (process.env.NODE_ENV === "development") {

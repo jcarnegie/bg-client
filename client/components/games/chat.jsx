@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import React, {Component} from "react";
 import StayScrolled from "react-stay-scrolled";
 import {connect} from "react-redux";
-import {map} from "ramda";
+import {map, merge} from "ramda";
 import {sendChatMessage} from "../../actions/chat";
 import {sbp} from "../../utils/chat";
 
 const styles = {
   container: {display: "flex", flexDirection: "column", height: "calc(100vh - 60px)"},
   form: {display: "flex", width: "auto"},
-  header: {alignItems: "center", backgroundColor: "#DEE6F3", color: "#8CA2C7", display: "flex", fontSize: 18, height: 40, justifyContent: "center"},
+  header: {alignItems: "center", backgroundColor: "#DEE6F4", color: "#E6DBDA", display: "flex", fontSize: 18, height: 40, justifyContent: "center"},
   messageInput: {border: "none", flexGrow: 6, outline: "none", padding: "0 10px"},
   messageButton: {backgroundColor: "#4D4D83", borderRadius: 3, color: "#F9F9FB", flexGrow: 1, padding: "15px 10px"},
   messageList: {flexGrow: 1, overflowY: "scroll", paddingBottom: "10px"},
@@ -38,27 +38,40 @@ const formatTime = date => {
   return `${hours}:${minutes}${period}`;
 };
 
-const Message = ({message}) => {
+const Message = ({message, user}) => {
+  let backgroundColor = "#FFF";
+  let headerColor = "#E6DBDA";
+  const isMyMessage = message.sender.userId === user.data.wallet;
+  if (isMyMessage) {
+    backgroundColor = "#DEECFB";
+    headerColor = "white";
+  }
   return (
     <div className="message" style={styles.message}>
-      <div className="avatar-left" style={styles.avatarLeft}>
-        <div style={styles.avatarIconLeft}>
-          <div>AL</div>
+      {
+        !isMyMessage &&
+        <div className="avatar-left" style={styles.avatarLeft}>
+          <div style={styles.avatarIconLeft}>
+            <div>AL</div>
+          </div>
         </div>
-      </div>
-      <div className="message-box" style={styles.messageBox}>
-        <div className="header" style={styles.messageBoxHeader}>
+      }
+      <div className="message-box" style={merge(styles.messageBox, {backgroundColor})}>
+        <div className="header" style={merge(styles.messageBoxHeader, {color: headerColor})}>
           <div>{message.sender.nickname}</div>
           <div>{formatTime(new Date(message.createdAt))}</div>
         </div>
         <div className="contents" style={styles.messageContents}>{message.message}</div>
       </div>
-      <div className="avatar-right" style={styles.avatarRight}>
-        <div style={styles.avatarIconRight}>
-          <div>AR</div>
+      {
+        isMyMessage &&
+        <div className="avatar-right" style={styles.avatarRight}>
+          <div style={styles.avatarIconRight}>
+            <div>AR</div>
+          </div>
         </div>
+      }
       </div>
-    </div>
   );
 };
 
@@ -102,13 +115,15 @@ class Chat extends Component {
 
   render() {
     const {messages} = this.props.chat;
+    const {user} = this.props;
+    console.log(messages);
     return (
       <div style={styles.container}>
         <div style={styles.header}>
           <div>Chat</div>
         </div>
         <StayScrolled component="div" provideControllers={this.storeScrolledControllers} style={styles.messageList}>
-          { map(msg => <Message key={msg.messageId} message={msg} />, messages) }
+          { map(msg => <Message key={msg.messageId} message={msg} user={user} />, messages) }
         </StayScrolled>
         <div>
           <form onSubmit={this.handleSubmit} style={styles.form}>
