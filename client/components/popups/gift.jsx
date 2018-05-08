@@ -87,7 +87,7 @@ export default class ConvertPopup extends Component {
     const {show, onHide, intl, name, image} = this.props;
 
     return (
-      <Modal show={show} className="gift" onHide={onHide}>
+      <Modal show={show} className="gift" onHide={onHide} backdropClassName="semi">
         <Modal.Header closeButton />
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
