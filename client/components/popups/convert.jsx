@@ -9,6 +9,10 @@ import {FormattedMessage} from "react-intl";
 import topupABI from "../../../shared/contracts/topup";
 import networkConfig from "../../utils/network";
 
+function precisionRound(number, precision) {
+  const factor = Math.pow(10, precision);
+  return Math.round(number * factor) / factor;
+}
 
 @connect(
   state => ({
@@ -61,7 +65,7 @@ export default class ConvertPopup extends Component {
     const {network, user} = this.props;
     const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.data.id].topup);
     contract.buyTokens({
-        value: this.state.eth * 1e18, // web3.toWei(this.state.eth)
+        value: window.web3.toWei(precisionRound(this.state.eth, 6)),
         from: user.data.wallet,
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(1e10)
@@ -103,7 +107,7 @@ export default class ConvertPopup extends Component {
                   min={step}
                   name="amount"
                   onKeyDown={::this.onKeyDown}
-                  value={this.state.eth}
+                  value={precisionRound(this.state.eth, 6)}
                   onChange={::this.onChangeETH}
                   required
                 />
@@ -122,7 +126,7 @@ export default class ConvertPopup extends Component {
                   min={rate.data * step}
                   step={rate.data * step}
                   name="result"
-                  value={this.state.plat}
+                  value={precisionRound(this.state.plat, 6)}
                   onChange={::this.onChangePLAT}
                 />
               </Col>
