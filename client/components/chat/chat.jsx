@@ -10,7 +10,8 @@ const styles = {
   container: {backgroundColor: "#F2F3F8", borderLeft: "solid 1px #C2C3D2", display: "flex", flexDirection: "column", height: "calc(100vh - 60px)"},
   form: {display: "flex", width: "auto"},
   header: {alignItems: "center", backgroundColor: "#DEE6F4", color: "#8AA0C8", display: "flex", fontSize: 10, height: 32, justifyContent: "center"},
-  messageInput: {border: "none", borderBottom: "solid 1px #D1D1D1", borderTop: "solid 1px #E5E5EB", flexGrow: 6, outline: "none", padding: "0 10px"},
+  messageInput: {border: "none", borderBottom: "solid 1px #D1D1D1", flex: 1, outline: "none", margin: "10px 10px 15px 10px"},
+  messageInputWrapper: {backgroundColor: "#FFF", borderTop: "solid 1px #E5E5EB", display: "flex", flexGrow: 6},
   messageButton: {backgroundColor: "#4D4D83", borderRadius: 3, color: "#F9F9FB", flexGrow: 1, padding: "15px 10px"},
   messageList: {flexGrow: 1, overflowY: "scroll", paddingBottom: "10px"},
 };
@@ -66,7 +67,9 @@ class Chat extends Component {
         </StayScrolled>
         <div>
           <form onSubmit={this.handleSubmit} style={styles.form}>
-            <input onChange={this.handleMessageChange} style={styles.messageInput} type="text" value={this.state.newMessage} />
+            <div style={styles.messageInputWrapper}>
+              <input onChange={this.handleMessageChange} style={styles.messageInput} type="text" value={this.state.newMessage} />
+            </div>
             <button style={styles.messageButton}>Send</button>
           </form>
         </div>
