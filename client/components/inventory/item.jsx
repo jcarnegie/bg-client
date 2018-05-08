@@ -4,6 +4,7 @@ import {Badge, Button, ButtonGroup, Col, Thumbnail} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
 import Gift from "../popups/gift";
+import Sell from "../popups/sell";
 
 
 export default class Inventory extends Component {
@@ -18,24 +19,33 @@ export default class Inventory extends Component {
   };
 
   state = {
-    show: false
+    gift: false,
+    sell: false
   };
 
-  onSell(e) {
-    e.preventDefault();
-    alert("Not implemented!");
-  }
-
-  onGift(e) {
+  onShowSell(e) {
     e.preventDefault();
     this.setState({
-      show: true
+      sell: true
     });
   }
 
-  onHide() {
+  onShowGift(e) {
+    e.preventDefault();
     this.setState({
-      show: false
+      gift: true
+    });
+  }
+
+  onHideSell() {
+    this.setState({
+      sell: false
+    });
+  }
+
+  onHideGift() {
+    this.setState({
+      gift: false
     });
   }
 
@@ -43,14 +53,15 @@ export default class Inventory extends Component {
     const {id, name, categories, image, game, onClick} = this.props;
     return (
       <Col sm={6} md={4} lg={3} className="item">
-        <Gift show={this.state.show} name={name} id={id} image={image} onHide={::this.onHide} />
+        <Gift show={this.state.gift} name={name} id={id} image={image} onHide={::this.onHideGift} />
+        <Sell show={this.state.sell} name={name} id={id} image={image} onHide={::this.onHideSell} />
         <Thumbnail src={image}>
           <h4>{name}</h4>
           <ButtonGroup justified>
-            <Button href="#" onClick={::this.onSell} className="sell">
+            <Button href="#" onClick={::this.onShowSell} className="sell">
               <FormattedMessage id="buttons.sell" />
             </Button>
-            <Button href="#" onClick={::this.onGift} className="gift">
+            <Button href="#" onClick={::this.onShowGift} className="gift">
               <FormattedMessage id="buttons.gift" />
             </Button>
           </ButtonGroup>
