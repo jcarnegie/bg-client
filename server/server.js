@@ -1,5 +1,4 @@
 import app from "./configs/express";
-
 import assets from "./routes/assets";
 import main from "./routes/main";
 import {sendError} from "./utils/wrapper";

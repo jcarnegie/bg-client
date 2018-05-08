@@ -89,8 +89,13 @@ export default {
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
       "process.env.RENDERING": JSON.stringify(process.env.RENDERING),
-      "process.env.TOKEN_CONTRACT_ADDR": JSON.stringify(process.env.TOKEN_CONTRACT_ADDR),
-      "process.env.TOPUP_CONTRACT_ADDR": JSON.stringify(process.env.TOPUP_CONTRACT_ADDR)
+      "process.env.MAINNET_TOKEN_CONTRACT_ADDR": JSON.stringify(process.env.MAINNET_TOKEN_CONTRACT_ADDR),
+      "process.env.MAINNET_TOPUP_CONTRACT_ADDR": JSON.stringify(process.env.MAINNET_TOPUP_CONTRACT_ADDR),
+      "process.env.MAINNET_ORACLE_CONTRACT_ADDR": JSON.stringify(process.env.MAINNET_ORACLE_CONTRACT_ADDR),
+      "process.env.RINKEBY_TOKEN_CONTRACT_ADDR": JSON.stringify(process.env.RINKEBY_TOKEN_CONTRACT_ADDR),
+      "process.env.RINKEBY_TOPUP_CONTRACT_ADDR": JSON.stringify(process.env.RINKEBY_TOPUP_CONTRACT_ADDR),
+      "process.env.RINKEBY_ORACLE_CONTRACT_ADDR": JSON.stringify(process.env.RINKEBY_ORACLE_CONTRACT_ADDR),
+      "process.env.SENDBIRD_APP_ID": JSON.stringify(process.env.SENDBIRD_APP_ID)
     }),
     new webpack.HotModuleReplacementPlugin()
   ],

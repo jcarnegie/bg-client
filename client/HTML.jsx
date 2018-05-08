@@ -21,6 +21,20 @@ export default class HTML extends React.Component {
     }
   }
 
+  renderChat() {
+    if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
+      return (
+        <div>
+          <div id="sb_widget" />
+          <script src="https://cdn.jsdelivr.net/npm/sendbird@3.0.60/SendBird.min.js" type="text/javascript" crossOrigin="anonymous" />
+          <script src="/js/widget.SendBird.js" type="text/javascript" crossOrigin="anonymous" />
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
     return (
       <html>
@@ -32,7 +46,7 @@ export default class HTML extends React.Component {
           <meta name="keywords" content="keywords" />
           <meta name="robots" content="all" />
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-          <link rel="shortcut icon" href={"/favicon.ico"} />
+          <link rel="shortcut icon" href={"/favicon.png"} />
           <link href={"/bundle/client.css"} rel="stylesheet" />
           <link rel="stylesheet" href="https://use.typekit.net/woi6egk.css" />
           <title>BitGuild Crowdsale Whitelisting</title>

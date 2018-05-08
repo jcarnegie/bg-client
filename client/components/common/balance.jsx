@@ -3,11 +3,12 @@ import React, {Component} from "react";
 import {Navbar} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import topupABI from "../../../shared/contracts/topup";
+import Convert from "../popups/convert";
 
 
 @connect(
   state => ({
+    user: state.user,
     balanceETH: state.balanceETH,
     balancePLAT: state.balancePLAT
   })
@@ -20,28 +21,50 @@ export default class Balance extends Component {
     balancePLAT: PropTypes.object
   };
 
+  state = {
+    show: false,
+    balanceETH: this.props.balanceETH,
+    balancePLAT: this.props.balancePLAT
+  };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!nextProps.balanceETH.isLoading && nextProps.balanceETH.success && nextProps.balanceETH.data !== prevState.balanceETH.data) {
+      return {
+        balanceETH: nextProps.balanceETH
+      };
+    }
+
+    if (!nextProps.balancePLAT.isLoading && nextProps.balancePLAT.success && nextProps.balancePLAT.data !== prevState.balancePLAT.data) {
+      return {
+        balancePLAT: nextProps.balancePLAT
+      };
+    }
+
+    return null;
+  }
+
   onClick(e) {
     e.preventDefault();
-    const contract = window.web3.eth.contract(topupABI).at(process.env.TOPUP_CONTRACT_ADDR);
-    contract.buyTokens({
-        value: 1.1 * 1e18,
-        from: window.web3.eth.accounts[0],
-        gas: window.web3.toHex(15e4),
-        gasPrice: window.web3.toHex(1e10)
-      },
-      console.log
-    );
+    this.setState({
+      show: true
+    });
+  }
+
+  onHide() {
+    this.setState({
+      show: false
+    });
   }
 
   render() {
-    const {balanceETH, balancePLAT} = this.props;
+    const {balanceETH, balancePLAT, show} = this.state;
     return (
-      <Navbar.Text pullRight>
-        {!balanceETH.isLoading && balanceETH.success ? `${balanceETH.data.toFixed(2)} ETH` : ""}
-        {" "}
-        {!balancePLAT.isLoading && balancePLAT.success ? `${balancePLAT.data.toFixed(0)} PLAT` : ""}
-        {" "}
-        <a href="#" className="plus" onClick={this.onClick}>+</a>
+      <Navbar.Text>
+        <Convert show={show} onHide={::this.onHide} />
+        {!balanceETH.isLoading && balanceETH.success ? balanceETH.data.toFixed(2) : "0"} ETH
+        {"\u00A0\u00A0\u00A0"}
+        {!balancePLAT.isLoading && balancePLAT.success ? balancePLAT.data.toFixed(0) : "0"} PLAT
+        <a href="#" className="plus" onClick={::this.onClick} />
       </Navbar.Text>
     );
   }

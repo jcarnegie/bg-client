@@ -54,3 +54,12 @@ localization.en = {
 	messages: flattenMessages(enData)
 };
 
+import "intl/locale-data/jsonp/zh";
+import zh from "react-intl/locale-data/zh";
+import zhData from "./localization/zh";
+addLocaleData(zh);
+localization.zh = {
+	id: "zh",
+	messages: flattenMessages(zhData)
+};
+

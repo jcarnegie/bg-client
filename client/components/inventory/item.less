@@ -1,0 +1,66 @@
+.item {
+  padding-left: 35px;
+  padding-right: 35px;
+
+  .thumbnail {
+    padding: 0;
+    border: 0;
+    background-color: #E8EBF4;
+    border-radius: 0;
+
+    img {
+      max-height: 100px;
+      min-height: 100px;
+    }
+
+    .caption {
+      padding: 0;
+      background-color: #ffffff;
+
+      h4 {
+        font-size: 14px;
+        font-weight: bold;
+        background-color: #F4F6F9;
+        padding: 10px 15px;
+        margin: 0;
+      }
+
+      .btn {
+        font-size: 11px;
+        text-transform: uppercase;
+        line-height: 16px;
+        border-radius: 0;
+        border: 0;
+
+        &.sell {
+          color: #959EB4;
+          background-color: #D4DAE9;
+
+          &:hover {
+            background-color: #C7CDDE;
+          }
+        }
+
+        &.gift {
+          color: #ffffff;
+          background-color: var(--link-color);
+
+          &:hover {
+            background-color: var(--link-hover-color);
+          }
+        }
+      }
+
+      .badge {
+        margin-right: 3px;
+        background-color: #ffffff;
+        border: 1px solid #C9C9C9;
+        border-radius: 12px;
+        color: #797979;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 18px;
+      }
+    }
+  }
+}

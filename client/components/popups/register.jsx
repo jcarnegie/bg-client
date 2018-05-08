@@ -1,4 +1,5 @@
 import "./modal.less";
+import "./form.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Modal} from "react-bootstrap";
@@ -7,19 +8,22 @@ import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import {email, nickName, wallet} from "../../../shared/constants/placeholder";
 import {reEmail} from "../../../shared/constants/regexp";
 import {CREATE_USER, MESSAGE_ADD} from "../../../shared/constants/actions";
+import {enabledLanguages} from "../../../shared/constants/language";
 
 
 @injectIntl
 @connect(
   state => ({
     user: state.user,
-    account: state.account
+    account: state.account,
+    network: state.network
   })
 )
 export default class RegisterPopup extends Component {
   static propTypes = {
     user: PropTypes.object,
     account: PropTypes.object,
+    network: PropTypes.object,
     dispatch: PropTypes.func,
     intl: intlShape
   };
@@ -30,7 +34,8 @@ export default class RegisterPopup extends Component {
       get(key) {
         return this[key];
       },
-      wallet: this.props.account.wallet
+      wallet: this.props.account.wallet,
+      language: this.props.intl.locale
     }
   };
 
@@ -40,7 +45,8 @@ export default class RegisterPopup extends Component {
         get(key) {
           return this[key];
         },
-        wallet: nextProps.account.wallet
+        wallet: nextProps.account.wallet,
+        language: nextProps.intl.locale
       }
     });
   }
@@ -55,25 +61,19 @@ export default class RegisterPopup extends Component {
 
     this.setState({
       formData: new FormData(e.target)
-    }, () => {
-      this.props.dispatch({
-        type: CREATE_USER,
-        payload: Array.from(this.state.formData.entries()).reduce((memo, pair) => ({
-          ...memo,
-          [pair[0]]: pair[1]
-        }), {})
-      });
-    });
+    }, this.sign);
   }
 
   isValid(a) {
+    const {intl} = this.props;
+
     let isValid = true;
     for (let e of a) {
       switch (e.name) {
         case "wallet":
           if (!window.web3.isAddress(e.value)) {
-            e.parentNode.classList.add("has-error");
-            e.setCustomValidity(this.props.intl.formatMessage({
+            e.parentNode.parentNode.classList.add("has-error");
+            e.setCustomValidity(intl.formatMessage({
               id: "fields.wallet.invalid"
             }));
             isValid = false;
@@ -88,8 +88,9 @@ export default class RegisterPopup extends Component {
   }
 
   sign() {
-    const message = window.web3.toHex("BitGuild!");
-    const from = window.web3.eth.accounts[0];
+    const {dispatch, intl} = this.props;
+    const message = window.web3.toHex(intl.formatMessage({id: "modals.register.text"}));
+    const from = this.state.formData.get("wallet");
 
     window.web3.currentProvider.sendAsync({
       method: "personal_sign",
@@ -97,7 +98,7 @@ export default class RegisterPopup extends Component {
       from
     }, (err, result) => {
       if (err || result.error) {
-        this.props.dispatch({
+        dispatch({
           type: MESSAGE_ADD,
           payload: err || result.error
         });
@@ -110,36 +111,69 @@ export default class RegisterPopup extends Component {
         from
       }, (err, recovered) => {
         if (err || result.error) {
-          this.props.dispatch({
+          dispatch({
             type: MESSAGE_ADD,
             payload: err || result.error
           });
           return;
         }
 
-        // TODO not sure what to do after this check
         if (recovered.result === from) {
-          console.log("Successfully verified signer as " + from);
+          dispatch({
+            type: CREATE_USER,
+            payload: Array.from(this.state.formData.entries()).reduce((memo, pair) => ({
+              ...memo,
+              [pair[0]]: pair[1]
+            }), {})
+          });
         } else {
-          console.log("Failed to verify signer when comparing " + recovered.result + " to " + from);
+          dispatch({
+            type: MESSAGE_ADD,
+            payload: new Error(intl.formatMessage({
+              id: "errors.spoofing-attempt"
+            }, {
+              wallet1: recovered.result,
+              wallet2: from
+            }))
+          });
         }
       });
     });
   }
 
   render() {
-    const {account, user} = this.props;
+    const {user, intl, network} = this.props;
+
     return (
-      <Modal show={account.wallet && !user.isLoading && !user.success}>
+      <Modal show={!network.isLoading && network.success && !user.isLoading && !user.success} className="register">
         <Modal.Body>
-          <h2>Welcome to BitGuild</h2>
-
-          <br />
-
           <Form onSubmit={::this.onSubmit}>
+            <h2>
+              <FormattedMessage id="modals.register.title" />
+            </h2>
+            <br />
             <FormGroup controlId="wallet">
               <Col componentClass={ControlLabel}>
-                <FormattedMessage id="forms.wallet" />
+                <FormattedMessage id="fields.language.label" />
+              </Col>
+              <Col>
+                <FormControl
+                  name="language"
+                  componentClass="select"
+                  defaultValue={this.state.formData.get("language")}
+                  required
+                >
+                  {enabledLanguages.map(language =>
+                    (<FormattedMessage key={language} id={`components.language.${language}`}>
+                      {formattedMessage => <option key={language} value={language}>{formattedMessage}</option>}
+                    </FormattedMessage>)
+                  )}
+                </FormControl>
+              </Col>
+            </FormGroup>
+            <FormGroup controlId="wallet">
+              <Col componentClass={ControlLabel}>
+                <FormattedMessage id="fields.wallet.label" />
               </Col>
               <Col>
                 <FormControl
@@ -150,23 +184,23 @@ export default class RegisterPopup extends Component {
                   maxLength="42"
                   minLength="42"
                   onInvalid={e => {
-                    e.target.parentNode.classList.add("has-error");
+                    e.target.parentNode.parentNode.classList.add("has-error");
                     if (e.target.validity.valueMissing) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                      e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.wallet.required"
                       }));
                     } else if (e.target.validity.tooShort) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                      e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.wallet.minlength"
                       }));
                     } else if (e.target.validity.tooLong) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                      e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.wallet.maxlength"
                       }));
                     }
                   }}
                   onInput={e => {
-                    e.target.parentNode.classList.remove("has-error");
+                    e.target.parentNode.parentNode.classList.remove("has-error");
                     e.target.setCustomValidity("");
                     this.setState({
                       walletLength: e.target.value.length
@@ -179,7 +213,7 @@ export default class RegisterPopup extends Component {
             </FormGroup>
             <FormGroup controlId="email">
               <Col componentClass={ControlLabel}>
-                <FormattedMessage id="forms.email" />
+                <FormattedMessage id="fields.email.label" />
               </Col>
               <Col>
                 <FormControl
@@ -189,19 +223,19 @@ export default class RegisterPopup extends Component {
                   defaultValue={this.state.formData.get("email")}
                   placeholder={email}
                   onInvalid={e => {
-                    e.target.parentNode.classList.add("has-error");
+                    e.target.parentNode.parentNode.classList.add("has-error");
                     if (e.target.validity.valueMissing) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                      e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.email.required"
                       }));
                     } else if (e.target.validity.typeMismatch) {
-                      e.target.setCustomValidity(this.props.intl.formatMessage({
+                      e.target.setCustomValidity(intl.formatMessage({
                         id: "fields.email.invalid"
                       }));
                     }
                   }}
                   onInput={e => {
-                    e.target.parentNode.classList.remove("has-error");
+                    e.target.parentNode.parentNode.classList.remove("has-error");
                     e.target.setCustomValidity("");
                   }}
                   required
@@ -210,7 +244,7 @@ export default class RegisterPopup extends Component {
             </FormGroup>
             <FormGroup controlId="nickName">
               <Col componentClass={ControlLabel}>
-                <FormattedMessage id="forms.nickName" />
+                <FormattedMessage id="fields.nickName.label" />
               </Col>
               <Col>
                 <FormControl
@@ -219,13 +253,13 @@ export default class RegisterPopup extends Component {
                   defaultValue={this.state.formData.get("nickName")}
                   placeholder={nickName}
                   onInvalid={e => {
-                    e.target.parentNode.classList.add("has-error");
-                    e.target.setCustomValidity(this.props.intl.formatMessage({
+                    e.target.parentNode.parentNode.classList.add("has-error");
+                    e.target.setCustomValidity(intl.formatMessage({
                       id: "fields.nickName.required"
                     }));
                   }}
                   onInput={e => {
-                    e.target.parentNode.classList.remove("has-error");
+                    e.target.parentNode.parentNode.classList.remove("has-error");
                     e.target.setCustomValidity("");
                   }}
                   required
@@ -233,16 +267,14 @@ export default class RegisterPopup extends Component {
               </Col>
             </FormGroup>
 
-            <p className="note">
-              Make sure to save your MetaMask login information and account recovery details!
-              We can’t help you regain access if you lose it.
-            </p>
-
-            <Button type="submit" className="btn-block text-uppercase">
-              <FormattedMessage id="components.buttons.register" />
-            </Button>
+            <p className="note"><FormattedMessage id="modals.register.n1" /></p>
+            <p className="note"><FormattedMessage id="modals.register.n2" /></p>
 
             <br />
+
+            <Button type="submit" className="btn-block text-uppercase">
+              <FormattedMessage id="buttons.register" />
+            </Button>
           </Form>
         </Modal.Body>
       </Modal>

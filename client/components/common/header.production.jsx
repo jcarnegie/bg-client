@@ -1,15 +1,19 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
-import {Navbar} from "react-bootstrap";
+import {Image, Navbar} from "react-bootstrap";
+import {FormattedMessage} from "react-intl";
 
 
 export default class Header extends Component {
   render() {
     return (
-      <Navbar inverse>
+      <Navbar fixedTop fluid>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to="/" className="navbar-brand">BitGuild</Link>
+            <Image src="/images/logo.png" className="navbar-logo" />
+            <Link to="/" className="navbar-name">
+              <FormattedMessage id="components.title" />
+            </Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>

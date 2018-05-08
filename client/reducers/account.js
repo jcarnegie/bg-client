@@ -1,14 +1,24 @@
-import {CHANGE_ACCOUNT} from "../../shared/constants/actions";
+import {ACCOUNT_CHANGED, ACCOUNT_ERROR} from "../../shared/constants/actions";
 
 const account = {
+  isLoading: true,
+  success: false,
   wallet: null
 };
 
-export default function hashReducer(state = account, action) {
+export default function accountReducer(state = account, action) {
   switch (action.type) {
-    case CHANGE_ACCOUNT:
+    case ACCOUNT_CHANGED:
       return Object.assign({}, state, {
-        wallet: action.payload.wallet
+        wallet: action.payload.wallet,
+        isLoading: false,
+        success: true
+      });
+    case ACCOUNT_ERROR:
+      return Object.assign({}, state, {
+        wallet: null,
+        isLoading: false,
+        success: false
       });
     default:
       return state;
