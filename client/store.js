@@ -7,6 +7,7 @@ import {createLogger} from "redux-logger";
 import rootReducers from "./reducers/index";
 import userSaga from "./sagas/user";
 import chatSaga from "./sagas/chat";
+import sendBirdSaga from "./sagas/sendbird";
 
 
 export default function(initialState = {}) {
@@ -28,8 +29,9 @@ export default function(initialState = {}) {
 
   const rootSaga = function * () {
     yield all([
-      userSaga(),
-      chatSaga()
+      chatSaga(),
+      sendBirdSaga(),
+      userSaga()
     ]);
   };
 

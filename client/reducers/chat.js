@@ -2,8 +2,8 @@ import { append } from "ramda";
 import {
   CHAT_INIT,
   CHAT_LOAD_MESSAGES,
+  CHAT_MESSAGE_RECEIVED,
   CHAT_MESSAGE_SENT,
-  CHAT_RECEIVE_MESSAGE,
   CHAT_SET_CHANNEL
 } from "../../shared/constants/actions";
 
@@ -28,12 +28,13 @@ export default function chatReducer(state = chat, action) {
         ...state,
         messages: action.payload
       }
-    case CHAT_RECEIVE_MESSAGE:
+    case CHAT_MESSAGE_RECEIVED:
+      const messages = action.payload.channel.url === state.currentChannel.url
+        ? append(action.payload.message, state.messages)
+        : state.messages;
       return {
         ...state,
-        wallet: null,
-        isLoading: false,
-        success: false
+        messages
       };
     case CHAT_MESSAGE_SENT:
       return {
