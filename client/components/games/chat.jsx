@@ -1,12 +1,9 @@
-import Promise from "bluebird";
-import SendBird from "sendbird";
 import PropTypes from "prop-types";
 import React, {Component} from "react";
 import StayScrolled from "react-stay-scrolled";
 import {connect} from "react-redux";
 import {map, merge} from "ramda";
 import {sendChatMessage} from "../../actions/chat";
-import {sbp} from "../../utils/chat";
 
 const styles = {
   container: {display: "flex", flexDirection: "column", height: "calc(100vh - 60px)"},
