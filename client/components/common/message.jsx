@@ -56,10 +56,6 @@ export default class Message extends Component {
   }
 
   render() {
-    return (
-      <>
-        {this.props.messages.map(::this.renderMessage)}
-      </>
-    );
+    return null;
   }
 }
