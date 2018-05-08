@@ -95,7 +95,10 @@
     "inventory": {
       "title": "My Items",
       "all-items": "All items",
-      "back-to-game": "Back to game"
+      "back-to-game": "Back to game",
+      "empty": "You have no items yet!",
+      "learn-more": "Learn more about items in",
+      "faq": "FAQ"
     },
     "sandbox": {
       "title": "Sandbox"
