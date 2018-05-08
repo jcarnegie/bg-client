@@ -1,6 +1,16 @@
 import Promise from "bluebird";
 import SendBird from "sendbird";
-import {find, propEq, reverse} from "ramda";
+import {
+  find,
+  head,
+  isEmpty,
+  last,
+  length,
+  propEq,
+  reverse,
+  split,
+  toUpper
+} from "ramda";
 
 export let _sb = null;
 export let _user = null;
@@ -13,10 +23,21 @@ export const sbp = fn => new Promise((resolve, reject) =>
   fn((res, err) => (err) ? reject(err) : resolve(res))
 );
 
+export const firstNameLastInitial = name => {
+  const parts = split(/\s+/, name);
+  const firstName = head(parts);
+  let lastName = "";
+  if (length(parts) > 1) lastName = last(parts);
+  const lastInitial = isEmpty(lastName) ? "" : ` ${toUpper(head(lastName))}.`;
+  return `${firstName}${lastInitial}`;
+};
+
+export const chatNickName = nickname => firstNameLastInitial(nickname);
+
 export const init = async(wallet, nickname) => {
   _sb = new SendBird({appId: "BB1E0777-B8CE-44DF-BA37-63EBA2E858F1"});
   _user = await sbp(cb => _sb.connect(wallet, cb));
-  _user = await sbp(cb => _sb.updateCurrentUserInfo(nickname, null, cb));
+  _user = await sbp(cb => _sb.updateCurrentUserInfo(chatNickName(nickname), null, cb));
   return [_sb, _user];
 };
 
