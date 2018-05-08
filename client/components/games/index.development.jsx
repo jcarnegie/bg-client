@@ -29,17 +29,17 @@ export default class Games extends Component {
               <Row>
                 <Col sm={4}>
                   <a href="#">
-                    <Image src="/images/item_preview.png" />
+                    <Image src="/images/item-preview.png" />
                   </a>
                 </Col>
                 <Col sm={4}>
                   <a href="#">
-                    <Image src="/images/item_preview.png" />
+                    <Image src="/images/item-preview.png" />
                   </a>
                 </Col>
                 <Col sm={4}>
                   <a href="#">
-                    <Image src="/images/item_preview.png" />
+                    <Image src="/images/item-preview.png" />
                   </a>
                 </Col>
               </Row>
