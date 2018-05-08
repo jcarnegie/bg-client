@@ -46,7 +46,7 @@ export default class HTML extends React.Component {
           <meta name="keywords" content="keywords" />
           <meta name="robots" content="all" />
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-          <link rel="shortcut icon" href={"/favicon.ico"} />
+          <link rel="shortcut icon" href={"/favicon.png"} />
           <link href={"/bundle/client.css"} rel="stylesheet" />
           <link rel="stylesheet" href="https://use.typekit.net/woi6egk.css" />
           <title>BitGuild Crowdsale Whitelisting</title>
