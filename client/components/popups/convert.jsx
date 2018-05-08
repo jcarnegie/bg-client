@@ -57,17 +57,23 @@ export default class ConvertPopup extends Component {
   }
 
   onSubmit(e) {
-    const {network, user} = this.props;
     e.preventDefault();
+    const {network, user} = this.props;
     const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.data.id].topup);
     contract.buyTokens({
-        value: this.state.eth * 1e18,
+        value: this.state.eth * 1e18, // web3.toWei(this.state.eth)
         from: user.data.wallet,
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(1e10)
       },
       console.info
     );
+  }
+
+  onKeyDown(e) {
+    if (e.keyCode === 189 || e.keyCode === 69) { // disallow - e
+      e.preventDefault();
+    }
   }
 
   render() {
@@ -77,11 +83,13 @@ export default class ConvertPopup extends Component {
       return null;
     }
 
+    const step = 0.1;
+
     return (
       <Modal show={show} className="convert" onHide={onHide}>
         <Modal.Header closeButton />
         <Modal.Body>
-          <Form inline onSubmit={::this.onSubmit}>
+          <Form inline noValidate onSubmit={::this.onSubmit}>
             <h2>1 ETH = {rate.data} PLAT</h2>
             <br />
             <FormGroup controlId="email">
@@ -91,9 +99,10 @@ export default class ConvertPopup extends Component {
               <Col>
                 <FormControl
                   type="number"
-                  step="0.1"
-                  min="0.1"
+                  step={step}
+                  min={step}
                   name="amount"
+                  onKeyDown={::this.onKeyDown}
                   value={this.state.eth}
                   onChange={::this.onChangeETH}
                   required
@@ -110,8 +119,8 @@ export default class ConvertPopup extends Component {
               <Col>
                 <FormControl
                   type="number"
-                  min="5000"
-                  step="5000"
+                  min={rate.data * step}
+                  step={rate.data * step}
                   name="result"
                   value={this.state.plat}
                   onChange={::this.onChangePLAT}
