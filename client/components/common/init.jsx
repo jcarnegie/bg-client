@@ -22,7 +22,6 @@ export default class Init extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!nextProps.user.isLoading && nextProps.user.success && !isEqual(nextProps.user.data, prevState.user)) {
       Object.keys(prevState.sources).forEach(origin => {
-        console.log("emit", "user", nextProps.user.data)
         prevState.sources[origin].postMessage({
           type: "user",
           user: nextProps.user.data

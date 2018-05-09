@@ -116,7 +116,15 @@
       "title": "FAQ"
     },
     "games": {
-      "questions": "Have questions?"
+      "title": "Ether Online",
+      "description": "BitSociety is an avatar creation game built into the BitGuild portal that let's you find fantastic high-value items, show them off to everyone, or barter them at the BitGuild marketplace.",
+      "play": "play",
+      "preview": "In-Game Items Preview",
+      "coming-soon": "Coming soon",
+      "in-development": "In development",
+      "questions": "Have questions?",
+      "faq": "FAQ",
+      "discord": "DISCORD"
     }
   }
 }

@@ -14,21 +14,21 @@ export default class GameList extends Component {
         <Col className="grap gap">
           <div className="iframe">
             <div className="gradient">
-              <div className="title">Ether Online</div>
+              <div className="title">
+                <FormattedMessage id="pages.games.title" />
+              </div>
               <div className="description">
-                BitSociety is an avatar creation game built into the BitGuild<br />
-                portal that let's you find fantastic high-value items, show them<br />
-                off to everyone, or barter them at the BitGuild marketplace.<br />
+                <FormattedMessage id="pages.games.description" />
               </div>
               <Button href="/game/5af2703709bc2d18438449ad">
                 <Image src="/images/buttons/play/play.png" />
-                PLAY
+                <FormattedMessage id="pages.games.play" />
               </Button>
             </div>
           </div>
           <Row>
             <Col lg={5} className="preview">
-              <h3>In-Game Items Preview</h3>
+              <h3><FormattedMessage id="pages.games.preview" /></h3>
               <Row>
                 <Col sm={4}>
                   <Image src="/images/preview/preview_1.png" />
@@ -44,11 +44,11 @@ export default class GameList extends Component {
             <Col lg={7} className="announce">
               <Row>
                 <Col md={6}>
-                  <h3>Coming soon</h3>
+                  <h3><FormattedMessage id="pages.games.coming-soon" /></h3>
                   <Image src="/images/coming-soon.png" />
                 </Col>
                 <Col md={6}>
-                  <h3>In development</h3>
+                  <h3><FormattedMessage id="pages.games.in-development" /></h3>
                   <Image src="/images/in-development.png" />
                 </Col>
               </Row>
@@ -56,8 +56,12 @@ export default class GameList extends Component {
           </Row>
           <div className="explore">
             <FormattedMessage id="pages.games.questions" />
-            <Link to="/faq">FAQ</Link>
-            <a href="https://discordapp.com/invite/pPC2frB">DISCORD</a>
+            <Link to="/faq">
+              <FormattedMessage id="pages.games.faq" />
+            </Link>
+            <a href="https://discordapp.com/invite/pPC2frB">
+              <FormattedMessage id="pages.games.discord" />
+            </a>
           </div>
         </Col>
         <Col className="chat">
