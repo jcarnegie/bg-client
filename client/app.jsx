@@ -2,8 +2,9 @@ import React, {Component} from "react";
 import {Route, Switch} from "react-router";
 import {Grid} from "react-bootstrap";
 
-import GamesDev from "./components/games/index.development";
-import GamesProd from "./components/games/index.production";
+import GameListDev from "./components/games/index.development";
+import GameListProd from "./components/games/index.production";
+import Game from "./components/games/game";
 import SandBox from "./components/games/sandbox";
 import Inventory from "./components/inventory";
 import Faq from "./components/faq";
@@ -34,7 +35,8 @@ export default class App extends Component {
         <Grid fluid>
           <Message />
           <Switch>
-            <Route path="/" component={isProd ? GamesProd : GamesDev} exact />
+            <Route path="/" component={isProd ? GameListProd : GameListDev} exact />
+            <Route path="/game/:_id" component={Game} exact />
             <Route path="/sandbox" component={SandBox} exact />
             <Route path="/inventory" component={Inventory} />
             <Route path="/faq" component={Faq} />

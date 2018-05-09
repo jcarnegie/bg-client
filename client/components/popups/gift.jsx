@@ -16,7 +16,7 @@ import {wallet} from "../../../shared/constants/placeholder";
     network: state.network
   })
 )
-export default class ConvertPopup extends Component {
+export default class GiftPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
     id: PropTypes.string,
@@ -137,7 +137,6 @@ export default class ConvertPopup extends Component {
               </Col>
             </FormGroup>
 
-            <br />
             <br />
 
             <Button type="submit" className="btn-block text-uppercase">

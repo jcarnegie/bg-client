@@ -1,60 +1,23 @@
-import bluebird from "bluebird";
 import {call, put, select, takeEvery} from "redux-saga/effects";
-import fetch from "isomorphic-fetch";
-import tokenABI from "../../shared/contracts/token";
-import oracleABI from "../../shared/contracts/oracle";
-import networkConfig from "../utils/network";
-import {
-  init as chatInit,
-  channels as chatChannels,
-  setChannelByName,
-  messages as chatMessages
-} from "../utils/chat";
+import callAPI from "../utils/api";
 import {localization} from "../../shared/intl/setup";
+import {updateIntl} from "react-intl-redux";
 import {
-  ACCOUNT_CHANGED,
   BALANCE_ETH_CHANGED,
-  BALANCE_ETH_ERROR,
-  BALANCE_ETH_LOADING,
   BALANCE_PLAT_CHANGED,
-  BALANCE_PLAT_ERROR,
-  BALANCE_PLAT_LOADING,
   CREATE_USER,
-  CHAT_INIT,
-  CHAT_LOAD_MESSAGES,
-  CHAT_SET_CHANNEL,
   INVENTORY_CHANGED,
   INVENTORY_ERROR,
   INVENTORY_LOADING,
   MESSAGE_ADD,
   MESSAGE_ADD_ALL,
   NETWORK_CHANGED,
-  NETWORK_LOADING,
-  NEW_BLOCK,
-  RATE_CHANGED,
-  RATE_ERROR,
-  RATE_LOADING,
-  SWITCH_LANGUAGE,
   UPDATE_USER,
   USER_CHANGED,
   USER_ERROR,
   USER_LOADING
 } from "../../shared/constants/actions";
 
-
-function callAPI(url, options = {}) {
-  const prefix = (process.env.NODE_ENV === "development" ? "http://localhost:7000" : "") + "/api";
-  return fetch(prefix + url, options)
-    .then(response =>
-      response.json().then(json => ({json, response}))
-    )
-    .then(({json, response}) => {
-      if (!response.ok) {
-        return Promise.reject(json.errors);
-      }
-      return json;
-    });
-}
 
 function * fetchUser() {
   try {
@@ -82,10 +45,7 @@ function * fetchUser() {
         type: USER_CHANGED,
         payload: user
       });
-      yield put({
-        type: SWITCH_LANGUAGE,
-        ...localization[user.language]
-      });
+      yield put(updateIntl(localization[user.language]));
     } else {
       yield put({
         type: USER_ERROR
@@ -138,79 +98,6 @@ function * createUser(action) {
   }
 }
 
-function * getRate() {
-  try {
-    yield put({
-      type: RATE_LOADING
-    });
-    const network = yield select(state => state.network);
-    const contract = window.web3.eth.contract(oracleABI).at(networkConfig[network.data.id].oracle);
-    const ETHPrice = yield bluebird.promisify(contract.ETHPrice)();
-    yield put({
-      type: RATE_CHANGED,
-      payload: ETHPrice.toNumber() / 1e18
-    });
-  } catch (error) {
-    yield put({
-      type: RATE_ERROR
-    });
-    yield put({
-      type: MESSAGE_ADD,
-      payload: error
-    });
-  }
-}
-
-function * getBalanceETH() {
-  const user = yield select(state => state.user);
-  if (!user.isLoading && user.success) {
-    try {
-      yield put({
-        type: BALANCE_ETH_LOADING
-      });
-      const balance = yield bluebird.promisify(window.web3.eth.getBalance)(user.data.wallet);
-      yield put({
-        type: BALANCE_ETH_CHANGED,
-        payload: window.web3.fromWei(balance, "ether").toNumber()
-      });
-    } catch (error) {
-      yield put({
-        type: BALANCE_ETH_ERROR
-      });
-      yield put({
-        type: MESSAGE_ADD,
-        payload: error
-      });
-    }
-  }
-}
-
-function * getBalancePLAT() {
-  const user = yield select(state => state.user);
-  if (!user.isLoading && user.success) {
-    try {
-      yield put({
-        type: BALANCE_PLAT_LOADING
-      });
-      const network = yield select(state => state.network);
-      const contract = window.web3.eth.contract(tokenABI).at(networkConfig[network.data.id].token);
-      const balance = yield bluebird.promisify(contract.balanceOf)(user.data.wallet);
-      yield put({
-        type: BALANCE_PLAT_CHANGED,
-        payload: window.web3.fromWei(balance, "ether").toNumber()
-      });
-    } catch (error) {
-      yield put({
-        type: BALANCE_PLAT_ERROR
-      });
-      yield put({
-        type: MESSAGE_ADD,
-        payload: error
-      });
-    }
-  }
-}
-
 function * getInventory(action) {
   try {
     yield put({
@@ -234,39 +121,6 @@ function * getInventory(action) {
     yield put({
       type: MESSAGE_ADD_ALL,
       payload: [].concat(error)
-    });
-  }
-}
-
-function * initChat(action) {
-  const {wallet, nickName} = action.payload;
-  const [sb, user] = yield chatInit(wallet, nickName);
-  yield put({type: CHAT_INIT, payload: {sb, user}});
-
-  const channels = yield chatChannels(sb);
-  const channel = yield setChannelByName("BitGuild", channels);
-  yield put({type: CHAT_SET_CHANNEL, payload: channel});
-
-  const messages = yield chatMessages(channel);
-  yield put({type: CHAT_LOAD_MESSAGES, payload: messages});
-}
-
-function * getNetwork() {
-  try {
-    yield put({
-      type: NETWORK_LOADING
-    });
-    const netId = yield bluebird.promisify(window.web3.version.getNetwork)();
-    yield put({
-      type: NETWORK_CHANGED,
-      payload: {
-        id: netId
-      }
-    });
-  } catch (error) {
-    yield put({
-      type: MESSAGE_ADD,
-      payload: error
     });
   }
 }
@@ -296,18 +150,9 @@ function * updateUser(action) {
   }
 }
 
-function * userSaga() {
-  yield takeEvery(ACCOUNT_CHANGED, getNetwork);
+export default function * userSaga() {
   yield takeEvery(NETWORK_CHANGED, fetchUser);
   yield takeEvery(CREATE_USER, createUser);
-  yield takeEvery(USER_CHANGED, initChat);
-  yield takeEvery(USER_CHANGED, getBalanceETH);
-  yield takeEvery(NEW_BLOCK, getBalanceETH);
-  yield takeEvery(USER_CHANGED, getBalancePLAT);
-  yield takeEvery(NEW_BLOCK, getBalancePLAT);
   yield takeEvery(USER_CHANGED, getInventory);
-  yield takeEvery(NETWORK_CHANGED, getRate);
   yield takeEvery(UPDATE_USER, updateUser);
 }
-
-export default userSaga;

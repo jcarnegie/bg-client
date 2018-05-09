@@ -30,73 +30,60 @@
       function BitGuildSDK() {
         _classCallCheck(this, BitGuildSDK);
 
-        Object.defineProperty(this, "isBitGuildPortal", {
-          configurable: true,
-          enumerable: true,
-          writable: true,
-          value: false
-        });
-        Object.defineProperty(this, "isInitialized", {
-          configurable: true,
-          enumerable: true,
-          writable: true,
-          value: false
-        });
         Object.defineProperty(this, "user", {
           configurable: true,
           enumerable: true,
           writable: true,
           value: null
         });
-        Object.defineProperty(this, "subscribers", {
+        Object.defineProperty(this, "_init", {
           configurable: true,
           enumerable: true,
           writable: true,
-          value: []
+          value: null
+        });
+        Object.defineProperty(this, "_user", {
+          configurable: true,
+          enumerable: true,
+          writable: true,
+          value: null
         });
       }
 
       _createClass(BitGuildSDK, [{
         key: "init",
         value: function init() {
-          var _this = this;
-
-          if (this.isInitialized) {
-            return Promise.resolve();
-          } else {
-            return new Promise(function (resolve, reject) {
+          if (!this._init) {
+            this._init = new Promise(function (resolve, reject) {
               setTimeout(function () {
                 reject(new Error("timeout!"));
               }, 200);
-              window.addEventListener("message", _this.receiveMessage.call(_this, resolve), false);
+              window.addEventListener("message", function (_ref) {
+                var data = _ref.data;
+
+                if (data.type === "pong") {
+                  resolve();
+                }
+              }, false);
               window.top.postMessage({
                 type: "ping"
               }, "*");
-            }).then(function () {
-              _this.isInitialized = true;
-            }).catch(function () {});
+            });
           }
+
+          return this._init;
         }
       }, {
         key: "receiveMessage",
         value: function receiveMessage(resolve) {
-          var _this2 = this;
+          var _this = this;
 
-          return function (_ref) {
-            var data = _ref.data;
+          return function (_ref2) {
+            var data = _ref2.data;
 
             switch (data.type) {
-              case "pong":
-                _this2.isBitGuildPortal = true;
-                break;
-
               case "user":
-                _this2.user = data.user;
-
-                _this2.subscribers.forEach(function (callback) {
-                  callback(data);
-                });
-
+                _this.user = data.user;
                 break;
 
               default:
@@ -109,25 +96,41 @@
       }, {
         key: "isOnPortal",
         value: function isOnPortal() {
-          var _this3 = this;
-
           return this.init().then(function () {
-            return _this3.isBitGuildPortal;
+            return true;
+          }).catch(function () {
+            return false;
           });
         }
       }, {
         key: "getUser",
         value: function getUser() {
-          var _this4 = this;
+          var _this2 = this;
 
           return this.init().then(function () {
-            return _this4.user;
+            if (!_this2._user) {
+              _this2._user = new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                  reject(new Error("timeout!"));
+                }, 200);
+                window.addEventListener("message", function (_ref3) {
+                  var data = _ref3.data;
+
+                  if (data.type === "user") {
+                    _this2.user = data.user;
+                    resolve();
+                  }
+                }, false);
+                window.top.postMessage({
+                  type: "user"
+                }, "*");
+              });
+            }
+
+            return _this2._user;
+          }).then(function () {
+            return _this2.user;
           });
-        }
-      }, {
-        key: "subscribe",
-        value: function subscribe(callback) {
-          this.subscribers.push(callback);
         }
       }]);
 

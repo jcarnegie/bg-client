@@ -6,7 +6,7 @@ import {Col, Row} from "react-bootstrap";
 export default class Faq extends Component {
   render() {
     return (
-      <Row>
+      <Row className="faq">
         <Col md={9} className="gap">
           <h2>
             <FormattedMessage id="pages.faq.title" />

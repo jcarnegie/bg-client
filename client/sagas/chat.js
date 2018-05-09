@@ -1,9 +1,6 @@
 import {put, select, takeEvery} from "redux-saga/effects";
-import {sendMessage} from "../utils/chat";
-import {
-  CHAT_MESSAGE_SEND,
-  CHAT_MESSAGE_SENT
-} from "../../shared/constants/actions";
+import {channels as chatChannels, init as chatInit, messages as chatMessages, sendMessage, setChannelByName} from "../utils/chat";
+import {CHAT_INIT, CHAT_LOAD_MESSAGES, CHAT_MESSAGE_SEND, CHAT_MESSAGE_SENT, CHAT_SET_CHANNEL, USER_CHANGED} from "../../shared/constants/actions";
 
 function * sendChatMessage(action) {
   const state = yield select();
@@ -14,10 +11,31 @@ function * sendChatMessage(action) {
     type: CHAT_MESSAGE_SENT,
     payload: sentMessage
   });
-};
+}
 
-function * chatSaga() {
+function * initChat(action) {
+  const {wallet, nickName} = action.payload;
+  const [sb, user] = yield chatInit(wallet, nickName);
+  yield put({
+    type: CHAT_INIT,
+    payload: {sb, user}
+  });
+
+  const channels = yield chatChannels(sb);
+  const channel = yield setChannelByName("BitGuild", channels);
+  yield put({
+    type: CHAT_SET_CHANNEL,
+    payload: channel
+  });
+
+  const messages = yield chatMessages(channel);
+  yield put({
+    type: CHAT_LOAD_MESSAGES,
+    payload: messages
+  });
+}
+
+export default function * chatSaga() {
   yield takeEvery(CHAT_MESSAGE_SEND, sendChatMessage);
-};
-
-export default chatSaga;
+  yield takeEvery(USER_CHANGED, initChat);
+}

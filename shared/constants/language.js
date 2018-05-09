@@ -2,5 +2,8 @@ export const defaultLanguage = "en";
 
 export const enabledLanguages = [
   "en",
-  "zh"
+  "zh",
+  "pt",
+  "ja",
+  "fr"
 ];
