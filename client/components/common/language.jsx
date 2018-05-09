@@ -37,7 +37,7 @@ export default class Language extends Component {
     const language = !user.isLoading && user.success ? user.data.language : defaultLanguage;
 
     return (
-      <NavDropdown title={<Image src={`/images/language/${language}.png`} />} id="lang_menu">
+      <NavDropdown title={<Image src={`/images/language/${language}.png`} />} className="lang-menu">
         {enabledLanguages.map(language =>
           (<MenuItem key={language} eventKey={language} onSelect={::this.onSelect}>
             <Image src={`/images/language/${language}.png`} />

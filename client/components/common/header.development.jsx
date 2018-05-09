@@ -33,7 +33,7 @@ export default class Header extends Component {
 
     return (
       <Navbar.Collapse href="#">
-        <Nav navbar>
+        <Nav navbar className="main-menu">
           <LinkContainer to="/inventory">
             <NavItem><FormattedMessage id="components.menu.inventory" /></NavItem>
           </LinkContainer>

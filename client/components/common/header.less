@@ -22,7 +22,7 @@
     }
 
     .navbar-name {
-      font-weight: bold;
+      font-weight: 700;
       font-size: 20px;
       margin-left: 10px;
       line-height: 36px;
@@ -66,16 +66,23 @@
     }
   }
 
-  .navbar-nav {
+  .main-menu {
     > li {
       > a {
         color: #ffffff;
+        font-weight: 600;
         font-size: 15px;
-        line-height: 32px;
         text-transform: uppercase;
+        padding-top: 0;
+        padding-bottom: 0;
 
         &:hover, &:focus {
           color: #ffffff;
+        }
+
+        span {
+          line-height: 62px;
+          display: inline-block;
         }
       }
 
@@ -85,13 +92,11 @@
           &:hover,
           &:focus {
             color: #ffffff;
-            font-weight: bold;
             background-color: initial;
           }
 
           span {
-            border-bottom: 4px solid #ffd57d;
-            padding-bottom: 17px;
+            box-shadow: inset 0px -4px 0px 0px #ffd57d;
           }
         }
       }

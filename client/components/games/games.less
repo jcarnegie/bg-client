@@ -1,44 +1,50 @@
 .iframe {
-  background-image: url("/images/landing.jpg");
+  background-image: url("/images/landing.png");
   background-size: contain;
   height: 450px;
   margin: 0 -90px;
-  padding: 60px 90px;
 
-  .title {
-    font-size: 65px;
-    font-weight: bold;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
+  .gradient {
+    padding: 60px 90px;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 
-  .description {
-    font-size: 20px;
-  }
-
-  .btn {
-    color: var(--main-color);
-    background-color: #FF8E64;
-    font-size: 22px;
-    font-weight: 700;
-    padding: 0;
-    width: 148px;
-    height: 54px;
-    line-height: 54px;
-    border: 0;
-    border-radius: 2px;
-    margin: 50px 0;
-
-    &:hover {
-      background-color: #FF7656;
-      color: var(--main-color);
+    .title {
+      font-size: 65px;
+      font-weight: 700;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
 
-    img {
-      width: 16px;
-      height: 16px;
-      margin-top: -5px;
-      margin-right: 5px;
+    .description {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .btn {
+      color: var(--main-color);
+      background-color: #FF8E64;
+      font-size: 22px;
+      font-weight: 700;
+      padding: 0;
+      width: 148px;
+      height: 54px;
+      line-height: 54px;
+      border: 0;
+      border-radius: 2px;
+      margin: 50px 0;
+
+      &:hover {
+        background-color: #FF7656;
+        color: var(--main-color);
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+        margin-top: -5px;
+        margin-right: 5px;
+      }
     }
   }
 }

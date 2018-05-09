@@ -13,16 +13,18 @@ export default class GameList extends Component {
       <Row>
         <Col className="grap gap">
           <div className="iframe">
-            <div className="title">BitSociety</div>
-            <div className="description">
-              BitSociety is an avatar creation game built into the BitGuild<br />
-              portal that let's you find fantastic high-value items, show them<br />
-              off to everyone, or barter them at the BitGuild marketplace.<br />
+            <div className="gradient">
+              <div className="title">Ether Online</div>
+              <div className="description">
+                BitSociety is an avatar creation game built into the BitGuild<br />
+                portal that let's you find fantastic high-value items, show them<br />
+                off to everyone, or barter them at the BitGuild marketplace.<br />
+              </div>
+              <Button href="/game/5af2703709bc2d18438449ad">
+                <Image src="/images/buttons/play/play.png" />
+                PLAY
+              </Button>
             </div>
-            <Button href="/game/5af2703709bc2d18438449ad">
-              <Image src="/images/buttons/play/play.png" />
-              PLAY
-            </Button>
           </div>
           <Row>
             <Col lg={5} className="preview">

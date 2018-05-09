@@ -61,9 +61,11 @@ export default class Balance extends Component {
     return (
       <Navbar.Text>
         <Convert show={show} onHide={::this.onHide} />
+        <span className="balance">
         {!balanceETH.isLoading && balanceETH.success ? balanceETH.data.toFixed(2) : "0"} ETH
-        {"\u00A0\u00A0\u00A0"}
-        {!balancePLAT.isLoading && balancePLAT.success ? balancePLAT.data.toFixed(0) : "0"} PLAT
+          {"\u00A0\u00A0\u00A0"}
+          {!balancePLAT.isLoading && balancePLAT.success ? balancePLAT.data.toFixed(0) : "0"} PLAT
+        </span>
         <a href="#" className="plus" onClick={::this.onClick} />
       </Navbar.Text>
     );
