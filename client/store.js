@@ -1,13 +1,10 @@
 import {applyMiddleware, compose, createStore} from "redux";
 import createSagaMiddleware from "redux-saga";
-import {all} from "redux-saga/effects";
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunkMiddleware from "redux-thunk";
 import {createLogger} from "redux-logger";
 import rootReducers from "./reducers/index";
-import userSaga from "./sagas/user";
-import chatSaga from "./sagas/chat";
-import sendBirdSaga from "./sagas/sendbird";
+import rootSaga from "./sagas";
 
 
 export default function(initialState = {}) {
@@ -26,14 +23,6 @@ export default function(initialState = {}) {
   }
 
   const store = createStore(rootReducers, initialState, composeEnhancers(applyMiddleware(...middlewares)));
-
-  const rootSaga = function * () {
-    yield all([
-      chatSaga(),
-      sendBirdSaga(),
-      userSaga()
-    ]);
-  };
 
   sagaMiddleware.run(rootSaga);
 

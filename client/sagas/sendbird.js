@@ -1,11 +1,5 @@
 import {eventChannel} from "redux-saga";
-import {
-  call,
-  put,
-  select,
-  take,
-  takeEvery
-} from "redux-saga/effects";
+import {call, put, select, take, takeEvery} from "redux-saga/effects";
 import {CHAT_INIT, CHAT_MESSAGE_RECEIVED} from "../../shared/constants/actions";
 
 const GLOBAL_HANDLER = "GLOBAL_HANDLER";
@@ -22,9 +16,10 @@ function sendBirdListen(state) {
     sb.addChannelHandler(GLOBAL_HANDLER, channelHandler);
 
     // unsubscribe function
-    return () => {};
+    return () => {
+    };
   });
-};
+}
 
 function * initSendBird() {
   const state = yield select();
