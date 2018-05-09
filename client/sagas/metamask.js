@@ -18,6 +18,7 @@ import {
   RATE_CHANGED,
   RATE_ERROR,
   RATE_LOADING,
+  RATE_REQUEST,
   USER_CHANGED
 } from "../../shared/constants/actions";
 
@@ -107,6 +108,9 @@ function * getNetwork() {
         id: netId
       }
     });
+    yield put({
+      type: RATE_REQUEST
+    });
   } catch (error) {
     yield put({
       type: MESSAGE_ADD,
@@ -122,6 +126,6 @@ export default function * metaMaskSaga() {
   yield takeEvery(NEW_BLOCK, getBalanceETH);
   yield takeEvery(USER_CHANGED, getBalancePLAT);
   yield takeEvery(NEW_BLOCK, getBalancePLAT);
-  yield takeEvery(NETWORK_CHANGED, getRate);
+  yield takeEvery(RATE_REQUEST, getRate);
 }
 

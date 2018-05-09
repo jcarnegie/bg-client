@@ -1,27 +1,29 @@
 import {combineReducers} from "redux";
 import {routerReducer as routing} from "react-router-redux";
 import {intlReducer as intl} from "react-intl-redux";
-import messages from "./messages";
 import account from "./account";
-import user from "./user";
-import rate from "./rate";
-import network from "./network";
-import inventory from "./inventory";
 import balanceETH from "./balanceETH";
 import balancePLAT from "./balancePLAT";
 import chat from "./chat";
+import game from "./game";
+import inventory from "./inventory";
+import rate from "./rate";
+import network from "./network";
+import messages from "./messages";
+import user from "./user";
 
 
 export default combineReducers({
   routing,
   account,
-  inventory,
   balanceETH,
   balancePLAT,
-  messages,
+  chat,
+  game,
   intl,
+  inventory,
+  messages,
   network,
   rate,
-  user,
-  chat
+  user
 });

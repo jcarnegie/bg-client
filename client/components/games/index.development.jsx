@@ -6,7 +6,8 @@ import {FormattedMessage} from "react-intl";
 import {Link} from "react-router-dom";
 import Chat from "../chat/chat";
 
-export default class Games extends Component {
+
+export default class GameList extends Component {
   render() {
     return (
       <Row>
@@ -18,7 +19,7 @@ export default class Games extends Component {
               portal that let's you find fantastic high-value items, show them<br />
               off to everyone, or barter them at the BitGuild marketplace.<br />
             </div>
-            <Button>
+            <Button href="/game/5af2703709bc2d18438449ad">
               <Image src="/images/buttons/play/play.png" />
               PLAY
             </Button>

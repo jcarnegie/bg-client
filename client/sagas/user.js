@@ -1,5 +1,5 @@
 import {call, put, select, takeEvery} from "redux-saga/effects";
-import fetch from "isomorphic-fetch";
+import callAPI from "../utils/api";
 import {localization} from "../../shared/intl/setup";
 import {updateIntl} from "react-intl-redux";
 import {
@@ -18,20 +18,6 @@ import {
   USER_LOADING
 } from "../../shared/constants/actions";
 
-
-function callAPI(url, options = {}) {
-  const prefix = (process.env.NODE_ENV === "development" ? "http://localhost:7000" : "") + "/api";
-  return fetch(prefix + url, options)
-    .then(response =>
-      response.json().then(json => ({json, response}))
-    )
-    .then(({json, response}) => {
-      if (!response.ok) {
-        return Promise.reject(json.errors);
-      }
-      return json;
-    });
-}
 
 function * fetchUser() {
   try {
