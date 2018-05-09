@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Route, Switch} from "react-router";
+import {Switch} from "react-router";
 import {Grid} from "react-bootstrap";
 
 import GameListDev from "./components/games/index.development";
@@ -18,7 +18,7 @@ import MetaMaskInstall from "./components/popups/metamask.install";
 import MetaMaskLogin from "./components/popups/metamask.login";
 import MetaMaskNetwork from "./components/popups/metamask.network";
 import Register from "./components/popups/register";
-
+import MyRoute from "./components/inventory/my-route";
 
 // TODO remove this condition once we have proper staging
 const isProd = typeof window !== "undefined" && window.document.location.host === "bitguild.com";
@@ -35,12 +35,12 @@ export default class App extends Component {
         <Grid fluid>
           <Message />
           <Switch>
-            <Route path="/" component={isProd ? GameListProd : GameListDev} exact />
-            <Route path="/game/:_id" component={Game} exact />
-            <Route path="/sandbox" component={SandBox} exact />
-            <Route path="/inventory" component={Inventory} />
-            <Route path="/faq" component={Faq} />
-            <Route component={NotFound} />
+            <MyRoute path="/" component={isProd ? GameListProd : GameListDev} exact />
+            <MyRoute path="/game/:_id" component={Game} exact />
+            <MyRoute path="/sandbox" component={SandBox} exact />
+            <MyRoute path="/inventory" component={Inventory} />
+            <MyRoute path="/faq" component={Faq} />
+            <MyRoute component={NotFound} />
           </Switch>
         </Grid>
       </>

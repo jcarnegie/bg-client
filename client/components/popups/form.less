@@ -24,8 +24,10 @@ form {
       padding: 10px 12px;
       height: 40px;
 
-      &:focus {
+      &[readonly] {
         background-color: #DFDFF0;
+        border-bottom: 0;
+        cursor: default;
       }
     }
 
@@ -38,6 +40,7 @@ form {
       .form-control[type=text],
       .form-control[type=email],
       .form-control[type=number] {
+        color: #0d0826;
         border-bottom: 1px solid #D0021B;
         background-color: #FBDFE4;
         opacity: .71;
@@ -47,15 +50,21 @@ form {
 
   .btn {
     font-size: 14px;
-    background-color: #544B85;
+    background-color: var(--link-color);
     color: #ffffff;
     border: 0;
     padding: 10px;
     border-radius: 2px;
 
-    &:hover {
-      background-color: #71508C;
+    &:hover,
+    &:focus,
+    &:active,
+    &:focus:active {
+      background-color: var(--link-hover-color);
       color: #ffffff;
+      outline: 0;
+      box-shadow: none;
     }
   }
+
 }

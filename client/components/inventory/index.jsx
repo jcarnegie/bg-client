@@ -19,7 +19,8 @@ import Chat from "../chat/chat";
 )
 export default class Inventory extends Component {
   static propTypes = {
-    inventory: PropTypes.object
+    inventory: PropTypes.object,
+    lastMatch: PropTypes.object.isRequired
   };
 
   state = {
@@ -69,6 +70,22 @@ export default class Inventory extends Component {
     );
   }
 
+  renderBackToGameButton() {
+    const {lastMatch} = this.props;
+
+    if (!lastMatch.params._id) {
+      return null;
+    }
+
+    return (
+      <div className="pull-right">
+        <Button href={lastMatch.url}>
+          <FormattedMessage id="pages.inventory.back-to-game" />
+        </Button>
+      </div>
+    );
+  }
+
   renderTabs() {
     const {inventory} = this.props;
     const games = uniqBy(inventory.data.map(item => item.game), "_id");
@@ -77,11 +94,7 @@ export default class Inventory extends Component {
       <>
         <h2>
           <FormattedMessage id="pages.inventory.title" />
-          <div className="pull-right">
-            <Button>
-              <FormattedMessage id="pages.inventory.back-to-game" />
-            </Button>
-          </div>
+          {this.renderBackToGameButton()}
         </h2>
         <Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
           <Tab eventKey={1} title={<FormattedMessage id="pages.inventory.all-items" />}>

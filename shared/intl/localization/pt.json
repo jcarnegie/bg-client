@@ -2,7 +2,8 @@
   "components": {
     "switchLanguage": "Alterar Idioma",
     "language": {
-      "en": "Inglês"
+      "en": "Inglês",
+      "pt": "Português"
     },
     "menu": {
       "inventory": "Meus Itens",
