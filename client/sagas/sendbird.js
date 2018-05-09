@@ -11,16 +11,11 @@ import {CHAT_INIT, CHAT_MESSAGE_RECEIVED} from "../../shared/constants/actions";
 const GLOBAL_HANDLER = "GLOBAL_HANDLER";
 
 function sendBirdListen(state) {
-  console.log("sendBirdListen...");
   return eventChannel(emit => {
-    console.log("in eventChannel cb");
     const {sb} = state.chat;
     const channelHandler = new sb.ChannelHandler();
 
-    console.log("channelHandler:", channelHandler);
-
     channelHandler.onMessageReceived = (channel, message) => {
-      console.log("sendbird message received:", channel, message);
       emit({type: CHAT_MESSAGE_RECEIVED, payload: {channel, message}});
     };
 

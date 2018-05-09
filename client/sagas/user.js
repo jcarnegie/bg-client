@@ -151,7 +151,6 @@ function * getRate() {
       payload: ETHPrice.toNumber() / 1e18
     });
   } catch (error) {
-    console.log(error);
     yield put({
       type: RATE_ERROR
     });

@@ -6,6 +6,7 @@ services:
           - "27017:27017"
     api:
         build: ../PortalApi
+        command: node_modules/.bin/nodemon server/server.js --exec babel-node
         depends_on:
           - mongo
         ports:
