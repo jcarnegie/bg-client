@@ -7,6 +7,7 @@ import {Col, Row} from "react-bootstrap";
 import {GAME_REQUEST} from "../../../shared/constants/actions";
 import Init from "../common/init";
 import Loader from "../common/loader";
+import Chat from "../chat/chat";
 
 
 @connect(
@@ -54,7 +55,7 @@ export default class Game extends Component {
           {this.renderIframe()}
         </Col>
         <Col className="chat">
-          Chat
+          <Chat />
         </Col>
       </Row>
     );
