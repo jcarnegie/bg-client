@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {merge} from "ramda";
+import {merge, path} from "ramda";
 
 const styles = {
   message: {display: "flex", marginTop: 20},
@@ -28,7 +28,7 @@ const Message = ({message, user}) => {
   let backgroundColor = "#FFF";
   let textColor = "#393939";
   let headerColor = "#9FB1CD";
-  const isMyMessage = message.sender.userId === user.data.wallet;
+  const isMyMessage = path(["sender", "userId"], message) === path(["data", "wallet"], user);
   if (isMyMessage) {
     backgroundColor = "#DEECFB";
     textColor = "#191F24";
@@ -43,7 +43,7 @@ const Message = ({message, user}) => {
       </div>
       <div className="message-box" style={merge(styles.messageBox, {backgroundColor})}>
         <div className="header" style={merge(styles.messageBoxHeader, {color: headerColor})}>
-          <div>{message.sender.nickname}</div>
+          <div>{path(["sender", "nickname"], message)}</div>
           <div>{formatTime(new Date(message.createdAt))}</div>
         </div>
         <div className="contents" style={merge(styles.messageContents, {textColor})}>{message.message}</div>
