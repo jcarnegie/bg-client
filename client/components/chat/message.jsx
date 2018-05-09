@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, {Component} from "react";
 import {merge, path} from "ramda";
 
 const styles = {
@@ -19,48 +19,53 @@ const formatTime = date => {
   if (hours > 12) {
     period = "pm";
     hours -= 12;
-}
-  if (minutes < 10) minutes = `0${minutes}`;
+  }
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
   return `${hours}:${minutes}${period}`;
 };
 
-const Message = ({message, user}) => {
-  let backgroundColor = "#FFF";
-  let textColor = "#393939";
-  let headerColor = "#9FB1CD";
-  const isMyMessage = path(["sender", "userId"], message) === path(["data", "wallet"], user);
-  if (isMyMessage) {
-    backgroundColor = "#DEECFB";
-    textColor = "#191F24";
-}
-  return (
-    <div className="message" style={styles.message}>
-      <div className="avatar-left" style={styles.avatarLeft}>
-        {
-          !isMyMessage &&
-          <img src="/images/avatar.png" width="34" height="34" />
-      }
-      </div>
-      <div className="message-box" style={merge(styles.messageBox, {backgroundColor})}>
-        <div className="header" style={merge(styles.messageBoxHeader, {color: headerColor})}>
-          <div>{path(["sender", "nickname"], message)}</div>
-          <div>{formatTime(new Date(message.createdAt))}</div>
+export default class Message extends Component {
+  static propTypes = {
+    message: PropTypes.object,
+    user: PropTypes.object
+  };
+
+  render() {
+    const {message, user} = this.props;
+
+    let backgroundColor = "#FFF";
+    let textColor = "#393939";
+    let headerColor = "#9FB1CD";
+    const isMyMessage = path(["sender", "userId"], message) === path(["data", "wallet"], user);
+    if (isMyMessage) {
+      backgroundColor = "#DEECFB";
+      textColor = "#191F24";
+    }
+
+    return (
+      <div className="message" style={styles.message}>
+        <div className="avatar-left" style={styles.avatarLeft}>
+          {
+            !isMyMessage &&
+            <img src="/images/avatar.png" width="34" height="34" />
+          }
         </div>
-        <div className="contents" style={merge(styles.messageContents, {textColor})}>{message.message}</div>
+        <div className="message-box" style={merge(styles.messageBox, {backgroundColor})}>
+          <div className="header" style={merge(styles.messageBoxHeader, {color: headerColor})}>
+            <div>{path(["sender", "nickname"], message)}</div>
+            <div>{formatTime(new Date(message.createdAt))}</div>
+          </div>
+          <div className="contents" style={merge(styles.messageContents, {textColor})}>{message.message}</div>
+        </div>
+        <div className="avatar-right" style={styles.avatarRight}>
+          {
+            isMyMessage &&
+            <img src="/images/avatar.png" width="34" height="34" />
+          }
+        </div>
       </div>
-      <div className="avatar-right" style={styles.avatarRight}>
-        {
-          isMyMessage &&
-          <img src="/images/avatar.png" width="34" height="34" />
-      }
-      </div>
-    </div>
-  );
-};
-
-Message.propTypes = {
-  message: PropTypes.object,
-  user: PropTypes.object
-};
-
-export default Message;
+    );
+  }
+}

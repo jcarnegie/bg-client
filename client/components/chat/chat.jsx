@@ -17,29 +17,29 @@ const styles = {
 };
 
 @connect(
-  state => ({chat: state.chat, user: state.user}),
+  state => ({
+    chat: state.chat,
+    user: state.user
+  }),
   {sendChatMessage}
 )
-class Chat extends Component {
+export default class Chat extends Component {
   static propTypes = {
     chat: PropTypes.object,
     user: PropTypes.object
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {newMessage: ""};
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleMessageChange = this.handleMessageChange.bind(this);
-  }
+  state = {
+    newMessage: ""
+  };
 
   componentDidUpdate() {
     this.scrollBottom();
   }
 
   async handleSubmit(e) {
-    const {sendChatMessage} = this.props;
     e.preventDefault();
+    const {sendChatMessage} = this.props;
     sendChatMessage(this.state.newMessage);
     // clear the message input
     this.setState({newMessage: ""});
@@ -52,7 +52,7 @@ class Chat extends Component {
   storeScrolledControllers = ({stayScrolled, scrollBottom}) => {
     this.stayScrolled = stayScrolled;
     this.scrollBottom = scrollBottom;
-  }
+  };
 
   render() {
     const {messages} = this.props.chat;
@@ -66,9 +66,9 @@ class Chat extends Component {
           {map(msg => <Message key={msg.messageId} message={msg} user={user} />, messages)}
         </StayScrolled>
         <div>
-          <form onSubmit={this.handleSubmit} style={styles.form}>
+          <form onSubmit={::this.handleSubmit} style={styles.form}>
             <div style={styles.messageInputWrapper}>
-              <input onChange={this.handleMessageChange} style={styles.messageInput} type="text" value={this.state.newMessage} />
+              <input onChange={::this.handleMessageChange} style={styles.messageInput} type="text" value={this.state.newMessage} />
             </div>
             <button style={styles.messageButton}>Send</button>
           </form>
@@ -77,5 +77,3 @@ class Chat extends Component {
     );
   }
 }
-
-export default Chat;
