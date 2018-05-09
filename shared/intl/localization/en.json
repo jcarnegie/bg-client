@@ -103,6 +103,7 @@
   "pages": {
     "inventory": {
       "title": "My Items",
+      "all": "All",
       "all-items": "All items",
       "back-to-game": "Back to game",
       "empty": "You have no items yet!",
@@ -126,5 +127,9 @@
       "faq": "FAQ",
       "discord": "DISCORD"
     }
+  },
+  "chat": {
+    "chat": "Chat",
+    "send": "Send"
   }
 }

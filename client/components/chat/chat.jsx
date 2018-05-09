@@ -5,6 +5,8 @@ import StayScrolled from "react-stay-scrolled";
 import {map} from "ramda";
 import {sendChatMessage} from "../../actions/chat";
 import Message from "./message";
+import {FormattedMessage} from "react-intl";
+
 
 const styles = {
   container: {backgroundColor: "#F2F3F8", borderLeft: "solid 1px #C2C3D2", display: "flex", flexDirection: "column", height: "calc(100vh - 62px)"},
@@ -60,7 +62,9 @@ export default class Chat extends Component {
     return (
       <div style={styles.container}>
         <div style={styles.header}>
-          <div>Chat</div>
+          <div>
+            <FormattedMessage id="chat.chat" />
+          </div>
         </div>
         <StayScrolled component="div" provideControllers={this.storeScrolledControllers} style={styles.messageList}>
           {map(msg => <Message key={msg.messageId} message={msg} user={user} />, messages)}
@@ -70,7 +74,9 @@ export default class Chat extends Component {
             <div style={styles.messageInputWrapper}>
               <input onChange={::this.handleMessageChange} style={styles.messageInput} type="text" value={this.state.newMessage} />
             </div>
-            <button style={styles.messageButton}>Send</button>
+            <button style={styles.messageButton}>
+              <FormattedMessage id="chat.send" />
+            </button>
           </form>
         </div>
       </div>

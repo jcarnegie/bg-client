@@ -104,7 +104,9 @@ export default class Inventory extends Component {
               return (
                 <Fragment key={game._id}>
                   <div className="arrow-right pull-right">
-                    <Button onClick={::this.onClick(game, categories)} bsStyle="link">All</Button>
+                    <Button onClick={::this.onClick(game, categories)} bsStyle="link">
+                      <FormattedMessage id="pages.inventory.all" />
+                    </Button>
                     {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game, [category])} bsStyle="link">{category}</Button>)}
                   </div>
                   <h3>{game.name}</h3>
