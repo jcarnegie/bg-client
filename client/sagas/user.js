@@ -1,6 +1,7 @@
 import {call, put, select, takeEvery} from "redux-saga/effects";
 import fetch from "isomorphic-fetch";
 import {localization} from "../../shared/intl/setup";
+import {updateIntl} from "react-intl-redux";
 import {
   BALANCE_ETH_CHANGED,
   BALANCE_PLAT_CHANGED,
@@ -11,7 +12,6 @@ import {
   MESSAGE_ADD,
   MESSAGE_ADD_ALL,
   NETWORK_CHANGED,
-  SWITCH_LANGUAGE,
   UPDATE_USER,
   USER_CHANGED,
   USER_ERROR,
@@ -59,10 +59,7 @@ function * fetchUser() {
         type: USER_CHANGED,
         payload: user
       });
-      yield put({
-        type: SWITCH_LANGUAGE,
-        ...localization[user.language]
-      });
+      yield put(updateIntl(localization[user.language]));
     } else {
       yield put({
         type: USER_ERROR

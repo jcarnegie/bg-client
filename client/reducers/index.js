@@ -1,6 +1,6 @@
 import {combineReducers} from "redux";
 import {routerReducer as routing} from "react-router-redux";
-import intl from "./intl";
+import {intlReducer as intl} from "react-intl-redux";
 import messages from "./messages";
 import account from "./account";
 import user from "./user";
@@ -10,6 +10,7 @@ import inventory from "./inventory";
 import balanceETH from "./balanceETH";
 import balancePLAT from "./balancePLAT";
 import chat from "./chat";
+
 
 export default combineReducers({
   routing,

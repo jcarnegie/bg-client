@@ -50,7 +50,7 @@ import en from "react-intl/locale-data/en";
 import enData from "./localization/en";
 addLocaleData(en);
 localization.en = {
-	id: "en",
+  locale: "en",
 	messages: flattenMessages(enData)
 };
 
@@ -59,7 +59,7 @@ import zh from "react-intl/locale-data/zh";
 import zhData from "./localization/zh";
 addLocaleData(zh);
 localization.zh = {
-	id: "zh",
+  locale: "zh",
 	messages: flattenMessages(zhData)
 };
 
@@ -69,7 +69,7 @@ import fr from "react-intl/locale-data/fr";
 import frData from "./localization/fr";
 addLocaleData(fr);
 localization.fr = {
-	id: "fr",
+  locale: "fr",
 	messages: flattenMessages(frData)
 };
 
@@ -79,7 +79,7 @@ import pt from "react-intl/locale-data/pt";
 import ptData from "./localization/pt";
 addLocaleData(pt);
 localization.pt = {
-	id: "pt",
+  locale: "pt",
 	messages: flattenMessages(ptData)
 };
 
@@ -89,7 +89,7 @@ import ja from "react-intl/locale-data/ja";
 import jaData from "./localization/ja";
 addLocaleData(ja);
 localization.ja = {
-	id: "ja",
+  locale: "ja",
 	messages: flattenMessages(jaData)
 };
 

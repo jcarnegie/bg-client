@@ -3,8 +3,6 @@ export const MESSAGE_ADD_ALL = "MESSAGE_ADD_ALL";
 export const MESSAGE_REMOVE = "MESSAGE_REMOVE";
 export const MESSAGE_REMOVE_ALL = "MESSAGE_REMOVE_ALL";
 
-export const SWITCH_LANGUAGE = "SWITCH_LANGUAGE";
-
 export const USER_LOADING = "USER_LOADING";
 export const USER_CHANGED = "USER_CHANGED";
 export const USER_ERROR = "USER_ERROR";

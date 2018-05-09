@@ -5,7 +5,8 @@ import {connect} from "react-redux";
 import {Image, MenuItem, NavDropdown} from "react-bootstrap";
 import {defaultLanguage, enabledLanguages} from "../../../shared/constants/language";
 import {localization} from "../../../shared/intl/setup";
-import {SWITCH_LANGUAGE, UPDATE_USER} from "../../../shared/constants/actions";
+import {UPDATE_USER} from "../../../shared/constants/actions";
+import {updateIntl} from "react-intl-redux";
 
 
 @connect(
@@ -20,10 +21,7 @@ export default class Language extends Component {
   };
 
   onSelect(language) {
-    this.props.dispatch({
-      type: SWITCH_LANGUAGE,
-      ...localization[language]
-    });
+    this.props.dispatch(updateIntl(localization[language]));
     this.props.dispatch({
       type: UPDATE_USER,
       payload: {
