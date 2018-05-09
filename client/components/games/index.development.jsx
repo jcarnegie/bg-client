@@ -29,19 +29,13 @@ export default class GameList extends Component {
               <h3>In-Game Items Preview</h3>
               <Row>
                 <Col sm={4}>
-                  <a href="#">
-                    <Image src="/images/item-preview.png" />
-                  </a>
+                  <Image src="/images/item-preview.png" />
                 </Col>
                 <Col sm={4}>
-                  <a href="#">
-                    <Image src="/images/item-preview.png" />
-                  </a>
+                  <Image src="/images/item-preview.png" />
                 </Col>
                 <Col sm={4}>
-                  <a href="#">
-                    <Image src="/images/item-preview.png" />
-                  </a>
+                  <Image src="/images/item-preview.png" />
                 </Col>
               </Row>
             </Col>
