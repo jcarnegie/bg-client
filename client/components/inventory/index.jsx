@@ -79,7 +79,7 @@ export default class Inventory extends Component {
 
     return (
       <div className="pull-right">
-        <Button>
+        <Button href={lastMatch.url}>
           <FormattedMessage id="pages.inventory.back-to-game" />
         </Button>
       </div>
