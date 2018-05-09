@@ -1,0 +1,91 @@
+{
+  "components": {
+    "switchLanguage": "Changer de langue",
+    "language": {
+      "en": "Francais"
+    },
+    "menu": {
+      "inventory": "Mes objets",
+      "exchange": "Echange",
+      "community": "Communautée"
+    },
+    "loader": {
+      "loading": "chargement"
+    },
+    "title": "BitGuild"
+  },
+  "fields": {
+    "nickName": {
+      "label": "Nom d'utilisateur",
+      "required": "Votre nom d'utilisateur ici"
+    },
+    "email": {
+      "label": "Adresse e-mail",
+      "required": "Entrez votre e-mail ici.",
+      "invalid": "Entrez une adresse e-mail valide ex: yourname@email.com.",
+      "conflict": "cette adresse e-mail existe dejà"
+    },
+    "wallet": {
+      "label": "Adresse porte-feuille",
+      "required": "Entrez l'adresse de votre portefeuille.",
+      "minlength": "L'adresse de votre wallet n'est pas correcte, vous etes priez de verifier.",
+      "maxlength": "Adress trop longue.",
+      "invalid": "L'adresse n'est pas valide, utilisez seulement les characteres alphanumeriques."
+    },
+    "eth": {
+      "label": "Ethereum (ETH)"
+    },
+    "plat": {
+      "label": "Platinum (PLAT)"
+    }
+  },
+  "buttons": {
+    "submit": "Envoyer",
+    "register": "S'enregister",
+    "sell": "Vendre",
+    "gift": "Cadeau",
+    "convert": "Convertir",
+    "install": "Installer MetaMask"
+  },
+  "errors": {
+    "method-not-allowed": "Methode non authorisée",
+    "page-not-found": "Page Non Trouvée",
+    "invalid-param": "Paramètre invalide `{name}`, {reason}",
+    "required-param": "Paramètre requis `{name}` missing",
+    "access-denied": "Access non authorisé",
+    "not-found": "`{name}` non trouvé",
+    "conflict": "Ce nom {name} existe deja dans le database",
+    "server-error": "Erreur serveur interne",
+    "spoofing-attempt": "Erreur dans la verification signer en comparant {wallet1} a {wallet2}"
+  },
+  "modals": {
+    "metamask-install": {
+      "title": "Bonjour!",
+      "p1": "Pour entrer dans BitGuild, vous devez installer Metamask - un porte-feuille digital pour votre explorateur internet.",
+      "p2": "Ceci sera aussi votre login au portal BitGuild (pas de password extra!).",
+      "n1": "Questions? Verifiéz notre",
+      "faq": "FAQ"
+    },
+    "metamask-login": {
+      "title": "Vous n'etes pas identifié par MetaMask",
+      "p1": "Ouvrez MetaMask et suivez les instructions pour vous identifier."
+    },
+    "register": {
+      "title": "Bienvenu sur BitGuild",
+      "n1": "Soyez certain d'avoir vos informations login pour MetaMask!",
+      "n2": "On ne peut pas vous aider si vous perdez votre accés."
+    }
+  },
+  "pages": {
+    "inventory": {
+      "title": "mes objets",
+      "all-items": "touts les objets"
+    },
+    "sandbox": {
+      "title": "Sandbox"
+    },
+    "faq": {
+      "title": "FAQ"
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "components": {
+    "switchLanguage": "Alterar Idioma",
+    "language": {
+      "en": "Inglês"
+    },
+    "menu": {
+      "inventory": "Meus Itens",
+      "exchange": "Exchange",
+      "community": "Comunidade"
+    },
+    "loader": {
+      "loading": "carregando"
+    },
+    "title": "BitGuild"
+  },
+  "fields": {
+    "nickName": {
+      "label": "Nome",
+      "required": "Crie um nome de usuário"
+    },
+    "email": {
+      "label": "Endereço de email",
+      "required": "Por favor informar seu email",
+      "invalid": "Por favor informal um endereço de email em formato válido, por exemplo seunome@email.com",
+      "conflict": "Este email já existe"
+    },
+    "wallet": {
+      "label": "Endereço da Carteira Digital",
+      "required": "Favor informar o endereço de sua carteira digital",
+      "minlength": "O endereço da Carteira Digital que você informou está incompleto. For favor verifique e tente novamente.",
+      "maxlength": "Endereço muito longo",
+      "invalid": "O endereço da Carteira Digital é inválido. Por favor certifique-se que você está usando apenas dígitos alfanuméricos."
+    },
+    "eth": {
+      "label": "Ethereum (ETH)"
+    },
+    "plat": {
+      "label": "Platinum (PLAT)"
+    }
+  },
+  "buttons": {
+    "submit": "Submeter",
+    "register": "Registrar",
+    "sell": "Vender",
+    "gift": "Presentear",
+    "convert": "Converter",
+    "install": "Instalar MetaMask"
+  },
+  "errors": {
+    "method-not-allowed": "Método não permitido",
+    "page-not-found": "Página não encontrada.",
+    "invalid-param": "Parâmetro inválido `{name}`, {reason}",
+    "required-param": "Parâmetro necessário `{name}` não encontrado",
+    "access-denied": "Acesso negado",
+    "not-found": "`{name}` não encontrado",
+    "conflict": "Este {name} já existe na base de dados",
+    "server-error": "Erro de servidor interno",
+    "spoofing-attempt": "Falha em verificar usuário ao comparar {wallet1} à {wallet2}"
+  },
+  "modals": {
+    "metamask-install": {
+      "title": "Olá!",
+      "p1": "Para acessar BitGuild, você necessita instalar MetaMask - uma carteira digital para seu browser.",
+      "p2": "Este também servirá como seu acesso ao BitGuild Portal (sem senhas extras!).",
+      "n1": "Perguntas? Cheque nossa",
+      "faq": "FAQ"
+    },
+    "metamask-login": {
+      "title": "Você não está conectado ao MetaMask",
+      "p1": "Por favor abrir MetaMask e seguir as instruções para obter acesso."
+    },
+    "register": {
+      "title": "Bem-vindo à BitGuild",
+      "n1": "Por favor certifique-se de salvar suas informações de acesso ao MetaMask, assim como detalhes para recuperar sua conta!",
+      "n2": "Nós não podemos lhe ajudar a recuperar acesso a sua conta."
+    }
+  },
+  "pages": {
+    "inventory": {
+      "title": "Meus Items",
+      "all-items": "Todos os Itens"
+    },
+    "sandbox": {
+      "title": "Sandbox"
+    },
+    "faq": {
+      "title": "FAQ"
+    }
+  }
+}

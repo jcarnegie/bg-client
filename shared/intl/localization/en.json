@@ -3,7 +3,10 @@
     "switchLanguage": "Switch Language",
     "language": {
       "en": "English",
-      "zh": "Chinese"
+      "zh": "Chinese",
+      "ja": "Japanese",
+      "fr": "French",
+      "pt": "Portuguese"
     },
     "menu": {
       "inventory": "My Items",

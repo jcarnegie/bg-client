@@ -63,3 +63,33 @@ localization.zh = {
 	messages: flattenMessages(zhData)
 };
 
+
+import "intl/locale-data/jsonp/fr";
+import fr from "react-intl/locale-data/fr";
+import frData from "./localization/fr";
+addLocaleData(fr);
+localization.fr = {
+	id: "fr",
+	messages: flattenMessages(frData)
+};
+
+
+import "intl/locale-data/jsonp/pt";
+import pt from "react-intl/locale-data/pt";
+import ptData from "./localization/pt";
+addLocaleData(pt);
+localization.pt = {
+	id: "pt",
+	messages: flattenMessages(ptData)
+};
+
+
+import "intl/locale-data/jsonp/ja";
+import ja from "react-intl/locale-data/ja";
+import jaData from "./localization/ja";
+addLocaleData(ja);
+localization.ja = {
+	id: "ja",
+	messages: flattenMessages(jaData)
+};
+
