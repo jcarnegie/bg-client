@@ -14,7 +14,7 @@ node_modules/.bin/babel -d ./build/client ./client --copy-files
 
 
 # TODO switch back to `server` once we have proper staging
-export RENDERING=client
+export RENDERING=server
 export NODE_ENV=production
 export MAINNET_TOKEN_CONTRACT_ADDR=0x7E43581b19ab509BCF9397a2eFd1ab10233f27dE
 export MAINNET_TOPUP_CONTRACT_ADDR=0xb3bbc0cc040413a3e68dcaa8f2b6eac2957c5ce0

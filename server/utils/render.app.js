@@ -7,12 +7,12 @@ import configureStore from "../../client/store";
 
 
 export function renderAppToString(request, response) {
-  const initLocale = defaultLanguage;
   const preloadedState = {
     intl: {
-      locale: initLocale,
+      locale: defaultLanguage,
+      defaultLocale: defaultLanguage,
       enabledLanguages,
-      ...(localization[initLocale] || {})
+      ...(localization[defaultLanguage] || {})
     }
   };
 

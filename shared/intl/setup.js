@@ -49,9 +49,10 @@ import "intl/locale-data/jsonp/en";
 import en from "react-intl/locale-data/en";
 import enData from "./localization/en";
 addLocaleData(en);
+const defaultMessages = flattenMessages(enData);
 localization.en = {
   locale: "en",
-	messages: flattenMessages(enData)
+	messages: defaultMessages
 };
 
 import "intl/locale-data/jsonp/zh";
@@ -60,7 +61,7 @@ import zhData from "./localization/zh";
 addLocaleData(zh);
 localization.zh = {
   locale: "zh",
-	messages: flattenMessages(zhData)
+	messages: Object.assign({}, defaultMessages, flattenMessages(zhData))
 };
 
 
@@ -70,7 +71,7 @@ import frData from "./localization/fr";
 addLocaleData(fr);
 localization.fr = {
   locale: "fr",
-	messages: flattenMessages(frData)
+	messages: Object.assign({}, defaultMessages, flattenMessages(frData))
 };
 
 
@@ -80,7 +81,7 @@ import ptData from "./localization/pt";
 addLocaleData(pt);
 localization.pt = {
   locale: "pt",
-	messages: flattenMessages(ptData)
+	messages: Object.assign({}, defaultMessages, flattenMessages(ptData))
 };
 
 
@@ -90,6 +91,6 @@ import jaData from "./localization/ja";
 addLocaleData(ja);
 localization.ja = {
   locale: "ja",
-	messages: flattenMessages(jaData)
+	messages: Object.assign({}, defaultMessages, flattenMessages(jaData))
 };
 
