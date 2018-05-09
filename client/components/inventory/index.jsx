@@ -9,6 +9,7 @@ import Item from "./item";
 import {uniq, uniqBy} from "lodash";
 import {FormattedMessage} from "react-intl";
 import {Link} from "react-router-dom";
+import Chat from "../chat/chat";
 
 
 @connect(
@@ -62,7 +63,7 @@ export default class Inventory extends Component {
           {inventory.data.length ? this.renderTabs() : this.renderEmpty()}
         </Col>
         <Col className="chat">
-          Chat
+          <Chat />
         </Col>
       </Row>
     );
