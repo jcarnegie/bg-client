@@ -1,102 +1,91 @@
 {
   "components": {
-    "switchLanguage": "Switch Language",
+    "switchLanguage": "语言",
     "language": {
-      "en": "English",
-      "zh": "Chinese"
+      "en": "English"
     },
     "menu": {
-      "inventory": "My Items",
-      "exchange": "Exchange",
-      "community": "Community"
+      "inventory": "背包",
+      "exchange": "拍卖行",
+      "community": "社区"
     },
     "loader": {
-      "loading": "loading"
+      "loading": "加载中"
     },
     "title": "BitGuild"
   },
   "fields": {
-    "language": {
-      "label": "Language",
-      "required": "Language is required."
-    },
     "nickName": {
-      "label": "Display Name",
-      "required": "Please enter your nick name."
+      "label": "昵称",
+      "required": "请输入昵称"
     },
     "email": {
-      "label": "Email Address",
-      "required": "Please enter your email address.",
-      "invalid": "Please enter a valid email address format such as yourname@email.com.",
-      "conflict": "This email already exists"
+      "label": "邮箱",
+      "required": "请输入邮箱",
+      "invalid": "邮箱格式不对。请输入一个有效的邮箱，如：yourname@email.com.",
+      "conflict": "此邮箱已被注册！"
     },
     "wallet": {
-      "label": "Wallet Address",
-      "required": "Please enter your wallet address.",
-      "minlength": "The wallet address you entered is incomplete, please check this field and try again.",
-      "maxlength": "Wallet address is too long.",
-      "invalid": "The wallet address you entered is invalid. Please make sure you are using only alphanumeric characters."
+      "label": "钱包地址",
+      "required": "请输入你的数字钱包地址",
+      "minlength": "钱包地址有误！（过短）请重新填写",
+      "maxlength": "钱包地址有误！（过长）请重新填写",
+      "invalid": "钱包地址有误！钱包地址应该只包含数字和英文字母"
     },
     "eth": {
-      "label": "Ethereum (ETH)"
+      "label": "以太坊  (ETH)"
     },
     "plat": {
-      "label": "Platinum (PLAT)"
+      "label": "Platinum  (PLAT)"
     }
   },
   "buttons": {
-    "submit": "Submit",
-    "register": "Register",
-    "sell": "Sell",
-    "gift": "Gift",
-    "convert": "Purchase",
-    "install": "Install MetaMask",
-    "send": "Send"
+    "submit": "确认",
+    "register": "注册",
+    "sell": "售卖",
+    "gift": "赠送",
+    "convert": "转换",
+    "install": "安装MetaMask"
   },
   "errors": {
-    "method-not-allowed": "Method not allowed",
-    "page-not-found": "Page Not Found",
-    "invalid-param": "Invalid param `{name}`, {reason}",
-    "required-param": "Required param `{name}` missing",
-    "access-denied": "Access denied",
-    "not-found": "`{name}` not found",
-    "conflict": "This {name} already exists in db",
-    "server-error": "Internal Server Error",
-    "spoofing-attempt": "Failed to verify signer when comparing {wallet1} to {wallet2}"
+    "method-not-allowed": "方法不被允许",
+    "page-not-found": "未找到页面",
+    "invalid-param": "Param  `{name}`,  {reason}有误",
+    "required-param": "必要param  `{name}`未找到",
+    "access-denied": "拒绝访问",
+    "not-found": "`{name}`未找到",
+    "conflict": "名字：{name}  已存在数据库里",
+    "server-error": "服务器错误",
+    "spoofing-attempt": "对比{wallet1}和{wallet2}时，核实发起人签名失败"
   },
   "modals": {
     "metamask-install": {
-      "title": "Hello!",
-      "p1": "To enter BitGuild, you must install MetaMask - a digital wallet for your browser.",
-      "p2": "This will also act as your login to the BitGuild Portal (no extra passwords!).",
-      "n1": "Questions? Check our",
+      "title": "你好！",
+      "p1": "注册BitGuild平台账号需安装MetaMask数字钱包。",
+      "p2": "以后登录用MetaMask即可（不需要记密码）！",
+      "n1": "有任何问题请查看",
       "faq": "FAQ"
     },
     "metamask-login": {
-      "title": "You are not logged into MetaMask",
-      "p1": "Please open MetaMask and follow the instructions to log in."
+      "title": "MetaMask未登录！",
+      "p1": "请打开MetaMask再登录"
     },
     "register": {
-      "title": "Welcome to BitGuild",
-      "n1": "Make sure you save your MetaMask login information and account recovery details!",
-      "n2": "We can’t help you recover it if you lose access.",
-      "text": "BitGuild requires all users to sign with their private key in order to safeguard against spoofing attempts.\n\nOur mission is to revolutionize the global gaming industry by creating a platform for a brand new class of games that live on the blockchain. Blockchain games completely redefine the relationship between players and developers by facilitating full and true ownership of in-game assets, cheap & safe item trading, cross-game compatibility of items & currency, and more. BitGuild’s team consists of cryptocurrency and gaming veterans with decades of experience building international large-scale gaming platforms and communities. BitGuild aims to host the best blockchain games and the largest blockchain gamer community online."
+      "title": "欢迎您来到BitGuild！",
+      "n1": "请记好自己的MetaMask账号信息和SEED！",
+      "n2": "若出现用户MetaMask账户丢失，BitGuild无法提供帮忙。"
     }
   },
   "pages": {
     "inventory": {
-      "title": "My Items",
-      "all-items": "All items",
-      "back-to-game": "Back to game"
+      "title": "背包",
+      "all-items": "所有物品"
     },
     "sandbox": {
-      "title": "Sandbox"
+      "title": "沙盒"
     },
     "faq": {
       "title": "FAQ"
-    },
-    "games": {
-      "questions": "Have questions?"
     }
   }
 }
