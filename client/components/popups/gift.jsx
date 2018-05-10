@@ -19,12 +19,13 @@ import {wallet} from "../../../shared/constants/placeholder";
 export default class GiftPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
-    id: PropTypes.string,
-    name: PropTypes.string,
-    image: PropTypes.string,
     user: PropTypes.object,
     network: PropTypes.object,
     onHide: PropTypes.func,
+    item: PropTypes.shape({
+      name: PropTypes.string,
+      image: PropTypes.string
+    }),
     intl: intlShape
   };
 
@@ -84,17 +85,17 @@ export default class GiftPopup extends Component {
   }
 
   render() {
-    const {show, onHide, intl, name, image} = this.props;
+    const {show, onHide, intl, item} = this.props;
 
     return (
       <Modal show={show} className="gift" onHide={onHide} backdropClassName="semi">
         <Modal.Header closeButton />
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
-            <h2>{name}</h2>
+            <h2>{item.name}</h2>
             <br />
 
-            <Thumbnail src={image} />
+            <Thumbnail src={item.image} />
 
             <FormGroup controlId="wallet">
               <Col componentClass={ControlLabel}>

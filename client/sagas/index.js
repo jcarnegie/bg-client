@@ -4,13 +4,15 @@ import metaMaskSaga from "./metamask";
 import sendBirdSaga from "./sendbird";
 import userSaga from "./user";
 import gameSaga from "./game";
+import inventorySaga from "./inventory";
 
 export default function * rootSaga() {
   yield all([
-    metaMaskSaga(),
     chatSaga(),
+    gameSaga(),
+    inventorySaga(),
+    metaMaskSaga(),
     sendBirdSaga(),
-    userSaga(),
-    gameSaga()
+    userSaga()
   ]);
 }

@@ -6,20 +6,25 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import Loader from "../common/loader";
 import Item from "./item";
-import {uniq, uniqBy} from "lodash";
-import {FormattedMessage} from "react-intl";
-import {Link} from "react-router-dom";
+import {uniq} from "lodash";
+import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
 import Chat from "../chat/chat";
+// import {INVENTORY_GAMES_REQUEST, INVENTORY_ITEMS_REQUEST} from "../../../shared/constants/actions";
 
 
 @connect(
   state => ({
-    inventory: state.inventory
+    items: state.items,
+    games: state.games,
+    user: state.user
   })
 )
 export default class Inventory extends Component {
   static propTypes = {
-    inventory: PropTypes.object,
+    dispatch: PropTypes.func,
+    items: PropTypes.object,
+    games: PropTypes.object,
+    user: PropTypes.object,
     lastMatch: PropTypes.object.isRequired
   };
 
@@ -27,13 +32,26 @@ export default class Inventory extends Component {
     filters: {}
   };
 
+  /*
+  componentDidMount() {
+    this.props.dispatch({
+      type: INVENTORY_GAMES_REQUEST,
+      payload: this.props.user
+    });
+    this.props.dispatch({
+      type: INVENTORY_ITEMS_REQUEST,
+      payload: this.props.user
+    });
+  }
+  */
+
   onClick(game, categories) {
     return e => {
       e.preventDefault();
       this.setState({
         filters: {
           ...this.state.filters,
-          [game._id]: categories
+          [game]: categories
         }
       });
     };
@@ -46,22 +64,22 @@ export default class Inventory extends Component {
   }
 
   render() {
-    const {inventory} = this.props;
+    const {items, games} = this.props;
 
-    if (inventory.isLoading) {
+    if (items.isLoading || games.isLoading) {
       return (
         <Loader />
       );
     }
 
-    if (!inventory.success) {
+    if (!items.success || !games.success) {
       return null;
     }
 
     return (
       <Row className="inventory">
         <Col className="grap gap">
-          {inventory.data.length ? this.renderTabs() : this.renderEmpty()}
+          {items.data.length ? this.renderTabs() : this.renderEmpty()}
         </Col>
         <Col className="chat">
           <Chat />
@@ -86,9 +104,27 @@ export default class Inventory extends Component {
     );
   }
 
+  renderTab(game, items) {
+    const categories = uniq([].concat(...items.map(item => item.categories)));
+    return (
+      <Fragment key={game._id}>
+        <div className="arrow-right pull-right">
+          <Button onClick={::this.onClick(game._id, categories)} bsStyle="link">
+            <FormattedMessage id="pages.inventory.all" />
+          </Button>
+          {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game._id, [category])} bsStyle="link">{category}</Button>)}
+        </div>
+        <h3>{game.name}</h3>
+        <Row>
+          {items.filter(item => Object.keys(this.state.filters).includes(item.game._id) ? this.state.filters[item.game._id].filter(x => !!~item.categories.indexOf(x)).length : true)
+            .map(item => <Item key={item.tokenId} item={item} onClick={::this.onClick} />)}
+        </Row>
+      </Fragment>
+    );
+  }
+
   renderTabs() {
-    const {inventory} = this.props;
-    const games = uniqBy(inventory.data.map(item => item.game), "_id");
+    const {items, games} = this.props;
 
     return (
       <>
@@ -98,42 +134,14 @@ export default class Inventory extends Component {
         </h2>
         <Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
           <Tab eventKey={1} title={<FormattedMessage id="pages.inventory.all-items" />}>
-            {games.map(game => {
-              const items = inventory.data.filter(item => item.game._id === game._id);
-              const categories = uniq([].concat(...items.map(item => item.categories)));
-              return (
-                <Fragment key={game._id}>
-                  <div className="arrow-right pull-right">
-                    <Button onClick={::this.onClick(game, categories)} bsStyle="link">
-                      <FormattedMessage id="pages.inventory.all" />
-                    </Button>
-                    {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game, [category])} bsStyle="link">{category}</Button>)}
-                  </div>
-                  <h3>{game.name}</h3>
-                  <Row>
-                    {items.filter(item => Object.keys(this.state.filters).includes(item.game._id) ? this.state.filters[item.game._id].filter(x => !!~item.categories.indexOf(x)).length : true)
-                      .map(item => <Item key={item._id} {...item} onClick={::this.onClick} />)}
-                  </Row>
-                </Fragment>
-              );
-            })}
+            {games.data.map(game =>
+              this.renderTab(game, items.data.filter(item => item.game === game._id))
+            )}
           </Tab>
-          {games.map((game, i) => {
-            const items = inventory.data.filter(item => item.game._id === game._id);
-            const categories = uniq([].concat(...items.map(item => item.categories)));
+          {games.data.map((game, i) => {
             return (
               <Tab eventKey={i + 2} title={game.name} key={game._id}>
-                <div className="arrow-right pull-right">
-                  <Button onClick={::this.onClick(game, categories)} bsStyle="link">
-                    <FormattedMessage id="pages.inventory.all" />
-                  </Button>
-                  {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game, [category])} bsStyle="link">{category}</Button>)}
-                </div>
-                <h3>{game.name}</h3>
-                <Row>
-                  {items.filter(item => Object.keys(this.state.filters).includes(item.game._id) ? this.state.filters[item.game._id].filter(x => !!~item.categories.indexOf(x)).length : true)
-                    .map(item => <Item key={item._id} {...item} onClick={::this.onClick} />)}
-                </Row>
+                {this.renderTab(game, items.data.filter(item => item.game === game._id))}
               </Tab>
             );
           })}
@@ -151,11 +159,7 @@ export default class Inventory extends Component {
           </h2>
           <Image src="/images/empty-box.png" />
           <p>
-            <FormattedMessage id="pages.inventory.learn-more" />
-            {" "}
-            <Link to="/faq">
-              <FormattedMessage id="pages.inventory.faq" />
-            </Link>
+            <FormattedHTMLMessage id="pages.inventory.faq" />
           </p>
         </div>
       </div>

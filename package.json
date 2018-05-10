@@ -52,6 +52,7 @@
     "redux": "4.0.0",
     "redux-devtools-extension": "2.13.2",
     "redux-localstorage": "git://github.com/TrejGun/redux-localstorage#34b46014b2c5cd294de332b3c4161d204dc65973",
+    "redux-localstorage-filter": "0.1.1",
     "redux-logger": "3.0.6",
     "redux-saga": "0.16.0",
     "redux-thunk": "2.2.0",
