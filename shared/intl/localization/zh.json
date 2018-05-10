@@ -2,7 +2,13 @@
   "components": {
     "switchLanguage": "语言",
     "language": {
-      "en": "English"
+      "en": "English",
+      "zh": "简体中文",
+      "ja": "日本語",
+      "fr": "Français",
+      "pt": "Português",
+      "es": "Español",
+      "ru": "Русский"
     },
     "menu": {
       "inventory": "背包",

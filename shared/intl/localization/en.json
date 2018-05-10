@@ -3,12 +3,12 @@
     "switchLanguage": "Switch Language",
     "language": {
       "en": "English",
-      "zh": "Chinese",
-      "ja": "Japanese",
-      "fr": "French",
-      "pt": "Portuguese",
-      "es": "Spanish",
-      "ru": "Russian"
+      "zh": "简体中文",
+      "ja": "日本語",
+      "fr": "Français",
+      "pt": "Português",
+      "es": "Español",
+      "ru": "Русский"
     },
     "menu": {
       "inventory": "My Items",
