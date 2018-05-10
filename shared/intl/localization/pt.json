@@ -105,8 +105,7 @@
       "all-items": "Todos Itens",
       "back-to-game": "Voltar ao jogo",
       "empty": "Você não tem nenhum item ainda",
-      "learn-more": "Saiba mais sober Itens em nossa",
-      "faq": "FAQ"
+      "faq": "Perguntas? Cheque nossa <a href='/faq'>FAQ</a>"
     },
     "sandbox": {
       "title": "Sandbox"
