@@ -1,3 +1,4 @@
+import "./index.less";
 import React, {Component} from "react";
 import {FormattedMessage} from "react-intl";
 import {Col, Row} from "react-bootstrap";
