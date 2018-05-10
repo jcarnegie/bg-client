@@ -9,12 +9,15 @@ import Sell from "../popups/sell";
 
 export default class Item extends Component {
   static propTypes = {
-    game: PropTypes.string,
     onClick: PropTypes.func,
     item: PropTypes.shape({
+      game: PropTypes.string,
       name: PropTypes.string,
       image: PropTypes.string,
       categories: PropTypes.array
+    }),
+    game: PropTypes.shape({
+      nft: PropTypes.object
     })
   };
 
@@ -53,8 +56,8 @@ export default class Item extends Component {
     const {item, game, onClick} = this.props;
     return (
       <Col sm={6} md={4} lg={3} className="item">
-        <Gift show={this.state.gift} item={item} onHide={::this.onHideGift} />
-        <Sell show={this.state.sell} item={item} onHide={::this.onHideSell} />
+        <Gift show={this.state.gift} item={item} game={game} onHide={::this.onHideGift} />
+        <Sell show={this.state.sell} item={item} game={game} onHide={::this.onHideSell} />
         <Thumbnail src={item.image}>
           <h4>{name}</h4>
           <ButtonGroup justified>

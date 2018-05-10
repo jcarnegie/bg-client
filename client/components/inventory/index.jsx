@@ -117,7 +117,7 @@ export default class Inventory extends Component {
         <h3>{game.name}</h3>
         <Row>
           {items.filter(item => Object.keys(this.state.filters).includes(item.game._id) ? this.state.filters[item.game._id].filter(x => !!~item.categories.indexOf(x)).length : true)
-            .map(item => <Item key={item.tokenId} item={item} onClick={::this.onClick} />)}
+            .map(item => <Item key={item.tokenId} item={item} game={game} onClick={::this.onClick} />)}
         </Row>
       </Fragment>
     );
