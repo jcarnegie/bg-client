@@ -3,8 +3,7 @@ import React, {Component} from "react";
 import {Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {FormattedMessage} from "react-intl";
-import {Link} from "react-router-dom";
+import {FormattedMessage, FormattedHTMLMessage} from "react-intl";
 
 
 @connect(
@@ -28,11 +27,7 @@ export default class MetaMaskNetworkPopup extends Component {
             <br />
             <p><FormattedMessage id="modals.metamask-network.p1" /></p>
             <p className="note">
-              <FormattedMessage id="modals.metamask-network.n1" />
-              {" "}
-              <Link to="/faq">
-                <FormattedMessage id="modals.metamask-network.faq" />
-              </Link>
+              <FormattedHTMLMessage id="modals.metamask-network.faq" />
             </p>
           </div>
         </Modal.Body>

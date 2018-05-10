@@ -3,8 +3,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Button, Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
-import {FormattedMessage} from "react-intl";
+import {FormattedMessage, FormattedHTMLMessage} from "react-intl";
 import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../../shared/constants/actions";
 
 
@@ -88,11 +87,7 @@ export default class MetaMaskInstallPopup extends Component {
               </Button>
             </Form>
             <p className="note">
-              <FormattedMessage id="modals.metamask-install.n1" />
-              {" "}
-              <Link to="/faq">
-                <FormattedMessage id="modals.metamask-install.faq" />
-              </Link>
+              <FormattedHTMLMessage id="modals.metamask-install.faq" />
             </p>
           </div>
         </Modal.Body>

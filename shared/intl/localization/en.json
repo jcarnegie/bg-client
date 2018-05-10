@@ -74,20 +74,17 @@
       "title": "Hello!",
       "p1": "To enter BitGuild, you must install MetaMask - a digital wallet for your browser.",
       "p2": "This will also act as your login to the BitGuild Portal (no extra passwords!).",
-      "n1": "Questions? Check our",
-      "faq": "FAQ"
+      "faq": "Questions? Check our <a href='/faq'>FAQ</a>"
     },
     "metamask-login": {
       "title": "You are not logged into MetaMask",
       "p1": "Please open MetaMask and follow the instructions to log in.",
-      "n1": "Questions? Check our",
-      "faq": "FAQ"
+      "faq": "Questions? Check our <a href='/faq'>FAQ</a>"
     },
     "metamask-network": {
       "title": "Sorry!",
       "p1": "This network is not supported by BitGuild portal. For actual experience please switch to main net. For testing purposes please use Rinkeby",
-      "n1": "Questions? Check our",
-      "faq": "FAQ"
+      "faq": "Questions? Check our <a href='/faq'>FAQ</a>"
     },
     "register": {
       "title": "Welcome to BitGuild",
@@ -98,8 +95,7 @@
     "sell": {
       "title": "Stay tuned!",
       "p1": "We will let you know as soon as you are able to sell items.",
-      "n1": "Questions? Check our",
-      "faq": "FAQ"
+      "faq": "Questions? Check our <a href='/faq'>FAQ</a>"
     }
   },
   "pages": {
