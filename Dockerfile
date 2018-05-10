@@ -10,6 +10,8 @@ RUN mkdir -p /app
 WORKDIR /app
 
 ARG NODE_ENV=production
+
+ENV RENDERING server
 ENV NODE_ENV $NODE_ENV
 
 ADD package.json ./
