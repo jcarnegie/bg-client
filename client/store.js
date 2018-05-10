@@ -5,9 +5,20 @@ import thunkMiddleware from "redux-thunk";
 import {createLogger} from "redux-logger";
 import rootReducers from "./reducers/index";
 import rootSaga from "./sagas";
+import {defaultLanguage, enabledLanguages} from "../shared/constants/language";
+import {localization} from "../shared/intl/setup";
 
 
-export default function(initialState = {}) {
+const defaultState = {
+  intl: {
+    locale: defaultLanguage,
+    defaultLocale: defaultLanguage,
+    enabledLanguages,
+    ...(localization[defaultLanguage] || {})
+  }
+};
+
+export default function(initialState = defaultState) {
   const sagaMiddleware = createSagaMiddleware();
 
   const middlewares = [thunkMiddleware, sagaMiddleware];
