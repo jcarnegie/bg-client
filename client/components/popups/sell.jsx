@@ -5,8 +5,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
-import {FormattedMessage} from "react-intl";
-import {Link} from "react-router-dom";
+import {FormattedMessage, FormattedHTMLMessage} from "react-intl";
 
 
 @connect(
@@ -42,11 +41,7 @@ export default class SellPopup extends Component {
             <br />
 
             <p className="note">
-              <FormattedMessage id="modals.metamask-login.n1" />
-              {" "}
-              <Link to="/faq">
-                <FormattedMessage id="modals.metamask-login.faq" />
-              </Link>
+              <FormattedHTMLMessage id="modals.metamask-login.faq" />
             </p>
           </Form>
         </Modal.Body>

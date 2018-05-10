@@ -8,17 +8,20 @@ import {GAME_REQUEST} from "../../../shared/constants/actions";
 import Init from "../common/init";
 import Loader from "../common/loader";
 import Chat from "../chat/chat";
+import {defaultLanguage} from "../../../shared/constants/language";
 
 
 @connect(
   state => ({
-    game: state.game
+    game: state.game,
+    user: state.user
   })
 )
 export default class Game extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     game: PropTypes.object,
+    user: PropTypes.object,
     match: PropTypes.shape({
       params: PropTypes.object.isRequired
     }).isRequired
@@ -32,7 +35,8 @@ export default class Game extends Component {
   }
 
   renderIframe() {
-    const {game} = this.props;
+    const {game, user} = this.props;
+
     if (game.isLoading) {
       return (
         <Loader />
@@ -44,7 +48,7 @@ export default class Game extends Component {
       );
     }
 
-    return (<iframe src={game.data.url} />);
+    return (<iframe src={game.data.url} key={user.data ? user.data.language : defaultLanguage} />);
   }
 
   render() {
