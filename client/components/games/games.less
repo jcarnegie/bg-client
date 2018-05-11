@@ -1,88 +1,73 @@
 .iframe {
   background-image: url("/images/landing.png");
-  background-size: contain;
+  background-size: auto 100%;
+  background-position: center;
   height: 450px;
   margin: 0 -90px;
+  position: relative;
 
-  .gradient {
-    padding: 60px 90px;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+  .title {
+    font-size: 65px;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 
-    .title {
-      font-size: 65px;
-      font-weight: 700;
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
+  .description {
+    font-size: 20px;
+    font-weight: 500;
+    width: 490px;
+  }
 
-    .description {
-      font-size: 20px;
-      font-weight: 500;
-      width: 490px;
-    }
+  .btn {
+    color: var(--main-color);
+    background: linear-gradient(to right, rgb(177, 200, 232) 0%, rgb(251, 252, 255) 100%); // #B1C8E8 #FBFCFF
+    font-size: 22px;
+    font-weight: 700;
+    padding: 0;
+    width: 148px;
+    height: 54px;
+    line-height: 54px;
+    border: 0;
+    border-radius: 2px;
+    text-transform: uppercase;
+    position: absolute;
+    bottom: 0;
+    margin: 30px auto;
+    left: 0;
+    right: 0;
 
-    .btn {
+    &:hover {
+      background: linear-gradient(to right, rgb(113, 137, 182) 0%, rgb(220, 222, 232) 100%); // #7189B6 #DCDEE8
       color: var(--main-color);
-      background-color: #FF8E64;
-      font-size: 22px;
-      font-weight: 700;
-      padding: 0;
-      width: 148px;
-      height: 54px;
-      line-height: 54px;
-      border: 0;
-      border-radius: 2px;
-      margin: 50px 0;
-      text-transform: uppercase;
-
-      &:hover {
-        background-color: #FF7656;
-        color: var(--main-color);
-      }
-
-      img {
-        width: 16px;
-        height: 16px;
-        margin-top: -5px;
-        margin-right: 5px;
-      }
     }
-  }
-}
 
-.preview {
-  margin-bottom: 62px;
-
-  h3 {
-    font-size: 24px;
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 25px;
-  }
-
-  img {
-    margin: 0 auto;
-    display: block;
-    border-radius: 50%;
-    background-color: #e9ebf3;
+    img {
+      width: 16px;
+      height: 16px;
+      margin-top: -5px;
+      margin-right: 5px;
+    }
   }
 }
 
 .announce {
   margin-bottom: 62px;
+  margin-top: 18px;
 
   h3 {
     font-size: 24px;
     text-align: center;
-    font-weight: normal;
+    font-weight: 500;
     margin-bottom: 25px;
+    text-transform: uppercase;
   }
 
   img {
     margin: 0 auto;
     display: block;
     width: 100%;
+    max-width: 400px;
   }
 }
 

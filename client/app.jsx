@@ -2,8 +2,7 @@ import React, {Component} from "react";
 import {Switch} from "react-router";
 import {Grid} from "react-bootstrap";
 
-import GameListDev from "./components/games/index.development";
-import GameListProd from "./components/games/index.production";
+import GameList from "./components/games/index";
 import Game from "./components/games/game";
 import SandBox from "./components/games/sandbox";
 import Inventory from "./components/inventory";
@@ -11,8 +10,7 @@ import Faq from "./components/faq";
 
 import Message from "./components/common/message";
 import NotFound from "./components/common/notfound";
-import HeaderDev from "./components/common/header.development";
-import HeaderProd from "./components/common/header.production";
+import Header from "./components/common/header";
 
 import MetaMaskInstall from "./components/popups/metamask.install";
 import MetaMaskLogin from "./components/popups/metamask.login";
@@ -20,22 +18,20 @@ import MetaMaskNetwork from "./components/popups/metamask.network";
 import Register from "./components/popups/register";
 import MyRoute from "./components/inventory/my-route";
 
-// TODO remove this condition once we have proper staging
-const isProd = typeof window !== "undefined" && window.document.location.host === "bitguild.com";
 
 export default class App extends Component {
   render() {
     return (
       <>
-        {isProd ? <HeaderProd /> : <HeaderDev />}
-        {isProd ? null : <MetaMaskInstall />}
-        {isProd ? null : <MetaMaskLogin />}
-        {isProd ? null : <MetaMaskNetwork />}
-        {isProd ? null : <Register />}
+        <Header />
+        <MetaMaskInstall />
+        <MetaMaskLogin />
+        <MetaMaskNetwork />
+        <Register />
         <Grid fluid>
           <Message />
           <Switch>
-            <MyRoute path="/" component={isProd ? GameListProd : GameListDev} exact />
+            <MyRoute path="/" component={GameList} exact />
             <MyRoute path="/game/:_id" component={Game} exact />
             <MyRoute path="/sandbox" component={SandBox} exact />
             <MyRoute path="/inventory" component={Inventory} />
