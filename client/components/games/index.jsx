@@ -88,7 +88,7 @@ export default class GameList extends Component {
               <div className="caption">
                 <FormattedMessage id="pages.games.airdrop.giveaway" />
               </div>
-              <Button>
+              <Button href="/airdrop">
                 <FormattedMessage id="pages.games.airdrop.learn-more" />
               </Button>
             </Col>
