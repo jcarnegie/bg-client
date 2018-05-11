@@ -13,18 +13,10 @@ export default class GameList extends Component {
       <Row>
         <Col className="grap gap">
           <div className="iframe">
-            <div className="gradient">
-              <div className="title">
-                <FormattedMessage id="pages.games.title" />
-              </div>
-              <div className="description">
-                <FormattedMessage id="pages.games.description" />
-              </div>
-              <Button href="/game/5af2703709bc2d18438449ad">
-                <Image src="/images/buttons/play/play.png" />
-                <FormattedMessage id="pages.games.play" />
-              </Button>
-            </div>
+            <Button href="/game/5af2703709bc2d18438449ad">
+              <Image src="/images/buttons/play/play.png" />
+              <FormattedMessage id="pages.games.play" />
+            </Button>
           </div>
           <Row>
             <Col lg={5} className="preview">
