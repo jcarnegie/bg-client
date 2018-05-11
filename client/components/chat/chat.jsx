@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import StayScrolled from "react-stay-scrolled";
-import {map} from "ramda";
+import {isEmpty, map} from "ramda";
 import {sendChatMessage} from "../../actions/chat";
 import Message from "./message";
 import {FormattedMessage} from "react-intl";
@@ -41,8 +41,13 @@ export default class Chat extends Component {
   }
 
   async handleSubmit(e) {
-    e.preventDefault();
     const {sendChatMessage} = this.props;
+    const {newMessage} = this.state;
+
+    e.preventDefault();
+
+    if (isEmpty(newMessage)) return;
+
     sendChatMessage(this.state.newMessage);
     // clear the message input
     this.setState({newMessage: ""});
