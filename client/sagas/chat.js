@@ -25,9 +25,8 @@ function * initChat(action) {
     payload: {sb, user}
   });
 
-  const channelName = `BitGuild-${process.env.NODE_ENV}`;
   const channels = yield chatChannels(sb);
-  const channel = yield setChannelByName(channelName, channels);
+  const channel = yield setChannelByName(`BitGuild-${process.env.NODE_ENV}`, channels);
   yield put({
     type: CHAT_SET_CHANNEL,
     payload: channel
