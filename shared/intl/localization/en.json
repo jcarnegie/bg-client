@@ -18,7 +18,8 @@
     "loader": {
       "loading": "loading"
     },
-    "title": "BitGuild"
+    "title": "BitGuild",
+    "colon": ": "
   },
   "fields": {
     "language": {
