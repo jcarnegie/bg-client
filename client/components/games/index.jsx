@@ -1,4 +1,4 @@
-import "./games.less";
+import "./index.less";
 import "./chat.less";
 import React, {Component} from "react";
 import {Button, Col, Image, Row} from "react-bootstrap";
@@ -10,9 +10,9 @@ import Chat from "../chat/chat";
 export default class GameList extends Component {
   render() {
     return (
-      <Row>
-        <Col className="grap gap">
-          <div className="iframe">
+      <Row className="games">
+        <Col className="grap gap content">
+          <div className="banner">
             <Button href="/game/5af2703709bc2d18438449ad">
               <Image src="/images/buttons/play/play.png" />
               <FormattedMessage id="pages.games.play" />

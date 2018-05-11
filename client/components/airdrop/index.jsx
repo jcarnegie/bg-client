@@ -1,0 +1,45 @@
+import "./index.less";
+import React, {Component} from "react";
+import {Button, Row, Col, Image} from "react-bootstrap";
+import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
+import Chat from "../chat/chat";
+
+
+export default class Airdrop extends Component {
+  render() {
+    return (
+      <Row className="airdrop">
+        <Col md={9} className="gap content">
+          <h2><FormattedMessage id="pages.airdrop.title" /></h2>
+          <h3><FormattedMessage id="pages.airdrop.description" /></h3>
+
+          <p><FormattedHTMLMessage id="pages.airdrop.p1" /></p>
+          <p><FormattedHTMLMessage id="pages.airdrop.p2" /></p>
+          <p><FormattedHTMLMessage id="pages.airdrop.p3" /></p>
+          <p><FormattedHTMLMessage id="pages.airdrop.p4" /></p>
+
+          <Image src="/images/airdrop.png" />
+
+          <p><FormattedHTMLMessage id="pages.airdrop.p5" /></p>
+
+          <ul>
+            <li><FormattedHTMLMessage id="pages.airdrop.l1" /></li>
+            <li><FormattedHTMLMessage id="pages.airdrop.l2" /></li>
+            <li><FormattedHTMLMessage id="pages.airdrop.l3" /></li>
+            <li><FormattedHTMLMessage id="pages.airdrop.l4" /></li>
+          </ul>
+
+          <p><FormattedHTMLMessage id="pages.airdrop.p6" /></p>
+          <p><FormattedHTMLMessage id="pages.airdrop.p7" /></p>
+
+          <Button href="/game/5af2703709bc2d18438449ad">
+            <FormattedMessage id="pages.airdrop.play" />
+          </Button>
+        </Col>
+        <Col className="chat">
+          <Chat />
+        </Col>
+      </Row>
+    );
+  }
+}

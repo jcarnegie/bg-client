@@ -111,7 +111,80 @@
       "title": "Sandbox"
     },
     "faq": {
-      "title": "FAQ"
+      "title": "FAQ",
+      "metamask": {
+        "title": "Metamask",
+        "q1": "What is Metamask?",
+        "a1": "It’s a browser plug-in that connects your digital ethereum wallet to the Portal.",
+        "q2": "Do I really need to use metamask?",
+        "a2": "For now, the only supported way of using the BitGuild Portal involves MetaMask. We are open to integrating functionality for other Ethereum-enabled browser wallets in the future.",
+        "q3": "I can’t see my PLAT in my wallet! Where is it?",
+        "a3": "If you’re using MetaMask, you need enable the BETA UI, and manually add the PLAT token to your token list. Use this address when configuring: 0x7E43581b19ab509BCF9397a2eFd1ab10233f27dE (specify 18 for digits).",
+        "q4": "Does registering with my private key on the BitGuild Portal have a transaction fee?",
+        "a4": "No, only transactions sent through your MetaMask Wallet will have a gas fee."
+      },
+      "plat": {
+        "title": "PLAT Tokens",
+        "q1": "What is PLAT?",
+        "a1": "PLAT is the official BitGuild Token, used within the BitGuild ecosystem to play games, trade items, and more! It’s the driving currency on the BitGuild portal, usable in all current and future games on BitGuild.",
+        "q2": "How do I buy PLAT?",
+        "a2": "Registered BitGuild users can buy PLAT via the converter on the top right bar of the BitGuild Portal.",
+        "q3": "Are there any games that I can play without PLAT?",
+        "a3": "Most games will accept only PLAT, though some may accept ETH as well. In this event, using PLAT will always garner a discount for the player. However, some titles may also present users with a free-to-play model, offering players a way to try the game without buying anything.",
+        "q4": "What is the ETH to PLAT exchange rate?",
+        "a4": "The most up to date exchange rate will be shown in the converter."
+      },
+      "games": {
+        "title": "BitGuild Games",
+        "q1": "Can I play any of these games on mobile?",
+        "a1": "If the game supports mobile play, you can use any of the mobile wallets with Ethereum-enabled browsers, such as Trust Wallet to play the games on the BitGuild Portal.",
+        "q2": "I’ve played a 3rd party game outside of BitGuild.com, and now I want to play it through the BitGuild portal. Is that possible?",
+        "a2": "Yes. If the game is available on BitGuild.com, but you’ve played it elsewhere before, all your items and progress will be preserved as long as you sign up to BitGuild.com with the same wallet address you used to play the game previously."
+      },
+      "items": {
+        "title": "Game Items",
+        "q1": "How can I trade and sell my items?",
+        "a1": "The BitGuild Marketplace is under development. In the meantime, you are free to use any existing marketplace for the ERC721 tokens.",
+        "q2": "Can I trade outside the portal?",
+        "a2": "Yes, you are free to use any existing marketplace for the ERC721 tokens.",
+        "q3": "How can I report an issue with the Portal or a game?",
+        "a3": "You can email us at support@bitguild.com, or you can reach the BitGuild Team and Player community on Discord!",
+        "q4": "How can I see the items that I have so far?",
+        "a4": "You can see the items for all the games that live on the BitGuild Portal on the “My Items” section, found on the top menu bar.",
+        "q5": "I have an item that is missing. Who can I report this to?",
+        "a5": "Send us an email at support@bitguild.com, or find us on Discord, and we’ll do our best to sort the situation out.",
+        "q6": "I’d like to report a scammer",
+        "a6": "Contact support@bitguild.com, and please include as much supporting information as you can, including screenshots.",
+        "q7": "I’d like to report an item bug.",
+        "a7": "Contact support@bitguild.com, and please include as much supporting information as you can, including screenshots.",
+        "q8": "How long does a purchase transaction take?",
+        "a8": "Each transaction, either purchasing or gifting, can take from 30 seconds up to a few minutes, depending on the gas price you selected in MetaMask.",
+        "q9": "What if my transaction is not going through?",
+        "a9": "If a transaction is not going through, MetaMask allows you to increase the gas price for the pending transactions. Transactions get queued, so if one of the previous transactions is stuck, all of the following will be stuck as well.",
+        "q10": "How much does each transaction cost (gas price)?",
+        "a10": "You can set your gas price through MetaMask. Actual gas spend varies depending on the game and type of transaction."
+      },
+      "account": {
+        "title": "My Account",
+        "q1": "What is my BitGuild login information?",
+        "a1": "Users sign into BitGuild.com using their MetaMask credentials.",
+        "q2": "I’m having trouble signing in. What can I do?",
+        "a2": "Double check your MetaMask login info, and ensure there are no conflicting issues. If you are still having trouble, contact us at support@bitguild.com, or find us directly on Discord.",
+        "q3": "I forgot my BitGuild name and password. How can I retrieve it?",
+        "a3": "BitGuild doesn’t use traditional login info - everything is tied to MetaMask. If you’ve lost your MetaMask credentials, we unfortunately can’t help you. :("
+      },
+      "community": {
+        "title": "BitGuild Community",
+        "q1": "How can I engage with other players?",
+        "a1": "While BitGuild features an integrated chat system, you can also find the BitGuild community on Discord. There, you can chat with other players, as well as keep up with news from the BitGuild team and 3rd party developers.",
+        "q2": "Where can I find BitGuild on social media?",
+        "a2": "You can find us on Twitter, Facebook, Telegram, Reddit, and of course, Discord!"
+      },
+      "developers":{
+        "title": "Game Developers",
+        "q1": "I’m interested in developing a game for BitGuild. Who can I contact?",
+        "a1": "Reach out to us via email at: partnerships@bitguild.com"
+      }
     },
     "games": {
       "play": "play",
@@ -121,85 +194,30 @@
       "questions": "Have questions?",
       "faq": "FAQ",
       "discord": "DISCORD"
+    },
+    "airdrop" : {
+      "title": "Free Item Giveaway",
+      "description": "Win up to 50 equipment packs!",
+
+      "p1": "<strong>Sign up now to score some sweet free loot chests in Ether.Online!</strong>",
+      "p2": "Simply follow the steps below to be entered into this giveaway event celebrating the launch of Ether.Online on the BitGuild Portal! Every successfully registered user with at least 5,000 PLAT in their wallet will receive an in-game item chest, as well as a chance to win the <strong>special Grand Prize!</strong>",
+      "p3": "<strong>The event starts on May 11th, 2018 PST and concludes on May 18th, 2018, with winners being announced the following day. Please allow up to 72 hours for prize delivery.</strong>",
+      "p4": "Enter now for your chance to win sweet item chests containing equipable items of various rarities for use in Ether.Online. We’ve got a bunch of these to give away in celebration of the launch of BitGuild.com, as well as the debut of Ether.online on our Portal.",
+      "p5": "<strong>All eligible users will receive one box, as well as the chance to win an additional 50!</strong> To participate, please follow these instructions carefully:",
+
+      "l1":  "<strong>1. Sign up for a MetaMask.</strong> You’ll need this for everything on BitGuild.com.",
+      "l2":  "<strong>2. Register</strong> with your MetaMask account <strong>on the official BitGuild Portal.</strong>",
+      "l3":  "<strong>3. Get some PLAT! Only users possessing a minimum of 5,000 PLAT</strong> in their registered wallet at the end of the giveaway will be eligible. Each additional 5,000 PLAT you hold gives you an extra entry into the giveaway (If you have 15,000 PLAT, you are 3x more likely to win)!",
+      "l4":  "<strong>4. Wait it out!</strong> Check your Ether.Online in-game inventory on May 19th, 2018. If you’ve won the Grand Prize, you should see a total of 51 boxes waiting for you! If not, you should still see 1 free item chest if you followed all the above steps.",
+
+      "p6": "<strong>We wish you the best of luck, and we hope you’ll win! You can discuss this event, and everything BitGuild on our official Discord server.</strong>",
+      "p7": "<strong>We’ll see you all on Ether.Online!</strong>",
+
+      "play": "PLAY"
     }
   },
   "chat": {
     "chat": "Chat",
     "send": "Send"
-  },
-  "faq": {
-    "metamask": {
-      "title": "Metamask",
-      "q1": "What is Metamask?",
-      "a1": "It’s a browser plug-in that connects your digital ethereum wallet to the Portal.",
-      "q2": "Do I really need to use metamask?",
-      "a2": "For now, the only supported way of using the BitGuild Portal involves MetaMask. We are open to integrating functionality for other Ethereum-enabled browser wallets in the future.",
-      "q3": "I can’t see my PLAT in my wallet! Where is it?",
-      "a3": "If you’re using MetaMask, you need enable the BETA UI, and manually add the PLAT token to your token list. Use this address when configuring: 0x7E43581b19ab509BCF9397a2eFd1ab10233f27dE (specify 18 for digits).",
-      "q4": "Does registering with my private key on the BitGuild Portal have a transaction fee?",
-      "a4": "No, only transactions sent through your MetaMask Wallet will have a gas fee."
-    },
-    "plat": {
-      "title": "PLAT Tokens",
-      "q1": "What is PLAT?",
-      "a1": "PLAT is the official BitGuild Token, used within the BitGuild ecosystem to play games, trade items, and more! It’s the driving currency on the BitGuild portal, usable in all current and future games on BitGuild.",
-      "q2": "How do I buy PLAT?",
-      "a2": "Registered BitGuild users can buy PLAT via the converter on the top right bar of the BitGuild Portal.",
-      "q3": "Are there any games that I can play without PLAT?",
-      "a3": "Most games will accept only PLAT, though some may accept ETH as well. In this event, using PLAT will always garner a discount for the player. However, some titles may also present users with a free-to-play model, offering players a way to try the game without buying anything.",
-      "q4": "What is the ETH to PLAT exchange rate?",
-      "a4": "The most up to date exchange rate will be shown in the converter."
-    },
-    "games": {
-      "title": "BitGuild Games",
-      "q1": "Can I play any of these games on mobile?",
-      "a1": "If the game supports mobile play, you can use any of the mobile wallets with Ethereum-enabled browsers, such as Trust Wallet to play the games on the BitGuild Portal.",
-      "q2": "I’ve played a 3rd party game outside of BitGuild.com, and now I want to play it through the BitGuild portal. Is that possible?",
-      "a2": "Yes. If the game is available on BitGuild.com, but you’ve played it elsewhere before, all your items and progress will be preserved as long as you sign up to BitGuild.com with the same wallet address you used to play the game previously."
-    },
-    "items": {
-      "title": "Game Items",
-      "q1": "How can I trade and sell my items?",
-      "a1": "The BitGuild Marketplace is under development. In the meantime, you are free to use any existing marketplace for the ERC721 tokens.",
-      "q2": "Can I trade outside the portal?",
-      "a2": "Yes, you are free to use any existing marketplace for the ERC721 tokens.",
-      "q3": "How can I report an issue with the Portal or a game?",
-      "a3": "You can email us at support@bitguild.com, or you can reach the BitGuild Team and Player community on Discord!",
-      "q4": "How can I see the items that I have so far?",
-      "a4": "You can see the items for all the games that live on the BitGuild Portal on the “My Items” section, found on the top menu bar.",
-      "q5": "I have an item that is missing. Who can I report this to?",
-      "a5": "Send us an email at support@bitguild.com, or find us on Discord, and we’ll do our best to sort the situation out.",
-      "q6": "I’d like to report a scammer",
-      "a6": "Contact support@bitguild.com, and please include as much supporting information as you can, including screenshots.",
-      "q7": "I’d like to report an item bug.",
-      "a7": "Contact support@bitguild.com, and please include as much supporting information as you can, including screenshots.",
-      "q8": "How long does a purchase transaction take?",
-      "a8": "Each transaction, either purchasing or gifting, can take from 30 seconds up to a few minutes, depending on the gas price you selected in MetaMask.",
-      "q9": "What if my transaction is not going through?",
-      "a9": "If a transaction is not going through, MetaMask allows you to increase the gas price for the pending transactions. Transactions get queued, so if one of the previous transactions is stuck, all of the following will be stuck as well.",
-      "q10": "How much does each transaction cost (gas price)?",
-      "a10": "You can set your gas price through MetaMask. Actual gas spend varies depending on the game and type of transaction."
-    },
-    "account": {
-      "title": "My Account",
-      "q1": "What is my BitGuild login information?",
-      "a1": "Users sign into BitGuild.com using their MetaMask credentials.",
-      "q2": "I’m having trouble signing in. What can I do?",
-      "a2": "Double check your MetaMask login info, and ensure there are no conflicting issues. If you are still having trouble, contact us at support@bitguild.com, or find us directly on Discord.",
-      "q3": "I forgot my BitGuild name and password. How can I retrieve it?",
-      "a3": "BitGuild doesn’t use traditional login info - everything is tied to MetaMask. If you’ve lost your MetaMask credentials, we unfortunately can’t help you. :("
-    },
-    "community": {
-      "title": "BitGuild Community",
-      "q1": "How can I engage with other players?",
-      "a1": "While BitGuild features an integrated chat system, you can also find the BitGuild community on Discord. There, you can chat with other players, as well as keep up with news from the BitGuild team and 3rd party developers.",
-      "q2": "Where can I find BitGuild on social media?",
-      "a2": "You can find us on Twitter, Facebook, Telegram, Reddit, and of course, Discord!"
-    },
-    "developers":{
-      "title": "Game Developers",
-      "q1": "I’m interested in developing a game for BitGuild. Who can I contact?",
-      "a1": "Reach out to us via email at: partnerships@bitguild.com"
-    }
   }
 }

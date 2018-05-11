@@ -40,7 +40,7 @@ export default class SandBox extends Component {
   render() {
     return (
       <Row className="sandbox">
-        <Col className="grap">
+        <Col className="grap content">
           <Init />
           {this.renderIframe()}
         </Col>

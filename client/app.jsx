@@ -7,6 +7,7 @@ import Game from "./components/games/game";
 import SandBox from "./components/games/sandbox";
 import Inventory from "./components/inventory";
 import Faq from "./components/faq";
+import Airdrop from "./components/airdrop";
 
 import Message from "./components/common/message";
 import NotFound from "./components/common/notfound";
@@ -36,6 +37,7 @@ export default class App extends Component {
             <MyRoute path="/sandbox" component={SandBox} exact />
             <MyRoute path="/inventory" component={Inventory} />
             <MyRoute path="/faq" component={Faq} />
+            <MyRoute path="/airdrop" component={Airdrop} />
             <MyRoute component={NotFound} />
           </Switch>
         </Grid>
