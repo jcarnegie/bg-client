@@ -105,8 +105,7 @@
       "all-items": "All items",
       "back-to-game": "Back to game",
       "empty": "You have no items yet!",
-      "learn-more": "Learn more about items in",
-      "faq": "FAQ"
+      "faq": "Learn more about items in <a href='/faq'>FAQ</a>"
     },
     "sandbox": {
       "title": "Sandbox"
