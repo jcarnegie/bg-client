@@ -19,21 +19,7 @@ export default class GameList extends Component {
             </Button>
           </div>
           <Row>
-            <Col lg={5} className="preview">
-              <h3><FormattedMessage id="pages.games.preview" /></h3>
-              <Row>
-                <Col sm={4}>
-                  <Image src="/images/preview/preview_1.png" />
-                </Col>
-                <Col sm={4}>
-                  <Image src="/images/preview/preview_2.png" />
-                </Col>
-                <Col sm={4}>
-                  <Image src="/images/preview/preview_3.png" />
-                </Col>
-              </Row>
-            </Col>
-            <Col lg={7} className="announce">
+            <Col className="announce">
               <Row>
                 <Col md={6}>
                   <h3><FormattedMessage id="pages.games.coming-soon" /></h3>
