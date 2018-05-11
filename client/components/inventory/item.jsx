@@ -59,7 +59,7 @@ export default class Item extends Component {
         <Gift show={this.state.gift} item={item} game={game} onHide={::this.onHideGift} />
         <Sell show={this.state.sell} item={item} game={game} onHide={::this.onHideSell} />
         <Thumbnail src={item.image}>
-          <h4>{name}</h4>
+          <h4>{item.name}</h4>
           <ButtonGroup justified>
             <Button href="#" onClick={::this.onShowSell} className="sell">
               <FormattedMessage id="buttons.sell" />
