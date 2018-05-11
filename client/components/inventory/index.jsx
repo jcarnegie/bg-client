@@ -9,7 +9,7 @@ import Item from "./item";
 import {uniq} from "lodash";
 import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
 import Chat from "../chat/chat";
-// import {INVENTORY_GAMES_REQUEST, INVENTORY_ITEMS_REQUEST} from "../../../shared/constants/actions";
+import {calcMaxItemsStats, isValidItemCategory} from "../../utils/item";
 
 
 @connect(
@@ -113,7 +113,10 @@ export default class Inventory extends Component {
         <Button onClick={::this.onClick(game._id, categories)} bsStyle="link">
           <FormattedMessage id="pages.inventory.all" />
         </Button>
-        {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game._id, [category])} bsStyle="link">{category}</Button>)}
+        {
+          categories
+            .filter(isValidItemCategory)
+            .map((category, i) => <Button key={i} onClick={::this.onClick(game._id, [category])} bsStyle="link">{category}</Button>)}
       </>
     );
   }
@@ -128,7 +131,7 @@ export default class Inventory extends Component {
         <h3>{game.name}</h3>
         <Row>
           {items.filter(item => Object.keys(this.state.filters).includes(item.game) ? this.state.filters[item.game].filter(x => !!~item.categories.indexOf(x)).length : true)
-            .map(item => <Item key={item.tokenId} item={item} game={game} onClick={::this.onClick} />)}
+            .map(item => <Item key={item.tokenId} item={item} game={game} maxStats={this.maxStats} onClick={::this.onClick} />)}
         </Row>
       </Fragment>
     );
@@ -136,6 +139,7 @@ export default class Inventory extends Component {
 
   renderTabs() {
     const {items, games} = this.props;
+    this.maxStats = calcMaxItemsStats(items.data);
 
     return (
       <>

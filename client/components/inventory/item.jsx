@@ -3,9 +3,11 @@ import React, {Component} from "react";
 import {Badge, Button, ButtonGroup, Col, Thumbnail} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
-import {filter, map, propIs, values} from "ramda";
+import {map} from "ramda";
 import Gift from "../popups/gift";
 import Sell from "../popups/sell";
+import {isValidItemCategory, itemStats} from "../../utils/item";
+
 
 export default class Item extends Component {
   static propTypes = {
@@ -18,7 +20,8 @@ export default class Item extends Component {
     }),
     game: PropTypes.shape({
       nft: PropTypes.object
-    })
+    }),
+    maxStats: PropTypes.number
   };
 
   state = {
@@ -53,21 +56,20 @@ export default class Item extends Component {
   }
 
   renderStats(item) {
-    const itemStats = filter(propIs(Number, "value"), values(item.attributes));
     return map(stat => (
-      <div>{stat.keyLan} <span className="stat">{stat.value}</span></div>
-    ), itemStats);
+      <div key={stat.keyLan}>{stat.keyLan} <span className="stat">{stat.value}</span></div>
+    ), itemStats(item));
   }
 
   render() {
-    const {item, game, onClick} = this.props;
+    const {item, game, onClick, maxStats} = this.props;
     return (
       <Col sm={6} md={4} lg={3} className="item">
         <Gift show={this.state.gift} item={item} game={game} onHide={::this.onHideGift} />
         <Sell show={this.state.sell} item={item} game={game} onHide={::this.onHideSell} />
         <Thumbnail src={item.image}>
           <h4>{item.name}</h4>
-          <div className="stats">
+          <div className="stats" style={{minHeight: maxStats * 20}}>
             {this.renderStats(item)}
           </div>
           <ButtonGroup justified>
@@ -79,7 +81,10 @@ export default class Item extends Component {
             </Button>
           </ButtonGroup>
           <div className="categories">
-            {item.categories.map(category => <a href="#" onClick={onClick(game, [category])} key={category}><Badge>{category}</Badge></a>)}
+            {
+              item.categories
+                .filter(isValidItemCategory)
+                .map(category => <a href="#" onClick={onClick(game, [category])} key={category}><Badge>{category}</Badge></a>)}
           </div>
         </Thumbnail>
       </Col>
