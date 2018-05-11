@@ -3,9 +3,9 @@ import React, {Component} from "react";
 import {Badge, Button, ButtonGroup, Col, Thumbnail} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
+import {filter, map, propIs, values} from "ramda";
 import Gift from "../popups/gift";
 import Sell from "../popups/sell";
-
 
 export default class Item extends Component {
   static propTypes = {
@@ -52,6 +52,13 @@ export default class Item extends Component {
     });
   }
 
+  renderStats(item) {
+    const itemStats = filter(propIs(Number, "value"), values(item.attributes));
+    return map(stat => (
+      <div>{stat.keyLan} <span className="stat">{stat.value}</span></div>
+    ), itemStats);
+  }
+
   render() {
     const {item, game, onClick} = this.props;
     return (
@@ -60,6 +67,9 @@ export default class Item extends Component {
         <Sell show={this.state.sell} item={item} game={game} onHide={::this.onHideSell} />
         <Thumbnail src={item.image}>
           <h4>{item.name}</h4>
+          <div className="stats">
+            {this.renderStats(item)}
+          </div>
           <ButtonGroup justified>
             <Button href="#" onClick={::this.onShowSell} className="sell">
               <FormattedMessage id="buttons.sell" />

@@ -18,7 +18,8 @@
     "loader": {
       "loading": "加载中"
     },
-    "title": "BitGuild"
+    "title": "BitGuild",
+    "colon": "："
   },
   "fields": {
     "language": {
