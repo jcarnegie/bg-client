@@ -105,7 +105,7 @@
       "all-items": "Tous mes objets",
       "back-to-game": "Retour au jeu",
       "empty": "Vous ne possédez pas encore d'objets !",
-      "learn-more": "Apprenez-en plus sur les objets grâce à notre <a href='/faq'>FAQ</a> !"
+      "faq": "Apprenez-en plus sur les objets grâce à notre <a href='/faq'>FAQ</a> !"
     },
     "sandbox": {
       "title": "Sandbox"

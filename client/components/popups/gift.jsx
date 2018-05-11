@@ -7,6 +7,7 @@ import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Modal, Thumbnai
 import {connect} from "react-redux";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import {wallet} from "../../../shared/constants/placeholder";
+import nftABI from "../../../shared/contracts/ERC721";
 
 
 @injectIntl
@@ -19,12 +20,16 @@ import {wallet} from "../../../shared/constants/placeholder";
 export default class GiftPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
-    id: PropTypes.string,
-    name: PropTypes.string,
-    image: PropTypes.string,
     user: PropTypes.object,
     network: PropTypes.object,
     onHide: PropTypes.func,
+    item: PropTypes.shape({
+      name: PropTypes.string,
+      image: PropTypes.string
+    }),
+    game: PropTypes.shape({
+      nft: PropTypes.object
+    }),
     intl: intlShape
   };
 
@@ -33,7 +38,7 @@ export default class GiftPopup extends Component {
       get(key) {
         return this[key];
       },
-      wallet: this.props.user.wallet
+      wallet: ""
     }
   };
 
@@ -44,20 +49,22 @@ export default class GiftPopup extends Component {
       return false;
     }
 
-    alert("Not implemented!");
+    this.setState({
+      formData: new FormData(e.target)
+    }, this.transfer);
+  }
 
-    /*
-    const {network, user, id} = this.props;
+  transfer() {
+    const {network, user, item, game} = this.props;
     const {formData} = this.state;
-    const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.data.id].topup);
-    contract.sendItem(formData.get("wallet"), id, {
-        from: user.data.wallet,
+
+    const contract = window.web3.eth.contract(nftABI).at(game.nft[network.data.id]);
+    contract.safeTransferFrom(user.data.wallet, formData.get("wallet"), item.tokenId, {
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(1e10)
       },
       console.info
     );
-    */
   }
 
   isValid(a) {
@@ -84,17 +91,17 @@ export default class GiftPopup extends Component {
   }
 
   render() {
-    const {show, onHide, intl, name, image} = this.props;
+    const {show, onHide, intl, item} = this.props;
 
     return (
       <Modal show={show} className="gift" onHide={onHide} backdropClassName="semi">
         <Modal.Header closeButton />
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
-            <h2>{name}</h2>
+            <h2>{item.name}</h2>
             <br />
 
-            <Thumbnail src={image} />
+            <Thumbnail src={item.image} />
 
             <FormGroup controlId="wallet">
               <Col componentClass={ControlLabel}>
@@ -132,7 +139,6 @@ export default class GiftPopup extends Component {
                     });
                   }}
                   required
-                  readOnly
                 />
               </Col>
             </FormGroup>

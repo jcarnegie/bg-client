@@ -1,12 +1,15 @@
 import {applyMiddleware, compose, createStore} from "redux";
 import createSagaMiddleware from "redux-saga";
 import {composeWithDevTools} from "redux-devtools-extension";
+import persistState, {mergePersistedState} from "redux-localstorage";
+import adapter from "redux-localstorage/lib/adapters/localStorage";
 import thunkMiddleware from "redux-thunk";
 import {createLogger} from "redux-logger";
 import rootReducers from "./reducers/index";
 import rootSaga from "./sagas";
 import {defaultLanguage, enabledLanguages} from "../shared/constants/language";
 import {localization} from "../shared/intl/setup";
+import filter from "redux-localstorage-filter";
 
 
 const defaultState = {
@@ -23,17 +26,22 @@ export default function(initialState = defaultState) {
 
   const middlewares = [thunkMiddleware, sagaMiddleware];
 
-  let composeEnhancers = compose;
-
   if (process.env.NODE_ENV === "development" && !process.env.PORT) {
     middlewares.push(createLogger());
   }
+
+  let composeEnhancers = compose;
 
   if (process.env.NODE_ENV === "development") {
     composeEnhancers = composeWithDevTools;
   }
 
-  const store = createStore(rootReducers, initialState, composeEnhancers(applyMiddleware(...middlewares)));
+  const storage = compose(
+    filter(["gift"])
+  )(adapter(typeof window !== "undefined" ? window.localStorage : {})); // this fixes bug with SSR
+
+  const reducers = compose(mergePersistedState())(rootReducers);
+  const store = createStore(reducers, initialState, composeEnhancers(applyMiddleware(...middlewares), persistState(storage, "gitbuild")));
 
   sagaMiddleware.run(rootSaga);
 

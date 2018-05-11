@@ -1,7 +1,7 @@
 import {ACCOUNT_CHANGED, ACCOUNT_ERROR} from "../../shared/constants/actions";
 
 const account = {
-  isLoading: true,
+  isLoading: false,
   success: false,
   wallet: null
 };
