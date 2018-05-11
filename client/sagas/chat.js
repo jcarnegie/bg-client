@@ -3,14 +3,18 @@ import {channels as chatChannels, init as chatInit, messages as chatMessages, se
 import {CHAT_INIT, CHAT_LOAD_MESSAGES, CHAT_MESSAGE_SEND, CHAT_MESSAGE_SENT, CHAT_SET_CHANNEL, USER_CHANGED} from "../../shared/constants/actions";
 
 function * sendChatMessage(action) {
-  const state = yield select();
-  const {currentChannel} = state.chat;
-  const message = action.payload;
-  const sentMessage = yield sendMessage(message, currentChannel);
-  yield put({
-    type: CHAT_MESSAGE_SENT,
-    payload: sentMessage
-  });
+  try {
+    const state = yield select();
+    const {currentChannel} = state.chat;
+    const message = action.payload;
+    const sentMessage = yield sendMessage(message, currentChannel);
+    yield put({
+      type: CHAT_MESSAGE_SENT,
+      payload: sentMessage
+    });
+  } catch (e) {
+    console.log("sendChatMessage error:", e);
+  }
 }
 
 function * initChat(action) {
@@ -21,8 +25,9 @@ function * initChat(action) {
     payload: {sb, user}
   });
 
+  const channelName = `BitGuild-${process.env.NODE_ENV}`;
   const channels = yield chatChannels(sb);
-  const channel = yield setChannelByName("BitGuild", channels);
+  const channel = yield setChannelByName(channelName, channels);
   yield put({
     type: CHAT_SET_CHANNEL,
     payload: channel
