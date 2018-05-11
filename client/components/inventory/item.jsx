@@ -78,8 +78,7 @@ export default class Item extends Component {
               <FormattedMessage id="buttons.gift" />
             </Button>
           </ButtonGroup>
-          <br />
-          <div>
+          <div className="categories">
             {item.categories.map(category => <a href="#" onClick={onClick(game, [category])} key={category}><Badge>{category}</Badge></a>)}
           </div>
         </Thumbnail>
