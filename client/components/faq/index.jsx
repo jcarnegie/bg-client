@@ -8,8 +8,8 @@ import Chat from "../chat/chat";
 export default class Faq extends Component {
   render() {
     return (
-      <Row className="faq">
-        <Col md={9} className="gap content">
+      <Row>
+        <Col md={9} className="gap faq">
           <h2><FormattedMessage id="pages.faq.title" /></h2>
 
           <h3><FormattedMessage id="pages.faq.metamask.title" /></h3>

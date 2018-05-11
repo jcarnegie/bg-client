@@ -8,8 +8,8 @@ import Chat from "../chat/chat";
 export default class Airdrop extends Component {
   render() {
     return (
-      <Row className="airdrop">
-        <Col md={9} className="gap content">
+      <Row>
+        <Col md={9} className="gap airdrop">
           <h2><FormattedMessage id="pages.airdrop.title" /></h2>
           <h3><FormattedMessage id="pages.airdrop.description" /></h3>
 
