@@ -104,15 +104,26 @@ export default class Inventory extends Component {
     );
   }
 
+  renderCategories(game, categories) {
+    if (!categories.length) {
+      return null;
+    }
+    return (
+      <>
+        <Button onClick={::this.onClick(game._id, categories)} bsStyle="link">
+          <FormattedMessage id="pages.inventory.all" />
+        </Button>
+        {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game._id, [category])} bsStyle="link">{category}</Button>)}
+      </>
+    );
+  }
+
   renderTab(game, items) {
     const categories = uniq([].concat(...items.map(item => item.categories)));
     return (
       <Fragment key={game._id}>
         <div className="arrow-right pull-right">
-          <Button onClick={::this.onClick(game._id, categories)} bsStyle="link">
-            <FormattedMessage id="pages.inventory.all" />
-          </Button>
-          {categories.map((category, i) => <Button key={i} onClick={::this.onClick(game._id, [category])} bsStyle="link">{category}</Button>)}
+          {this.renderCategories(game, categories)}
         </div>
         <h3>{game.name}</h3>
         <Row>
