@@ -181,39 +181,49 @@
         "q2": "Where can I find BitGuild on social media?",
         "a2": "You can find us on Twitter, Facebook, Telegram, Reddit, and of course, Discord!"
       },
-      "developers":{
+      "developers": {
         "title": "Game Developers",
         "q1": "I’m interested in developing a game for BitGuild. Who can I contact?",
         "a1": "Reach out to us via email at: partnerships@bitguild.com"
       }
     },
     "games": {
-      "play": "play",
-      "preview": "In-Game Items Preview",
-      "coming-soon": "Coming soon",
-      "in-development": "In development",
-      "questions": "Have questions?",
-      "faq": "FAQ",
-      "discord": "DISCORD"
+      "banner": {
+        "play": "play"
+      },
+      "airdrop": {
+        "countdown": "Airdrop in",
+        "giveaway": "Ether Online Free Item Giveaway",
+        "learn-more": "Learn more",
+        "days": "Days",
+        "hours": "Hours",
+        "minutes": "Minutes",
+        "seconds": "Seconds"
+      },
+      "announce": {
+        "coming-soon": "Coming soon",
+        "in-development": "In development"
+      },
+      "explore": {
+        "questions": "Have questions?",
+        "faq": "FAQ",
+        "discord": "DISCORD"
+      }
     },
-    "airdrop" : {
+    "airdrop": {
       "title": "Free Item Giveaway",
       "description": "Win up to 50 equipment packs!",
-
       "p1": "<strong>Sign up now to score some sweet free loot chests in Ether.Online!</strong>",
       "p2": "Simply follow the steps below to be entered into this giveaway event celebrating the launch of Ether.Online on the BitGuild Portal! Every successfully registered user with at least 5,000 PLAT in their wallet will receive an in-game item chest, as well as a chance to win the <strong>special Grand Prize!</strong>",
       "p3": "<strong>The event starts on May 11th, 2018 PST and concludes on May 18th, 2018, with winners being announced the following day. Please allow up to 72 hours for prize delivery.</strong>",
       "p4": "Enter now for your chance to win sweet item chests containing equipable items of various rarities for use in Ether.Online. We’ve got a bunch of these to give away in celebration of the launch of BitGuild.com, as well as the debut of Ether.online on our Portal.",
       "p5": "<strong>All eligible users will receive one box, as well as the chance to win an additional 50!</strong> To participate, please follow these instructions carefully:",
-
-      "l1":  "<strong>1. Sign up for a MetaMask.</strong> You’ll need this for everything on BitGuild.com.",
-      "l2":  "<strong>2. Register</strong> with your MetaMask account <strong>on the official BitGuild Portal.</strong>",
-      "l3":  "<strong>3. Get some PLAT! Only users possessing a minimum of 5,000 PLAT</strong> in their registered wallet at the end of the giveaway will be eligible. Each additional 5,000 PLAT you hold gives you an extra entry into the giveaway (If you have 15,000 PLAT, you are 3x more likely to win)!",
-      "l4":  "<strong>4. Wait it out!</strong> Check your Ether.Online in-game inventory on May 19th, 2018. If you’ve won the Grand Prize, you should see a total of 51 boxes waiting for you! If not, you should still see 1 free item chest if you followed all the above steps.",
-
+      "l1": "<strong>1. Sign up for a MetaMask.</strong> You’ll need this for everything on BitGuild.com.",
+      "l2": "<strong>2. Register</strong> with your MetaMask account <strong>on the official BitGuild Portal.</strong>",
+      "l3": "<strong>3. Get some PLAT! Only users possessing a minimum of 5,000 PLAT</strong> in their registered wallet at the end of the giveaway will be eligible. Each additional 5,000 PLAT you hold gives you an extra entry into the giveaway (If you have 15,000 PLAT, you are 3x more likely to win)!",
+      "l4": "<strong>4. Wait it out!</strong> Check your Ether.Online in-game inventory on May 19th, 2018. If you’ve won the Grand Prize, you should see a total of 51 boxes waiting for you! If not, you should still see 1 free item chest if you followed all the above steps.",
       "p6": "<strong>We wish you the best of luck, and we hope you’ll win! You can discuss this event, and everything BitGuild on our official Discord server.</strong>",
       "p7": "<strong>We’ll see you all on Ether.Online!</strong>",
-
       "play": "PLAY"
     }
   },

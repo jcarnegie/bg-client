@@ -187,13 +187,18 @@
       }
     },
     "games": {
-      "play": "jogar",
-      "preview": "Prèvia dos itens do jogo",
-      "coming-soon": "Em breve",
-      "in-development": "Em desenvolvimento",
-      "questions": "Perguntas?",
-      "faq": "FAQ",
-      "discord": "DISCORD"
+      "banner": {
+        "play": "jogar"
+      },
+      "announce": {
+        "coming-soon": "Em breve",
+        "in-development": "Em desenvolvimento"
+      },
+      "explore": {
+        "questions": "Perguntas?",
+        "faq": "FAQ",
+        "discord": "DISCORD"
+      }
     }
   },
   "chat": {
