@@ -6,7 +6,9 @@ import balanceETH from "./balanceETH";
 import balancePLAT from "./balancePLAT";
 import chat from "./chat";
 import game from "./game";
-import inventory from "./inventory";
+import games from "./games";
+import gifts from "./gifts";
+import items from "./items";
 import rate from "./rate";
 import network from "./network";
 import messages from "./messages";
@@ -20,8 +22,10 @@ export default combineReducers({
   balancePLAT,
   chat,
   game,
+  games,
+  gifts,
   intl,
-  inventory,
+  items,
   messages,
   network,
   rate,

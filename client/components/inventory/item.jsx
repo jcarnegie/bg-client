@@ -7,15 +7,18 @@ import Gift from "../popups/gift";
 import Sell from "../popups/sell";
 
 
-export default class Inventory extends Component {
+export default class Item extends Component {
   static propTypes = {
-    id: PropTypes.string,
-    name: PropTypes.string,
-    image: PropTypes.string,
-    categories: PropTypes.array,
-    _id: PropTypes.string,
-    game: PropTypes.object,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    item: PropTypes.shape({
+      game: PropTypes.string,
+      name: PropTypes.string,
+      image: PropTypes.string,
+      categories: PropTypes.array
+    }),
+    game: PropTypes.shape({
+      nft: PropTypes.object
+    })
   };
 
   state = {
@@ -50,12 +53,12 @@ export default class Inventory extends Component {
   }
 
   render() {
-    const {id, name, categories, image, game, onClick} = this.props;
+    const {item, game, onClick} = this.props;
     return (
       <Col sm={6} md={4} lg={3} className="item">
-        <Gift show={this.state.gift} name={name} id={id} image={image} onHide={::this.onHideGift} />
-        <Sell show={this.state.sell} name={name} id={id} image={image} onHide={::this.onHideSell} />
-        <Thumbnail src={image}>
+        <Gift show={this.state.gift} item={item} game={game} onHide={::this.onHideGift} />
+        <Sell show={this.state.sell} item={item} game={game} onHide={::this.onHideSell} />
+        <Thumbnail src={item.image}>
           <h4>{name}</h4>
           <ButtonGroup justified>
             <Button href="#" onClick={::this.onShowSell} className="sell">
@@ -67,7 +70,7 @@ export default class Inventory extends Component {
           </ButtonGroup>
           <br />
           <div>
-            {categories.map(category => <a href="#" onClick={onClick(game, [category])} key={category}><Badge>{category}</Badge></a>)}
+            {item.categories.map(category => <a href="#" onClick={onClick(game, [category])} key={category}><Badge>{category}</Badge></a>)}
           </div>
         </Thumbnail>
       </Col>

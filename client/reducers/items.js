@@ -1,4 +1,4 @@
-import {INVENTORY_CHANGED, INVENTORY_ERROR, INVENTORY_LOADING} from "../../shared/constants/actions";
+import {INVENTORY_ITEMS_CHANGED, INVENTORY_ITEMS_ERROR, INVENTORY_ITEMS_LOADING} from "../../shared/constants/actions";
 
 const balance = {
   isLoading: false,
@@ -6,21 +6,21 @@ const balance = {
   data: null
 };
 
-export default function inventoryReducer(state = balance, action) {
+export default function itemsReducer(state = balance, action) {
   switch (action.type) {
-    case INVENTORY_LOADING:
+    case INVENTORY_ITEMS_LOADING:
       return Object.assign({}, balance, {
         data: null,
         isLoading: true,
         success: false
       });
-    case INVENTORY_CHANGED:
+    case INVENTORY_ITEMS_CHANGED:
       return Object.assign({}, balance, {
         data: action.payload,
         isLoading: false,
         success: true
       });
-    case INVENTORY_ERROR:
+    case INVENTORY_ITEMS_ERROR:
       return Object.assign({}, balance, {
         data: null,
         isLoading: false,

@@ -6,9 +6,8 @@ import {
   BALANCE_ETH_CHANGED,
   BALANCE_PLAT_CHANGED,
   CREATE_USER,
-  INVENTORY_CHANGED,
-  INVENTORY_ERROR,
-  INVENTORY_LOADING,
+  INVENTORY_GAMES_ERROR,
+  INVENTORY_ITEMS_ERROR,
   MESSAGE_ADD,
   MESSAGE_ADD_ALL,
   NETWORK_CHANGED,
@@ -35,7 +34,10 @@ function * fetchUser() {
         payload: 0
       });
       yield put({
-        type: INVENTORY_ERROR
+        type: INVENTORY_ITEMS_ERROR
+      });
+      yield put({
+        type: INVENTORY_GAMES_ERROR
       });
       return;
     }
@@ -98,33 +100,6 @@ function * createUser(action) {
   }
 }
 
-function * getInventory(action) {
-  try {
-    yield put({
-      type: INVENTORY_LOADING
-    });
-    const inventory = yield call(callAPI, `/inventory/${action.payload.wallet}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json; charset=utf-8"
-      }
-    });
-    yield put({
-      type: INVENTORY_CHANGED,
-      payload: inventory
-    });
-  } catch (error) {
-    yield put({
-      type: INVENTORY_ERROR
-    });
-    yield put({
-      type: MESSAGE_ADD_ALL,
-      payload: [].concat(error)
-    });
-  }
-}
-
 function * updateUser(action) {
   const user = yield select(state => state.user);
   if (!user.isLoading && user.success) {
@@ -153,6 +128,5 @@ function * updateUser(action) {
 export default function * userSaga() {
   yield takeEvery(NETWORK_CHANGED, fetchUser);
   yield takeEvery(CREATE_USER, createUser);
-  yield takeEvery(USER_CHANGED, getInventory);
   yield takeEvery(UPDATE_USER, updateUser);
 }
