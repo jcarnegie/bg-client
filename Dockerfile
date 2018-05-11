@@ -14,6 +14,9 @@ ARG NODE_ENV=production
 ENV RENDERING server
 ENV NODE_ENV $NODE_ENV
 
+RUN echo $RENDERING
+RUN echo $NODE_ENV
+
 ADD package.json ./
 RUN NODE_ENV=development npm install
 

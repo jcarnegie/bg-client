@@ -5,7 +5,10 @@ services:
         ports:
           - "27017:27017"
     api:
-        build: ../PortalApi
+        build:
+            context: ../PortalApi
+            args:
+                NODE_ENV: development
         command: node_modules/.bin/nodemon server/server.js --exec babel-node
         depends_on:
           - mongo
@@ -20,12 +23,16 @@ services:
           - ../PortalApi:/app
           - /app/node_modules
     web:
-        build: .
+        build:
+            context: .
+            args:
+                NODE_ENV: development
+        command: node_modules/.bin/babel-node server/server.js
         ports:
             - "5000:5000"
         environment:
             - NODE_ENV=development
-            - RENDERING=client
+            - RENDERING=server
             - MAINNET_TOKEN_CONTRACT_ADDR=0x7E43581b19ab509BCF9397a2eFd1ab10233f27dE
             - MAINNET_TOPUP_CONTRACT_ADDR=0xb3bbc0cc040413a3e68dcaa8f2b6eac2957c5ce0
             - MAINNET_ORACLE_CONTRACT_ADDR=0x3127be52acba38beab6b4b3a406dc04e557c037c
