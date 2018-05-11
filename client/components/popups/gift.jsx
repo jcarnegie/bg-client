@@ -60,9 +60,6 @@ export default class GiftPopup extends Component {
 
     const contract = window.web3.eth.contract(nftABI).at(game.nft[network.data.id]);
     contract.safeTransferFrom(user.data.wallet, formData.get("wallet"), item.tokenId, {
-        // from: user.data.wallet,
-        // to: this.state.formData.get("wallet"),
-        // tokenId: item.tokenId,
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(1e10)
       },
