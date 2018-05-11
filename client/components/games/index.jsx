@@ -1,5 +1,4 @@
-import "./games.less";
-import "./chat.less";
+import "./index.less";
 import React, {Component} from "react";
 import {Button, Col, Image, Row} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
@@ -11,8 +10,8 @@ export default class GameList extends Component {
   render() {
     return (
       <Row>
-        <Col className="grap gap">
-          <div className="iframe">
+        <Col className="grap gap games">
+          <div className="banner">
             <Button href="/game/5af2703709bc2d18438449ad">
               <Image src="/images/buttons/play/play.png" />
               <FormattedMessage id="pages.games.play" />

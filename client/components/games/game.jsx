@@ -53,8 +53,8 @@ export default class Game extends Component {
 
   render() {
     return (
-      <Row className="game">
-        <Col className="grap sandbox">
+      <Row>
+        <Col className="grap game">
           <Init />
           {this.renderIframe()}
         </Col>

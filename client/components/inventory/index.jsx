@@ -77,8 +77,8 @@ export default class Inventory extends Component {
     }
 
     return (
-      <Row className="inventory">
-        <Col className="grap gap">
+      <Row>
+        <Col className="grap gap inventory">
           {items.data.length ? this.renderTabs() : this.renderEmpty()}
         </Col>
         <Col className="chat">
