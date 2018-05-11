@@ -1,7 +1,7 @@
 import {ACCOUNT_CHANGED, ACCOUNT_ERROR} from "../../shared/constants/actions";
 
 const account = {
-  isLoading: false,
+  isLoading: true, // TODO should be false, but popup is showing in the beginning
   success: false,
   wallet: null
 };
