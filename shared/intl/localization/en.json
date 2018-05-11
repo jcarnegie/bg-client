@@ -103,7 +103,7 @@
     "inventory": {
       "title": "My Items",
       "all": "All",
-      "all-items": "All items",
+      "all-items": "All Items",
       "back-to-game": "Back to game",
       "empty": "You have no items yet!",
       "faq": "Learn more about items in <a href='/faq'>FAQ</a>"
