@@ -18,7 +18,8 @@
     "loader": {
       "loading": "Chargement..."
     },
-    "title": "BitGuild"
+    "title": "BitGuild",
+    "colon": " : "
   },
   "fields": {
     "language": {
