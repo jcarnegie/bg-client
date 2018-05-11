@@ -55,7 +55,7 @@ export default class GiftPopup extends Component {
   }
 
   transfer() {
-    const {network, user, item, game} = this.props;
+    const {network, user, item, game, onHide} = this.props;
     const {formData} = this.state;
 
     const contract = window.web3.eth.contract(nftABI).at(game.nft[network.data.id]);
@@ -63,7 +63,9 @@ export default class GiftPopup extends Component {
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(1e10)
       },
-      console.info
+      () => {
+        onHide();
+      }
     );
   }
 
