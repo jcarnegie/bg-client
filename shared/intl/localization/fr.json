@@ -181,20 +181,25 @@
         "q2": "Où trouver BitGuild sur les réseaux Sociaux ?",
         "a2": "Vous pouvez nous trouver sur Twitter, Facebook, Telegram, Reddit, et bien sûr Discord !"
       },
-      "developers":{
+      "developers": {
         "title": "Les Développeurs de Jeux",
         "q1": "Je souhaite développer un jeu pour BitGuild. Qui contacter ?",
         "a1": "Joignez-nous par e-mail à : partnerships@bitguild.com"
       }
     },
     "games": {
-      "play": "JOUER",
-      "preview": "Aperçu des Objets",
-      "coming-soon": "Bientôt disponible",
-      "in-development": "En développement",
-      "questions": "Des questions ?",
-      "faq": "FAQ",
-      "discord": "DISCORD"
+      "banner": {
+        "play": "JOUER"
+      },
+      "announce": {
+        "coming-soon": "Bientôt disponible",
+        "in-development": "En développement"
+      },
+      "explore": {
+        "questions": "Des questions ?",
+        "faq": "FAQ",
+        "discord": "DISCORD"
+      }
     }
   },
   "chat": {

@@ -181,20 +181,25 @@
         "q2": "我可以在哪里查看BitGuild的最新信息？",
         "a2": "您可以关注我们的Twitter、Facebook、Telegram、Reddit，当然您也可以在Discord里找到我们。"
       },
-      "developers":{
+      "developers": {
         "title": "游戏开发商",
         "q1": "我想为BitGuild开发游戏，我应该联系谁？",
         "a1": "请联系partnerships@bitguild.com"
       }
     },
     "games": {
-      "play": "开始游戏",
-      "preview": "游戏内物品预览",
-      "coming-soon": "敬请期待",
-      "in-development": "开发中",
-      "questions": "有任何问题，请查看",
-      "faq": "FAQ",
-      "discord": "DISCORD"
+      "banner": {
+        "play": "开始游戏"
+      },
+      "announce": {
+        "coming-soon": "敬请期待",
+        "in-development": "开发中"
+      },
+      "explore": {
+        "questions": "有任何问题，请查看",
+        "faq": "FAQ",
+        "discord": "DISCORD"
+      }
     }
   },
   "chat": {

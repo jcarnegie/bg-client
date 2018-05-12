@@ -188,15 +188,18 @@
       }
     },
     "games": {
-      "title": "Ether Online",
-      "description": "新たなクリプトの旅 - 多種なアイテムや装備などであなたのキャラクターをパワーアップし最高の戦士になろう！",
-      "play": "プレーイ",
-      "preview": "インゲームアイテム",
-      "coming-soon": "近日公開",
-      "in-development": "In development",
-      "questions": "質問ある方はどうぞ",
-      "faq": "よくある質問",
-      "discord": "DISCORD"
+      "banner": {
+        "play": "プレーイ"
+      },
+      "announce": {
+        "coming-soon": "近日公開",
+        "in-development": "In development"
+      },
+      "explore": {
+        "questions": "質問ある方はどうぞ",
+        "faq": "よくある質問",
+        "discord": "DISCORD"
+      }
     }
   },
   "chat": {
