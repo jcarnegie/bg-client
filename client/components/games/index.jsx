@@ -112,7 +112,7 @@ export default class GameList extends Component {
             <Link to="/faq">
               <FormattedMessage id="pages.games.explore.faq" />
             </Link>
-            <a href="https://discordapp.com/invite/pPC2frB">
+            <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer">
               <FormattedMessage id="pages.games.explore.discord" />
             </a>
           </div>
