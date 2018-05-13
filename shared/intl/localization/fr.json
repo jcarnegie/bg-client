@@ -108,9 +108,6 @@
       "empty": "Vous ne possédez pas encore d'objets !",
       "faq": "Apprenez-en plus sur les objets grâce à notre <a href='/faq'>FAQ</a> !"
     },
-    "sandbox": {
-      "title": "Sandbox"
-    },
     "faq": {
       "title": "FAQ",
       "metamask": {
@@ -209,10 +206,10 @@
       "p3": "<strong>L'événement  commence  le  11  mai  2018  et  se  termine  le  18  mai  2018,  les  gagnants  étant  annoncés  le  jour  suivant.  Veuillez  allouer  jusqu'à  72  heures  pour  la  livraison  du  prix.</strong>",
       "p4": "Participez  dès  maintenant  pour  tenter  de  gagner  des  coffres  contenant  des  éléments  de  différentes  raretés  pour  une  utilisation  dans  Ether  Online.  Nous  en  avons  beaucoup  à  offrir  pour  célébrer  le  lancement  de  BitGuild.com,  ainsi  que  le  lancement  d'Ether  Online  sur  notre  portail.",
       "p5": "<strong>Tous  les  utilisateurs  enregistrés  recevront  un  coffre,  ainsi  que  la  chance  de  gagner  50  autres!</strong>  To  participate,  please  follow  these  instructions  carefully:",
-      "l1": "<strong>1.  Inscrivez-vous  pour  un  compte  MetaMask.</strong>  Vous  en  aurez  besoin  pour  tout  sur  BitGuild.com",
-      "l2": "<strong>2.  Inscrivez-vous</strong>  with  your  MetaMask  account  <strong>on  the  official  BitGuild  Portal.</strong>",
-      "l3": "<strong>3.  Obtenez  du  PLAT  !</strong>  Seuls  les  utilisateurs  possédant  un  minimum  de  5.000  PLAT  dans  leur  portefeuille  enregistré  à  la  fin  du  cadeau  seront  éligibles.  Chaque  PLAT  supplémentaire  de  5  000  vous  donne  une  entrée  supplémentaire  dans  le  cadeau  (si  vous  avez  15  000  PLAT,  vous  avez  3  fois  plus  de  chance  de  gagner  !)",
-      "l4": "<strong>4.  Patientez  !</strong>  Vérifiez  votre  inventaire  Ether  Online  dans  le  jeu  le  19  mai  2018.  Si  vous  avez  gagné  le  Grand  Prix,  vous  devriez  voir  un  total  de  51  coffres  qui  vous  attendent!  Si  ce  n'est  pas  le  cas,  vous  devriez  toujours  voir  1  coffre  gratuit  si  vous  avez  suivi  toutes  les  étapes  ci-dessus.",
+      "l1": "<strong>1. Inscrivez-vous  pour  un  compte  MetaMask.</strong>  Vous  en  aurez  besoin  pour  tout  sur  BitGuild.com",
+      "l2": "<strong>2. Inscrivez-vous</strong>  with  your  MetaMask  account  <strong>on  the  official  BitGuild  Portal.</strong>",
+      "l3": "<strong>3. Obtenez  du  PLAT  !</strong>  Seuls  les  utilisateurs  possédant  un  minimum  de  5.000  PLAT  dans  leur  portefeuille  enregistré  à  la  fin  du  cadeau  seront  éligibles.  Chaque  PLAT  supplémentaire  de  5  000  vous  donne  une  entrée  supplémentaire  dans  le  cadeau  (si  vous  avez  15  000  PLAT,  vous  avez  3  fois  plus  de  chance  de  gagner  !)",
+      "l4": "<strong>4. Patientez  !</strong>  Vérifiez  votre  inventaire  Ether  Online  dans  le  jeu  le  19  mai  2018.  Si  vous  avez  gagné  le  Grand  Prix,  vous  devriez  voir  un  total  de  51  coffres  qui  vous  attendent!  Si  ce  n'est  pas  le  cas,  vous  devriez  toujours  voir  1  coffre  gratuit  si  vous  avez  suivi  toutes  les  étapes  ci-dessus.",
       "p6": "<strong>Nous  vous  souhaitons  bonne  chance  et  espérons  que  vous  gagnerez!  Vous  pouvez  discuter  de  cet  événement,  et  de  tout  BitGuild  sur  notre  serveur  officiel  Discord.</strong>",
       "p7": "<strong>A  bientôt  sur  Ether  Online  !</strong>",
       "play": "PLAY"

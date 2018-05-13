@@ -75,11 +75,12 @@
       "p1": "BitGuildを利用するためには,MetaMaskをインストールする必要があります。",
       "p2": "MetaMaskを使うとBitGuildポタールへのログインにも認められます。（パスワード不要！）。",
       "n1": "質問がある方は下段のよくあるご質問をご覧ください。",
-      "faq": "よくあるご質問"
+      "faq": "<a href='/faq'>よくあるご質問</a>"
     },
     "metamask-login": {
       "title": "MetaMaskにログインされていません。",
-      "p1": "MetaMaskを起動して,画面の指示に従ってログインしてください。"
+      "p1": "MetaMaskを起動して,画面の指示に従ってログインしてください。",
+      "faq": "<a href='/faq'>よくあるご質問</a>"
     },
     "register": {
       "title": "BitGuildへようこそ",
@@ -91,21 +92,17 @@
       "title": "お知らせをお楽しみに!",
       "p1": "アイテムが販売するとお知らせします",
       "n1": "質問がある方はよくある質問をご覧ください",
-      "faq": "よくある質問"
+      "faq": "<a href='/faq'>よくある質問</a>"
     }
   },
   "pages": {
     "inventory": {
-      "title": "My Items",
+      "title": "インベントリ",
       "all": "すべて",
       "all-items": "全てのアイテム",
       "back-to-game": "ゲームに戻る",
       "empty": "まだアイテムがありません",
-      "learn-more": "詳細はこちら",
-      "faq": "よくある質問"
-    },
-    "sandbox": {
-      "title": "サンドボックス"
+      "faq": "<a href='/faq'>よくある質問</a>"
     },
     "faq": {
       "title": "よくある質問",

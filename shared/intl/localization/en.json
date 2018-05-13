@@ -108,9 +108,6 @@
       "empty": "You have no items yet!",
       "faq": "Learn more about items in <a href='/faq'>FAQ</a>"
     },
-    "sandbox": {
-      "title": "Sandbox"
-    },
     "faq": {
       "title": "FAQ",
       "metamask": {

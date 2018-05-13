@@ -1,0 +1,206 @@
+{
+  "components": {
+    "switchLanguage": "Switch Language",
+    "language": {
+      "en": "English",
+      "zh": "简体中文",
+      "ja": "日本語",
+      "fr": "Français",
+      "pt": "Português”,
+      "es": “Español”,
+      "ru": "Русский"
+
+    },
+    "menu": {
+      "inventory": "Mis Cosas",
+      "exchange": "Exchange",
+      "community": "Comunidad"
+    },
+    "loader": {
+      "loading": "cargando"
+    },
+    "title": "BitGuild"
+  },
+  "fields": {
+    "language": {
+      "label": "Idioma",
+      "required": "Se requiere idioma."
+    },
+    "nickName": {
+      "label": "Usuario",
+      "required": "Introduzca su usuario."
+    },
+    "email": {
+      "label": "Dirección de correo electrónico",
+      "required": "Ingrese su dirección de correo electrónico.",
+      "invalid": "Ingrese un formato de dirección de correo electrónico válido como yourname@email.com.",
+      "conflict": "Este correo electrónico ya existe"
+    },
+    "wallet": {
+      "label": "Dirección de Wallet",
+      "required": "Por favor ingrese su dirección de wallet.",
+      "minlength": "La dirección de el wallet que ingresó está incompleta, verifique este campo e intente de nuevo.",
+      "maxlength": "La dirección de el wallet es demasiado larga.",
+      "invalid": "La dirección de el wallet que ingresó no es válida. Por favor, asegúrese de estar utilizando solo caracteres alfanuméricos."
+    },
+    "eth": {
+      "label": "Ethereum (ETH)"
+    },
+    "plat": {
+      "label": "Platinum (PLAT)"
+    }
+  },
+  "buttons": {
+    "submit": "Enviar",
+    "register": "Inscribirse",
+    "sell": "Vender",
+    "gift": "Regalo",
+    "convert": "Comprar",
+    "install": "Instalar MetaMask",
+    "send": "Enviar"
+  },
+  "errors": {
+    "method-not-allowed": "Método no permitido",
+    "page-not-found": "Página no encontrada",
+    "invalid-param": "Invalid param `{name}`, {reason}",
+    "required-param": "Required param `{name}` missing",
+    "access-denied": "Acceso denegado",
+    "not-found": "`{name}` extraviado",
+    "conflict": "Este {name} ya existe en la base de datos",
+    "server-error": "Internal Server Error",
+    "spoofing-attempt": "Error al verificar el firmante al comparar {wallet1} a {wallet2}"
+  },
+  "modals": {
+    "metamask-install": {
+      "title": "Holà!",
+      "p1": "Para ingresar BitGuild, debe instalar MetaMask, un wallet digital para su navegador.",
+      "p2": "Esto también actuará como su inicio de sesión en el Portal BitGuild (¡sin contraseñas adicionales!).",
+      "faq": "¿Preguntas? Mira nuestra <a href='/faq'>FAQ</a>"
+    },
+    "metamask-login": {
+      "title": "Usted no ha iniciado sesión en MetaMask",
+      "p1": "Abra MetaMask y siga las instrucciones para iniciar sesión.",
+      "faq": "¿Preguntas? Mira nuestra <a href='/faq'>FAQ</a>"
+    },
+    "metamask-network": {
+      "title": "Sorry!",
+      "p1": "This network is not supported by BitGuild portal. For actual experience please switch to main net. For testing purposes please use Rinkeby",
+      "faq": "¿Preguntas? Mira nuestra  <a href='/faq'>FAQ</a>"
+    },
+    "register": {
+      "title": "Bienvenido en BitGuild",
+      "n1": "Asegúrese de guardar su información de inicio de sesión de MetaMask y los detalles de recuperación de la cuenta!",
+      "n2": "No podemos ayudarlo a recuperarlo si pierde el acceso.",
+      "text": "BitGuild requiere que todos los usuarios firmen con su clave privada para protegerse contra los intentos de falsificación.\n\nNuestra misión es revolucionar la industria del juego global mediante la creación de una plataforma para una nueva clase de juegos que viven en la cadena de bloques. Los juegos de Blockchain redefinen por completo la relación entre jugadores y desarrolladores al facilitar la propiedad plena y verdadera de los recursos en el juego, el intercambio de artículos baratos y seguros, la compatibilidad de elementos y divisas entre los juegos, y más. El equipo de BitGuild está formado por criptomonedas y veteranos del juego con décadas de experiencia en la construcción de plataformas y comunidades de juego internacionales a gran escala. BitGuild tiene como objetivo alojar los mejores juegos de blockchain y la comunidad de jugadores de blockchain más grande en línea."
+    },
+    "sell": {
+      "title": "¡Manténganse al tanto!",
+      "p1": "Le avisaremos tan pronto como pueda vender artículos.",
+      "faq": "¿Preguntas? Mira nuestra <a href='/faq'>FAQ</a>"
+    }
+  },
+  "pages": {
+    "inventory": {
+      "title": "Mis cosas",
+      "all": "Todo",
+      "all-items": "Todos los articulos",
+      "back-to-game": "Volver al juego",
+      "empty": "No tienes articulos!",
+      "faq": "Aprenda más sobre los artículos en <a href='/faq'>FAQ</a>"
+    },
+    "faq": {
+      "title": "FAQ",
+      "metamask": {
+        "title": "Metamask",
+        "q1": "Que es Metamask?",
+        "a1": "Es un complemento del navegador que conecta su wallet ethereum digital al Portal.",
+        "q2": "Necesito metamask?",
+        "a2": "Por ahora, la única forma admitida dpara usar el BitGuild Portal es MetaMask. Estamos abiertos a la integración de funcionalidades para otras carteras de navegador compatibles con Ethereum en el futuro.",
+        "q3": "No puedo veer mis PLAT en mi wallet! Donde estan?",
+        "a3": "Si está utilizando MetaMask, necesita habilitar la IU BETA y agregar manualmente el token PLAT a su lista de tokens. Use esta dirección cuando configure: 0x7E43581b19ab509BCF9397a2eFd1ab10233f27dE (especifique 18 para los dígitos).",
+        "q4": "¿El registro con mi clave privada en el Portal BitGuild tiene una tarifa de transacción?",
+        "a4": "No, solo las transacciones enviadas a través de su MetaMask Wallet tendrán una tarifa de gas."
+      },
+      "plat": {
+        "title": "PLAT Tokens",
+        "q1": "Que es PLAT?",
+        "a1": "¡PLAT es el token oficial de BitGuild, utilizado en el ecosistema BitGuild para jugar juegos, intercambiar objetos y más! Es la divisa impulsora en el portal BitGuild, utilizable en todos los juegos actuales y futuros en BitGuild ".,
+        "q2": "Como puedo comprar PLAT?",
+        "a2": "Los usuarios registrados de BitGuild pueden comprar PLAT a través del convertidor en la barra superior derecha del Portal de BitGuild.",
+        "q3": "¿Hay algún juego que pueda jugar sin PLAT?",
+        "a3": "La mayoría de los juegos solo aceptará PLAT, aunque algunos también pueden aceptar ETH. En este caso, usar PLAT siempre obtendrá un descuento para el jugador. Sin embargo, algunos títulos también pueden presentar a los usuarios un modelo de juego gratuito, que ofrece a los jugadores una forma de probar el juego sin comprar nada.",
+        "q4": "¿Cuál es la tasa de cambio ETH a PLAT?",
+        "a4": "La tasa de cambio más actualizada se mostrará en el convertidor."
+      },
+      "games": {
+        "title": "Juegos BitGuild",
+        "q1": "¿Puedo jugar cualquiera de estos juegos en un dispositivo móvil?",
+        "a1": "Si el juego es compatible con el juego móvil, puede usar cualquiera de los monederos móviles con navegadores compatibles con Ethereum, como Trust Wallet para jugar en BitGuild Portal.",
+        "q2": "He jugado un juego de terceros fuera de BitGuild.com, y ahora quiero jugarlo a través del portal de BitGuild. ¿Eso es posible?",
+        "a2": "Sí. Si el juego está disponible en BitGuild.com, pero ya lo jugaste en otro lugar, todos tus elementos y progresos se conservarán siempre que te registres en BitGuild.com con la misma dirección de wallet que antes."
+      },
+      "items": {
+        "title": "Artículos del juego",
+        "q1": "¿Cómo puedo comerciar y vender mis artículos?",
+        "a1": "El mercado de BitGuild está en desarrollo. Mientras tanto, puede usar cualquier mercado existente para los tokens ERC721.",
+        "q2": "¿Puedo comerciar fuera del portal?",
+        "a2": "Sí, puede usar cualquier mercado existente para los tokens ERC721",
+        "q3": "¿Cómo puedo informar un problema con el Portal o un juego?",
+        "a3": "Puede enviarnos un correo electrónico a support@bitguild.com, o puede comunicar con la comunidad de BitGuild en Discord!",
+        "q4": "¿Cómo puedo ver los elementos que tengo hasta ahora?",
+        "a4": "Puedes ver los artículos para todos los juegos que tiene en BitGuild Portal en la sección" Mis Cosas ", que se encuentra en la barra de menú superior.",
+        "q5": "Tengo un elemento que falta. ¿A quién puedo informarle esto?",
+        "a5": "Envíenos un correo electrónico a support@bitguild.com, o encuéntrenos en Discord, y haremos nuestro mejor esfuerzo para solucionar la situación",
+        "q6": "Me gustaría informar un estafador",
+        "a6": "Póngase en contacto con support@bitguild.com e incluya toda la información de respaldo que pueda, incluidas capturas de pantalla.",
+        "q7": "Me gustaría informar un error de elemento".
+        "a7": "Póngase en contacto con support@bitguild.com e incluya toda la información de respaldo que pueda, incluidas capturas de pantalla.",
+        "q8": "¿Cuánto tiempo tarda una transacción de compra?",
+        "a8": "Cada transacción, ya sea de compras o regalos, puede tomar desde 30 segundos hasta unos minutos, dependiendo del precio del gas que seleccionó en MetaMask",
+        "q9": "¿Qué pasa si mi transacción no se está procesando?",
+        "a9": "Si una transacción no se realiza, MetaMask le permite aumentar el precio del gas para las transacciones pendientes. Las transacciones se ponen en cola, por lo que si una de las transacciones anteriores se bloquea, también se bloqueará todo lo siguiente. ",
+        "q10": "¿Cuánto cuesta cada transacción (precio del gas)?",
+        "a10": "Puede establecer el precio del gas a través de MetaMask. El gasto real en gas varía según el juego y el tipo de transacción".
+      },
+      "account": {
+        "title": "Mi cuenta",
+        "q1": "¿Cuál es mi información de inicio de sesión de BitGuild?",
+        "a1": "Los usuarios inician sesión en BitGuild.com usando sus credenciales de MetaMask",
+        "q2": "Tengo problemas para iniciar sesión. ¿Qué puedo hacer?",
+        "a2": "Verifique la información de inicio de sesión de MetaMask y asegúrese de que no haya problemas conflictivos. Si aún tiene problemas, póngase en contacto con nosotros en support@bitguild.com o encuéntrenos directamente en Discord.",
+        "q3": "Olvidé mi nombre y contraseña de BitGuild. ¿Cómo puedo recuperarlo?",
+        "a3": "BitGuild no utiliza la información de inicio de sesión tradicional, todo está vinculado a MetaMask. Si ha perdido sus credenciales de MetaMask, desafortunadamente no podemos ayudarle".
+      },
+      "community": {
+        "title": "Comunidad BitGuild",
+        "q1": "¿Cómo puedo relacionarme con otros jugadores?",
+        "a1": "Si bien BitGuild presenta un sistema de chat integrado, también puedes encontrar la comunidad BitGuild en Discord. Allí puedes chatear con otros jugadores y mantenerte al día con las novedades del equipo de BitGuild y desarrolladores de terceros",
+        "q2": "¿Dónde puedo encontrar BitGuild en las redes sociales?",
+        "a2": "Puedes encontrarnos en Twitter, Facebook, Telegram, Reddit y, por supuesto, ¡Discordia!"
+      },
+      "developers":{
+        "title": "Desarrolladores de juegos",
+        "q1": "Estoy interesado en desarrollar un juego para BitGuild. ¿A quién puedo contactar?",
+        "a1": "Comuníquese con nosotros por correo electrónico a: partnerships@bitguild.com"
+      }
+    },
+    "games": {
+      "banner": {
+        "play": "Jugar"
+      },
+      "announce": {
+        "coming-soon": "Próximamente",
+        "in-development": "En desarrollo"
+      },
+      "explore": {
+        "questions": "¿Tienes preguntas?",
+        "faq": "FAQ",
+        "discord": "DISCORD"
+      }
+    }
+  },
+  "chat": {
+    "chat": "Chat",
+    "send": "Enviar"
+  }
+}

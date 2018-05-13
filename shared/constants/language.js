@@ -5,5 +5,6 @@ export const enabledLanguages = [
   "zh",
   "pt",
   "ja",
-  "fr"
+  "fr",
+  "es"
 ];
