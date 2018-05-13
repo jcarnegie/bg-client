@@ -1,5 +1,5 @@
 import "./item.less";
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import {Badge, Button, ButtonGroup, Col, Thumbnail} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
@@ -55,23 +55,44 @@ export default class Item extends Component {
     });
   }
 
-  renderStats(item) {
-    return map(stat => (
-      <div key={stat.keyLan}>{stat.keyLan} <span className="stat">{stat.value}</span></div>
-    ), itemStats(item));
+  renderStats() {
+    const {item, maxStats} = this.props;
+    return (
+      <dl style={{minHeight: maxStats * 20}}>
+        {map(stat => (
+          <Fragment key={stat.keyLan}>
+            <dt>{stat.keyLan}<FormattedMessage id="components.colon" /></dt>
+            <dd>{stat.value}</dd>
+          </Fragment>
+        ), itemStats(item))}
+      </dl>
+    );
+  }
+
+  renderCategories() {
+    const {item, onClick} = this.props;
+    return (
+      <div className="categories">
+        {item.categories
+          .filter(isValidItemCategory)
+          .map(category =>
+            <Badge onClick={onClick(item.game, [category])} key={category}>
+              {category}
+            </Badge>
+          )}
+      </div>
+    );
   }
 
   render() {
-    const {item, game, onClick, maxStats} = this.props;
+    const {item, game} = this.props;
     return (
       <Col sm={6} md={4} lg={3} className="item">
         <Gift show={this.state.gift} item={item} game={game} onHide={::this.onHideGift} />
         <Sell show={this.state.sell} item={item} game={game} onHide={::this.onHideSell} />
         <Thumbnail src={item.image}>
           <h4>{item.name}</h4>
-          <div className="stats" style={{minHeight: maxStats * 20}}>
-            {this.renderStats(item)}
-          </div>
+          {this.renderStats()}
           <ButtonGroup justified>
             <Button href="#" onClick={::this.onShowSell} className="sell">
               <FormattedMessage id="buttons.sell" />
@@ -80,12 +101,7 @@ export default class Item extends Component {
               <FormattedMessage id="buttons.gift" />
             </Button>
           </ButtonGroup>
-          <div className="categories">
-            {
-              item.categories
-                .filter(isValidItemCategory)
-                .map(category => <a href="#" onClick={onClick(game, [category])} key={category}><Badge>{category}</Badge></a>)}
-          </div>
+          {this.renderCategories()}
         </Thumbnail>
       </Col>
     );
