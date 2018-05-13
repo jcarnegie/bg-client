@@ -113,16 +113,21 @@ export default class Inventory extends Component {
         <Button onClick={::this.onClick(game._id, categories)} bsStyle="link">
           <FormattedMessage id="pages.inventory.all" />
         </Button>
-        {
-          categories
-            .filter(isValidItemCategory)
-            .map((category, i) => <Button key={i} onClick={::this.onClick(game._id, [category])} bsStyle="link">{category}</Button>)}
+        {categories
+          .filter(isValidItemCategory)
+          .map((category, i) =>
+            <Button key={i} onClick={::this.onClick(game._id, [category])} bsStyle="link">
+              {category}
+            </Button>
+          )}
       </>
     );
   }
 
   renderTab(game, items) {
     const categories = uniq([].concat(...items.map(item => item.categories)));
+    const maxStats = calcMaxItemsStats(items.data);
+
     return (
       <Fragment key={game._id}>
         <div className="arrow-right pull-right">
@@ -131,7 +136,9 @@ export default class Inventory extends Component {
         <h3>{game.name}</h3>
         <Row>
           {items.filter(item => Object.keys(this.state.filters).includes(item.game) ? this.state.filters[item.game].filter(x => !!~item.categories.indexOf(x)).length : true)
-            .map(item => <Item key={item.tokenId} item={item} game={game} maxStats={this.maxStats} onClick={::this.onClick} />)}
+            .map(item =>
+              <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
+            )}
         </Row>
       </Fragment>
     );
@@ -139,7 +146,6 @@ export default class Inventory extends Component {
 
   renderTabs() {
     const {items, games} = this.props;
-    this.maxStats = calcMaxItemsStats(items.data);
 
     return (
       <>
@@ -153,13 +159,11 @@ export default class Inventory extends Component {
               this.renderTab(game, items.data.filter(item => item.game === game._id))
             )}
           </Tab>
-          {games.data.map((game, i) => {
-            return (
-              <Tab eventKey={i + 2} title={game.name} key={game._id}>
-                {this.renderTab(game, items.data.filter(item => item.game === game._id))}
-              </Tab>
-            );
-          })}
+          {games.data.map((game, i) =>
+            <Tab eventKey={i + 2} title={game.name} key={game._id}>
+              {this.renderTab(game, items.data.filter(item => item.game === game._id))}
+            </Tab>
+          )}
         </Tabs>
       </>
     );
