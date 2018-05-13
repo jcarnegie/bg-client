@@ -17,7 +17,8 @@ import MetaMaskInstall from "./components/popups/metamask.install";
 import MetaMaskLogin from "./components/popups/metamask.login";
 import MetaMaskNetwork from "./components/popups/metamask.network";
 import Register from "./components/popups/register";
-import MyRoute from "./components/inventory/my-route";
+
+import MyRoute from "./components/common/my-route";
 
 
 export default class App extends Component {
