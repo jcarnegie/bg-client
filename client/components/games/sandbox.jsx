@@ -5,6 +5,7 @@ import {withRouter} from "react-router";
 import Init from "../common/init";
 import {Col, Row} from "react-bootstrap";
 import {readFromQueryString} from "../../utils/location";
+import Chat from "../chat/chat";
 
 
 @withRouter
@@ -45,7 +46,7 @@ export default class SandBox extends Component {
           {this.renderIframe()}
         </Col>
         <Col className="chat">
-          Chat
+          <Chat />
         </Col>
       </Row>
     );
