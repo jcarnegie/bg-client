@@ -126,7 +126,7 @@ export default class Inventory extends Component {
 
   renderTab(game, items) {
     const categories = uniq([].concat(...items.map(item => item.categories)));
-    const maxStats = calcMaxItemsStats(items.data);
+    const maxStats = calcMaxItemsStats(items);
 
     return (
       <Fragment key={game._id}>
