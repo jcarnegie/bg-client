@@ -124,7 +124,7 @@
       "plat": {
         "title": "PLAT Tokens",
         "q1": "Que es PLAT?",
-        "a1": "¡PLAT es el token oficial de BitGuild, utilizado en el ecosistema BitGuild para jugar juegos, intercambiar objetos y más! Es la divisa impulsora en el portal BitGuild, utilizable en todos los juegos actuales y futuros en BitGuild ".,
+        "a1": "¡PLAT es el token oficial de BitGuild, utilizado en el ecosistema BitGuild para jugar juegos, intercambiar objetos y más! Es la divisa impulsora en el portal BitGuild, utilizable en todos los juegos actuales y futuros en BitGuild ",
         "q2": "Como puedo comprar PLAT?",
         "a2": "Los usuarios registrados de BitGuild pueden comprar PLAT a través del convertidor en la barra superior derecha del Portal de BitGuild.",
         "q3": "¿Hay algún juego que pueda jugar sin PLAT?",
@@ -148,19 +148,19 @@
         "q3": "¿Cómo puedo informar un problema con el Portal o un juego?",
         "a3": "Puede enviarnos un correo electrónico a support@bitguild.com, o puede comunicar con la comunidad de BitGuild en Discord!",
         "q4": "¿Cómo puedo ver los elementos que tengo hasta ahora?",
-        "a4": "Puedes ver los artículos para todos los juegos que tiene en BitGuild Portal en la sección" Mis Cosas ", que se encuentra en la barra de menú superior.",
+        "a4": "Puedes ver los artículos para todos los juegos que tiene en BitGuild Portal en la sección 'Mis Cosas', que se encuentra en la barra de menú superior.",
         "q5": "Tengo un elemento que falta. ¿A quién puedo informarle esto?",
         "a5": "Envíenos un correo electrónico a support@bitguild.com, o encuéntrenos en Discord, y haremos nuestro mejor esfuerzo para solucionar la situación",
         "q6": "Me gustaría informar un estafador",
         "a6": "Póngase en contacto con support@bitguild.com e incluya toda la información de respaldo que pueda, incluidas capturas de pantalla.",
-        "q7": "Me gustaría informar un error de elemento".
+        "q7": "Me gustaría informar un error de elemento",
         "a7": "Póngase en contacto con support@bitguild.com e incluya toda la información de respaldo que pueda, incluidas capturas de pantalla.",
         "q8": "¿Cuánto tiempo tarda una transacción de compra?",
         "a8": "Cada transacción, ya sea de compras o regalos, puede tomar desde 30 segundos hasta unos minutos, dependiendo del precio del gas que seleccionó en MetaMask",
         "q9": "¿Qué pasa si mi transacción no se está procesando?",
         "a9": "Si una transacción no se realiza, MetaMask le permite aumentar el precio del gas para las transacciones pendientes. Las transacciones se ponen en cola, por lo que si una de las transacciones anteriores se bloquea, también se bloqueará todo lo siguiente. ",
         "q10": "¿Cuánto cuesta cada transacción (precio del gas)?",
-        "a10": "Puede establecer el precio del gas a través de MetaMask. El gasto real en gas varía según el juego y el tipo de transacción".
+        "a10": "Puede establecer el precio del gas a través de MetaMask. El gasto real en gas varía según el juego y el tipo de transacción"
       },
       "account": {
         "title": "Mi cuenta",
@@ -169,7 +169,7 @@
         "q2": "Tengo problemas para iniciar sesión. ¿Qué puedo hacer?",
         "a2": "Verifique la información de inicio de sesión de MetaMask y asegúrese de que no haya problemas conflictivos. Si aún tiene problemas, póngase en contacto con nosotros en support@bitguild.com o encuéntrenos directamente en Discord.",
         "q3": "Olvidé mi nombre y contraseña de BitGuild. ¿Cómo puedo recuperarlo?",
-        "a3": "BitGuild no utiliza la información de inicio de sesión tradicional, todo está vinculado a MetaMask. Si ha perdido sus credenciales de MetaMask, desafortunadamente no podemos ayudarle".
+        "a3": "BitGuild no utiliza la información de inicio de sesión tradicional, todo está vinculado a MetaMask. Si ha perdido sus credenciales de MetaMask, desafortunadamente no podemos ayudarle",
       },
       "community": {
         "title": "Comunidad BitGuild",
