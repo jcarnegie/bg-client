@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {Route} from "react-router";
 
 
-export default class MyRoute extends Component {
+export default class LastLocationRoute extends Component {
   static propTypes = {
     component: PropTypes.func,
     location: PropTypes.shape({
