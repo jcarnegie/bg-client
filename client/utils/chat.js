@@ -17,7 +17,7 @@ export let _user = null;
 
 /**
  * Simple utility function to promisify SendBird calls
- * @param {*} fn 
+ * @param {*} fn
  */
 export const sbp = fn => new Promise((resolve, reject) =>
   fn((res, err) => (err) ? reject(err) : resolve(res))
