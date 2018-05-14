@@ -7,6 +7,7 @@ import balancePLAT from "./balancePLAT";
 import chat from "./chat";
 import game from "./game";
 import games from "./games";
+import gas from "./gas";
 import gifts from "./gifts";
 import items from "./items";
 import rate from "./rate";
@@ -23,6 +24,7 @@ export default combineReducers({
   chat,
   game,
   games,
+  gas,
   gifts,
   intl,
   items,

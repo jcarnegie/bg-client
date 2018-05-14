@@ -58,3 +58,7 @@ export const GAME_ERROR = "GAME_ERROR";
 export const GIFT_LOADING = "GIFT_LOADING";
 export const GIFT_CHANGED = "GIFT_CHANGED";
 export const GIFT_ERROR = "GIFT_ERROR";
+
+export const GAS_LOADING = "GAS_LOADING";
+export const GAS_CHANGED = "GAS_CHANGED";
+export const GAS_ERROR = "GAS_ERROR";
