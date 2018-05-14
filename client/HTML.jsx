@@ -21,20 +21,6 @@ export default class HTML extends React.Component {
     }
   }
 
-  renderChat() {
-    if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
-      return (
-        <div>
-          <div id="sb_widget" />
-          <script src="https://cdn.jsdelivr.net/npm/sendbird@3.0.60/SendBird.min.js" type="text/javascript" crossOrigin="anonymous" />
-          <script src="/js/widget.SendBird.js" type="text/javascript" crossOrigin="anonymous" />
-        </div>
-      );
-    } else {
-      return null;
-    }
-  }
-
   render() {
     return (
       <html>
