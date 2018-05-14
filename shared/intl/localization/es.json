@@ -6,8 +6,8 @@
       "zh": "简体中文",
       "ja": "日本語",
       "fr": "Français",
-      "pt": "Português”,
-      "es": “Español”,
+      "pt": "Português",
+      "es": "Español",
       "ru": "Русский"
 
     },
@@ -169,7 +169,7 @@
         "q2": "Tengo problemas para iniciar sesión. ¿Qué puedo hacer?",
         "a2": "Verifique la información de inicio de sesión de MetaMask y asegúrese de que no haya problemas conflictivos. Si aún tiene problemas, póngase en contacto con nosotros en support@bitguild.com o encuéntrenos directamente en Discord.",
         "q3": "Olvidé mi nombre y contraseña de BitGuild. ¿Cómo puedo recuperarlo?",
-        "a3": "BitGuild no utiliza la información de inicio de sesión tradicional, todo está vinculado a MetaMask. Si ha perdido sus credenciales de MetaMask, desafortunadamente no podemos ayudarle",
+        "a3": "BitGuild no utiliza la información de inicio de sesión tradicional, todo está vinculado a MetaMask. Si ha perdido sus credenciales de MetaMask, desafortunadamente no podemos ayudarle"
       },
       "community": {
         "title": "Comunidad BitGuild",
