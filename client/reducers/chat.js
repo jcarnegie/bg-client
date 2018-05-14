@@ -1,4 +1,4 @@
-import { append } from "ramda";
+import {append} from "ramda";
 import {
   CHAT_INIT,
   CHAT_LOAD_MESSAGES,
@@ -27,7 +27,7 @@ export default function chatReducer(state = chat, action) {
       return {
         ...state,
         messages: action.payload
-      }
+      };
     case CHAT_MESSAGE_RECEIVED:
       const messages = action.payload.channel.url === state.currentChannel.url
         ? append(action.payload.message, state.messages)
