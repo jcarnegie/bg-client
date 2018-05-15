@@ -188,6 +188,10 @@
       "banner": {
         "play": "プレーイ"
       },
+      "airdrop": {
+        "countdown": "Airdrop(エアドロップ）",
+        "giveaway": "Ether Onlineリリース記念イベント実施！"
+      },
       "announce": {
         "coming-soon": "近日公開",
         "in-development": "In development"

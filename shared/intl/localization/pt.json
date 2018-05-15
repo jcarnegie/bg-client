@@ -191,6 +191,10 @@
         "coming-soon": "Em breve",
         "in-development": "Em desenvolvimento"
       },
+      "airdrop": {
+        "countdown": "Airdrop em:",
+        "giveaway": "Ether Online - Distribuição de Itens Grátis"
+      },
       "explore": {
         "questions": "Perguntas?",
         "faq": "FAQ",
@@ -198,20 +202,29 @@
       }
     },
     "airdrop": {
-      "title": "Free  Item  Giveaway",
-      "description": "Ganhe  até  50  caixas  de  equipamentos!",
-      "p1": "<strong>Cadastre-se  agora  para  ganhar  loot  boxes  grátis  em  Ether  Online!</strong>",
-      "p2": "Basta  seguir  os  passos  abaixo  para  participar  neste  evento  de  distribuição  que  celebra  o  lançamento  do  Ether  Online  no  Portal  BitGuild!  Todo  usuário  registrado  com  sucesso,  com  pelo  menos  5.000  PLATs  em  sua  carteira,  receberá  um  baú  de  itens  no  jogo,  bem  como  uma  chance  de  ganhar  o  Grande  Prêmio!</strong>",
-      "p3": "<strong>O  evento  começa  dia  12  de  maio  de  2018  e  termina  dia  19  de  maio  de  2018,  com  os  vencedores  sendo  anunciados  no  dia  seguinte.  Por  favor,  aguarde  até  72  horas  para  entrega  do  prêmio..</strong>",
-      "p4": "Entre  agora  para  ter  a  chance  de  ganhar  loot  boxes  especiais,  contendo  itens  equipáveis  ​​de  várias  raridades  para  uso  no  Ether  Online.  Temos  uma  variedade  para  distribuição  em  comemoração  ao  lançamento  do  BitGuild.com,  bem  como  a  estréia  do  Ether  Online  em  nosso  Portal.",
-      "p5": "<strong>Todos  os  usuários  cadastrados  elegíveis  receberão  um  baú,  bem  como  a  chance  de  ganhar  um  adicional  de  50!</strong>  Para  participar,  por  favor  siga  estas  instruções  cuidadosamente:",
-      "l1": "<strong>1. Crie  uma  conta  no  MetaMask.  Você  precisará  desta  para  tudo  em  BitGuild.com",
-      "l2": "<strong>2. Registre-se</strong>  com  sua  conta  MetaMask  no  Portal  oficial  do  BitGuild</strong>",
-      "l3": "<strong>3. Compre  PLAT!  Somente  usuários  que  possuam  um  mínimo  de  5.000  PLAT</strong>  em  sua  carteira  virtual  no  final  da  oferta  serão  elegíveis.  Cada  adicional  de  5.000  que  você  possui  lhe  dará  uma  entrada  extra  no  sorteio  (se  você  tem  15.000  PLAT,  você  tem  3x  mais  chances  de  ganhar)",
-      "l4": "<strong>4. Aguarde!</strong>  Verifique  o  seu  inventário  no  jogo  Ether  Online  em  20Airdrop  de  maio  de  2018.  Se  você  ganhou  o  Grande  Prêmio,  você  deverá  ver  um  total  de  51  caixas  esperando  por  você!  Se  não,  você  ainda  deve  ver  um  baú  grátis,  caso  você  seguiu  todos  os  passos  acima.",
-      "p6": "<strong>Desejamos-lhe  muita  sorte  e  esperamos  que  você  vença!  Você  pode  discutir  este  evento  e  tudo  relacionado  a  BitGuild  no  nosso  servidor  official  no  Discord.</strong>",
-      "p7": "<strong>Vejo  todos  vocês  em  Ether  Online!</strong>",
-      "play": "JOGAR"
+      "title": "Free Item Giveaway",
+      "description": "Ganhe até 50 caixas de equipamentos!",
+      "p1": "<strong>Cadastre-se agora para ganhar loot boxes grátis em Ether Online!</strong>",
+      "p2": "Basta seguir os passos abaixo para participar neste evento de distribuição que celebra o lançamento do Ether Online no Portal BitGuild! Todo usuário registrado com sucesso, com pelo menos 5.000 PLATs em sua carteira, receberá um baú de itens no jogo, bem como uma chance de ganhar o Grande Prêmio!</strong>",
+      "p3": "<strong>O evento começa dia 12 de maio de 2018 e termina dia 19 de maio de 2018, com os vencedores sendo anunciados no dia seguinte. Por favor, aguarde até 72 horas para entrega do prêmio..</strong>",
+      "p4": "Entre agora para ter a chance de ganhar loot boxes especiais, contendo itens equipáveis ​​de várias raridades para uso no Ether Online. Temos uma variedade para distribuição em comemoração ao lançamento do BitGuild.com, bem como a estréia do Ether Online em nosso Portal.",
+      "p5": "<strong>Todos os usuários cadastrados elegíveis receberão um baú, bem como a chance de ganhar um adicional de 50!</strong> Para participar, por favor siga estas instruções cuidadosamente:",
+      "l1": "<strong>1. Crie uma conta no MetaMask. Você precisará desta para tudo em BitGuild.com",
+      "l2": "<strong>2. Registre-se</strong> com sua conta MetaMask no Portal oficial do BitGuild</strong>",
+      "l3": "<strong>3. Compre PLAT! Somente usuários que possuam um mínimo de 5.000 PLAT</strong> em sua carteira virtual no final da oferta serão elegíveis. Cada adicional de 5.000 que você possui lhe dará uma entrada extra no sorteio (se você tem 15.000 PLAT, você tem 3x mais chances de ganhar)",
+      "l4": "<strong>4. Aguarde!</strong> Verifique o seu inventário no jogo Ether Online em 20Airdrop de maio de 2018. Se você ganhou o Grande Prêmio, você deverá ver um total de 51 caixas esperando por você! Se não, você ainda deve ver um baú grátis, caso você seguiu todos os passos acima.",
+      "p6": "<strong>Desejamos-lhe muita sorte e esperamos que você vença! Você pode discutir este evento e tudo relacionado a BitGuild no nosso servidor official no <a href='https://discordapp.com/invite/pPC2frB'>Discord</a>.</strong>",
+      "p7": "<strong>Vejo todos vocês em Ether Online!</strong>",
+      "play": "JOGAR",
+      "p8": "* Note: Se o número total de usuários elegíveis for maior que 1.000, as caixas serão distribuídas aleatoriamente."
+    },
+    "airdrop2": {
+      "p1": "<strong>Evento encerrado!</strong>",
+      "p2": "Obrigado a todos que participaram do evento Ether Online na BitGuild!",
+      "p3": "Um parabéns especial para os vencedores do grande prêmio! Se você ainda não o fez, verifique seu inventário no jogo agora. Se você ganhou, você verá 51 baús novinhos esperando por você para abrir, revelando sua recompensa incrível!",
+      "p4": "Se você não ganhou, desculpe! Você ainda recebe um baú de item único para se inscrever. Mas não se preocupe, você terá muitas chances de receber itens gratuitos com BitGuild.com no futuro! Fique atento ao nosso <a href='https://twitter.com/BitGuildPLAT'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/'>Facebook</a> e <a href='https://medium.com/the-notice-board'>Blog oficial</a> para nunca perder nada.",
+      "p5": "Enquanto isso, recomendamos que você experimente nosso mais recente jogo ______ ou simplesmente dê uma olhada no que está disponível em BitGuild por você mesmo!",
+      "p6": "Vejo você online!"
     }
   },
   "chat": {
