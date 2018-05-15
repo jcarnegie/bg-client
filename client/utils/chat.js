@@ -55,8 +55,8 @@ export const getChannelByName = async(name, channel, sb = _sb) => {
   return sbp(cb => sb.OpenChannel.getChannel(channel.url, cb));
 };
 
-export const createChannelWithName = async(name, sb = _sb) => {
-  return sbp(cb => sb.OpenChannel.createChannel(name, null, null, cb));
+export const createChannelWithName = async(name, operators = null, sb = _sb) => {
+  return sbp(cb => sb.OpenChannel.createChannel(name, null, null, operators, null, cb));
 };
 
 export const setChannelByName = async(name, channels) => {
