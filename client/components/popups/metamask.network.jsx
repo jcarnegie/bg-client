@@ -1,26 +1,20 @@
 import "./modal.less";
 import React, {Component} from "react";
 import {Modal} from "react-bootstrap";
-import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {FormattedMessage, FormattedHTMLMessage} from "react-intl";
+import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
 
 
-@connect(
-  state => ({
-    network: state.network
-  })
-)
 export default class MetaMaskNetworkPopup extends Component {
   static propTypes = {
-    network: PropTypes.object
+    show: PropTypes.bool
   };
 
   render() {
-    const {network} = this.props;
+    const {show} = this.props;
 
     return (
-      <Modal show={!network.isLoading && network.success && !["1", "4"].includes(network.data.id)} className="metamask-network">
+      <Modal show={show} className="metamask-network">
         <Modal.Body>
           <div>
             <h2><FormattedMessage id="modals.metamask-network.title" /></h2>
