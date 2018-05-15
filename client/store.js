@@ -37,7 +37,7 @@ export default function(initialState = defaultState) {
   }
 
   const storage = compose(
-    filter(["gift"])
+    filter(["gifts"])
   )(adapter(typeof window !== "undefined" ? window.localStorage : {})); // this fixes bug with SSR
 
   const reducers = compose(mergePersistedState())(rootReducers);

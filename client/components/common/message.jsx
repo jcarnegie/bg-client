@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {FormattedMessage} from "react-intl";
 import {Alert} from "react-bootstrap";
-import {MESSAGE_REMOVE_ALL, MESSAGE_REMOVE} from "../../../shared/constants/actions";
+import {MESSAGE_REMOVE, MESSAGE_REMOVE_ALL} from "../../../shared/constants/actions";
 
 
 @connect(
@@ -23,14 +23,18 @@ export default class Message extends Component {
   };
 
   componentWillUnmount() {
-    this.props.dispatch({
+    const {dispatch} = this.props;
+
+    dispatch({
       type: MESSAGE_REMOVE_ALL
     });
   }
 
   onDismiss(message) {
+    const {dispatch} = this.props;
+
     return () => {
-      this.props.dispatch({
+      dispatch({
         payload: message,
         type: MESSAGE_REMOVE
       });

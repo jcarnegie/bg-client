@@ -56,5 +56,6 @@ export const GAME_CHANGED = "GAME_CHANGED";
 export const GAME_ERROR = "GAME_ERROR";
 
 export const GIFT_LOADING = "GIFT_LOADING";
-export const GIFT_CHANGED = "GIFT_CHANGED";
+export const GIFT_ADD = "GIFT_ADD";
+export const GIFT_REMOVE = "GIFT_REMOVE";
 export const GIFT_ERROR = "GIFT_ERROR";
