@@ -105,6 +105,7 @@
       "all": "All",
       "all-items": "All Items",
       "back-to-game": "Back to game",
+      "tx": "Transaction in progress",
       "empty": "You have no items yet!",
       "faq": "Learn more about items in <a href='/faq'>FAQ</a>"
     },

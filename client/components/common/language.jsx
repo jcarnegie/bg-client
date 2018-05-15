@@ -21,8 +21,10 @@ export default class Language extends Component {
   };
 
   onSelect(language) {
-    this.props.dispatch(updateIntl(localization[language]));
-    this.props.dispatch({
+    const {dispatch} = this.props;
+
+    dispatch(updateIntl(localization[language]));
+    dispatch({
       type: UPDATE_USER,
       payload: {
         language

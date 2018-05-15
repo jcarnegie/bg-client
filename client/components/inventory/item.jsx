@@ -7,8 +7,14 @@ import {map} from "ramda";
 import Gift from "../popups/gift";
 import Sell from "../popups/sell";
 import {isValidItemCategory, itemStats} from "../../utils/item";
+import {connect} from "react-redux";
 
 
+@connect(
+  state => ({
+    gifts: state.gifts
+  })
+)
 export default class Item extends Component {
   static propTypes = {
     onClick: PropTypes.func,
@@ -20,6 +26,11 @@ export default class Item extends Component {
     }),
     game: PropTypes.shape({
       nft: PropTypes.object
+    }),
+    gifts: PropTypes.shape({
+      item: PropTypes.number,
+      game: PropTypes.string,
+      tx: PropTypes.string
     }),
     maxStats: PropTypes.number
   };
@@ -84,8 +95,34 @@ export default class Item extends Component {
     );
   }
 
+  renderButtons() {
+    const {gifts, item, game} = this.props;
+
+    const gift = gifts.data.find(gift => gift.item === item.tokenId && gift.game === game._id);
+
+    if (gift) {
+      return (
+        <div className="tx">
+          <FormattedMessage id="pages.inventory.tx" />
+        </div>
+      );
+    }
+
+    return (
+      <ButtonGroup justified>
+        <Button href="#" onClick={::this.onShowSell} className="sell">
+          <FormattedMessage id="buttons.sell" />
+        </Button>
+        <Button href="#" onClick={::this.onShowGift} className="gift">
+          <FormattedMessage id="buttons.gift" />
+        </Button>
+      </ButtonGroup>
+    );
+  }
+
   render() {
     const {item, game} = this.props;
+
     return (
       <Col sm={6} md={4} lg={3} className="item">
         <Gift show={this.state.gift} item={item} game={game} onHide={::this.onHideGift} />
@@ -93,14 +130,7 @@ export default class Item extends Component {
         <Thumbnail src={item.image}>
           <h4>{item.name}</h4>
           {this.renderStats()}
-          <ButtonGroup justified>
-            <Button href="#" onClick={::this.onShowSell} className="sell">
-              <FormattedMessage id="buttons.sell" />
-            </Button>
-            <Button href="#" onClick={::this.onShowGift} className="gift">
-              <FormattedMessage id="buttons.gift" />
-            </Button>
-          </ButtonGroup>
+          {this.renderButtons()}
           {this.renderCategories()}
         </Thumbnail>
       </Col>

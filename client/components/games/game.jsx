@@ -31,7 +31,9 @@ export default class Game extends Component {
   };
 
   componentDidMount() {
-    this.props.dispatch({
+    const {dispatch} = this.props;
+
+    dispatch({
       type: GAME_REQUEST,
       payload: this.props.match.params
     });
