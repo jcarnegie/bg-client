@@ -201,6 +201,31 @@
         "faq": "FAQ",
         "discord": "DISCORD"
       }
+    },
+    "airdrop": {
+      "title": "Free Item Giveaway",
+      "description": "REGALO DE ARTÍCULOS GRATUITOS: ¡gana hasta 50 cofres de equipos!",
+      "p1": "<strong>Regístrese ahora para sumar algunos cofres de botín dulce en Ether Online!</strong>",
+      "p2": "Simplemente siga los pasos a continuación para participar en este evento de regalo que celebra el lanzamiento de Ether Online en el Portal de BitGuild. ¡Cada usuario registrado con éxito con al menos 5,000 PLAT en su wallet recibirá un cofre de artículos en el juego, así como la oportunidad de ganar el Gran Premio especial!",
+      "p3": "<strong>El evento comienza el 12 de mayo de 2018 y concluye el 19 de mayo de 2018. Los ganadores se anunciarán al día siguiente. Espere hasta 72 horas para la entrega del premio.</strong>",
+      "p4": "Ingrese ahora para tener la oportunidad de ganar cofres de artículos que contengan elementos equiparables de diversas rarezas para usar en Ether Online. Tenemos muchos de estos para regalar en celebración del lanzamiento de BitGuild.com, así como el debut de Ether Online en nuestro Portal.",
+      "p5": "<strong>¡Todos los usuarios registrados elegibles recibirán un cofre, así como la oportunidad de ganar 50 adicionales!</strong> Para participar, siga estas instrucciones atentamente:",
+      "l1": "<strong>1. Regístrese en MetaMask.</strong> Lo necesitarás para todo en BitGuild.com.",
+      "l2": "<strong>2. Regístrese</strong> con su cuenta de MetaMask en el Portal oficial de BitGuild</strong>",
+      "l3": "<strong>3. Compre PLAT! Solo los usuarios que posean un mínimo de 5,000 PLAT</strong> en su billetera registrada al final del sorteo serán elegibles. Cada 5000 PLAT adicionales que tengas te dan una entrada adicional en el sorteo (si tienes 15,000 PLAT, tienes 3x más probabilidades de ganar)",
+      "l4": "<strong>4. ¡Espera!</strong> Revisa tu inventario en línea de Ether Online el 20 de mayo de 2018. ¡Si has ganado el Gran Premio, deberías ver un total de 51 cofres esperándote! De lo contrario, aún deberías ver 1 cofre de artículos gratis si sigues todos los pasos anteriores.",
+      "p6": "<strong>¡Le deseamos la mejor de las suertes y esperamos que gane! Puede discutir este evento y todo lo relacionado con BitGuild en nuestro servidor oficial de <a href='https://discordapp.com/invite/pPC2frB'>Discord</a>.</strong>",
+      "p7": "<strong>We’ll see you all on Ether.Online!</strong>",
+      "play": "PLAY",
+      "p8": "* Nota: si el número total de usuarios elegibles es mayor a 1000, los cofres de los elementos se distribuirán al azar."
+    },
+    "airdrop2": {
+      "p1": "<strong> ¡El sorteo terminó!</strong>",
+      "p2": "¡Gracias a todos los que participaron en el evento de regalo Ether Online BitGuild!",
+      "p3": "¡Una felicitación especial para los ganadores del gran premio! Si aún no lo has hecho, revisa tu inventario en el juego ahora. ¡Si ganaste, verás 51 cofres de objetos brillantes esperando a que abras, revelando tu increíble loot!",
+      "p4": "Si no ganaste, ¡lo sentimos! Todavía obtienes un cofre de artículo único si se registras . Pero no se preocupe, ¡tendrá muchas oportunidades de obtener material gratis en BitGuild.com en el futuro! Manténgase en sintonía con nuestro <a href='https://twitter.com/BitGuildPLAT'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/'>Facebook</a> y el <a href='https://medium.com/the-notice-board'>Blog oficial</a> para no perderse nunca el ritmo.",
+      "p5": "Mientras tanto, te animamos a probar nuestro último título jugable ______, ¡o simplemente mira a lo que está disponible en BitGuild para ti!",
+      "p6": "¡Nos vemos en línea!"
     }
   },
   "chat": {

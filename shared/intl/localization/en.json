@@ -219,9 +219,18 @@
       "l2": "<strong>2. Register</strong> with your MetaMask account <strong>on the official BitGuild Portal.</strong>",
       "l3": "<strong>3. Get some PLAT! Only users possessing a minimum of 5,000 PLAT</strong> in their registered wallet at the end of the giveaway will be eligible. Each additional 5,000 PLAT you hold gives you an extra entry into the giveaway (If you have 15,000 PLAT, you are 3x more likely to win)!",
       "l4": "<strong>4. Wait it out!</strong> Check your Ether.Online in-game inventory on May 19th, 2018. If you’ve won the Grand Prize, you should see a total of 51 boxes waiting for you! If not, you should still see 1 free item chest if you followed all the above steps.",
-      "p6": "<strong>We wish you the best of luck, and we hope you’ll win! You can discuss this event, and everything BitGuild on our official Discord server.</strong>",
+      "p6": "<strong>We wish you the best of luck, and we hope you’ll win! You can discuss this event, and everything BitGuild on our official <a href='https://discordapp.com/invite/pPC2frB'>Discord</a> server.</strong>",
       "p7": "<strong>We’ll see you all on Ether.Online!</strong>",
-      "play": "PLAY"
+      "play": "PLAY",
+      "p8": "* Please Note: If the total number of eligible users is greater than 1000, item chests will be distributed at random."
+    },
+    "airdrop2": {
+      "p1": "<strong>Giveaway is over!</strong>",
+      "p2": "Thank you to everyone who participated in the Ether Online BitGuild giveaway event!",
+      "p3": "A special congratulations to the grand prize winners! If you haven’t yet, please check your in-game inventory now. If you won, see up to 51 shiny item chests just waiting for you to open, revealing your awesome loot!",
+      "p4": "If you didn’t win, sorry! You still get a single item chest for signing up. But don’t worry, you’ll have plenty of chances to get cool free stuff on BitGuild.com in the future! Stay tuned to our <a href='https://twitter.com/BitGuildPLAT'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/'>Facebook</a>, and <a href='https://medium.com/the-notice-board'>official Blog</a> to never miss a beat.",
+      "p5": "In the meantime, we encourage you to try our latest playable title ______, or simply go have a look at what’s available on BitGuild for yourself!",
+      "p6": "See you online!"
     }
   },
   "chat": {
