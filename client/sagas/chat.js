@@ -1,5 +1,13 @@
 import {put, select, takeEvery} from "redux-saga/effects";
-import {channels as chatChannels, init as chatInit, messages as chatMessages, sendMessage, setChannelByName} from "../utils/chat";
+import {channels as chatChannels,
+  init as chatInit,
+  messages as chatMessages,
+  sendMessage,
+  channelNameForLocale,
+  createChannelWithName,
+  findChannelByName,
+  setChannelByName
+} from "../utils/chat";
 import {CHAT_INIT, CHAT_LOAD_MESSAGES, CHAT_MESSAGE_SEND, CHAT_MESSAGE_SENT, CHAT_SET_CHANNEL, USER_CHANGED} from "../../shared/constants/actions";
 
 function * sendChatMessage(action) {
@@ -26,7 +34,18 @@ function * initChat(action) {
   });
 
   const channels = yield chatChannels(sb);
-  const channel = yield setChannelByName(`BitGuild-${process.env.NODE_ENV}`, channels);
+  const locale = yield select(state => state.intl.locale);
+  const channelName = channelNameForLocale(locale);
+
+  let channel;
+
+  if (!findChannelByName(channelName, channels)) {
+    channel = yield createChannelWithName(channelName);
+    channels.push(channel);
+  }
+
+  channel = yield setChannelByName(channelName, channels);
+
   yield put({
     type: CHAT_SET_CHANNEL,
     payload: channel
