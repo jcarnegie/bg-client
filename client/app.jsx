@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Switch} from "react-router";
 import {Grid} from "react-bootstrap";
+import ReactGA from "react-ga";
 
 import GameList from "./components/games/index";
 import Game from "./components/games/game";
@@ -16,7 +17,6 @@ import Register from "./components/popups/register";
 
 import LLRoute from "./components/common/routes/last-location";
 import MMRoute from "./components/common/routes/metamask";
-
 
 export default class App extends Component {
   render() {
