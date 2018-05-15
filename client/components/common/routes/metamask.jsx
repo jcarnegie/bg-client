@@ -82,7 +82,7 @@ export default class MetaMaskRoute extends Component {
         } else {
           return (
             <>
-              <MetaMaskInstall show={!MetaMaskRoute.isInstalled} />
+              <MetaMaskInstall show={!MetaMaskRoute.isInstalled()} />
               <MetaMaskLogin show={!account.isLoading && !account.success} />
               <MetaMaskNetwork show={!network.isLoading && network.success && !["1", "4"].includes(network.data.id)} />
             </>
