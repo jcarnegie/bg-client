@@ -25,7 +25,9 @@ export default class Inventory extends Component {
     items: PropTypes.object,
     games: PropTypes.object,
     user: PropTypes.object,
-    lastMatch: PropTypes.object.isRequired
+    lastLocation: PropTypes.shape({
+      pathname: PropTypes.string
+    })
   };
 
   state = {
@@ -89,15 +91,15 @@ export default class Inventory extends Component {
   }
 
   renderBackToGameButton() {
-    const {lastMatch} = this.props;
+    const {lastLocation} = this.props;
 
-    if (!lastMatch.params._id) {
+    if (!lastLocation.pathname.startsWith("/game/")) {
       return null;
     }
 
     return (
       <div className="pull-right">
-        <Button href={lastMatch.url}>
+        <Button href={lastLocation.pathname}>
           <FormattedMessage id="pages.inventory.back-to-game" />
         </Button>
       </div>

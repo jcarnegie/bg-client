@@ -70,7 +70,7 @@ export default class GameList extends Component {
       <Row>
         <Col className="grap gap games">
           <div className="banner">
-            <Button href="/game/5af2703709bc2d18438449ad">
+            <Button href="/game/ether.online">
               <Image src="/images/buttons/play/black.png" />
               <FormattedMessage id="pages.games.banner.play" />
             </Button>

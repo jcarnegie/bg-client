@@ -22,6 +22,9 @@ export default class Game extends Component {
     dispatch: PropTypes.func,
     game: PropTypes.object,
     user: PropTypes.object,
+    location: PropTypes.shape({
+      search: PropTypes.string.isRequired
+    }).isRequired,
     match: PropTypes.shape({
       params: PropTypes.object.isRequired
     }).isRequired
@@ -48,7 +51,9 @@ export default class Game extends Component {
       );
     }
 
-    return (<iframe src={game.data.url} key={user.data ? user.data.language : defaultLanguage} />);
+    const url = game.data.url + (game.data.url.includes("?") ? "&" : "?") + this.props.location.search.substring(1);
+
+    return (<iframe src={url} key={user.data ? user.data.language : defaultLanguage} />);
   }
 
   render() {
