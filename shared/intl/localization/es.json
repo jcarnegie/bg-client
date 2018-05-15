@@ -188,6 +188,10 @@
       "banner": {
         "play": "Jugar"
       },
+      "airdrop": {
+        "countdown": "Airdrop en:",
+        "giveaway": "Ether Online - Regalo de Artículos Gratuitos",
+      },
       "announce": {
         "coming-soon": "Próximamente",
         "in-development": "En desarrollo"

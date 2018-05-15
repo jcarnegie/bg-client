@@ -191,6 +191,10 @@
         "coming-soon": "Em breve",
         "in-development": "Em desenvolvimento"
       },
+      "airdrop": {
+        "countdown": "Airdrop em:",
+        "giveaway": "Ether Online - Distribuição de Itens Grátis"
+      },
       "explore": {
         "questions": "Perguntas?",
         "faq": "FAQ",

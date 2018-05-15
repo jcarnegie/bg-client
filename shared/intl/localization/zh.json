@@ -192,6 +192,10 @@
         "coming-soon": "敬请期待",
         "in-development": "开发中"
       },
+      "airdrop": {
+        "countdown": "宝箱空投倒计时",
+        "giveaway": "Ether Online宝箱大赠送！"
+      },
       "explore": {
         "questions": "有任何问题，请查看",
         "faq": "FAQ",
