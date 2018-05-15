@@ -46,7 +46,7 @@ export default class Chat extends Component {
 
     e.preventDefault();
 
-    if (isEmpty(newMessage)) return;
+    if (isEmpty(newMessage.trim())) return;
 
     sendChatMessage(this.state.newMessage);
     // clear the message input
