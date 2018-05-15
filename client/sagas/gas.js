@@ -23,7 +23,7 @@ function * fetchGas() {
     const newData = Object.keys(defaultData)
       .reduce((memo, key) => ({
         ...memo,
-        [key]: json[key] / 10 // Number(web3.toWei(json[key] / 10, 'gwei'))
+        [key]: Number(window.web3.toWei(json[key] / 10, "shannon")) // gwei
       }), {});
     yield put({
       type: GAS_CHANGED,

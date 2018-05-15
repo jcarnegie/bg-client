@@ -16,6 +16,7 @@ function precisionRound(number, precision) {
 
 @connect(
   state => ({
+    gas: state.gas,
     rate: state.rate,
     user: state.user,
     network: state.network
@@ -28,7 +29,8 @@ export default class ConvertPopup extends Component {
     dispatch: PropTypes.func,
     onHide: PropTypes.func,
     user: PropTypes.object,
-    network: PropTypes.object
+    network: PropTypes.object,
+    gas: PropTypes.object
   };
 
   state = {
@@ -62,13 +64,13 @@ export default class ConvertPopup extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const {network, user} = this.props;
+    const {network, user, gas} = this.props;
     const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.data.id].topup);
     contract.buyTokens({
-        value: window.web3.toWei(precisionRound(this.state.eth, 6)),
+        value: window.web3.toWei(precisionRound(this.state.eth, 6), "ether"),
         from: user.data.wallet,
         gas: window.web3.toHex(15e4),
-        gasPrice: window.web3.toHex(1e10)
+        gasPrice: window.web3.toHex(gas.data.average)
       },
       console.info
     );
