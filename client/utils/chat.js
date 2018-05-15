@@ -1,5 +1,6 @@
 import Promise from "bluebird";
 import SendBird from "sendbird";
+import {defaultLanguage} from "../../shared/constants/language";
 import {
   find,
   head,
@@ -76,7 +77,7 @@ export const sendMessage = async(msg, channel) =>
 
 export const channelNameForLocale = locale => {
   /* Channel locale is always -en, unless the environment is 'production' */
-  const channelLocale = process.env.NODE_ENV === "production" ? `-${locale}` : "-en";
+  const channelLocale = process.env.NODE_ENV === "production" ? locale : defaultLanguage;
   /* Channel names follow this scheme: BitGuild-${env}-${locale}, ex: BitGuild-production-en */
-  return `BitGuild-${process.env.NODE_ENV}${channelLocale}`;
+  return `BitGuild-${process.env.NODE_ENV}-${channelLocale}`;
 };
