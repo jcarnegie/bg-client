@@ -1,7 +1,9 @@
 import bluebird from "bluebird";
 import {call, put, select, takeEvery} from "redux-saga/effects";
 import {
-  GIFT_REMOVE,
+  GIFT_REMOVE_ERROR,
+  GIFT_REMOVE_LOADING,
+  GIFT_REMOVE_SUCCESS,
   INVENTORY_GAMES_CHANGED,
   INVENTORY_GAMES_ERROR,
   INVENTORY_GAMES_LOADING,
@@ -74,19 +76,27 @@ function * getGames(action) {
 function * checkGifts() {
   try {
     const gifts = yield select(state => state.gifts);
+    yield put({
+      type: GIFT_REMOVE_LOADING
+    });
     const result = yield Promise.all(gifts.data.map(gift =>
       // will return null while transaction is in process
       bluebird.promisify(window.web3.eth.getTransactionReceipt)(gift.tx)
     ));
     const hashes = result.filter(tx => tx).map(tx => tx.transactionHash);
-    if (hashes.length) {
-      yield put({
-        type: GIFT_REMOVE,
-        payload: hashes // doesn't matter if tx succeed or failed
-      });
-    }
+    yield put({
+      type: GIFT_REMOVE_SUCCESS,
+      payload: hashes // doesn't matter if tx succeed or failed
+    });
   } catch (error) {
     // console.error(error);
+    yield put({
+      type: GIFT_REMOVE_ERROR
+    });
+    yield put({
+      type: MESSAGE_ADD,
+      payload: error
+    });
   }
 }
 

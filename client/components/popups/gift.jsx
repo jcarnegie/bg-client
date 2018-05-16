@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import {wallet} from "../../../shared/constants/placeholder";
 import nftABI from "../../../shared/contracts/ERC721";
-import {GIFT_ADD, GIFT_ERROR, GIFT_LOADING, MESSAGE_ADD} from "../../../shared/constants/actions";
+import {GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD} from "../../../shared/constants/actions";
 
 
 @injectIntl
@@ -61,7 +61,7 @@ export default class GiftPopup extends Component {
     const {formData} = this.state;
 
     dispatch({
-      type: GIFT_LOADING
+      type: GIFT_ADD_LOADING
     });
     const contract = window.web3.eth.contract(nftABI).at(game.nft[network.data.id]);
     contract.safeTransferFrom(user.data.wallet, formData.get("wallet"), item.tokenId, {
@@ -71,7 +71,7 @@ export default class GiftPopup extends Component {
       (error, tx) => {
         if (error) {
           dispatch({
-            type: GIFT_ERROR
+            type: GIFT_ADD_ERROR
           });
           dispatch({
             type: MESSAGE_ADD,
@@ -79,7 +79,7 @@ export default class GiftPopup extends Component {
           });
         } else {
           dispatch({
-            type: GIFT_ADD,
+            type: GIFT_ADD_SUCCESS,
             payload: {
               item: item.tokenId,
               game: game._id,
