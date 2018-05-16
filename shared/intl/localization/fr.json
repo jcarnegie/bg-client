@@ -189,6 +189,11 @@
         "play": "JOUER"
       },
       "airdrop": {
+        "learn-more": "Learn more",
+        "days": "Journées",
+        "hours": "Heures",
+        "minutes": "Minutes",
+        "seconds": "Secondes",
         "countdown": "Airdrop dans",
         "giveaway": "Ether Online - Distribution d’Objets Gratuits"
       },

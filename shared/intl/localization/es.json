@@ -190,7 +190,12 @@
       },
       "airdrop": {
         "countdown": "Airdrop en",
-        "giveaway": "Ether Online - Regalo de Artículos Gratuitos"
+        "days": "Dias",
+        "hours": "Horas",
+        "minutes": "Minutos",
+        "seconds": "Segundos",
+        "giveaway": "Ether Online - Regalo de Artículos Gratuitos",
+        "learn-more": "Aprende más"
       },
       "announce": {
         "coming-soon": "Próximamente",

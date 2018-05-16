@@ -190,7 +190,12 @@
       },
       "airdrop": {
         "countdown": "Airdrop(エアドロップ）",
-        "giveaway": "Ether Onlineリリース記念イベント実施！"
+        "days": "日",
+        "hours": "時間",
+        "minutes": "分",
+        "seconds": "秒",
+        "giveaway": "Ether Onlineリリース記念イベント実施！",
+        "learn-more": "詳細はこちら"
       },
       "announce": {
         "coming-soon": "近日公開",
