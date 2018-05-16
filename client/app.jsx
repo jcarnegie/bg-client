@@ -12,13 +12,10 @@ import Airdrop from "./components/airdrop";
 import Message from "./components/common/message";
 import NotFound from "./components/common/notfound";
 import Header from "./components/common/header";
-
-import MetaMaskInstall from "./components/popups/metamask.install";
-import MetaMaskLogin from "./components/popups/metamask.login";
-import MetaMaskNetwork from "./components/popups/metamask.network";
 import Register from "./components/popups/register";
 
-import MyRoute from "./components/common/my-route";
+import LLRoute from "./components/common/routes/last-location";
+import MMRoute from "./components/common/routes/metamask";
 
 
 export default class App extends Component {
@@ -26,20 +23,18 @@ export default class App extends Component {
     return (
       <>
         <Header />
-        <MetaMaskInstall />
-        <MetaMaskLogin />
-        <MetaMaskNetwork />
+        <MMRoute />
         <Register />
         <Grid fluid>
           <Message />
           <Switch>
-            <MyRoute path="/" component={GameList} exact />
-            <MyRoute path="/game/:_id" component={Game} exact />
-            <MyRoute path="/sandbox" component={SandBox} exact />
-            <MyRoute path="/inventory" component={Inventory} />
-            <MyRoute path="/faq" component={Faq} />
-            <MyRoute path="/airdrop" component={Airdrop} />
-            <MyRoute component={NotFound} />
+            <LLRoute path="/" component={GameList} exact />
+            <LLRoute path="/game/:_id" component={Game} exact />
+            <LLRoute path="/sandbox" component={SandBox} exact />
+            <LLRoute path="/inventory" component={Inventory} />
+            <LLRoute path="/faq" component={Faq} />
+            <LLRoute path="/airdrop" component={Airdrop} />
+            <LLRoute component={NotFound} />
           </Switch>
         </Grid>
       </>

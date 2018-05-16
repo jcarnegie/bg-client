@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import {wallet} from "../../../shared/constants/placeholder";
 import nftABI from "../../../shared/contracts/ERC721";
+import {GIFT_ADD, GIFT_ERROR, GIFT_LOADING, MESSAGE_ADD} from "../../../shared/constants/actions";
 
 
 @injectIntl
@@ -25,6 +26,7 @@ export default class GiftPopup extends Component {
     network: PropTypes.object,
     gas: PropTypes.object,
     onHide: PropTypes.func,
+    dispatch: PropTypes.func,
     item: PropTypes.shape({
       name: PropTypes.string,
       image: PropTypes.string
@@ -57,15 +59,36 @@ export default class GiftPopup extends Component {
   }
 
   transfer() {
-    const {network, gas, user, item, game, onHide} = this.props;
+    const {network, gas, user, item, game, onHide, dispatch} = this.props;
     const {formData} = this.state;
 
+    dispatch({
+      type: GIFT_LOADING
+    });
     const contract = window.web3.eth.contract(nftABI).at(game.nft[network.data.id]);
     contract.safeTransferFrom(user.data.wallet, formData.get("wallet"), item.tokenId, {
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(gas.data.average)
       },
-      () => {
+      (error, tx) => {
+        if (error) {
+          dispatch({
+            type: GIFT_ERROR
+          });
+          dispatch({
+            type: MESSAGE_ADD,
+            payload: error
+          });
+        } else {
+          dispatch({
+            type: GIFT_ADD,
+            payload: {
+              item: item.tokenId,
+              game: game._id,
+              tx
+            }
+          });
+        }
         onHide();
       }
     );

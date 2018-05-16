@@ -1,5 +1,6 @@
 import Promise from "bluebird";
 import SendBird from "sendbird";
+import {defaultLanguage} from "../../shared/constants/language";
 import {
   find,
   head,
@@ -17,7 +18,7 @@ export let _user = null;
 
 /**
  * Simple utility function to promisify SendBird calls
- * @param {*} fn 
+ * @param {*} fn
  */
 export const sbp = fn => new Promise((resolve, reject) =>
   fn((res, err) => (err) ? reject(err) : resolve(res))
@@ -46,14 +47,21 @@ export const channels = async(sb = _sb) => {
   return sbp(cb => query.next(cb));
 };
 
-export const channelByName = async(name, channels, sb = _sb) => {
-  // Todo: fix
-  const channel = find(propEq("name", name), channels);
+export const findChannelByName = (name, channels, sb = _sb) => {
+  return find(propEq("name", name), channels);
+};
+
+export const getChannelByName = async(name, channel, sb = _sb) => {
   return sbp(cb => sb.OpenChannel.getChannel(channel.url, cb));
 };
 
+export const createChannelWithName = async(name, operators = null, sb = _sb) => {
+  return sbp(cb => sb.OpenChannel.createChannel(name, null, null, operators, null, cb));
+};
+
 export const setChannelByName = async(name, channels) => {
-  const channel = await channelByName(name, channels);
+  const channel = findChannelByName(name, channels);
+  if (!channel) return;
   await sbp(cb => channel.enter(cb));
   return channel;
 };
@@ -66,3 +74,10 @@ export const messages = async channel => {
 
 export const sendMessage = async(msg, channel) =>
   sbp(cb => channel.sendUserMessage(msg, null, null, cb));
+
+export const channelNameForLocale = locale => {
+  /* Channel locale is always -en, unless the environment is 'production' */
+  const channelLocale = process.env.NODE_ENV === "production" ? locale : defaultLanguage;
+  /* Channel names follow this scheme: BitGuild-${env}-${locale}, ex: BitGuild-production-en */
+  return `BitGuild-${process.env.NODE_ENV}-${channelLocale}`;
+};

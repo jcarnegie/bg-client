@@ -1,5 +1,5 @@
 import SendBird from "sendbird";
-import { find, propEq } from "ramda";
+import {find, propEq} from "ramda";
 
 const APP_ID = "BB1E0777-B8CE-44DF-BA37-63EBA2E858F1";
 

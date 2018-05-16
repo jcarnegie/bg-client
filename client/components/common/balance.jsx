@@ -28,13 +28,13 @@ export default class Balance extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (!nextProps.balanceETH.isLoading && nextProps.balanceETH.success && nextProps.balanceETH.data !== prevState.balanceETH.data) {
+    if (nextProps.balanceETH.data !== prevState.balanceETH.data) {
       return {
         balanceETH: nextProps.balanceETH
       };
     }
 
-    if (!nextProps.balancePLAT.isLoading && nextProps.balancePLAT.success && nextProps.balancePLAT.data !== prevState.balancePLAT.data) {
+    if (nextProps.balancePLAT.data !== prevState.balancePLAT.data) {
       return {
         balancePLAT: nextProps.balancePLAT
       };
@@ -58,13 +58,18 @@ export default class Balance extends Component {
 
   render() {
     const {balanceETH, balancePLAT, show} = this.state;
+
+    if (!balanceETH.data || !balancePLAT.data) {
+      return null;
+    }
+
     return (
       <Navbar.Text>
         <Convert show={show} onHide={::this.onHide} />
         <span className="balance">
-          {!balanceETH.isLoading && balanceETH.success ? balanceETH.data.toFixed(2) : "0"} ETH
+          {balanceETH.data.toFixed(2)} ETH
           {"\u00A0\u00A0\u00A0"}
-          {!balancePLAT.isLoading && balancePLAT.success ? balancePLAT.data.toFixed(0) : "0"} PLAT
+          {balancePLAT.data.toFixed(0)} PLAT
         </span>
         <a href="#" className="plus" onClick={::this.onClick} />
       </Navbar.Text>

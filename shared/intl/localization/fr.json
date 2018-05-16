@@ -188,6 +188,10 @@
       "banner": {
         "play": "JOUER"
       },
+      "airdrop": {
+        "countdown": "Airdrop dans",
+        "giveaway": "Ether Online - Distribution d’Objets Gratuits"
+      },
       "announce": {
         "coming-soon": "Bientôt disponible",
         "in-development": "En développement"
@@ -210,9 +214,18 @@
       "l2": "<strong>2. Inscrivez-vous</strong>  with  your  MetaMask  account  <strong>on  the  official  BitGuild  Portal.</strong>",
       "l3": "<strong>3. Obtenez  du  PLAT  !</strong>  Seuls  les  utilisateurs  possédant  un  minimum  de  5.000  PLAT  dans  leur  portefeuille  enregistré  à  la  fin  du  cadeau  seront  éligibles.  Chaque  PLAT  supplémentaire  de  5  000  vous  donne  une  entrée  supplémentaire  dans  le  cadeau  (si  vous  avez  15  000  PLAT,  vous  avez  3  fois  plus  de  chance  de  gagner  !)",
       "l4": "<strong>4. Patientez  !</strong>  Vérifiez  votre  inventaire  Ether  Online  dans  le  jeu  le  19  mai  2018.  Si  vous  avez  gagné  le  Grand  Prix,  vous  devriez  voir  un  total  de  51  coffres  qui  vous  attendent!  Si  ce  n'est  pas  le  cas,  vous  devriez  toujours  voir  1  coffre  gratuit  si  vous  avez  suivi  toutes  les  étapes  ci-dessus.",
-      "p6": "<strong>Nous  vous  souhaitons  bonne  chance  et  espérons  que  vous  gagnerez!  Vous  pouvez  discuter  de  cet  événement,  et  de  tout  BitGuild  sur  notre  serveur  officiel  Discord.</strong>",
+      "p6": "<strong>Nous  vous  souhaitons  bonne  chance  et  espérons  que  vous  gagnerez!  Vous  pouvez  discuter  de  cet  événement,  et  de  tout  BitGuild  sur  notre  serveur  officiel  <a href='https://discordapp.com/invite/pPC2frB'>Discord</a>.</strong>",
       "p7": "<strong>A  bientôt  sur  Ether  Online  !</strong>",
-      "play": "PLAY"
+      "play": "PLAY",
+      "p8": "* Veuillez noter: Si le nombre total d'utilisateurs éligibles est supérieur à 1000, les coffres seront distribués au hasard."
+    },
+    "airdrop2": {
+      "p1": "<strong>Giveaway est fini!</strong>",
+      "p2": "Merci à tous ceux qui ont participé à l'événement Ether Online BitGuild giveaway!",
+      "p3": "Félicitations spéciales aux gagnants du grand prix! Si vous ne l'avez pas encore fait, vérifiez votre inventaire dans le jeu maintenant. Si vous avez gagné, vous verrez 51 coffres brillants qui n'attendent que vous pour ouvrir, révélant votre incroyable butin!",
+      "p4": "Si vous n'avez pas gagné, désolé! Vous obtenez toujours un seul coffre pour vous inscrire. Mais ne vous inquiétez pas, vous aurez beaucoup de chances d'obtenir des trucs cool sur BitGuild.com à l'avenir! Restez à l'écoute de notre <a href='https://twitter.com/BitGuildPLAT'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/'>Facebook</a> et <a href='https://medium.com/the-notice-board'>Blog officiel</a> pour ne jamais manquer un battement.",
+      "p5": "En attendant, nous vous encourageons à essayer notre dernier titre jouable ______, ou tout simplement à regarder ce qui est disponible sur BitGuild!",
+      "p6": "À bientôt en ligne!"
     }
   },
   "chat": {

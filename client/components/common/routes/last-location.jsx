@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {Route} from "react-router";
 
 
-export default class MyRoute extends Component {
+export default class LastLocationRoute extends Component {
   static propTypes = {
     component: PropTypes.func,
     location: PropTypes.shape({
@@ -12,15 +12,10 @@ export default class MyRoute extends Component {
       hash: PropTypes.string,
       key: PropTypes.string,
       state: PropTypes.object
-    }),
-    computedMatch: PropTypes.shape({
-      params: PropTypes.object.isRequired
     })
   };
 
   state = {
-    match: this.props.computedMatch,
-    lastMatch: this.props.computedMatch,
     location: this.props.location,
     lastLocation: this.props.location
   };
@@ -31,8 +26,6 @@ export default class MyRoute extends Component {
     }
 
     return {
-      match: nextProps.computedMatch,
-      lastMatch: prevState.match,
       location: nextProps.location,
       lastLocation: prevState.location
     };
@@ -46,7 +39,6 @@ export default class MyRoute extends Component {
         render={props => {
           return React.createElement(component, {
             ...props,
-            lastMatch: this.state.lastMatch,
             lastLocation: this.state.lastLocation
           });
         }}
