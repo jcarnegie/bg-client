@@ -48,20 +48,16 @@ function * getRate() {
 
 function * getBalanceETH() {
   const user = yield select(state => state.user);
-  const balanceETH = yield select(state => state.balanceETH);
   if (!user.isLoading && user.success) {
     try {
       yield put({
         type: BALANCE_ETH_LOADING
       });
-      const balanceRaw = yield bluebird.promisify(window.web3.eth.getBalance)(user.data.wallet);
-      const balanceNew = window.web3.fromWei(balanceRaw, "ether").toNumber();
-      if (balanceNew !== balanceETH.data) {
-        yield put({
-          type: BALANCE_ETH_CHANGED,
-          payload: balanceNew
-        });
-      }
+      const balance = yield bluebird.promisify(window.web3.eth.getBalance)(user.data.wallet);
+      yield put({
+        type: BALANCE_ETH_CHANGED,
+        payload: window.web3.fromWei(balance, "ether").toNumber()
+      });
     } catch (error) {
       yield put({
         type: BALANCE_ETH_ERROR
@@ -76,7 +72,6 @@ function * getBalanceETH() {
 
 function * getBalancePLAT() {
   const user = yield select(state => state.user);
-  const balancePLAT = yield select(state => state.balancePLAT);
   if (!user.isLoading && user.success) {
     try {
       yield put({
@@ -84,14 +79,11 @@ function * getBalancePLAT() {
       });
       const network = yield select(state => state.network);
       const contract = window.web3.eth.contract(tokenABI).at(networkConfig[network.data.id].token);
-      const balanceRaw = yield bluebird.promisify(contract.balanceOf)(user.data.wallet);
-      const balanceNew = window.web3.fromWei(balanceRaw, "ether").toNumber();
-      if (balanceNew !== balancePLAT.data) {
-        yield put({
-          type: BALANCE_PLAT_CHANGED,
-          payload: balanceNew
-        });
-      }
+      const balance = yield bluebird.promisify(contract.balanceOf)(user.data.wallet);
+      yield put({
+        type: BALANCE_PLAT_CHANGED,
+        payload: window.web3.fromWei(balance, "ether").toNumber()
+      });
     } catch (error) {
       yield put({
         type: BALANCE_PLAT_ERROR
