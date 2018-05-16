@@ -55,10 +55,12 @@ export const GAME_LOADING = "GAME_LOADING";
 export const GAME_CHANGED = "GAME_CHANGED";
 export const GAME_ERROR = "GAME_ERROR";
 
-export const GIFT_LOADING = "GIFT_LOADING";
-export const GIFT_ADD = "GIFT_ADD";
-export const GIFT_REMOVE = "GIFT_REMOVE";
-export const GIFT_ERROR = "GIFT_ERROR";
+export const GIFT_ADD_LOADING = "GIFT_ADD_LOADING";
+export const GIFT_ADD_SUCCESS = "GIFT_ADD_SUCCESS";
+export const GIFT_ADD_ERROR = "GIFT_ADD_ERROR";
+export const GIFT_REMOVE_LOADING = "GIFT_REMOVE_LOADING";
+export const GIFT_REMOVE_SUCCESS = "GIFT_REMOVE_SUCCESS";
+export const GIFT_REMOVE_ERROR = "GIFT_REMOVE_ERROR";
 
 export const GAS_LOADING = "GAS_LOADING";
 export const GAS_CHANGED = "GAS_CHANGED";

@@ -1,27 +1,33 @@
-import {GIFT_ADD, GIFT_ERROR, GIFT_LOADING, GIFT_REMOVE} from "../../shared/constants/actions";
+import {GIFT_ADD_LOADING, GIFT_ADD_ERROR, GIFT_REMOVE_ERROR, GIFT_REMOVE_LOADING, GIFT_REMOVE_SUCCESS, GIFT_ADD_SUCCESS} from "../../shared/constants/actions";
 
 const gift = {
   isLoading: false,
-  success: false,
+  success: true,
   data: []
 };
 
 export default function giftReducer(state = gift, action) {
   switch (action.type) {
-    case GIFT_LOADING:
+    case GIFT_ADD_LOADING:
+    case GIFT_REMOVE_LOADING:
       return Object.assign({}, state, {
         isLoading: true,
         success: false
       });
-    case GIFT_ADD:
+    case GIFT_ADD_SUCCESS:
       return Object.assign({}, state, {
-        data: state.data.concat(action.payload)
+        data: state.data.concat(action.payload),
+        isLoading: false,
+        success: true
       });
-    case GIFT_REMOVE:
+    case GIFT_REMOVE_SUCCESS:
       return Object.assign({}, state, {
-        data: state.data.filter(gift => !action.payload.includes(gift.tx))
+        data: state.data.filter(gift => !action.payload.includes(gift.tx)),
+        isLoading: false,
+        success: true
       });
-    case GIFT_ERROR:
+    case GIFT_ADD_ERROR:
+    case GIFT_REMOVE_ERROR:
       return Object.assign({}, state, {
         isLoading: false,
         success: false

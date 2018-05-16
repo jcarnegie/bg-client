@@ -16,7 +16,6 @@ import {calcMaxItemsStats, isValidItemCategory} from "../../utils/item";
   state => ({
     items: state.items,
     games: state.games,
-    gifts: state.gifts,
     user: state.user
   })
 )
@@ -25,7 +24,6 @@ export default class Inventory extends Component {
     dispatch: PropTypes.func,
     items: PropTypes.object,
     games: PropTypes.object,
-    gifts: PropTypes.object,
     user: PropTypes.object,
     lastLocation: PropTypes.shape({
       pathname: PropTypes.string
@@ -70,15 +68,15 @@ export default class Inventory extends Component {
   }
 
   render() {
-    const {items, games, gifts} = this.props;
+    const {items, games} = this.props;
 
-    if (items.isLoading || games.isLoading || gifts.isLoading) {
+    if (items.isLoading || games.isLoading) {
       return (
         <Loader />
       );
     }
 
-    if (!items.success || !games.success || !gifts.success) {
+    if (!items.success || !games.success) {
       return null;
     }
 
