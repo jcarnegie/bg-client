@@ -31,6 +31,7 @@ export default class Airdrop extends Component {
 
           <p><FormattedHTMLMessage id="pages.airdrop.p6" /></p>
           <p><FormattedHTMLMessage id="pages.airdrop.p7" /></p>
+          <p><FormattedHTMLMessage id="pages.airdrop.p8" /></p>
 
           <Button href="/game/ether.online">
             <Image src="/images/buttons/play/white.png" />

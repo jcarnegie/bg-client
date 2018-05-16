@@ -94,3 +94,23 @@ localization.ja = {
 	messages: Object.assign({}, defaultMessages, flattenMessages(jaData))
 };
 
+
+import "intl/locale-data/jsonp/ru";
+import ru from "react-intl/locale-data/ru";
+import ruData from "./localization/ru";
+addLocaleData(ru);
+localization.ru = {
+  locale: "ru",
+	messages: Object.assign({}, defaultMessages, flattenMessages(ruData))
+};
+
+
+import "intl/locale-data/jsonp/es";
+import es from "react-intl/locale-data/es";
+import esData from "./localization/es";
+addLocaleData(es);
+localization.es = {
+  locale: "es",
+	messages: Object.assign({}, defaultMessages, flattenMessages(esData))
+};
+

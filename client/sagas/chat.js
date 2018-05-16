@@ -36,11 +36,15 @@ function * initChat(action) {
   const channels = yield chatChannels(sb);
   const locale = yield select(state => state.intl.locale);
   const channelName = channelNameForLocale(locale);
+  const channelOperators = [
+    "0xc40cD464ad0895571bB396071A4FaA81935353A5", // Jeff
+    "0xa9Af3D88E5167cA6E9413CBB9b946EC95FE469ee" // Shain
+  ];
 
   let channel;
 
   if (!findChannelByName(channelName, channels)) {
-    channel = yield createChannelWithName(channelName);
+    channel = yield createChannelWithName(channelName, channelOperators);
     channels.push(channel);
   }
 
