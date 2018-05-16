@@ -190,6 +190,15 @@
       "banner": {
         "play": "Играть"
       },
+      "airdrop": {
+        "countdown": "Начало через",
+        "days": "Дней",
+        "hours": "Часов",
+        "minutes": "Минут",
+        "seconds": "Секунд",
+        "giveaway": "Pаздача Cлонов в Ether Online",
+        "learn-more": "Узнать больше"
+      },
       "announce": {
         "coming-soon": "Совсем скоро",
         "in-development": "В разработке"

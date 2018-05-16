@@ -191,12 +191,12 @@
       },
       "airdrop": {
         "countdown": "Airdrop in",
-        "giveaway": "Ether Online Free Item Giveaway",
-        "learn-more": "Learn more",
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "seconds": "Seconds"
+        "seconds": "Seconds",
+        "giveaway": "Ether Online Free Item Giveaway",
+        "learn-more": "Learn more"
       },
       "announce": {
         "coming-soon": "Coming soon",

@@ -193,7 +193,12 @@
       },
       "airdrop": {
         "countdown": "Airdrop em",
-        "giveaway": "Ether Online - Distribuição de Itens Grátis"
+        "days": "Dias",
+        "hours": "Horas",
+        "minutes": "Minutos",
+        "seconds": "Segundos",
+        "giveaway": "Ether Online - Distribuição de Itens Grátis",
+        "learn-more": "Detalhes"
       },
       "explore": {
         "questions": "Perguntas?",

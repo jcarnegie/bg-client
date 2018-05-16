@@ -188,13 +188,18 @@
       "banner": {
         "play": "开始游戏"
       },
+      "airdrop": {
+        "countdown": "宝箱空投倒计时",
+        "giveaway": "Ether Online宝箱大赠送！",
+        "learn-more": "更多信息",
+        "days": "天",
+        "hours": "小时",
+        "minutes": "分钟",
+        "seconds": "秒"
+      },
       "announce": {
         "coming-soon": "敬请期待",
         "in-development": "开发中"
-      },
-      "airdrop": {
-        "countdown": "宝箱空投倒计时",
-        "giveaway": "Ether Online宝箱大赠送！"
       },
       "explore": {
         "questions": "有任何问题，请查看",
