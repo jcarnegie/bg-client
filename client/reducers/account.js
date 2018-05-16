@@ -12,13 +12,13 @@ export default function accountReducer(state = account, action) {
       return Object.assign({}, state, {
         wallet: action.payload.wallet,
         isLoading: false,
-        success: true
+        success: true,
       });
     case ACCOUNT_ERROR:
       return Object.assign({}, state, {
         wallet: null,
         isLoading: false,
-        success: false
+        success: false,
       });
     default:
       return state;

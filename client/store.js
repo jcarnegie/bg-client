@@ -17,11 +17,11 @@ const defaultState = {
     locale: defaultLanguage,
     defaultLocale: defaultLanguage,
     enabledLanguages,
-    ...(localization[defaultLanguage] || {})
-  }
+    ...(localization[defaultLanguage] || {}),
+  },
 };
 
-export default function(initialState = defaultState) {
+function configureStore(initialState = defaultState) {
   const sagaMiddleware = createSagaMiddleware();
 
   const middlewares = [thunkMiddleware, sagaMiddleware];
@@ -43,7 +43,13 @@ export default function(initialState = defaultState) {
   const reducers = compose(mergePersistedState())(rootReducers);
   const store = createStore(reducers, initialState, composeEnhancers(applyMiddleware(...middlewares), persistState(storage, "gitbuild")));
 
-  sagaMiddleware.run(rootSaga);
+  // sagaMiddleware.run(rootSaga);
+  store.runSagaTask = () => {
+    store.sagaTask = sagaMiddleware.run(rootSaga);
+  };
+
+  // run the rootSaga initially
+  store.runSagaTask();
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
@@ -54,3 +60,6 @@ export default function(initialState = defaultState) {
 
   return store;
 }
+
+
+export default configureStore;

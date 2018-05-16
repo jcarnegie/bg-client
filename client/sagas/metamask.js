@@ -104,6 +104,7 @@ function * getBalancePLAT() {
 }
 
 function * getNetwork() {
+  console.log(`saga: getNetwork`);
   try {
     yield put({
       type: NETWORK_LOADING

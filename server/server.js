@@ -1,3 +1,4 @@
+import Next from "next";
 import app from "./configs/express";
 
 import cors from "./routes/cors";
@@ -17,8 +18,9 @@ app.use(main);
 app.use(fe);
 app.use(sendError);
 
-const listener = app.listen(process.env.PORT || DEFAULT_PORT, () => {
-  console.info(`Express server listening on port ${listener.address().port}`);
+  listener = app.listen(process.env.PORT || DEFAULT_PORT, () => {
+    console.info(`Express app listening on port ${listener.address().port}`);
+  });
 });
 
 process.on("unhandledRejection", console.error);

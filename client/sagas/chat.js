@@ -64,13 +64,13 @@ function * initChat(action) {
 
   yield put({
     type: CHAT_SET_CHANNEL,
-    payload: channel
+    payload: channel,
   });
 
   const messages = yield chatMessages(channel);
   yield put({
     type: CHAT_LOAD_MESSAGES,
-    payload: messages
+    payload: messages,
   });
 }
 

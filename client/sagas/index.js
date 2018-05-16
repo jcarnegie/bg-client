@@ -15,6 +15,6 @@ export default function * rootSaga() {
     inventorySaga(),
     metaMaskSaga(),
     sendBirdSaga(),
-    userSaga()
+    userSaga(),
   ]);
 }

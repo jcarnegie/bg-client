@@ -6,7 +6,7 @@ const messages = [];
 export default function messagesReducer(state = messages, action) {
   switch (action.type) {
     case MESSAGE_ADD:
-      console.error(action.payload);
+      console.error(action);
       return [...state, action.payload];
     case MESSAGE_ADD_ALL:
       console.error(action.payload);

@@ -18,11 +18,13 @@ RUN echo $RENDERING
 RUN echo $NODE_ENV
 
 ADD package.json ./
+
+# RUN NODE_ENV=development npm install -g -s --no-progress yarn && yarn
 RUN NODE_ENV=development npm install
 
 ADD . .
 
-RUN chmod 777 build.sh
-RUN npm run build
+# RUN chmod 777 build.sh
+# RUN npm run build
 
-CMD NODE_ENV=${NODE_ENV} node build/server/server.js
+# CMD NODE_ENV=${NODE_ENV} node build/server/server.js

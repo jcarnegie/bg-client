@@ -7,6 +7,7 @@ import configureStore from "../../client/store";
 
 
 export function renderAppToString(request, response) {
+
   const preloadedState = {
     intl: {
       locale: defaultLanguage,
@@ -26,6 +27,7 @@ export function renderAppToString(request, response) {
   if (context.url) {
     response.redirect(302, context.url);
   } else {
+    console.log('renderHTML with initialMarkup');
     response.status(200).send(renderHTML(initialMarkup, store, HTML));
   }
 }
