@@ -135,7 +135,7 @@
       "games": {
         "title": "BitGuild游戏",
         "q1": "我可以在手机上玩吗？",
-        "a1": "只要游戏支持在手机上玩，那您就可以在手机上使用任何支持以太坊钱包的浏览器玩，例如您可以使用Trust Wallet ",
+        "a1": "只要游戏支持在手机上玩，那您就可以在手机上使用任何支持以太坊钱包的浏览器玩，例如您可以使用<a href='https://trustwalletapp.com/' target='_blank' rel='noopener noreferrer'>Trust Wallet</a> ",
         "q2": "我之前已经在第三方平台玩某款游戏，现在我可以在BitGuild上玩这款游戏吗？",
         "a2": "可以的，只要我们平台上有相同的游戏。您只需要使用相同的钱包地址注册BitGuild.com，那么您在该游戏里的物品和游戏进度都将保留下来。"
       },
@@ -146,15 +146,15 @@
         "q2": "我可以在其他地方交易吗？",
         "a2": "可以，您可以使用任何支持ERC721的市场进行交易。",
         "q3": "我要怎么提交关于平台或者游戏的问题?",
-        "a3": "您可以发邮件到support@bitguild.com ，也可以到Discord上留言。",
+        "a3": "您可以发邮件到<a href='mailto:support@bitguild.com'>support@bitguild.com</a> ，也可以到<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>上留言。",
         "q4": "我怎么查看我已拥有的物品？",
         "a4": "您可以点击顶部菜单栏'我的物品'，在里面您可以看到您的所有物品。",
         "q5": "我有物品丢失了，我要找谁？",
-        "a5": "您可以发邮件到support@bitguild.com ，或者到Discord留言，我们会尽全力帮您决问题",
+        "a5": "您可以发邮件到<a href='mailto:support@bitguild.com'>support@bitguild.com</a> ，或者到<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>留言，我们会尽全力帮您决问题",
         "q6": "我要举报骗子！",
-        "a6": "请联系support@bitguild.com ，并附上尽可能多的信息，例如截图或者聊天记录。",
+        "a6": "请联系<a href='mailto:support@bitguild.com'>support@bitguild.com</a> ，并附上尽可能多的信息，例如截图或者聊天记录。",
         "q7": "我想提交Bug",
-        "a7": "请联系support@bitguild.com ，并附上尽可能多的信息，例如截图。",
+        "a7": "请联系<a href='mailto:support@bitguild.com'>support@bitguild.com</a> ，并附上尽可能多的信息，例如截图。",
         "q8": "交易通常多久可以完成？",
         "a8": "无论是买卖还是赠送，一个交易少则30秒，多则几分钟可以完成，取决于您在MetaMask里设定的Gas价格",
         "q9": "我的交易不成功怎么办？",
@@ -167,16 +167,16 @@
         "q1": "我的BitGuild登陆信息是什么？",
         "a1": "请使用MetaMask来登陆BitGuild.com.",
         "q2": "我无法登陆时怎么办？",
-        "a2": "请检查您的MetaMask登陆信息，确保没有错误。如有问题一直无法解决，请联系support@bitguild.com ，或者直接在Discord联系我们。",
+        "a2": "请检查您的MetaMask登陆信息，确保没有错误。如有问题一直无法解决，请联系<a href='mailto:support@bitguild.com'>support@bitguild.com</a> ，或者直接在<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>联系我们。",
         "q3": "我忘了我的BitGuild用户名和密码，我要怎么取回？",
         "a3": " BitGuild不使用传统的登陆方式，所有信息都是绑定MetaMask的。假如您丢失了MetaMask的登陆信息，那很遗憾我们也无能为力:("
       },
       "community": {
         "title": "BitGuild社区",
         "q1": "我怎么与其他玩家互动？",
-        "a1": " BitGuild有聊天系统，在Discord上也有社区，您可以直接与其他玩家聊天，也可以在社区里与玩家、和第三方开发者、以及BitGuild团队互动，并获取最新的信息。",
+        "a1": " BitGuild有聊天系统，在<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>上也有社区，您可以直接与其他玩家聊天，也可以在社区里与玩家、和第三方开发者、以及BitGuild团队互动，并获取最新的信息。",
         "q2": "我可以在哪里查看BitGuild的最新信息？",
-        "a2": "您可以关注我们的Twitter、Facebook、Telegram、Reddit，当然您也可以在Discord里找到我们。"
+        "a2": "您可以关注我们的<a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>、<a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a>、<a href='https://t.me/joinchat/HtbMeE8YtEEDQExesDQgPg' target='_blank' rel='noopener noreferrer'>Telegram</a>、<a href='https://www.reddit.com/r/BitGuild/' target='_blank' rel='noopener noreferrer'>Reddit</a>，当然您也可以在<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>里找到我们。"
       },
       "developers": {
         "title": "游戏开发商",
@@ -214,8 +214,8 @@
       "l2": "<strong>2. 在BitGuild官方平台上使用你的MetaMask账号进行注册。</strong>",
       "l3": "<strong>3. 获取一些PLAT吧！只有在注册钱包中拥有5000  PLAT的用户才符合进入大派送环节的资格。每额外拥有5000  PLAT将会获得多一张进入大派送的门票（如果你拥有15000  PLAT，你将会拥有3倍的机会赢得大奖）！</strong>",
       "l4": "<strong>4. 别着急！</strong>  2018年5月20日看看你的Ether  Online游戏中的背包。如果你赢得了超级大奖，你会看到总共51个箱子！如果没有，只要你进行了以上的步骤，你仍然会拥有1个免费的宝箱。",
-      "p6": "<strong>希望你运气爆棚，赢得大奖！你可以在我们的官方<a href='https://discordapp.com/invite/pPC2frB'>Discord</a>讨论区参与此次活动和其他问题的讨论。</strong>",
-      "p7": "<strong>让我们在Ether  Online见面吧！/strong>",
+      "p6": "<strong>希望你运气爆棚，赢得大奖！你可以在我们的官方<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>讨论区参与此次活动和其他问题的讨论。</strong>",
+      "p7": "<strong>让我们在Ether  Online见面吧！</strong>",
       "play": "开始游戏",
       "p8": "注意事項：参加したユーサー数が1000名が超える場合、アイテムボックスはランダムで支給されます。"
     }
