@@ -1,17 +1,20 @@
-import React, {Component} from "react";
+import {Component} from "react";
 import ReactGA from "react-ga";
 import PropTypes from "prop-types";
 
 
 export default class GAListener extends Component {
 	static propTypes = {
-		children: PropTypes.array,
+		children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node
+    ]),
 		trackingId: PropTypes.string
-	}
+	};
 
 	static contextTypes = {
 		router: PropTypes.object
-	}
+	};
 
 	componentDidMount() {
 		ReactGA.initialize(this.props.trackingId);
@@ -25,6 +28,6 @@ export default class GAListener extends Component {
 	}
 
 	render() {
-		return this.props.children ? this.props.children : null;
+		return this.props.children || null;
 	}
 }

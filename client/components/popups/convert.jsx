@@ -3,11 +3,13 @@ import "./convert.less";
 import "./form.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
+import ReactGA from "react-ga";
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Glyphicon, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage} from "react-intl";
 import topupABI from "../../../shared/contracts/topup";
 import networkConfig from "../../utils/network";
+import {MESSAGE_ADD} from "../../../shared/constants/actions";
 
 function precisionRound(number, precision) {
   const factor = Math.pow(10, precision);
@@ -62,7 +64,7 @@ export default class ConvertPopup extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const {network, user} = this.props;
+    const {network, user, dispatch} = this.props;
     const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.data.id].topup);
     contract.buyTokens({
         value: window.web3.toWei(precisionRound(this.state.eth, 6)),
@@ -70,7 +72,20 @@ export default class ConvertPopup extends Component {
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(1e10)
       },
-      console.info
+      error => {
+        if (error) {
+          dispatch({
+            type: MESSAGE_ADD,
+            payload: error
+          });
+        } else {
+          ReactGA.event({
+            category: "Money",
+            action: "Conversion",
+            label: precisionRound(this.state.eth, 6)
+          });
+        }
+      }
     );
   }
 
