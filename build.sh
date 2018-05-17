@@ -7,6 +7,7 @@ node_modules/.bin/babel -d ./build/shared ./shared --copy-files
 node_modules/.bin/babel -d ./build/static ./static --copy-files
 node_modules/.bin/babel -d ./build/client ./client --copy-files
 
+export GOOGLE_ANALYTICS_TRACKING_ID=UA-114789298-2
 export RENDERING=server
 export NODE_ENV=production
 export MAINNET_TOKEN_CONTRACT_ADDR=0x7E43581b19ab509BCF9397a2eFd1ab10233f27dE
