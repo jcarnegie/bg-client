@@ -53,7 +53,6 @@ export default class MetaMaskRoute extends Component {
 
       window.web3.eth.filter("latest").watch((error, result) => {
         if (error) {
-          console.error(error);
           this.props.dispatch({
             type: MESSAGE_ADD,
             payload: error

@@ -89,6 +89,7 @@ export default {
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
       "process.env.RENDERING": JSON.stringify(process.env.RENDERING),
+      "process.env.GOOGLE_ANALYTICS_TRACKING_ID": JSON.stringify(process.env.GOOGLE_ANALYTICS_TRACKING_ID),
       "process.env.MAINNET_TOKEN_CONTRACT_ADDR": JSON.stringify(process.env.MAINNET_TOKEN_CONTRACT_ADDR),
       "process.env.MAINNET_TOPUP_CONTRACT_ADDR": JSON.stringify(process.env.MAINNET_TOPUP_CONTRACT_ADDR),
       "process.env.MAINNET_ORACLE_CONTRACT_ADDR": JSON.stringify(process.env.MAINNET_ORACLE_CONTRACT_ADDR),

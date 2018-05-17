@@ -142,15 +142,15 @@
         "q2": "私はポータルの外で取引できますか？",
         "a2": "はい,ERC721トークン用に既存のマーケットプレイスで自由に使用できます。",
         "q3": "ポータルやゲームで問題を報告する方法は？",
-        "a3": "support@bitguild.comまでメールを送っていただけるか,あるいはDiscordでBitGuildチームとコミュニティで連絡することもできます！",
+        "a3": "<a href='mailto:support@bitguild.com'>support@bitguild.com</a>までメールを送っていただけるか,あるいは<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>でBitGuildチームとコミュニティで連絡することもできます！",
         "q4": "これまで持っていたアイテムはどうやって見ることができますか？",
         "a4": "トップメニューバーにある'マイアイテム 'セクションでBitGuildポータルにあるすべてのゲームのアイテムを見ることができます。",
         "q5": "アイテムがありません。とごに問い合わせしますか？",
-        "a5": "support@bitguild.comにメールを送ってください。速やかに対応させていただきます",
+        "a5": "<a href='mailto:support@bitguild.com'>support@bitguild.com</a>にメールを送ってください。速やかに対応させていただきます",
         "q6": "チーターを報告したい",
-        "a6": "support@bitguild.comまでにスクリーンショットを含めた情報を送ってください。",
+        "a6": "<a href='mailto:support@bitguild.com'>support@bitguild.com</a>までにスクリーンショットを含めた情報を送ってください。",
         "q7": "アイテム不具合を報告したい。",
-        "a7": "support@bitguild.comまでにスクリーンショットを含めた情報を送ってください。",
+        "a7": "<a href='mailto:support@bitguild.com'>support@bitguild.com</a>までにスクリーンショットを含めた情報を送ってください。",
         "q8": "購入取引にはどのくらいの期間かかりますか？",
         "a8": "MetaMaskで選択したガス価格に応じて,購入または贈与の各取引に30秒から数分かかることがあります。",
         "q9": "取引が進まない場合はどうすればいいですか？",
@@ -163,7 +163,7 @@
         "q1": "私のBitGuildログイン情報は何ですか？",
         "a1": "ユーザーは,Metamask資格情報を使ってBitGuild.comにサインインします。",
         "q2": "ログインに問題があります。どうすればよいですか",
-        "a2": "Metamaskのログイン情報を再度確認してください。それでも問題が解決しない場合はsupport@bitguild.comまでご連絡いただくか,Discordに直接お問い合わせください。",
+        "a2": "Metamaskのログイン情報を再度確認してください。それでも問題が解決しない場合は<a href='mailto:support@bitguild.com'>support@bitguild.com</a>までご連絡いただくか,<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>に直接お問い合わせください。",
         "q3": "BitGuildのIDとパスワードを忘れました。",
         "a3": "ポータルにデジタルethereumウォレットを接続するブラウザプラグインです。",
         "q4": "本当にメタマスクを使用する必要がありますか？",
@@ -174,9 +174,9 @@
       "community": {
         "title": "BitGuildコミュニティ",
         "q1": "他のプレイヤーとのやりとりはどうすればいいですか？",
-        "a1": "BitGuildは統合されたチャットシステムを備えていますが,DiscordのコミュニティでBitGuildコミュニティに参加することもできます。他のプレイヤーとチャットしたり,BitGuildチームやサードパーティの開発者からの最新情報を手にすることができます。",
+        "a1": "BitGuildは統合されたチャットシステムを備えていますが,<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>のコミュニティでBitGuildコミュニティに参加することもできます。他のプレイヤーとチャットしたり,BitGuildチームやサードパーティの開発者からの最新情報を手にすることができます。",
         "q2": "BitGuildのソシャールメディアはありますか",
-        "a2": "Twitter,Facebook,お知らせ,Reddit,Discordで公式アカウントを運営しております！"
+        "a2": "<a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>,<a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a>,<a href='https://t.me/joinchat/HtbMeE8YtEEDQExesDQgPg' target='_blank' rel='noopener noreferrer'>Telegram</a>,<a href='https://www.reddit.com/r/BitGuild/' target='_blank' rel='noopener noreferrer'>Reddit</a>,<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>で公式アカウントを運営しております！"
       },
       "developers": {
         "title": "ゲーム開発会社",
@@ -190,7 +190,12 @@
       },
       "airdrop": {
         "countdown": "Airdrop(エアドロップ）",
-        "giveaway": "Ether Onlineリリース記念イベント実施！"
+        "days": "日",
+        "hours": "時間",
+        "minutes": "分",
+        "seconds": "秒",
+        "giveaway": "Ether Onlineリリース記念イベント実施！",
+        "learn-more": "詳細はこちら"
       },
       "announce": {
         "coming-soon": "近日公開",

@@ -135,7 +135,7 @@
       "games": {
         "title": "Juegos BitGuild",
         "q1": "¿Puedo jugar cualquiera de estos juegos en un dispositivo móvil?",
-        "a1": "Si el juego es compatible con el juego móvil, puede usar cualquiera de los monederos móviles con navegadores compatibles con Ethereum, como Trust Wallet para jugar en BitGuild Portal.",
+        "a1": "Si el juego es compatible con el juego móvil, puede usar cualquiera de los monederos móviles con navegadores compatibles con Ethereum, como <a href='https://trustwalletapp.com/' target='_blank' rel='noopener noreferrer'>Trust Wallet</a> para jugar en BitGuild Portal.",
         "q2": "He jugado un juego de terceros fuera de BitGuild.com, y ahora quiero jugarlo a través del portal de BitGuild. ¿Eso es posible?",
         "a2": "Sí. Si el juego está disponible en BitGuild.com, pero ya lo jugaste en otro lugar, todos tus elementos y progresos se conservarán siempre que te registres en BitGuild.com con la misma dirección de wallet que antes."
       },
@@ -146,15 +146,15 @@
         "q2": "¿Puedo comerciar fuera del portal?",
         "a2": "Sí, puede usar cualquier mercado existente para los tokens ERC721",
         "q3": "¿Cómo puedo informar un problema con el Portal o un juego?",
-        "a3": "Puede enviarnos un correo electrónico a support@bitguild.com, o puede comunicar con la comunidad de BitGuild en Discord!",
+        "a3": "Puede enviarnos un correo electrónico a <a href='mailto:support@bitguild.com'>support@bitguild.com</a>, o puede comunicar con la comunidad de BitGuild en <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>!",
         "q4": "¿Cómo puedo ver los elementos que tengo hasta ahora?",
         "a4": "Puedes ver los artículos para todos los juegos que tiene en BitGuild Portal en la sección 'Mis Cosas', que se encuentra en la barra de menú superior.",
         "q5": "Tengo un elemento que falta. ¿A quién puedo informarle esto?",
-        "a5": "Envíenos un correo electrónico a support@bitguild.com, o encuéntrenos en Discord, y haremos nuestro mejor esfuerzo para solucionar la situación",
+        "a5": "Envíenos un correo electrónico a <a href='mailto:support@bitguild.com'>support@bitguild.com</a>, o encuéntrenos en <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>, y haremos nuestro mejor esfuerzo para solucionar la situación",
         "q6": "Me gustaría informar un estafador",
-        "a6": "Póngase en contacto con support@bitguild.com e incluya toda la información de respaldo que pueda, incluidas capturas de pantalla.",
+        "a6": "Póngase en contacto con <a href='mailto:support@bitguild.com'>support@bitguild.com</a> e incluya toda la información de respaldo que pueda, incluidas capturas de pantalla.",
         "q7": "Me gustaría informar un error de elemento",
-        "a7": "Póngase en contacto con support@bitguild.com e incluya toda la información de respaldo que pueda, incluidas capturas de pantalla.",
+        "a7": "Póngase en contacto con <a href='mailto:support@bitguild.com'>support@bitguild.com</a> e incluya toda la información de respaldo que pueda, incluidas capturas de pantalla.",
         "q8": "¿Cuánto tiempo tarda una transacción de compra?",
         "a8": "Cada transacción, ya sea de compras o regalos, puede tomar desde 30 segundos hasta unos minutos, dependiendo del precio del gas que seleccionó en MetaMask",
         "q9": "¿Qué pasa si mi transacción no se está procesando?",
@@ -167,16 +167,16 @@
         "q1": "¿Cuál es mi información de inicio de sesión de BitGuild?",
         "a1": "Los usuarios inician sesión en BitGuild.com usando sus credenciales de MetaMask",
         "q2": "Tengo problemas para iniciar sesión. ¿Qué puedo hacer?",
-        "a2": "Verifique la información de inicio de sesión de MetaMask y asegúrese de que no haya problemas conflictivos. Si aún tiene problemas, póngase en contacto con nosotros en support@bitguild.com o encuéntrenos directamente en Discord.",
+        "a2": "Verifique la información de inicio de sesión de MetaMask y asegúrese de que no haya problemas conflictivos. Si aún tiene problemas, póngase en contacto con nosotros en <a href='mailto:support@bitguild.com'>support@bitguild.com</a> o encuéntrenos directamente en <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>.",
         "q3": "Olvidé mi nombre y contraseña de BitGuild. ¿Cómo puedo recuperarlo?",
         "a3": "BitGuild no utiliza la información de inicio de sesión tradicional, todo está vinculado a MetaMask. Si ha perdido sus credenciales de MetaMask, desafortunadamente no podemos ayudarle"
       },
       "community": {
         "title": "Comunidad BitGuild",
         "q1": "¿Cómo puedo relacionarme con otros jugadores?",
-        "a1": "Si bien BitGuild presenta un sistema de chat integrado, también puedes encontrar la comunidad BitGuild en Discord. Allí puedes chatear con otros jugadores y mantenerte al día con las novedades del equipo de BitGuild y desarrolladores de terceros",
+        "a1": "Si bien BitGuild presenta un sistema de chat integrado, también puedes encontrar la comunidad BitGuild en <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>. Allí puedes chatear con otros jugadores y mantenerte al día con las novedades del equipo de BitGuild y desarrolladores de terceros",
         "q2": "¿Dónde puedo encontrar BitGuild en las redes sociales?",
-        "a2": "Puedes encontrarnos en Twitter, Facebook, Telegram, Reddit y, por supuesto, ¡Discordia!"
+        "a2": "Puedes encontrarnos en <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a>, <a href='https://t.me/joinchat/HtbMeE8YtEEDQExesDQgPg' target='_blank' rel='noopener noreferrer'>Telegram</a>, <a href='https://www.reddit.com/r/BitGuild/' target='_blank' rel='noopener noreferrer'>Reddit</a> y, por supuesto, ¡<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>!"
       },
       "developers":{
         "title": "Desarrolladores de juegos",
@@ -190,7 +190,12 @@
       },
       "airdrop": {
         "countdown": "Airdrop en",
-        "giveaway": "Ether Online - Regalo de Artículos Gratuitos"
+        "days": "Dias",
+        "hours": "Horas",
+        "minutes": "Minutos",
+        "seconds": "Segundos",
+        "giveaway": "Ether Online - Regalo de Artículos Gratuitos",
+        "learn-more": "Aprende más"
       },
       "announce": {
         "coming-soon": "Próximamente",
@@ -214,7 +219,7 @@
       "l2": "<strong>2. Regístrese</strong> con su cuenta de MetaMask en el Portal oficial de BitGuild</strong>",
       "l3": "<strong>3. Compre PLAT! Solo los usuarios que posean un mínimo de 5,000 PLAT</strong> en su billetera registrada al final del sorteo serán elegibles. Cada 5000 PLAT adicionales que tengas te dan una entrada adicional en el sorteo (si tienes 15,000 PLAT, tienes 3x más probabilidades de ganar)",
       "l4": "<strong>4. ¡Espera!</strong> Revisa tu inventario en línea de Ether Online el 20 de mayo de 2018. ¡Si has ganado el Gran Premio, deberías ver un total de 51 cofres esperándote! De lo contrario, aún deberías ver 1 cofre de artículos gratis si sigues todos los pasos anteriores.",
-      "p6": "<strong>¡Le deseamos la mejor de las suertes y esperamos que gane! Puede discutir este evento y todo lo relacionado con BitGuild en nuestro servidor oficial de <a href='https://discordapp.com/invite/pPC2frB'>Discord</a>.</strong>",
+      "p6": "<strong>¡Le deseamos la mejor de las suertes y esperamos que gane! Puede discutir este evento y todo lo relacionado con BitGuild en nuestro servidor oficial de <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>.</strong>",
       "p7": "<strong>We’ll see you all on Ether.Online!</strong>",
       "play": "PLAY",
       "p8": "* Nota: si el número total de usuarios elegibles es mayor a 1000, los cofres de los elementos se distribuirán al azar."
@@ -223,7 +228,7 @@
       "p1": "<strong> ¡El sorteo terminó!</strong>",
       "p2": "¡Gracias a todos los que participaron en el evento de regalo Ether Online BitGuild!",
       "p3": "¡Una felicitación especial para los ganadores del gran premio! Si aún no lo has hecho, revisa tu inventario en el juego ahora. ¡Si ganaste, verás 51 cofres de objetos brillantes esperando a que abras, revelando tu increíble loot!",
-      "p4": "Si no ganaste, ¡lo sentimos! Todavía obtienes un cofre de artículo único si se registras . Pero no se preocupe, ¡tendrá muchas oportunidades de obtener material gratis en BitGuild.com en el futuro! Manténgase en sintonía con nuestro <a href='https://twitter.com/BitGuildPLAT'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/'>Facebook</a> y el <a href='https://medium.com/the-notice-board'>Blog oficial</a> para no perderse nunca el ritmo.",
+      "p4": "Si no ganaste, ¡lo sentimos! Todavía obtienes un cofre de artículo único si se registras . Pero no se preocupe, ¡tendrá muchas oportunidades de obtener material gratis en BitGuild.com en el futuro! Manténgase en sintonía con nuestro <a href='https://twitter.com/BitGuildPLAT'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/'>Facebook</a> y el <a href='https://medium.com/the-notice-board'>Blog oficial</a> para no perderse nunca el ritmo.",
       "p5": "Mientras tanto, te animamos a probar nuestro último título jugable ______, ¡o simplemente mira a lo que está disponible en BitGuild para ti!",
       "p6": "¡Nos vemos en línea!"
     }
