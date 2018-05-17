@@ -3,7 +3,6 @@ import "./convert.less";
 import "./form.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import ReactGA from "react-ga";
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Glyphicon, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage} from "react-intl";
@@ -77,12 +76,6 @@ export default class ConvertPopup extends Component {
           dispatch({
             type: MESSAGE_ADD,
             payload: error
-          });
-        } else {
-          ReactGA.event({
-            category: "Money",
-            action: "Conversion",
-            label: precisionRound(this.state.eth, 6)
           });
         }
       }
