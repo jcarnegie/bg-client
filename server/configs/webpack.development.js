@@ -20,10 +20,7 @@ export default {
     extensions: [".json", ".jsx", ".js"],
     modules: [
       "node_modules"
-    ],
-    alias: {
-      "@": path.resolve(__dirname, "../../client")
-    }
+    ]
   },
   module: {
     rules: [{
