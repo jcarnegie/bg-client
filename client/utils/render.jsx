@@ -4,6 +4,7 @@ import {AppContainer} from "react-hot-loader";
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-intl-redux";
 
+
 export default (App, store) => {
   (process.env.RENDERING === "server" ? hydrate : render)(
     <AppContainer>
