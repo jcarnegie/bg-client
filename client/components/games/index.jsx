@@ -7,11 +7,11 @@ import Chat from "../chat/chat";
 
 
 const GAMES = {
-  'etheronline': {
+  "etheronline": {
     url: "/game/ether.online",
     name: "etheronline",
   },
-  'magicacademy': {
+  "magicacademy": {
     url: "/game/magicacademy",
     name: "magicacademy",
   },
@@ -87,7 +87,7 @@ export default class GameList extends Component {
   }
 
   switchBanner() {
-    if (this.state.showingGame.name === 'etheronline') {
+    if (this.state.showingGame.name === "etheronline") {
       this.setState({showingGame: GAMES.magicacademy })
     } else {
       this.setState({showingGame: GAMES.etheronline })
@@ -108,6 +108,15 @@ export default class GameList extends Component {
           <FormattedMessage id="pages.games.banner.play" />
         </Button>
       </div>
+    )
+  }
+
+  comingSoon(url = "", messageId = "pages.games.announce.coming-soon") {
+    return (
+      <Col className="upcoming-thumbnail" md={6}>
+        <h3><FormattedMessage id={messageId} /></h3>
+        <Image src={url} />
+      </Col>
     )
   }
 
@@ -137,14 +146,10 @@ export default class GameList extends Component {
           <Row>
             <Col className="announce">
               <Row>
-                <Col md={6}>
-                  <h3><FormattedMessage id="pages.games.announce.coming-soon" /></h3>
-                  <Image src="/images/coming-soon.png" />
-                </Col>
-                <Col md={6}>
-                  <h3><FormattedMessage id="pages.games.announce.in-development" /></h3>
-                  <Image src="/images/in-development.png" />
-                </Col>
+                {this.comingSoon("/images/axie_banner.png")}
+                {this.comingSoon("/images/eth_town.png")}
+                {this.comingSoon("/images/mythereum_banner.png")}
+                {this.comingSoon("/images/in-development.png", "pages.games.announce.in-development")}
               </Row>
             </Col>
           </Row>
