@@ -16,6 +16,7 @@ import {
   NEW_BLOCK,
   USER_CHANGED
 } from "../../shared/constants/actions";
+import {readFromQueryString} from "../utils/location";
 import callAPI from "../utils/api";
 
 
@@ -24,7 +25,11 @@ function * getItems(action) {
     yield put({
       type: INVENTORY_ITEMS_LOADING
     });
-    const items = yield call(callAPI, `/items/${action.payload.wallet}`, {
+    const testItems = (readFromQueryString("testItems") === "true")
+      ? "?testItems=true"
+      : "";
+    const itemsUrl = `/items/${action.payload.wallet}${testItems}`;
+    const items = yield call(callAPI, itemsUrl, {
       method: "GET",
       headers: {
         Accept: "application/json",
