@@ -223,6 +223,14 @@
       "p7": "<strong>让我们在Ether  Online见面吧！</strong>",
       "play": "开始游戏",
       "p8": "注意事項：参加したユーサー数が1000名が超える場合、アイテムボックスはランダムで支給されます。"
+    },
+    "airdrop2": {
+      "p1": "<strong>大派送完结啦！</strong>",
+      "p2": "我们想要特别的感谢所有参与Ether Online在BitGuild上的大派送活动的用户！",
+      "p3": "首先，恭喜所有获得超级大奖的赢家们！赶紧看看你们游戏中的背包吧。如果你幸运赢得大奖，你会看到最多51个亮锃锃的宝箱等你开启，里面会有属于你的奖品哦！",
+      "p4": "如果你没有赢得超级大奖，你仍然有机会得到一个宝箱。别灰心，未来你仍有机会在BitGuild.com上获得各种免费物品。关注我们的<a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>，<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>，<a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a>，<a href='https://medium.com/the-notice-board' target='_blank' rel='noopener noreferrer'>和我们的官方博客</a>，千万别错过！",
+      "p5": "还有，请查看我们最新的游戏, Magic Academy，或者直接前去BitGuild看看吧！",
+      "p6": "别走开，下次见！"
     }
   },
   "chat": {

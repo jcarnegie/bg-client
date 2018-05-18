@@ -78,7 +78,7 @@ export default class MetaMaskRoute extends Component {
   render() {
     const {network, account, location} = this.props;
 
-    if (location.pathname === "/faq") {
+    if (location.pathname === "/faq" || location.pathname === "/airdrop") {
       return null;
     }
 

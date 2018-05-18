@@ -189,13 +189,13 @@
         "play": "JOUER"
       },
       "airdrop": {
-        "learn-more": "Learn more",
+        "countdown": "Airdrop dans",
         "days": "Journées",
         "hours": "Heures",
         "minutes": "Minutes",
         "seconds": "Secondes",
-        "countdown": "Airdrop dans",
-        "giveaway": "Ether Online - Distribution d’Objets Gratuits"
+        "giveaway": "Ether Online - Distribution d’Objets Gratuits",
+        "learn-more": "Learn more"
       },
       "announce": {
         "coming-soon": "Bientôt disponible",
@@ -228,7 +228,7 @@
       "p1": "<strong>Giveaway est fini!</strong>",
       "p2": "Merci à tous ceux qui ont participé à l'événement Ether Online BitGuild giveaway!",
       "p3": "Félicitations spéciales aux gagnants du grand prix! Si vous ne l'avez pas encore fait, vérifiez votre inventaire dans le jeu maintenant. Si vous avez gagné, vous verrez 51 coffres brillants qui n'attendent que vous pour ouvrir, révélant votre incroyable butin!",
-      "p4": "Si vous n'avez pas gagné, désolé! Vous obtenez toujours un seul coffre pour vous inscrire. Mais ne vous inquiétez pas, vous aurez beaucoup de chances d'obtenir des trucs cool sur BitGuild.com à l'avenir! Restez à l'écoute de notre <a href='https://twitter.com/BitGuildPLAT'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/'>Facebook</a> et <a href='https://medium.com/the-notice-board'>Blog officiel</a> pour ne jamais manquer un battement.",
+      "p4": "Si vous n'avez pas gagné, désolé! Vous obtenez toujours un seul coffre pour vous inscrire. Mais ne vous inquiétez pas, vous aurez beaucoup de chances d'obtenir des trucs cool sur BitGuild.com à l'avenir! Restez à l'écoute de notre <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a> et <a href='https://medium.com/the-notice-board' target='_blank' rel='noopener noreferrer'>Blog officiel</a> pour ne jamais manquer un battement.",
       "p5": "En attendant, nous vous encourageons à essayer notre dernier titre jouable ______, ou tout simplement à regarder ce qui est disponible sur BitGuild!",
       "p6": "À bientôt en ligne!"
     }
