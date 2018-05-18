@@ -76,7 +76,7 @@ export default class MetaMaskRoute extends Component {
 
     return (
       <Route render={({location}) => {
-        if (location.pathname === "/" || location.pathname === "/faq") {
+        if (location.pathname === "/faq") {
           return null;
         } else {
           return (
