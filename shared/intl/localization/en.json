@@ -91,7 +91,12 @@
       "title": "Welcome to BitGuild",
       "n1": "Make sure you save your MetaMask login information and account recovery details!",
       "n2": "We can’t help you recover it if you lose access.",
-      "text": "BitGuild requires all users to sign with their private key in order to safeguard against spoofing attempts.\n\nOur mission is to revolutionize the global gaming industry by creating a platform for a brand new class of games that live on the blockchain. Blockchain games completely redefine the relationship between players and developers by facilitating full and true ownership of in-game assets, cheap & safe item trading, cross-game compatibility of items & currency, and more. BitGuild’s team consists of cryptocurrency and gaming veterans with decades of experience building international large-scale gaming platforms and communities. BitGuild aims to host the best blockchain games and the largest blockchain gamer community online."
+      "text": "BitGuild requires all users to sign with their private key in order to safeguard against spoofing attempts.\n\nOur mission is to revolutionize the global gaming industry by creating a platform for a brand new class of games that live on the blockchain. Blockchain games completely redefine the relationship between players and developers by facilitating full and true ownership of in-game assets, cheap & safe item trading, cross-game compatibility of items & currency, and more. BitGuild’s team consists of cryptocurrency and gaming veterans with decades of experience building international large-scale gaming platforms and communities. BitGuild aims to host the best blockchain games and the largest blockchain gamer community online.",
+      "dup-labels": {
+        "display-name": "Display Name",
+        "email": "Email"
+      },
+      "dup-message": "already taken"
     },
     "sell": {
       "title": "Stay tuned!",

@@ -5,18 +5,19 @@ import PropTypes from "prop-types";
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
+import {findLast, propEq} from "ramda"
 import {email, nickName, wallet} from "../../../shared/constants/placeholder";
 import {reEmail} from "../../../shared/constants/regexp";
 import {CREATE_USER, MESSAGE_ADD} from "../../../shared/constants/actions";
 import {enabledLanguages} from "../../../shared/constants/language";
-
 
 @injectIntl
 @connect(
   state => ({
     user: state.user,
     account: state.account,
-    network: state.network
+    network: state.network,
+    messages: state.messages
   })
 )
 export default class RegisterPopup extends Component {
@@ -25,7 +26,8 @@ export default class RegisterPopup extends Component {
     account: PropTypes.object,
     network: PropTypes.object,
     dispatch: PropTypes.func,
-    intl: intlShape
+    intl: intlShape,
+    messages: PropTypes.array
   };
 
   state = {
@@ -141,6 +143,28 @@ export default class RegisterPopup extends Component {
     });
   }
 
+  renderErrors() {
+    const {intl, messages} = this.props;
+    const dup = findLast(propEq("reason", "duplicate"), messages);
+    if (!dup) return <></>;
+    let label = null;
+    switch (dup.name) {
+      case "nickName":
+        label = intl.formatMessage({id: "modals.register.dup-labels.display-name"});
+        break;
+      case "email":
+        label = intl.formatMessage({id: "modals.register.dup-labels.email"});
+        break;
+      default:
+        label = intl.formatMessage({id: "modals.register.dup-labels.display-name"});
+    }
+    return <>
+      {
+        dup && <h5 className="dup-error">{label} {intl.formatMessage({id: "modals.register.dup-message"})}</h5>
+      }
+    </>;
+  }
+
   render() {
     const {user, intl, network} = this.props;
 
@@ -151,7 +175,7 @@ export default class RegisterPopup extends Component {
             <h2>
               <FormattedMessage id="modals.register.title" />
             </h2>
-            <br />
+            {this.renderErrors()}
             <FormGroup controlId="wallet">
               <Col componentClass={ControlLabel}>
                 <FormattedMessage id="fields.language.label" />
