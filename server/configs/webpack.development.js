@@ -16,6 +16,10 @@ export default {
     chunkFilename: "[name].js",
     publicPath: "/bundle/"
   },
+  externals: {
+    react: "React",
+    "react-dom": "ReactDOM"
+  },
   resolve: {
     extensions: [".json", ".jsx", ".js"],
     modules: [
