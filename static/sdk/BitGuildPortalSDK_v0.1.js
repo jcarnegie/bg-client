@@ -24,6 +24,8 @@
 
   function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+  var prefix = "https://bitguild.com/api/";
+
   var _default = new (
     /*#__PURE__*/
     function () {
@@ -130,6 +132,36 @@
             return _this2._user;
           }).then(function () {
             return _this2.user;
+          });
+        }
+      }, {
+        key: "getUsersByAddress",
+        value: function getUsersByAddress() {
+          var address = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+          return fetch("".concat(prefix, "users?").concat(address.map(function (address) {
+            return "address=".concat(address);
+          }).join("&")), {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json; charset=utf-8"
+            }
+          }).then(function (response) {
+            return response.json().then(function (json) {
+              return {
+                json: json,
+                response: response
+              };
+            });
+          }).then(function (_ref4) {
+            var json = _ref4.json,
+              response = _ref4.response;
+
+            if (!response.ok) {
+              return Promise.reject(json.errors);
+            }
+
+            return json;
           });
         }
       }]);
