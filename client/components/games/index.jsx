@@ -28,7 +28,7 @@ export default class GameList extends Component {
   };
 
   componentDidMount() {
-    const countDownDate = new Date("2018-05-19T22:15:00.000Z").getTime();
+    const countDownDate = new Date("2018-05-21T22:15:00.000Z").getTime();
 
     this.setState({
       bannerInterval: setInterval(() => {
