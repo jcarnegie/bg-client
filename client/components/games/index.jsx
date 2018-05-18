@@ -24,7 +24,7 @@ export default class GameList extends Component {
     interval: null,
     bannerInterval: null,
     countdown: null,
-    showingGame: GAMES.etheronline,
+    showingGame: GAMES.magicacademy,
   };
 
   componentDidMount() {
