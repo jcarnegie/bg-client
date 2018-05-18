@@ -1,14 +1,15 @@
 import React, {Component} from "react";
-import {Route} from "react-router";
+import {withRouter} from "react-router";
 
-import MetaMaskInstall from "../../popups/metamask.install";
-import MetaMaskLogin from "../../popups/metamask.login";
-import MetaMaskNetwork from "../../popups/metamask.network";
+import MetaMaskInstall from "../popups/metamask.install";
+import MetaMaskLogin from "../popups/metamask.login";
+import MetaMaskNetwork from "../popups/metamask.network";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../../../shared/constants/actions";
+import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../../shared/constants/actions";
 
 
+@withRouter
 @connect(
   state => ({
     account: state.account,
@@ -19,7 +20,10 @@ export default class MetaMaskRoute extends Component {
   static propTypes = {
     account: PropTypes.object,
     network: PropTypes.object,
-    dispatch: PropTypes.func
+    dispatch: PropTypes.func,
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired
+    })
   };
 
   state = {
@@ -72,22 +76,18 @@ export default class MetaMaskRoute extends Component {
   }
 
   render() {
-    const {network, account} = this.props;
+    const {network, account, location} = this.props;
+
+    if (location.pathname === "/faq") {
+      return null;
+    }
 
     return (
-      <Route render={({location}) => {
-        if (location.pathname === "/faq") {
-          return null;
-        } else {
-          return (
-            <>
-              <MetaMaskInstall show={!MetaMaskRoute.isInstalled()} />
-              <MetaMaskLogin show={!account.isLoading && !account.success} />
-              <MetaMaskNetwork show={!network.isLoading && network.success && !["1", "4"].includes(network.data.id)} />
-            </>
-          );
-        }
-      }} />
+      <>
+        <MetaMaskInstall show={!MetaMaskRoute.isInstalled()} />
+        <MetaMaskLogin show={!account.isLoading && !account.success} />
+        <MetaMaskNetwork show={!network.isLoading && network.success && !["1", "4"].includes(network.data.id)} />
+      </>
     );
   }
 }
