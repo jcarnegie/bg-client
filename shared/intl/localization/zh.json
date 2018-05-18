@@ -212,7 +212,7 @@
       "description": "最多赢得50个装备宝箱！",
       "p1": "<strong>马上注册来Ether  Online赢取免费的宝箱!</strong>",
       "p2": "只需按照下面的简单步骤即可进入庆祝Ether  Online在BitGuild平台发行的大派送活动！每位成功注册且钱包中至少拥有5,000  PLAT的用户将会获得一个游戏中的宝箱，同时更加有机会赢得特别大奖!</strong>",
-      "p3": "<strong>此次活动从2018年5月12日到2018年5月19日期间生效，赢家将在活动结束次日进行公布。奖品发放时间大约需要72小时。</strong>",
+      "p3": "<strong>此次活动从2018年5月12日到2018年5月21日期间生效，赢家将在活动结束次日进行公布。奖品发放时间大约需要72小时。</strong>",
       "p4": "现在加入，即有机会赢得Ether  Online中含有各种稀有的可装备物品的宝箱。为了庆祝BitGuild.com的上线和Ether  Online在我们平台的登陆，我们将会提供大量的宝箱大放送。",
       "p5": "<strong>所有符合资格的注册用户将会收到一个宝箱，甚至赢得额外50个宝箱的机会！请仔细阅读以下的引导:",
       "l1": "<strong>1. 注册一个MetaMask，</strong>  它是使用BitGuild.com的必需。",
@@ -227,7 +227,7 @@
     "airdrop2": {
       "p1": "<strong>大派送完结啦！</strong>",
       "p2": "我们想要特别的感谢所有参与Ether Online在BitGuild上的大派送活动的用户！",
-      "p3": "首先，恭喜所有获得超级大奖的赢家们！赶紧看看你们游戏中的背包吧。如果你幸运赢得大奖，你会看到最多51个亮锃锃的宝箱等你开启，里面会有属于你的奖品哦！",
+      "p3": "首先，恭喜所有获得超级大奖的赢家们！如果你幸运赢得大奖，你会看到最多51个亮锃锃的宝箱等你开启，里面会有属于你的奖品哦！",
       "p4": "如果你没有赢得超级大奖，你仍然有机会得到一个宝箱。别灰心，未来你仍有机会在BitGuild.com上获得各种免费物品。关注我们的<a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>，<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>，<a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a>，<a href='https://medium.com/the-notice-board' target='_blank' rel='noopener noreferrer'>和我们的官方博客</a>，千万别错过！",
       "p5": "还有，请查看我们最新的游戏, Magic Academy，或者直接前去BitGuild看看吧！",
       "p6": "别走开，下次见！"
@@ -238,4 +238,3 @@
     "send": "发送"
   }
 }
-

@@ -178,7 +178,7 @@
         "q2": "¿Dónde puedo encontrar BitGuild en las redes sociales?",
         "a2": "Puedes encontrarnos en <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a>, <a href='https://t.me/joinchat/HtbMeE8YtEEDQExesDQgPg' target='_blank' rel='noopener noreferrer'>Telegram</a>, <a href='https://www.reddit.com/r/BitGuild/' target='_blank' rel='noopener noreferrer'>Reddit</a> y, por supuesto, ¡<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>!"
       },
-      "developers":{
+      "developers": {
         "title": "Desarrolladores de juegos",
         "q1": "Estoy interesado en desarrollar un juego para BitGuild. ¿A quién puedo contactar?",
         "a1": "Comuníquese con nosotros por correo electrónico a: partnerships@bitguild.com"
@@ -212,7 +212,7 @@
       "description": "REGALO DE ARTÍCULOS GRATUITOS: ¡gana hasta 50 cofres de equipos!",
       "p1": "<strong>Regístrese ahora para sumar algunos cofres de botín dulce en Ether Online!</strong>",
       "p2": "Simplemente siga los pasos a continuación para participar en este evento de regalo que celebra el lanzamiento de Ether Online en el Portal de BitGuild. ¡Cada usuario registrado con éxito con al menos 5,000 PLAT en su wallet recibirá un cofre de artículos en el juego, así como la oportunidad de ganar el Gran Premio especial!",
-      "p3": "<strong>El evento comienza el 12 de mayo de 2018 y concluye el 19 de mayo de 2018. Los ganadores se anunciarán al día siguiente. Espere hasta 72 horas para la entrega del premio.</strong>",
+      "p3": "<strong>El evento comienza el 12 de mayo de 2018 y concluye el 21 de mayo de 2018. Los ganadores se anunciarán al día siguiente. Espere hasta 72 horas para la entrega del premio.</strong>",
       "p4": "Ingrese ahora para tener la oportunidad de ganar cofres de artículos que contengan elementos equiparables de diversas rarezas para usar en Ether Online. Tenemos muchos de estos para regalar en celebración del lanzamiento de BitGuild.com, así como el debut de Ether Online en nuestro Portal.",
       "p5": "<strong>¡Todos los usuarios registrados elegibles recibirán un cofre, así como la oportunidad de ganar 50 adicionales!</strong> Para participar, siga estas instrucciones atentamente:",
       "l1": "<strong>1. Regístrese en MetaMask.</strong> Lo necesitarás para todo en BitGuild.com.",
@@ -228,7 +228,7 @@
       "p1": "<strong> ¡El sorteo terminó!</strong>",
       "p2": "¡Gracias a todos los que participaron en el evento de regalo Ether Online BitGuild!",
       "p3": "¡Una felicitación especial para los ganadores del gran premio! Si aún no lo has hecho, revisa tu inventario en el juego ahora. ¡Si ganaste, verás 51 cofres de objetos brillantes esperando a que abras, revelando tu increíble loot!",
-      "p4": "Si no ganaste, ¡lo sentimos! Todavía obtienes un cofre de artículo único si se registras . Pero no se preocupe, ¡tendrá muchas oportunidades de obtener material gratis en BitGuild.com en el futuro! Manténgase en sintonía con nuestro <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a> y el <a href='https://medium.com/the-notice-board'>Blog oficial</a> para no perderse nunca el ritmo.",
+      "p4": "Si no ganaste, ¡lo sentimos!. Pero no se preocupe, ¡tendrá muchas oportunidades de obtener material gratis en BitGuild.com en el futuro! Manténgase en sintonía con nuestro <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a> y el <a href='https://medium.com/the-notice-board'>Blog oficial</a> para no perderse nunca el ritmo.",
       "p5": "Mientras tanto, te animamos a probar nuestro último título jugable ______, ¡o simplemente mira a lo que está disponible en BitGuild para ti!",
       "p6": "¡Nos vemos en línea!"
     }
