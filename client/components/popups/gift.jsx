@@ -15,7 +15,8 @@ import {GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD} from ".
 @connect(
   state => ({
     user: state.user,
-    network: state.network
+    network: state.network,
+    gas: state.gas
   })
 )
 export default class GiftPopup extends Component {
@@ -23,6 +24,7 @@ export default class GiftPopup extends Component {
     show: PropTypes.bool,
     user: PropTypes.object,
     network: PropTypes.object,
+    gas: PropTypes.object,
     onHide: PropTypes.func,
     dispatch: PropTypes.func,
     item: PropTypes.shape({
@@ -57,7 +59,7 @@ export default class GiftPopup extends Component {
   }
 
   transfer() {
-    const {network, user, item, game, onHide, dispatch} = this.props;
+    const {network, gas, user, item, game, onHide, dispatch} = this.props;
     const {formData} = this.state;
 
     dispatch({
@@ -66,7 +68,7 @@ export default class GiftPopup extends Component {
     const contract = window.web3.eth.contract(nftABI).at(game.nft[network.data.id]);
     contract.safeTransferFrom(user.data.wallet, formData.get("wallet"), item.tokenId, {
         gas: window.web3.toHex(15e4),
-        gasPrice: window.web3.toHex(1e10)
+        gasPrice: window.web3.toHex(gas.data.average)
       },
       (error, tx) => {
         if (error) {
