@@ -6,17 +6,34 @@ import {Link} from "react-router-dom";
 import Chat from "../chat/chat";
 
 
+const GAMES = {
+  'etheronline': {
+    url: "/game/ether.online",
+    name: "etheronline",
+  },
+  'magicacademy': {
+    url: "/game/magicacademy",
+    name: "magicacademy",
+  },
+}
+
 export default class GameList extends Component {
 
   state = {
     interval: null,
-    countdown: null
+    bannerInterval: null,
+    countdown: null,
+    showingGame: GAMES.etheronline,
   };
 
   componentDidMount() {
     const countDownDate = new Date("2018-05-19T22:15:00.000Z").getTime();
 
     this.setState({
+      bannerInterval: setInterval(() => {
+        this.switchBanner()
+      }, 5000),
+
       interval: setInterval(() => {
         // Get todays date and time
         const now = new Date().getTime();
@@ -40,10 +57,14 @@ export default class GameList extends Component {
         }
       }, 1000)
     });
+
+    this.banner = this.banner.bind(this);
+    this.switchBanner = this.switchBanner.bind(this);
   }
 
   componentWillUnmount() {
     clearInterval(this.state.interval);
+    clearInterval(this.state.bannerInterval);
   }
 
   renderCountDown() {
@@ -65,16 +86,36 @@ export default class GameList extends Component {
     );
   }
 
+  switchBanner() {
+    if (this.state.showingGame.name === 'etheronline') {
+      this.setState({showingGame: GAMES.magicacademy })
+    } else {
+      this.setState({showingGame: GAMES.etheronline })
+    }
+  }
+
+  banner() {
+    return (
+      <div className={`banner ${this.state.showingGame.name}`}>
+        <div onClick={this.switchBanner} className="carousel-nav-button carousel-nav-button-left">
+          <Image src="/images/buttons/arrow_large_left.png" />
+        </div>
+        <div onClick={this.switchBanner} className="carousel-nav-button carousel-nav-button-right">
+          <Image src="/images/buttons/arrow_large_left.png" />
+        </div>
+        <Button href={this.state.showingGame.url}>
+          <Image src="/images/buttons/play/black.png" />
+          <FormattedMessage id="pages.games.banner.play" />
+        </Button>
+      </div>
+    )
+  }
+
   render() {
     return (
       <Row>
         <Col className="grap gap games">
-          <div className="banner">
-            <Button href="/game/ether.online">
-              <Image src="/images/buttons/play/black.png" />
-              <FormattedMessage id="pages.games.banner.play" />
-            </Button>
-          </div>
+          {this.banner()}
           <Row className="airdrop">
             <Col md={6} className="countdown">
               <div className="caption">

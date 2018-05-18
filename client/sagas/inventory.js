@@ -76,6 +76,9 @@ function * getGames(action) {
 function * checkGifts() {
   try {
     const gifts = yield select(state => state.gifts);
+
+    gifts.data = gifts.data || []; // TODO - following unsafe operations, ex: map
+
     yield put({
       type: GIFT_REMOVE_LOADING
     });
