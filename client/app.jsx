@@ -10,13 +10,14 @@ import Faq from "./components/faq";
 import Airdrop from "./components/airdrop";
 
 import Message from "./components/common/message";
+import MetaMask from "./components/common/metamask";
 import NotFound from "./components/common/notfound";
 import Header from "./components/common/header";
 import GAListener from "./components/common/galistener";
 import Register from "./components/popups/register";
 
 import LLRoute from "./components/common/routes/last-location";
-import MMRoute from "./components/common/routes/metamask";
+
 
 export default class App extends Component {
   render() {
@@ -24,7 +25,7 @@ export default class App extends Component {
       <>
         <GAListener trackingId={process.env.GOOGLE_ANALYTICS_TRACKING_ID} />
         <Header />
-        <MMRoute />
+        <MetaMask />
         <Register />
         <Grid fluid>
           <Message />
