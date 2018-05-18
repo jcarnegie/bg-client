@@ -59,7 +59,7 @@ export default class Balance extends Component {
   render() {
     const {balanceETH, balancePLAT, show} = this.state;
 
-    if (!balanceETH.data || !balancePLAT.data) {
+    if (!Number.isFinite(balanceETH.data) || !Number.isFinite(balancePLAT.data)) {
       return null;
     }
 
