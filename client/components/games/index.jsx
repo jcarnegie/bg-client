@@ -5,6 +5,7 @@ import {FormattedMessage} from "react-intl";
 import {Link} from "react-router-dom";
 import Chat from "../chat/chat";
 
+const BANNER_SWITCH_INTERVAL = 10e3;
 
 const GAMES = {
   "etheronline": {
@@ -32,7 +33,7 @@ export default class GameList extends Component {
     this.setState({
       bannerInterval: setInterval(() => {
         this.switchBanner()
-      }, 5000),
+      }, BANNER_SWITCH_INTERVAL),
 
       interval: setInterval(() => {
         // Get todays date and time

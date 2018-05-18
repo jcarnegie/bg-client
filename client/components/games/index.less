@@ -1,8 +1,8 @@
 .carousel-nav-button {
   position: absolute;
   top: 50%;
-  height: 35px;
-  width: 25px;
+  height: 70px;
+  width: 55px;
   background-color: rgba(255, 255, 255, .4);
   transform: translate(0, -50%);
   cursor: pointer;
@@ -13,25 +13,29 @@
 }
 
 .carousel-nav-button-left {
-  left: 15px;
+  left: 0;
   img {
-    height: 20px;
-    width: 15px;
     position: absolute;
-    top: 8px;
-    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 38px;
+    width: 25px;
+    position: absolute;
+    left: 12px;
   }
 }
 
 .carousel-nav-button-right {
-  right: 15px;
+  right: 0;
   transform: translate(0, -50%) rotate(180deg);
   img {
-    height: 20px;
-    width: 15px;
     position: absolute;
-    bottom: 8px;
-    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 38px;
+    width: 25px;
+    position: absolute;
+    left: 12px;
   }
 }
 
