@@ -10,21 +10,20 @@ const BANNER_SWITCH_INTERVAL = 10e3;
 const GAMES = {
   "etheronline": {
     url: "/game/ether.online",
-    name: "etheronline",
+    name: "etheronline"
   },
   "magicacademy": {
     url: "/game/magicacademy",
-    name: "magicacademy",
-  },
-}
+    name: "magicacademy"
+  }
+};
 
 export default class GameList extends Component {
-
   state = {
     interval: null,
     bannerInterval: null,
     countdown: null,
-    showingGame: GAMES.magicacademy,
+    showingGame: GAMES.magicacademy
   };
 
   componentDidMount() {
@@ -32,7 +31,7 @@ export default class GameList extends Component {
 
     this.setState({
       bannerInterval: setInterval(() => {
-        this.switchBanner()
+        this.switchBanner();
       }, BANNER_SWITCH_INTERVAL),
 
       interval: setInterval(() => {
@@ -89,9 +88,9 @@ export default class GameList extends Component {
 
   switchBanner() {
     if (this.state.showingGame.name === "etheronline") {
-      this.setState({showingGame: GAMES.magicacademy })
+      this.setState({showingGame: GAMES.magicacademy});
     } else {
-      this.setState({showingGame: GAMES.etheronline })
+      this.setState({showingGame: GAMES.etheronline});
     }
   }
 
@@ -109,7 +108,7 @@ export default class GameList extends Component {
           <FormattedMessage id="pages.games.banner.play" />
         </Button>
       </div>
-    )
+    );
   }
 
   comingSoon(url = "", messageId = "pages.games.announce.coming-soon") {
@@ -118,7 +117,7 @@ export default class GameList extends Component {
         <h3><FormattedMessage id={messageId} /></h3>
         <Image src={url} />
       </Col>
-    )
+    );
   }
 
   render() {
