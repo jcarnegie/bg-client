@@ -114,6 +114,6 @@
     "build": "./build.sh",
     "start": "node_modules/.bin/pm2 start ecosystem.${NODE_ENV:=development}.json",
     "stop": "node_modules/.bin/pm2 delete all;",
-    "lint": "node_modules/.bin/eslint server/* client/* --quiet --fix"
+    "lint": "node_modules/.bin/eslint server/* client/* --ext .jsx --quiet --fix"
   }
 }

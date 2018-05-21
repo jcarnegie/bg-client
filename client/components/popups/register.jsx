@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
-import {findLast, propEq} from "ramda"
+import {findLast, propEq} from "ramda";
 import {email, nickName, wallet} from "../../../shared/constants/placeholder";
 import {reEmail} from "../../../shared/constants/regexp";
 import {CREATE_USER, MESSAGE_ADD} from "../../../shared/constants/actions";
@@ -41,8 +41,8 @@ export default class RegisterPopup extends Component {
     }
   };
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
+  static getDerivedStateFromProps(nextProps) {
+    return {
       formData: {
         get(key) {
           return this[key];
@@ -50,7 +50,7 @@ export default class RegisterPopup extends Component {
         wallet: nextProps.account.wallet,
         language: nextProps.intl.locale
       }
-    });
+    };
   }
 
 
@@ -184,7 +184,7 @@ export default class RegisterPopup extends Component {
                 <FormControl
                   name="language"
                   componentClass="select"
-                  defaultValue={this.state.formData.get("language")}
+                  value={this.state.formData.get("language")}
                   required
                 >
                   {enabledLanguages.map(language =>
