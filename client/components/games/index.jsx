@@ -159,6 +159,63 @@ export default class GameList extends Component {
     );
   }
 
+  countdownIsOver() {
+    return (COUNT_DOWN_DATE - new Date().getTime()) <= 0;
+  }
+
+  countdown() {
+    const {countdown} = this.state;
+
+    if (!countdown || this.countdownIsOver()) {
+      return null;
+    }
+
+    return (
+      <Col md={6} className="countdown">
+        <div className="caption">
+          <FormattedMessage id="pages.games.airdrop.countdown" />
+          <FormattedMessage id="components.colon" />
+        </div>
+        <Row className="time">
+          {Object.keys(countdown).map(key =>
+            <Col sm={3} key={key}>
+              <div className="value">{countdown[key]}</div>
+              <div className="units"><FormattedMessage id={`pages.games.airdrop.${key}`} /></div>
+            </Col>
+          )}
+        </Row>
+      </Col>
+    );
+  }
+
+  airdropOver() {
+    return (
+      <Col md={12} className="giveaway">
+        <Image src="/images/ether_logo.png" />
+        <div className="caption">
+          <FormattedMessage id="pages.games.airdrop.giveaway-over" />
+        </div>
+        <Button href="/airdrop">
+          <FormattedMessage id="pages.games.airdrop.learn-more" />
+        </Button>
+      </Col>
+    );
+  }
+
+  airdrop() {
+    return (
+      <Col md={6} className="giveaway">
+        <Image src="/images/ether_logo.png" />
+        <div className="caption">
+          <FormattedMessage id="pages.games.airdrop.giveaway" />
+        </div>
+        <Button href="/airdrop">
+          <FormattedMessage id="pages.games.airdrop.learn-more" />
+        </Button>
+      </Col>
+    );
+  }
+
   render() {
     return (
       <Row>
