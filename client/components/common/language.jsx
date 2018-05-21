@@ -3,12 +3,14 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Image, MenuItem, NavDropdown} from "react-bootstrap";
-import {defaultLanguage, enabledLanguages} from "../../../shared/constants/language";
+import {enabledLanguages} from "../../../shared/constants/language";
 import {localization} from "../../../shared/intl/setup";
 import {UPDATE_USER} from "../../../shared/constants/actions";
 import {updateIntl} from "react-intl-redux";
+import {injectIntl, intlShape} from "react-intl";
 
 
+@injectIntl
 @connect(
   state => ({
     user: state.user
@@ -17,7 +19,8 @@ import {updateIntl} from "react-intl-redux";
 export default class Language extends Component {
   static propTypes = {
     user: PropTypes.object,
-    dispatch: PropTypes.func
+    dispatch: PropTypes.func,
+    intl: intlShape
   };
 
   onSelect(language) {
@@ -34,9 +37,9 @@ export default class Language extends Component {
   }
 
   render() {
-    const {user} = this.props;
+    const {user, intl} = this.props;
 
-    const language = !user.isLoading && user.success ? user.data.language : defaultLanguage;
+    const language = !user.isLoading && user.success ? user.data.language : intl.locale;
 
     return (
       <NavDropdown title={<Image src={`/images/language/${language}.png`} />} className="lang-menu" id="lang-menu">
