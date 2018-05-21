@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import Chat from "../chat/chat";
 
 const BANNER_SWITCH_INTERVAL = 10e3;
-const COUNT_DOWN_DATE = new Date().getTime();
+const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
 
 const GAMES = {
   "etheronline": {
