@@ -1,5 +1,6 @@
 import "./index.less";
 import "./tabs.less";
+import "./flex.less";
 import React, {Component, Fragment} from "react";
 import {Button, Col, Image, Row, Tab, Tabs} from "react-bootstrap";
 import {connect} from "react-redux";
@@ -138,7 +139,7 @@ export default class Inventory extends Component {
           {this.renderCategories(game, categories)}
         </div>
         <h3>{game.name}</h3>
-        <Row>
+        <Row className="flex-row">
           {items.filter(item => Object.keys(this.state.filters).includes(item.game) ? this.state.filters[item.game].filter(x => !!~item.categories.indexOf(x)).length : true)
             .map(item =>
               <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />

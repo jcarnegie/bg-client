@@ -69,7 +69,7 @@ export default class Item extends Component {
   renderStats() {
     const {item, maxStats} = this.props;
     return (
-      <dl style={{minHeight: maxStats * 20}}>
+      <dl style={{minHeight: maxStats * 20 + 1}}>
         {map(stat => (
           <Fragment key={stat.keyLan}>
             <dt>{stat.keyLan}<FormattedMessage id="components.colon" /></dt>
