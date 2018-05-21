@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import Chat from "../chat/chat";
 
 const BANNER_SWITCH_INTERVAL = 10e3;
+const COUNT_DOWN_DATE = new Date().getTime();
 
 const GAMES = {
   "etheronline": {
@@ -28,8 +29,6 @@ export default class GameList extends Component {
   };
 
   componentDidMount() {
-    const countDownDate = new Date("2018-05-21T22:15:00.000Z").getTime();
-
     this.setState({
       bannerInterval: setInterval(() => {
         this.switchBanner()
@@ -40,7 +39,7 @@ export default class GameList extends Component {
         const now = new Date().getTime();
 
         // Find the distance between now an the count down date
-        const distance = countDownDate - now;
+        const distance = COUNT_DOWN_DATE - now;
 
         // Time calculations for days, hours, minutes and seconds
         this.setState({
@@ -59,32 +58,15 @@ export default class GameList extends Component {
       }, 1000)
     });
 
-    this.banner = this.banner.bind(this);
-    this.switchBanner = this.switchBanner.bind(this);
+    this.airdrop = ::this.airdrop;
+    this.banner = ::this.banner;
+    this.countdown = ::this.countdown;
+    this.switchBanner = ::this.switchBanner;
   }
 
   componentWillUnmount() {
     clearInterval(this.state.interval);
     clearInterval(this.state.bannerInterval);
-  }
-
-  renderCountDown() {
-    const {countdown} = this.state;
-
-    if (!countdown) {
-      return null;
-    }
-
-    return (
-      <Row className="time">
-        {Object.keys(countdown).map(key =>
-          <Col sm={3} key={key}>
-            <div className="value">{countdown[key]}</div>
-            <div className="units"><FormattedMessage id={`pages.games.airdrop.${key}`} /></div>
-          </Col>
-        )}
-      </Row>
-    );
   }
 
   switchBanner() {
@@ -121,28 +103,71 @@ export default class GameList extends Component {
     )
   }
 
+  countdownIsOver() {
+    return (COUNT_DOWN_DATE - new Date().getTime()) <= 0;
+  }
+
+  countdown() {
+    const {countdown} = this.state;
+
+    if (!countdown || this.countdownIsOver()) {
+      return null;
+    }
+
+    return (
+      <Col md={6} className="countdown">
+        <div className="caption">
+          <FormattedMessage id="pages.games.airdrop.countdown" />
+          <FormattedMessage id="components.colon" />
+        </div>
+        <Row className="time">
+          {Object.keys(countdown).map(key =>
+            <Col sm={3} key={key}>
+              <div className="value">{countdown[key]}</div>
+              <div className="units"><FormattedMessage id={`pages.games.airdrop.${key}`} /></div>
+            </Col>
+          )}
+        </Row>
+      </Col>
+    );
+  }
+
+  airdropOver() {
+    return (
+      <Col md={12} className="giveaway">
+        <Image src="/images/ether_logo.png" />
+        <div className="caption">
+          <FormattedMessage id="pages.games.airdrop.giveaway-over" />
+        </div>
+        <Button href="/airdrop">
+          <FormattedMessage id="pages.games.airdrop.learn-more" />
+        </Button>
+      </Col>
+    );
+  }
+
+  airdrop() {
+    return (
+      <Col md={6} className="giveaway">
+        <Image src="/images/ether_logo.png" />
+        <div className="caption">
+          <FormattedMessage id="pages.games.airdrop.giveaway" />
+        </div>
+        <Button href="/airdrop">
+          <FormattedMessage id="pages.games.airdrop.learn-more" />
+        </Button>
+      </Col>
+    );
+  }
+
   render() {
     return (
       <Row>
         <Col className="grap gap games">
           {this.banner()}
           <Row className="airdrop">
-            <Col md={6} className="countdown">
-              <div className="caption">
-                <FormattedMessage id="pages.games.airdrop.countdown" />
-                <FormattedMessage id="components.colon" />
-              </div>
-              {this.renderCountDown()}
-            </Col>
-            <Col md={6} className="giveaway">
-              <Image src="/images/ether_logo.png" />
-              <div className="caption">
-                <FormattedMessage id="pages.games.airdrop.giveaway" />
-              </div>
-              <Button href="/airdrop">
-                <FormattedMessage id="pages.games.airdrop.learn-more" />
-              </Button>
-            </Col>
+            {this.countdown()}
+            {this.countdownIsOver() ? this.airdropOver() : this.airdrop()}
           </Row>
           <Row>
             <Col className="announce">
