@@ -14,7 +14,8 @@ import {
   UPDATE_USER,
   USER_CHANGED,
   USER_ERROR,
-  USER_LOADING
+  USER_LOADING,
+  VALIDATION_ADD_ALL
 } from "../../shared/constants/actions";
 
 
@@ -93,10 +94,18 @@ function * createUser(action) {
     yield put({
       type: USER_ERROR
     });
-    yield put({
-      type: MESSAGE_ADD_ALL,
-      payload: [].concat(error)
-    });
+    const errors = [].concat(error);
+    if ([400, 409].includes(errors[0].status)) {
+      yield put({
+        type: VALIDATION_ADD_ALL,
+        payload: errors
+      });
+    } else {
+      yield put({
+        type: MESSAGE_ADD_ALL,
+        payload: errors
+      });
+    }
   }
 }
 
@@ -117,10 +126,18 @@ function * updateUser(action) {
         payload: _user
       });
     } catch (error) {
-      yield put({
-        type: MESSAGE_ADD_ALL,
-        payload: [].concat(error)
-      });
+      const errors = [].concat(error);
+      if ([400, 409].includes(errors[0].status)) {
+        yield put({
+          type: VALIDATION_ADD_ALL,
+          payload: errors
+        });
+      } else {
+        yield put({
+          type: MESSAGE_ADD_ALL,
+          payload: errors
+        });
+      }
     }
   }
 }

@@ -3,12 +3,14 @@ import "./convert.less";
 import "./form.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Glyphicon, Modal} from "react-bootstrap";
+import {Button, Form, Glyphicon, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage} from "react-intl";
 import topupABI from "../../../shared/contracts/topup";
 import networkConfig from "../../utils/network";
 import {MESSAGE_ADD} from "../../../shared/constants/actions";
+import InputGroup from "../../components/common/inputs/input.group";
+
 
 function precisionRound(number, precision) {
   const factor = Math.pow(10, precision);
@@ -106,41 +108,27 @@ export default class ConvertPopup extends Component {
           <Form inline noValidate onSubmit={::this.onSubmit}>
             <h2>1 ETH = {rate.data} PLAT</h2>
             <br />
-            <FormGroup controlId="email">
-              <Col componentClass={ControlLabel}>
-                <FormattedMessage id="fields.eth.label" />
-              </Col>
-              <Col>
-                <FormControl
-                  type="number"
-                  step={step}
-                  min={step}
-                  name="amount"
-                  onKeyDown={::this.onKeyDown}
-                  value={precisionRound(this.state.eth, 6)}
-                  onChange={::this.onChangeETH}
-                  required
-                />
-              </Col>
-            </FormGroup>
+            <InputGroup
+              type="number"
+              step={step}
+              min={step}
+              name="eth"
+              onKeyDown={::this.onKeyDown}
+              value={precisionRound(this.state.eth, 6)}
+              onChange={::this.onChangeETH}
+              required
+            />
 
             <Glyphicon glyph="transfer" />
 
-            <FormGroup controlId="email">
-              <Col componentClass={ControlLabel}>
-                <FormattedMessage id="fields.plat.label" />
-              </Col>
-              <Col>
-                <FormControl
-                  type="number"
-                  min={rate.data * step}
-                  step={rate.data * step}
-                  name="result"
-                  value={precisionRound(this.state.plat, 6)}
-                  onChange={::this.onChangePLAT}
-                />
-              </Col>
-            </FormGroup>
+            <InputGroup
+              type="number"
+              min={rate.data * step}
+              step={rate.data * step}
+              name="plat"
+              value={precisionRound(this.state.plat, 6)}
+              onChange={::this.onChangePLAT}
+            />
 
             <br />
             <br />

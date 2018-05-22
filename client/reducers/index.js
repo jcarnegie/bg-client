@@ -14,6 +14,7 @@ import rate from "./rate";
 import network from "./network";
 import messages from "./messages";
 import user from "./user";
+import validations from "./validations";
 
 
 export default combineReducers({
@@ -31,5 +32,6 @@ export default combineReducers({
   messages,
   network,
   rate,
-  user
+  user,
+  validations
 });

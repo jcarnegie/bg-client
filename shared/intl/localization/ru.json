@@ -107,9 +107,6 @@
       "empty": "У вас пока нет предметов!",
       "faq": "Узнайте больше про предметы в разделе <a href='/faq'>FAQ</a>"
     },
-    "sandbox": {
-      "title": "Sandbox"
-    },
     "faq": {
       "title": "FAQ",
       "metamask": {

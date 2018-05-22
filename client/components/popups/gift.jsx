@@ -3,12 +3,13 @@ import "./gift.less";
 import "./form.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Modal, Thumbnail} from "react-bootstrap";
+import {Button, Form, Modal, Thumbnail} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import {wallet} from "../../../shared/constants/placeholder";
 import nftABI from "../../../shared/contracts/ERC721";
-import {GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD} from "../../../shared/constants/actions";
+import {GIFT_ADD_ERROR, GIFT_ADD_LOADING, GIFT_ADD_SUCCESS, MESSAGE_ADD} from "../../../shared/constants/actions";
+import InputGroupValidation from "../../components/common/inputs/input.group.validation";
 
 
 @injectIntl
@@ -118,7 +119,7 @@ export default class GiftPopup extends Component {
   }
 
   render() {
-    const {show, onHide, intl, item} = this.props;
+    const {show, onHide, item} = this.props;
 
     return (
       <Modal show={show} className="gift" onHide={onHide} backdropClassName="semi">
@@ -129,47 +130,15 @@ export default class GiftPopup extends Component {
             <br />
 
             <Thumbnail src={item.image} />
-
-            <FormGroup controlId="wallet">
-              <Col componentClass={ControlLabel}>
-                <FormattedMessage id="fields.wallet.label" />
-              </Col>
-              <Col>
-                <FormControl
-                  type="text"
-                  name="wallet"
-                  defaultValue={this.state.formData.get("wallet")}
-                  placeholder={wallet}
-                  maxLength="42"
-                  minLength="42"
-                  onInvalid={e => {
-                    e.target.parentNode.parentNode.classList.add("has-error");
-                    if (e.target.validity.valueMissing) {
-                      e.target.setCustomValidity(intl.formatMessage({
-                        id: "fields.wallet.required"
-                      }));
-                    } else if (e.target.validity.tooShort) {
-                      e.target.setCustomValidity(intl.formatMessage({
-                        id: "fields.wallet.minlength"
-                      }));
-                    } else if (e.target.validity.tooLong) {
-                      e.target.setCustomValidity(intl.formatMessage({
-                        id: "fields.wallet.maxlength"
-                      }));
-                    }
-                  }}
-                  onInput={e => {
-                    e.target.parentNode.parentNode.classList.remove("has-error");
-                    e.target.setCustomValidity("");
-                    this.setState({
-                      walletLength: e.target.value.length
-                    });
-                  }}
-                  required
-                />
-              </Col>
-            </FormGroup>
-
+            <InputGroupValidation
+              type="text"
+              name="wallet"
+              defaultValue={this.state.formData.get("wallet")}
+              placeholder={wallet}
+              maxLength="42"
+              minLength="42"
+              required
+            />
             <br />
 
             <Button type="submit" className="btn-block text-uppercase">

@@ -9,6 +9,7 @@ export default function messagesReducer(state = messages, action) {
       console.error(action.payload);
       return [...state, action.payload];
     case MESSAGE_ADD_ALL:
+      console.error(action.payload);
       return [...state, ...action.payload];
     case MESSAGE_REMOVE:
       return state.filter(message => message !== action.payload);

@@ -2,14 +2,15 @@ import "./modal.less";
 import "./form.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Button, Col, ControlLabel, Form, FormControl, FormGroup, Modal} from "react-bootstrap";
+import {Button, Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
-import {findLast, propEq} from "ramda";
 import {email, nickName, wallet} from "../../../shared/constants/placeholder";
 import {reEmail} from "../../../shared/constants/regexp";
 import {CREATE_USER, MESSAGE_ADD} from "../../../shared/constants/actions";
 import {enabledLanguages} from "../../../shared/constants/language";
+import InputGroupValidation from "../../components/common/inputs/input.group.validation";
+
 
 @injectIntl
 @connect(
@@ -31,7 +32,6 @@ export default class RegisterPopup extends Component {
   };
 
   state = {
-    walletLength: 0,
     formData: {
       get(key) {
         return this[key];
@@ -143,30 +143,8 @@ export default class RegisterPopup extends Component {
     });
   }
 
-  renderErrors() {
-    const {intl, messages} = this.props;
-    const dup = findLast(propEq("reason", "duplicate"), messages);
-    if (!dup) return <></>;
-    let label = null;
-    switch (dup.name) {
-      case "nickName":
-        label = intl.formatMessage({id: "modals.register.dup-labels.display-name"});
-        break;
-      case "email":
-        label = intl.formatMessage({id: "modals.register.dup-labels.email"});
-        break;
-      default:
-        label = intl.formatMessage({id: "modals.register.dup-labels.display-name"});
-    }
-    return <>
-      {
-        dup && <h5 className="dup-error">{label} {intl.formatMessage({id: "modals.register.dup-message"})}</h5>
-      }
-    </>;
-  }
-
   render() {
-    const {user, intl, network} = this.props;
+    const {user, network} = this.props;
 
     return (
       <Modal show={!network.isLoading && network.success && !user.isLoading && !user.success} className="register">
@@ -175,121 +153,42 @@ export default class RegisterPopup extends Component {
             <h2>
               <FormattedMessage id="modals.register.title" />
             </h2>
-            {this.renderErrors()}
-            <FormGroup controlId="wallet">
-              <Col componentClass={ControlLabel}>
-                <FormattedMessage id="fields.language.label" />
-              </Col>
-              <Col>
-                <FormControl
-                  name="language"
-                  componentClass="select"
-                  value={this.state.formData.get("language")}
-                  required
-                >
-                  {enabledLanguages.map(language =>
-                    (<FormattedMessage key={language} id={`components.language.${language}`}>
-                      {formattedMessage => <option key={language} value={language}>{formattedMessage}</option>}
-                    </FormattedMessage>)
-                  )}
-                </FormControl>
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="wallet">
-              <Col componentClass={ControlLabel}>
-                <FormattedMessage id="fields.wallet.label" />
-              </Col>
-              <Col>
-                <FormControl
-                  type="text"
-                  name="wallet"
-                  defaultValue={this.state.formData.get("wallet")}
-                  placeholder={wallet}
-                  maxLength="42"
-                  minLength="42"
-                  onInvalid={e => {
-                    e.target.parentNode.parentNode.classList.add("has-error");
-                    if (e.target.validity.valueMissing) {
-                      e.target.setCustomValidity(intl.formatMessage({
-                        id: "fields.wallet.required"
-                      }));
-                    } else if (e.target.validity.tooShort) {
-                      e.target.setCustomValidity(intl.formatMessage({
-                        id: "fields.wallet.minlength"
-                      }));
-                    } else if (e.target.validity.tooLong) {
-                      e.target.setCustomValidity(intl.formatMessage({
-                        id: "fields.wallet.maxlength"
-                      }));
-                    }
-                  }}
-                  onInput={e => {
-                    e.target.parentNode.parentNode.classList.remove("has-error");
-                    e.target.setCustomValidity("");
-                    this.setState({
-                      walletLength: e.target.value.length
-                    });
-                  }}
-                  required
-                  readOnly
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="email">
-              <Col componentClass={ControlLabel}>
-                <FormattedMessage id="fields.email.label" />
-              </Col>
-              <Col>
-                <FormControl
-                  type="email"
-                  name="email"
-                  pattern={reEmail.source.replace("a-z", "a-zA-Z")} // there is no `i` flag
-                  defaultValue={this.state.formData.get("email")}
-                  placeholder={email}
-                  onInvalid={e => {
-                    e.target.parentNode.parentNode.classList.add("has-error");
-                    if (e.target.validity.valueMissing) {
-                      e.target.setCustomValidity(intl.formatMessage({
-                        id: "fields.email.required"
-                      }));
-                    } else if (e.target.validity.typeMismatch) {
-                      e.target.setCustomValidity(intl.formatMessage({
-                        id: "fields.email.invalid"
-                      }));
-                    }
-                  }}
-                  onInput={e => {
-                    e.target.parentNode.parentNode.classList.remove("has-error");
-                    e.target.setCustomValidity("");
-                  }}
-                  required
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="nickName">
-              <Col componentClass={ControlLabel}>
-                <FormattedMessage id="fields.nickName.label" />
-              </Col>
-              <Col>
-                <FormControl
-                  type="text"
-                  name="nickName"
-                  defaultValue={this.state.formData.get("nickName")}
-                  placeholder={nickName}
-                  onInvalid={e => {
-                    e.target.parentNode.parentNode.classList.add("has-error");
-                    e.target.setCustomValidity(intl.formatMessage({
-                      id: "fields.nickName.required"
-                    }));
-                  }}
-                  onInput={e => {
-                    e.target.parentNode.parentNode.classList.remove("has-error");
-                    e.target.setCustomValidity("");
-                  }}
-                  required
-                />
-              </Col>
-            </FormGroup>
+            <InputGroupValidation
+              name="language"
+              componentClass="select"
+              value={this.state.formData.get("language")}
+              required
+            >
+              {enabledLanguages.map(language =>
+                (<FormattedMessage key={language} id={`components.language.${language}`}>
+                  {formattedMessage => <option key={language} value={language}>{formattedMessage}</option>}
+                </FormattedMessage>)
+              )}
+            </InputGroupValidation>
+            <InputGroupValidation
+              name="wallet"
+              defaultValue={this.state.formData.get("wallet")}
+              placeholder={wallet}
+              maxLength="42"
+              minLength="42"
+              required
+              readOnly
+            />
+            <InputGroupValidation
+              type="email"
+              name="email"
+              pattern={reEmail.source.replace("a-z", "a-zA-Z")} // there is no `i` flag
+              defaultValue={this.state.formData.get("email")}
+              placeholder={email}
+              required
+            />
+            <InputGroupValidation
+              type="text"
+              name="nickName"
+              defaultValue={this.state.formData.get("nickName")}
+              placeholder={nickName}
+              required
+            />
 
             <p className="note"><FormattedMessage id="modals.register.n1" /></p>
             <p className="note"><FormattedMessage id="modals.register.n2" /></p>

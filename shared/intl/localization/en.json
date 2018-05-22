@@ -28,17 +28,20 @@
     },
     "nickName": {
       "label": "Display Name",
-      "required": "Please enter your nick name."
+      "required": "Please enter your nick name.",
+      "duplicate": "Display Name already taken"
     },
     "email": {
       "label": "Email Address",
       "required": "Please enter your email address.",
+      "duplicate": "Email Address already taken",
       "invalid": "Please enter a valid email address format such as yourname@email.com.",
       "conflict": "This email already exists"
     },
     "wallet": {
       "label": "Wallet Address",
       "required": "Please enter your wallet address.",
+      "duplicate": "Wallet Address already taken",
       "minlength": "The wallet address you entered is incomplete, please check this field and try again.",
       "maxlength": "Wallet address is too long.",
       "invalid": "The wallet address you entered is invalid. Please make sure you are using only alphanumeric characters."
@@ -91,12 +94,7 @@
       "title": "Welcome to BitGuild",
       "n1": "Make sure you save your MetaMask login information and account recovery details!",
       "n2": "We can’t help you recover it if you lose access.",
-      "text": "BitGuild requires all users to sign with their private key in order to safeguard against spoofing attempts.\n\nOur mission is to revolutionize the global gaming industry by creating a platform for a brand new class of games that live on the blockchain. Blockchain games completely redefine the relationship between players and developers by facilitating full and true ownership of in-game assets, cheap & safe item trading, cross-game compatibility of items & currency, and more. BitGuild’s team consists of cryptocurrency and gaming veterans with decades of experience building international large-scale gaming platforms and communities. BitGuild aims to host the best blockchain games and the largest blockchain gamer community online.",
-      "dup-labels": {
-        "display-name": "Display Name",
-        "email": "Email"
-      },
-      "dup-message": "already taken"
+      "text": "BitGuild requires all users to sign with their private key in order to safeguard against spoofing attempts.\n\nOur mission is to revolutionize the global gaming industry by creating a platform for a brand new class of games that live on the blockchain. Blockchain games completely redefine the relationship between players and developers by facilitating full and true ownership of in-game assets, cheap & safe item trading, cross-game compatibility of items & currency, and more. BitGuild’s team consists of cryptocurrency and gaming veterans with decades of experience building international large-scale gaming platforms and communities. BitGuild aims to host the best blockchain games and the largest blockchain gamer community online."
     },
     "sell": {
       "title": "Stay tuned!",
