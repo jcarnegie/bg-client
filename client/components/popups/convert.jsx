@@ -10,6 +10,7 @@ import topupABI from "../../../shared/contracts/topup";
 import networkConfig from "../../utils/network";
 import {MESSAGE_ADD} from "../../../shared/constants/actions";
 import InputGroup from "../../components/common/inputs/input.group";
+import withFormHelper from "../common/inputs/withFormHelper";
 
 
 function precisionRound(number, precision) {
@@ -17,6 +18,7 @@ function precisionRound(number, precision) {
   return Math.round(number * factor) / factor;
 }
 
+@withFormHelper
 @connect(
   state => ({
     gas: state.gas,
@@ -31,46 +33,55 @@ export default class ConvertPopup extends Component {
     rate: PropTypes.object,
     dispatch: PropTypes.func,
     onHide: PropTypes.func,
+    setState: PropTypes.func,
+    formData: PropTypes.object,
     user: PropTypes.object,
     network: PropTypes.object,
     gas: PropTypes.object
   };
 
-  state = {
-    eth: 1,
-    plat: this.props.rate.data
-  };
+  state = {};
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (!nextProps.rate.isLoading && nextProps.rate.success && nextProps.rate.data * prevState.eth !== prevState.plat) {
-      return {
-        plat: nextProps.rate.data * prevState.eth
-      };
+  componentDidMount() {
+    const {setState, rate} = this.props;
+    setState({
+      eth: 1,
+      plat: rate.data
+    });
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    if (!nextProps.rate.isLoading && nextProps.rate.success && nextProps.rate.data * nextProps.formData.eth !== nextProps.formData.plat) {
+      nextProps.setState({
+        plat: nextProps.rate.data * nextProps.formData.eth
+      });
     }
 
     return null;
   }
 
   onChangeETH(e) {
-    this.setState({
+    const {setState, rate} = this.props;
+    setState({
       eth: e.target.value,
-      plat: this.props.rate.data * e.target.value
+      plat: rate.data * e.target.value
     });
   }
 
   onChangePLAT(e) {
-    this.setState({
-      eth: e.target.value / this.props.rate.data,
+    const {setState, rate} = this.props;
+    setState({
+      eth: e.target.value / rate.data,
       plat: e.target.value
     });
   }
 
   onSubmit(e) {
     e.preventDefault();
-    const {network, user, gas, dispatch} = this.props;
+    const {network, user, gas, dispatch, formData} = this.props;
     const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.data.id].topup);
     contract.buyTokens({
-        value: window.web3.toWei(precisionRound(this.state.eth, 6), "ether"),
+        value: window.web3.toWei(precisionRound(formData.eth, 6), "ether"),
         from: user.data.wallet,
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(gas.data.average)
@@ -93,7 +104,7 @@ export default class ConvertPopup extends Component {
   }
 
   render() {
-    const {rate, show, onHide} = this.props;
+    const {rate, show, onHide, formData} = this.props;
 
     if (!rate.data) {
       return null;
@@ -114,7 +125,7 @@ export default class ConvertPopup extends Component {
               min={step}
               name="eth"
               onKeyDown={::this.onKeyDown}
-              value={precisionRound(this.state.eth, 6)}
+              value={precisionRound(formData.eth, 6)}
               onChange={::this.onChangeETH}
               required
             />
@@ -126,7 +137,7 @@ export default class ConvertPopup extends Component {
               min={rate.data * step}
               step={rate.data * step}
               name="plat"
-              value={precisionRound(this.state.plat, 6)}
+              value={precisionRound(formData.plat, 6)}
               onChange={::this.onChangePLAT}
             />
 

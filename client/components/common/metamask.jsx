@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router";
-
 import MetaMaskInstall from "../popups/metamask.install";
 import MetaMaskLogin from "../popups/metamask.login";
 import MetaMaskNetwork from "../popups/metamask.network";
@@ -9,9 +8,11 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../../shared/constants/actions";
 import networkConfig from "../../utils/network";
+import {injectIntl} from "react-intl";
 
 
 @withRouter
+@injectIntl
 @connect(
   state => ({
     account: state.account,

@@ -4,11 +4,13 @@ import {Navbar} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import Convert from "../popups/convert";
+import networkConfig from "../../utils/network";
 
 
 @connect(
   state => ({
     user: state.user,
+    network: state.network,
     balanceETH: state.balanceETH,
     balancePLAT: state.balancePLAT
   })
@@ -17,6 +19,7 @@ export default class Balance extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     user: PropTypes.object,
+    network: PropTypes.object,
     balanceETH: PropTypes.object,
     balancePLAT: PropTypes.object
   };
@@ -45,8 +48,12 @@ export default class Balance extends Component {
 
   onClick(e) {
     e.preventDefault();
+
+    const {network, user} = this.props;
+    const isAvailable = !network.isLoading && network.success && Object.keys(networkConfig).includes(network.data.id) && !user.isLoading && user.success;
+
     this.setState({
-      show: true
+      show: isAvailable
     });
   }
 

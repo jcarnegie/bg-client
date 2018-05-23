@@ -10,9 +10,11 @@ import {wallet} from "../../../shared/constants/placeholder";
 import nftABI from "../../../shared/contracts/ERC721";
 import {GIFT_ADD_ERROR, GIFT_ADD_LOADING, GIFT_ADD_SUCCESS, MESSAGE_ADD} from "../../../shared/constants/actions";
 import InputGroupValidation from "../../components/common/inputs/input.group.validation";
+import withFormHelper from "../common/inputs/withFormHelper";
 
 
 @injectIntl
+@withFormHelper
 @connect(
   state => ({
     user: state.user,
@@ -26,6 +28,8 @@ export default class GiftPopup extends Component {
     user: PropTypes.object,
     network: PropTypes.object,
     gas: PropTypes.object,
+    formData: PropTypes.object,
+    onChange: PropTypes.func,
     onHide: PropTypes.func,
     dispatch: PropTypes.func,
     item: PropTypes.shape({
@@ -38,36 +42,26 @@ export default class GiftPopup extends Component {
     intl: intlShape
   };
 
-  state = {
-    formData: {
-      get(key) {
-        return this[key];
-      },
-      wallet: ""
-    }
-  };
+  state = {};
 
   onSubmit(e) {
     e.preventDefault();
 
-    if (!this.isValid(Array.from(e.target.elements))) {
+    if (!this.isValid()) {
       return false;
     }
 
-    this.setState({
-      formData: new FormData(e.target)
-    }, this.transfer);
+    this.transfer();
   }
 
   transfer() {
-    const {network, gas, user, item, game, onHide, dispatch} = this.props;
-    const {formData} = this.state;
+    const {network, gas, user, item, game, onHide, dispatch, formData} = this.props;
 
     dispatch({
       type: GIFT_ADD_LOADING
     });
     const contract = window.web3.eth.contract(nftABI).at(game.nft[network.data.id]);
-    contract.safeTransferFrom(user.data.wallet, formData.get("wallet"), item.tokenId, {
+    contract.safeTransferFrom(user.data.wallet, formData.wallet, item.tokenId, {
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(gas.data.average)
       },
@@ -95,14 +89,16 @@ export default class GiftPopup extends Component {
     );
   }
 
-  isValid(a) {
-    const {intl} = this.props;
+  isValid() {
+    const {intl, formData} = this.props;
 
+    let e;
     let isValid = true;
-    for (let e of a) {
-      switch (e.name) {
+    for (let i in formData) {
+      switch (i) {
         case "wallet":
-          if (!window.web3.isAddress(e.value)) {
+          if (!window.web3.isAddress(formData[i])) {
+            e = document.getElementsByName(i)[0];
             e.parentNode.parentNode.classList.add("has-error");
             e.setCustomValidity(intl.formatMessage({
               id: "fields.wallet.invalid"
@@ -119,7 +115,7 @@ export default class GiftPopup extends Component {
   }
 
   render() {
-    const {show, onHide, item} = this.props;
+    const {show, onHide, item, formData, onChange} = this.props;
 
     return (
       <Modal show={show} className="gift" onHide={onHide} backdropClassName="semi">
@@ -133,7 +129,8 @@ export default class GiftPopup extends Component {
             <InputGroupValidation
               type="text"
               name="wallet"
-              defaultValue={this.state.formData.get("wallet")}
+              defaultValue={formData.wallet}
+              onChange={onChange}
               placeholder={wallet}
               maxLength="42"
               minLength="42"

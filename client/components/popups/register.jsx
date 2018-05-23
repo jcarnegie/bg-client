@@ -10,8 +10,12 @@ import {reEmail} from "../../../shared/constants/regexp";
 import {CREATE_USER, MESSAGE_ADD} from "../../../shared/constants/actions";
 import {enabledLanguages} from "../../../shared/constants/language";
 import InputGroupValidation from "../../components/common/inputs/input.group.validation";
+import withFormHelper from "../../components/common/inputs/withFormHelper";
+import {updateIntl} from "react-intl-redux/lib/index";
+import {localization} from "../../../shared/intl/setup";
 
 
+@withFormHelper
 @injectIntl
 @connect(
   state => ({
@@ -22,55 +26,53 @@ import InputGroupValidation from "../../components/common/inputs/input.group.val
 export default class RegisterPopup extends Component {
   static propTypes = {
     account: PropTypes.object,
+    formData: PropTypes.object,
     dispatch: PropTypes.func,
+    setState: PropTypes.func,
+    onChange: PropTypes.func,
     show: PropTypes.bool,
     intl: intlShape,
     messages: PropTypes.array
   };
 
-  state = {
-    formData: {
-      get(key) {
-        return this[key];
-      },
-      wallet: this.props.account.wallet,
-      language: this.props.intl.locale
-    }
-  };
+  state = {};
 
   static getDerivedStateFromProps(nextProps) {
-    return {
-      formData: {
-        get(key) {
-          return this[key];
-        },
-        wallet: nextProps.account.wallet,
-        language: nextProps.intl.locale
-      }
-    };
-  }
+    if (nextProps.formData.wallet !== nextProps.account.wallet) {
+      nextProps.setState({
+        wallet: nextProps.account.wallet
+      });
+    }
 
+    if (nextProps.formData.language !== nextProps.intl.locale) {
+      nextProps.setState({
+        language: nextProps.intl.locale
+      });
+    }
+
+    return null;
+  }
 
   onSubmit(e) {
     e.preventDefault();
 
-    if (!this.isValid(Array.from(e.target.elements))) {
+    if (!this.isValid()) {
       return false;
     }
 
-    this.setState({
-      formData: new FormData(e.target)
-    }, this.sign);
+    this.sign();
   }
 
-  isValid(a) {
-    const {intl} = this.props;
+  isValid() {
+    const {intl, formData} = this.props;
 
+    let e;
     let isValid = true;
-    for (let e of a) {
-      switch (e.name) {
+    for (let i in formData) {
+      switch (i) {
         case "wallet":
-          if (!window.web3.isAddress(e.value)) {
+          if (!window.web3.isAddress(formData[i])) {
+            e = document.getElementsByName(i)[0];
             e.parentNode.parentNode.classList.add("has-error");
             e.setCustomValidity(intl.formatMessage({
               id: "fields.wallet.invalid"
@@ -87,14 +89,13 @@ export default class RegisterPopup extends Component {
   }
 
   sign() {
-    const {dispatch, intl} = this.props;
+    const {dispatch, intl, formData} = this.props;
     const message = window.web3.toHex(intl.formatMessage({id: "modals.register.text"}));
-    const from = this.state.formData.get("wallet");
 
     window.web3.currentProvider.sendAsync({
       method: "personal_sign",
-      params: [message, from],
-      from
+      params: [message, formData.wallet],
+      from: formData.wallet
     }, (err, result) => {
       if (err || result.error) {
         dispatch({
@@ -107,7 +108,7 @@ export default class RegisterPopup extends Component {
       window.web3.currentProvider.sendAsync({
         method: "personal_ecRecover",
         params: [message, result.result],
-        from
+        from: formData.wallet
       }, (err, recovered) => {
         if (err || result.error) {
           dispatch({
@@ -117,13 +118,10 @@ export default class RegisterPopup extends Component {
           return;
         }
 
-        if (recovered.result === from) {
+        if (recovered.result === formData.wallet) {
           dispatch({
             type: CREATE_USER,
-            payload: Array.from(this.state.formData.entries()).reduce((memo, pair) => ({
-              ...memo,
-              [pair[0]]: pair[1]
-            }), {})
+            payload: formData
           });
         } else {
           dispatch({
@@ -132,7 +130,7 @@ export default class RegisterPopup extends Component {
               id: "errors.spoofing-attempt"
             }, {
               wallet1: recovered.result,
-              wallet2: from
+              wallet2: formData.wallet
             }))
           });
         }
@@ -140,8 +138,14 @@ export default class RegisterPopup extends Component {
     });
   }
 
+  onChangeLang(e) {
+    const {dispatch, onChange} = this.props;
+    dispatch(updateIntl(localization[e.target.value]));
+    onChange(e);
+  }
+
   render() {
-    const {show} = this.props;
+    const {show, formData, onChange} = this.props;
 
     return (
       <Modal show={show} className="register">
@@ -153,7 +157,8 @@ export default class RegisterPopup extends Component {
             <InputGroupValidation
               name="language"
               componentClass="select"
-              value={this.state.formData.get("language")}
+              value={formData.language}
+              onChange={::this.onChangeLang}
               required
             >
               {enabledLanguages.map(language =>
@@ -164,7 +169,8 @@ export default class RegisterPopup extends Component {
             </InputGroupValidation>
             <InputGroupValidation
               name="wallet"
-              defaultValue={this.state.formData.get("wallet")}
+              defaultValue={formData.wallet}
+              onChange={onChange}
               placeholder={wallet}
               maxLength="42"
               minLength="42"
@@ -175,14 +181,16 @@ export default class RegisterPopup extends Component {
               type="email"
               name="email"
               pattern={reEmail.source.replace("a-z", "a-zA-Z")} // there is no `i` flag
-              defaultValue={this.state.formData.get("email")}
+              defaultValue={formData.email}
+              onChange={onChange}
               placeholder={email}
               required
             />
             <InputGroupValidation
               type="text"
               name="nickName"
-              defaultValue={this.state.formData.get("nickName")}
+              defaultValue={formData.nickName}
+              onChange={onChange}
               placeholder={nickName}
               required
             />
