@@ -4,22 +4,26 @@ import {withRouter} from "react-router";
 import MetaMaskInstall from "../popups/metamask.install";
 import MetaMaskLogin from "../popups/metamask.login";
 import MetaMaskNetwork from "../popups/metamask.network";
+import Register from "../popups/register";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../../shared/constants/actions";
+import networkConfig from "../../utils/network";
 
 
 @withRouter
 @connect(
   state => ({
     account: state.account,
-    network: state.network
+    network: state.network,
+    user: state.user
   })
 )
 export default class MetaMaskRoute extends Component {
   static propTypes = {
     account: PropTypes.object,
     network: PropTypes.object,
+    user: PropTypes.object,
     dispatch: PropTypes.func,
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired
@@ -76,7 +80,7 @@ export default class MetaMaskRoute extends Component {
   }
 
   render() {
-    const {network, account, location} = this.props;
+    const {network, account, location, user} = this.props;
 
     if (location.pathname === "/faq" || location.pathname === "/airdrop") {
       return null;
@@ -86,7 +90,8 @@ export default class MetaMaskRoute extends Component {
       <>
         <MetaMaskInstall show={!MetaMaskRoute.isInstalled()} />
         <MetaMaskLogin show={!account.isLoading && !account.success} />
-        <MetaMaskNetwork show={!network.isLoading && network.success && !["1", "4"].includes(network.data.id)} />
+        <MetaMaskNetwork show={!network.isLoading && network.success && !Object.keys(networkConfig).includes(network.data.id)} />
+        <Register show={!network.isLoading && network.success && Object.keys(networkConfig).includes(network.data.id) && !user.isLoading && !user.success} />
       </>
     );
   }

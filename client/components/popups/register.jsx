@@ -15,18 +15,15 @@ import InputGroupValidation from "../../components/common/inputs/input.group.val
 @injectIntl
 @connect(
   state => ({
-    user: state.user,
     account: state.account,
-    network: state.network,
     messages: state.messages
   })
 )
 export default class RegisterPopup extends Component {
   static propTypes = {
-    user: PropTypes.object,
     account: PropTypes.object,
-    network: PropTypes.object,
     dispatch: PropTypes.func,
+    show: PropTypes.bool,
     intl: intlShape,
     messages: PropTypes.array
   };
@@ -144,10 +141,10 @@ export default class RegisterPopup extends Component {
   }
 
   render() {
-    const {user, network} = this.props;
+    const {show} = this.props;
 
     return (
-      <Modal show={!network.isLoading && network.success && !user.isLoading && !user.success} className="register">
+      <Modal show={show} className="register">
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
             <h2>
