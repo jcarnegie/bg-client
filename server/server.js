@@ -1,11 +1,17 @@
 import app from "./configs/express";
+
+import cors from "./routes/cors";
+import pre from "./routes/pre";
 import assets from "./routes/assets";
 import main from "./routes/main";
-import {sendError} from "./utils/wrapper";
 import fe from "./routes/fe";
+
+import {sendError} from "./utils/wrapper";
 
 const DEFAULT_PORT = 5000;
 
+app.use(cors);
+app.use(pre);
 app.use(assets);
 app.use(main);
 app.use(fe);
