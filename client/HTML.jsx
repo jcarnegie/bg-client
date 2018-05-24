@@ -12,8 +12,8 @@ export default class HTML extends React.Component {
     const build = process.env.NODE_ENV === "production" ? "production.min" : "development";
     return (
       <>
-        <script src={`https://unpkg.com/react@16.3.2/umd/react.${build}.js`} type="text/javascript" crossOrigin="anonymous" />
-        <script src={`https://unpkg.com/react-dom@16.3.2/umd/react-dom.${build}.js`} type="text/javascript" crossOrigin="anonymous" />
+        <script src={`https://unpkg.com/react@16.4.0/umd/react.${build}.js`} type="text/javascript" crossOrigin="anonymous" />
+        <script src={`https://unpkg.com/react-dom@16.4.0/umd/react-dom.${build}.js`} type="text/javascript" crossOrigin="anonymous" />
       </>
     );
   }

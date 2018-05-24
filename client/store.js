@@ -26,7 +26,7 @@ export default function(initialState = defaultState) {
 
   const middlewares = [thunkMiddleware, sagaMiddleware];
 
-  if (process.env.NODE_ENV === "development" && !process.env.PORT) {
+  if (process.env.NODE_ENV === "development") {
     middlewares.push(createLogger());
   }
 
