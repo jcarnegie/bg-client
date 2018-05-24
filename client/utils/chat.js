@@ -72,9 +72,8 @@ export const messages = async channel => {
   return reverse(messages);
 };
 
-export const sendMessage = async(msg, channel) => {
-  return sbp(cb => channel.sendUserMessage(msg, null, null, cb));
-};
+export const sendMessage = async(msg, channel) =>
+  sbp(cb => channel.sendUserMessage(msg, null, null, cb));
 
 export const channelNameForLocale = locale => {
   /* Channel locale is always -en, unless the environment is 'production' */

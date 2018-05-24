@@ -1,10 +1,9 @@
 import "./message.less";
 import PropTypes from "prop-types";
-import sanitizeHtml from "sanitize-html";
+import xssFilters from "xss-filters";
 import React, {Component} from "react";
 import {path} from "ramda";
 import {Image} from "react-bootstrap";
-
 
 const reWebUrl = new RegExp(
   "^" +
@@ -74,11 +73,11 @@ export default class Message extends Component {
     );
   }
 
-  createMessage(textColor = "#393939") {
+  createMessage() {
     const {message} = this.props;
-    let msg = "";
-    msg = message.message.replace(reWebUrl, url => `<a href="${url}" target="_blank">${url}</a>`);
-    msg = sanitizeHtml(msg);
+    let msg = xssFilters.inHTMLData(message.message);
+    msg = msg.replace(reWebUrl, url => `<a rel="noopener noreferrer" href="${url}" target="_blank">${url}</a>`);
+
     return (
       <div
         className="contents"
