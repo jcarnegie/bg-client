@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import Loader from "../common/loader";
 import Item from "./item";
-import {uniq} from "lodash";
+import {contains, filter, map, prop, uniq} from "ramda";
 import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
 import {calcMaxItemsStats, isValidItemCategory} from "../../utils/item";
 
@@ -149,6 +149,8 @@ export default class Inventory extends Component {
 
   renderTabs() {
     const {items, games} = this.props;
+    const gameIdsWithItems = uniq(map(prop("game"), items.data));
+    const visibleGames = filter(g => contains(g._id, gameIdsWithItems), games.data);
 
     return (
       <>
@@ -162,7 +164,7 @@ export default class Inventory extends Component {
               this.renderTab(game, items.data.filter(item => item.game === game._id))
             )}
           </Tab>
-          {games.data.map((game, i) =>
+          {visibleGames.map((game, i) =>
             <Tab eventKey={i + 2} title={game.name} key={game._id}>
               {this.renderTab(game, items.data.filter(item => item.game === game._id))}
             </Tab>
