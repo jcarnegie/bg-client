@@ -2,14 +2,13 @@ import "./index.less";
 import "./tabs.less";
 import "./flex.less";
 import React, {Component, Fragment} from "react";
-import {Button, Col, Image, Row, Tab, Tabs} from "react-bootstrap";
+import {Button, Image, Row, Tab, Tabs} from "react-bootstrap";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import Loader from "../common/loader";
 import Item from "./item";
 import {uniq} from "lodash";
 import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
-import Chat from "../chat/chat";
 import {calcMaxItemsStats, isValidItemCategory} from "../../utils/item";
 
 
@@ -69,6 +68,14 @@ export default class Inventory extends Component {
   }
 
   render() {
+    return (
+      <div className="gap inventory">
+        {this.renderInventory()}
+      </div>
+    );
+  }
+
+  renderInventory() {
     const {items, games} = this.props;
 
     if (items.isLoading || games.isLoading) {
@@ -81,16 +88,7 @@ export default class Inventory extends Component {
       return null;
     }
 
-    return (
-      <Row>
-        <Col className="grap gap inventory">
-          {items.data.length ? this.renderTabs() : this.renderEmpty()}
-        </Col>
-        <Col className="chat">
-          <Chat />
-        </Col>
-      </Row>
-    );
+    return items.data.length ? this.renderTabs() : this.renderEmpty()
   }
 
   renderBackToGameButton() {

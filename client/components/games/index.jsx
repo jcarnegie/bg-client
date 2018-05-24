@@ -3,7 +3,6 @@ import React, {Component} from "react";
 import {Button, Col, Image, Row} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import {Link} from "react-router-dom";
-import Chat from "../chat/chat";
 
 const BANNER_SWITCH_INTERVAL = 10e3;
 const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
@@ -56,11 +55,6 @@ export default class GameList extends Component {
         }
       }, 1000)
     });
-
-    this.airdrop = ::this.airdrop;
-    this.banner = ::this.banner;
-    this.countdown = ::this.countdown;
-    this.switchBanner = ::this.switchBanner;
   }
 
   componentWillUnmount() {
@@ -79,10 +73,10 @@ export default class GameList extends Component {
   banner() {
     return (
       <div className={`banner ${this.state.showingGame.name}`}>
-        <div onClick={this.switchBanner} className="carousel-nav-button carousel-nav-button-left">
+        <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-left">
           <Image src="/images/buttons/arrow_large_left.png" />
         </div>
-        <div onClick={this.switchBanner} className="carousel-nav-button carousel-nav-button-right">
+        <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-right">
           <Image src="/images/buttons/arrow_large_left.png" />
         </div>
         <Button href={this.state.showingGame.url}>
@@ -159,96 +153,34 @@ export default class GameList extends Component {
     );
   }
 
-  countdownIsOver() {
-    return (COUNT_DOWN_DATE - new Date().getTime()) <= 0;
-  }
-
-  countdown() {
-    const {countdown} = this.state;
-
-    if (!countdown || this.countdownIsOver()) {
-      return null;
-    }
-
-    return (
-      <Col md={6} className="countdown">
-        <div className="caption">
-          <FormattedMessage id="pages.games.airdrop.countdown" />
-          <FormattedMessage id="components.colon" />
-        </div>
-        <Row className="time">
-          {Object.keys(countdown).map(key =>
-            <Col sm={3} key={key}>
-              <div className="value">{countdown[key]}</div>
-              <div className="units"><FormattedMessage id={`pages.games.airdrop.${key}`} /></div>
-            </Col>
-          )}
-        </Row>
-      </Col>
-    );
-  }
-
-  airdropOver() {
-    return (
-      <Col md={12} className="giveaway">
-        <Image src="/images/ether_logo.png" />
-        <div className="caption">
-          <FormattedMessage id="pages.games.airdrop.giveaway-over" />
-        </div>
-        <Button href="/airdrop">
-          <FormattedMessage id="pages.games.airdrop.learn-more" />
-        </Button>
-      </Col>
-    );
-  }
-
-  airdrop() {
-    return (
-      <Col md={6} className="giveaway">
-        <Image src="/images/ether_logo.png" />
-        <div className="caption">
-          <FormattedMessage id="pages.games.airdrop.giveaway" />
-        </div>
-        <Button href="/airdrop">
-          <FormattedMessage id="pages.games.airdrop.learn-more" />
-        </Button>
-      </Col>
-    );
-  }
-
   render() {
     return (
-      <Row>
-        <Col className="grap gap games">
-          {this.banner()}
-          <Row className="airdrop">
-            {this.countdown()}
-            {this.countdownIsOver() ? this.airdropOver() : this.airdrop()}
-          </Row>
-          <Row>
-            <Col className="announce">
-              <Row>
-                {this.comingSoon("/images/axie_banner.png")}
-                {this.comingSoon("/images/eth_town.png")}
-                {this.comingSoon("/images/mythereum_banner.png")}
-                {this.comingSoon("/images/in-development.png", "pages.games.announce.in-development")}
-              </Row>
-            </Col>
-          </Row>
-          <div className="explore">
-            <FormattedMessage id="pages.games.explore.questions" />
-            <Link to="/faq">
-              <FormattedMessage id="pages.games.explore.faq" />
-            </Link>
-            <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer">
-              <FormattedMessage id="pages.games.explore.discord" />
-            </a>
-          </div>
-        </Col>
-        <Col className="chat">
-          <Chat />
-        </Col>
-      </Row>
+      <div className="games">
+        {this.banner()}
+        <Row className="airdrop">
+          {this.countdown()}
+          {this.countdownIsOver() ? this.airdropOver() : this.airdrop()}
+        </Row>
+        <Row>
+          <Col className="announce">
+            <Row>
+              {this.comingSoon("/images/axie_banner.png")}
+              {this.comingSoon("/images/eth_town.png")}
+              {this.comingSoon("/images/mythereum_banner.png")}
+              {this.comingSoon("/images/in-development.png", "pages.games.announce.in-development")}
+            </Row>
+          </Col>
+        </Row>
+        <div className="explore">
+          <FormattedMessage id="pages.games.explore.questions" />
+          <Link to="/faq">
+            <FormattedMessage id="pages.games.explore.faq" />
+          </Link>
+          <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer">
+            <FormattedMessage id="pages.games.explore.discord" />
+          </a>
+        </div>
+      </div>
     );
   }
 }

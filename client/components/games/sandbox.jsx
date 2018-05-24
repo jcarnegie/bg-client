@@ -3,9 +3,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router";
 import Init from "../common/init";
-import {Col, Row} from "react-bootstrap";
 import {readFromQueryString} from "../../utils/location";
-import Chat from "../chat/chat";
 
 
 @withRouter
@@ -40,15 +38,10 @@ export default class SandBox extends Component {
 
   render() {
     return (
-      <Row>
-        <Col className="grap sandbox">
-          <Init />
-          {this.renderIframe()}
-        </Col>
-        <Col className="chat">
-          <Chat />
-        </Col>
-      </Row>
+      <div className="sandbox">
+        <Init />
+        {this.renderIframe()}
+      </div>
     );
   }
 }

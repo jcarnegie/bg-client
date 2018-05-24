@@ -3,11 +3,9 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
 import {connect} from "react-redux";
-import {Col, Row} from "react-bootstrap";
 import {GAME_REQUEST} from "../../../shared/constants/actions";
 import Init from "../common/init";
 import Loader from "../common/loader";
-import Chat from "../chat/chat";
 import {defaultLanguage} from "../../../shared/constants/language";
 
 
@@ -60,15 +58,10 @@ export default class Game extends Component {
 
   render() {
     return (
-      <Row>
-        <Col className="grap game">
-          <Init />
-          {this.renderIframe()}
-        </Col>
-        <Col className="chat">
-          <Chat />
-        </Col>
-      </Row>
+      <div className="game">
+        <Init />
+        {this.renderIframe()}
+      </div>
     );
   }
 }

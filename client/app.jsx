@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Switch} from "react-router";
-import {Grid} from "react-bootstrap";
+import {Grid, Row, Col} from "react-bootstrap";
 
 import GameList from "./components/games/index";
 import Game from "./components/games/game";
@@ -16,7 +16,7 @@ import Header from "./components/common/header";
 import GAListener from "./components/common/galistener";
 
 import LLRoute from "./components/common/routes/last-location";
-
+import Chat from "./components/chat/chat";
 
 export default class App extends Component {
   render() {
@@ -27,15 +27,22 @@ export default class App extends Component {
         <MetaMask />
         <Grid fluid>
           <Message />
-          <Switch>
-            <LLRoute path="/" component={GameList} exact />
-            <LLRoute path="/game/:_id" component={Game} exact />
-            <LLRoute path="/sandbox" component={SandBox} exact />
-            <LLRoute path="/inventory" component={Inventory} />
-            <LLRoute path="/faq" component={Faq} />
-            <LLRoute path="/airdrop" component={Airdrop} />
-            <LLRoute component={NotFound} />
-          </Switch>
+          <Row>
+            <Col className="content">
+              <Switch>
+                <LLRoute path="/" component={GameList} exact />
+                <LLRoute path="/game/:_id" component={Game} exact />
+                <LLRoute path="/sandbox" component={SandBox} exact />
+                <LLRoute path="/inventory" component={Inventory} />
+                <LLRoute path="/faq" component={Faq} />
+                <LLRoute path="/airdrop" component={Airdrop} />
+                <LLRoute component={NotFound} />
+              </Switch>
+            </Col>
+            <Col className="chat">
+              <Chat />
+            </Col>
+          </Row>
         </Grid>
       </>
     );
