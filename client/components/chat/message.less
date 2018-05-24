@@ -1,0 +1,38 @@
+.chat {
+
+  .message {
+    display: flex;
+    margin-top: 20px;
+
+    .message-box {
+      background-color: #FFF;
+      border-radius: 5px;
+      flex-grow: 10;
+      padding: 5px 10px 10px;
+      width: 185px;
+
+      &.my {
+        background-color: #DEECFB;
+      }
+
+      .header {
+        color: #9FB1CD;
+        display: flex;
+        font-size: 10px;
+        justify-content: space-between;
+      }
+
+      .body {
+        font-size: 13px;
+        margin-top: 5px;
+      }
+    }
+
+    .avatar {
+      align-self: flex-end;
+      flex-grow: 1;
+      margin: 0 10px;
+      width: 34px;
+    }
+  }
+}

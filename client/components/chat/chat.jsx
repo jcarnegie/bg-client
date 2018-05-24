@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import StayScrolled from "react-stay-scrolled";
-import {isEmpty} from "ramda";
 import {sendChatMessage} from "../../actions/chat";
 import Message from "./message";
 import {FormattedMessage} from "react-intl";
@@ -20,7 +19,8 @@ import {Button, Form, FormControl, FormGroup} from "react-bootstrap";
 export default class Chat extends Component {
   static propTypes = {
     chat: PropTypes.object,
-    user: PropTypes.object
+    user: PropTypes.object,
+    sendChatMessage: PropTypes.func
   };
 
   state = {
@@ -37,11 +37,11 @@ export default class Chat extends Component {
 
     e.preventDefault();
 
-    if (isEmpty(newMessage.trim())) {
+    if (!newMessage.trim()) {
       return;
     }
 
-    sendChatMessage(this.state.newMessage);
+    sendChatMessage(newMessage);
     // clear the message input
     this.setState({newMessage: ""});
   }
@@ -50,8 +50,7 @@ export default class Chat extends Component {
     this.setState({newMessage: e.target.value});
   }
 
-  storeScrolledControllers = ({stayScrolled, scrollBottom}) => {
-    this.stayScrolled = stayScrolled;
+  storeScrolledControllers({scrollBottom}) {
     this.scrollBottom = scrollBottom;
   };
 
@@ -63,7 +62,7 @@ export default class Chat extends Component {
         <div className="top">
           <FormattedMessage id="chat.chat" />
         </div>
-        <StayScrolled component="div" provideControllers={this.storeScrolledControllers} className="list">
+        <StayScrolled component="div" provideControllers={::this.storeScrolledControllers} className="list">
           {chat.messages.map(msg => <Message key={msg.messageId} message={msg} user={user} />)}
         </StayScrolled>
         <Form onSubmit={::this.handleSubmit}>
