@@ -1,4 +1,9 @@
 import {put, select, takeEvery} from "redux-saga/effects";
+import xssFilters from "xss-filters";
+
+import {
+  isEmpty,
+} from "ramda";
 import {channels as chatChannels,
   init as chatInit,
   messages as chatMessages,
@@ -15,10 +20,17 @@ function * sendChatMessage(action) {
     const state = yield select();
     const {currentChannel} = state.chat;
     const message = action.payload;
-    const sentMessage = yield sendMessage(message, currentChannel);
+    const cleanMsg = xssFilters.inHTMLData(message);
+
+    if (isEmpty(cleanMsg.trim())) {
+      return null;
+    }
+
+    const sentMessage = yield sendMessage(cleanMsg, currentChannel);
+
     yield put({
       type: CHAT_MESSAGE_SENT,
-      payload: sentMessage
+      payload: sentMessage,
     });
   } catch (e) {
     console.log("sendChatMessage error:", e);
