@@ -2,6 +2,7 @@ import "./modal.less";
 import "./form.less";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
+import ReactGA from "react-ga";
 import {Button, Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
@@ -59,6 +60,12 @@ export default class RegisterPopup extends Component {
     if (!this.isValid()) {
       return false;
     }
+
+    ReactGA.event({
+      category: "Site Interaction",
+      action: "Sign-up",
+      label: "Create account"
+    });
 
     this.sign();
   }

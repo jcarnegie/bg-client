@@ -1,6 +1,7 @@
 import "./chat.less";
 import PropTypes from "prop-types";
 import React, {Component} from "react";
+import ReactGA from "react-ga";
 import {connect} from "react-redux";
 import StayScrolled from "react-stay-scrolled";
 import {sendChatMessage} from "../../actions/chat";
@@ -42,6 +43,13 @@ export default class Chat extends Component {
     }
 
     sendChatMessage(newMessage);
+
+    ReactGA.event({
+      category: "Site Interaction",
+      action: "Chat",
+      label: "Send message"
+    });
+
     // clear the message input
     this.setState({newMessage: ""});
   }

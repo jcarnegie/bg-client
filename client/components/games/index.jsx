@@ -1,8 +1,10 @@
 import "./index.less";
 import React, {Component} from "react";
+import ReactGA from "react-ga";
 import {Button, Col, Image, Row} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
 
 const BANNER_SWITCH_INTERVAL = 10e3;
 const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
@@ -19,6 +21,12 @@ const GAMES = {
 };
 
 export default class GameList extends Component {
+  static propTypes = {
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired
+    }).isRequired
+  };
+
   state = {
     interval: null,
     bannerInterval: null,
@@ -79,12 +87,22 @@ export default class GameList extends Component {
         <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-right">
           <Image src="/images/buttons/arrow_large_left.png" />
         </div>
-        <Button href={this.state.showingGame.url}>
+        <Button onClick={::this.onBannerClick}>
           <Image src="/images/buttons/play/black.png" />
           <FormattedMessage id="pages.games.banner.play" />
         </Button>
       </div>
     );
+  }
+
+  onBannerClick() {
+    ReactGA.event({
+      category: "Site Interaction",
+      action: "Play",
+      label: this.state.showingGame.name
+    });
+
+    this.props.history.push(this.state.showingGame.url);
   }
 
   comingSoon(url = "", messageId = "pages.games.announce.coming-soon") {
