@@ -1,5 +1,6 @@
 import bluebird from "bluebird";
 import {call, put, select, takeEvery} from "redux-saga/effects";
+import {UPDATE as INTL_UPDATE} from "react-intl-redux";
 import {
   GIFT_REMOVE_ERROR,
   GIFT_REMOVE_LOADING,
@@ -22,13 +23,15 @@ import callAPI from "../utils/api";
 
 function * getItems(action) {
   try {
+    const {user} = yield select();
     yield put({
       type: INVENTORY_ITEMS_LOADING
     });
     const testItems = (readFromQueryString("testItems") === "true")
       ? "?testItems=true"
       : "";
-    const itemsUrl = `/items/${action.payload.wallet}${testItems}`;
+    const {language, wallet} = user.data;
+    const itemsUrl = `/items/${wallet}/${language}${testItems}`;
     const items = yield call(callAPI, itemsUrl, {
       method: "GET",
       headers: {
@@ -97,7 +100,6 @@ function * checkGifts() {
       payload: hashes // doesn't matter if tx succeed or failed
     });
   } catch (error) {
-    // console.error(error);
     yield put({
       type: GIFT_REMOVE_ERROR
     });
@@ -111,6 +113,7 @@ function * checkGifts() {
 
 export default function * inventorySaga() {
   yield takeEvery(USER_CHANGED, getItems);
+  yield takeEvery(INTL_UPDATE, getItems);
   yield takeEvery(INVENTORY_GAMES_REQUEST, getItems);
   yield takeEvery(USER_CHANGED, getGames);
   yield takeEvery(INVENTORY_ITEMS_REQUEST, getGames);
