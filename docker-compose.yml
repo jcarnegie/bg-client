@@ -4,6 +4,14 @@ services:
         image: mongo
         ports:
           - "27017:27017"
+    postgres:
+        image: postgres
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_PASSWORD: password
+        volumes:
+          - ./tmp/pgdata:/var/lib/postgresql/data
     api:
         build:
             context: ../PortalApi
@@ -20,6 +28,25 @@ services:
         volumes:
           - ../PortalApi:/app
           - /app/node_modules
+    gql:
+        build:
+            context: ../../oss/folieadeux
+            args:
+                NODE_ENV: development
+        command: yarnpkg run dev
+        ports:
+            - "4000:4000"
+        volumes:
+            - ../../oss/folieadeux:/app
+            - /app/node_modules
+        environment:
+            PG_HOST: postgres
+            PG_PORT: 5432
+            PG_USER: postgres
+            PG_PASS: password
+            PG_DB: postgres
+        depends_on:
+            - postgres
     web:
         build:
             context: .
@@ -44,4 +71,6 @@ services:
             - /app/node_modules
         depends_on:
             - mongo
+            - postgres
             - api
+            - gql

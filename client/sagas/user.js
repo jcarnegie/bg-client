@@ -1,7 +1,10 @@
+import gql from "graphql-tag";
 import {call, put, select, takeEvery} from "redux-saga/effects";
-import callAPI from "../utils/api";
 import {localization} from "../../shared/intl/setup";
 import {updateIntl} from "react-intl-redux";
+import {filter, isEmpty, map, merge, pickAll, prop, propEq} from "ramda";
+import callAPI from "../utils/api";
+import {client} from "../utils/apollo";
 import {
   BALANCE_ETH_CHANGED,
   BALANCE_PLAT_CHANGED,
@@ -17,7 +20,6 @@ import {
   USER_LOADING,
   VALIDATION_ADD_ALL
 } from "../../shared/constants/actions";
-
 
 function * fetchUser() {
   try {
@@ -78,32 +80,38 @@ function * createUser(action) {
     yield put({
       type: USER_LOADING
     });
-    const user = yield call(callAPI, "/users", {
-      method: "POST",
-      body: JSON.stringify(action.payload),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json; charset=utf-8"
+    const mutation = gql`
+      mutation createUser($payload: UserCreatePayload!) {
+        createUser(payload: $payload) {
+          id wallet nickName email language
+        }
       }
-    });
+    `;
+    const intl = yield select(state => state.intl);
+    const newUser = merge(action.payload, {language: intl.locale});
+    const userFields = ["wallet", "email", "nickName", "language"];
+    const variables = {payload: pickAll(userFields, newUser)};
+    const user = yield call(::client.mutate, {mutation, variables});
+
     yield put({
       type: USER_CHANGED,
-      payload: user
+      payload: user.data.createUser
     });
   } catch (error) {
     yield put({
       type: USER_ERROR
     });
-    const errors = [].concat(error);
-    if ([400, 409].includes(errors[0].status)) {
+    const dupErrors = filter(propEq("name", "UniqueConstraintError"), error.graphQLErrors);
+    const dups = map(prop("data"), dupErrors);
+    if (!isEmpty(dups)) {
       yield put({
         type: VALIDATION_ADD_ALL,
-        payload: errors
+        payload: dups
       });
     } else {
       yield put({
         type: MESSAGE_ADD_ALL,
-        payload: errors
+        payload: [error]
       });
     }
   }
