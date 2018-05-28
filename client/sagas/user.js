@@ -3,7 +3,6 @@ import {call, put, select, takeEvery} from "redux-saga/effects";
 import {localization} from "../../shared/intl/setup";
 import {updateIntl} from "react-intl-redux";
 import {dissoc, filter, isEmpty, map, merge, path, pickAll, prop, propEq} from "ramda";
-import callAPI from "../utils/api";
 import {client} from "../utils/apollo";
 import {
   BALANCE_ETH_CHANGED,
@@ -139,14 +138,6 @@ function * updateUser(action) {
       `;
       const variables = {id: user.data.id, payload: dissoc("__typename", merge(user.data, action.payload))};
       const _user = path(["data", "updateUser"], yield client.mutate({mutation, variables}));
-      // const _user = yield call(callAPI, `/user/${user.data.wallet}`, {
-      //   method: "PUT",
-      //   body: JSON.stringify(action.payload),
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json; charset=utf-8"
-      //   }
-      // });
       yield put({
         type: USER_CHANGED,
         payload: _user
