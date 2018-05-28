@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 import {call, put, select, takeEvery} from "redux-saga/effects";
 import {localization} from "../../shared/intl/setup";
 import {updateIntl} from "react-intl-redux";
-import {filter, isEmpty, map, merge, pickAll, prop, propEq} from "ramda";
+import {dissoc, filter, isEmpty, map, merge, path, pickAll, prop, propEq} from "ramda";
 import callAPI from "../utils/api";
 import {client} from "../utils/apollo";
 import {
@@ -44,7 +44,16 @@ function * fetchUser() {
       });
       return;
     }
-    const user = yield call(callAPI, `/user/${account.wallet}`);
+    const query = gql`
+      query viewUserByWallet($wallet: String!) {
+        viewUserByWallet(wallet: $wallet) {
+          id wallet nickName email language
+        }
+      }
+    `;
+    const variables = {wallet: account.wallet};
+    const result = yield client.query({query, variables});
+    const user = path(["data", "viewUserByWallet"], result);
     if (user) {
       yield put({
         type: USER_CHANGED,
@@ -121,14 +130,23 @@ function * updateUser(action) {
   const user = yield select(state => state.user);
   if (!user.isLoading && user.success) {
     try {
-      const _user = yield call(callAPI, `/user/${user.data.wallet}`, {
-        method: "PUT",
-        body: JSON.stringify(action.payload),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json; charset=utf-8"
+      const mutation = gql`
+        mutation updateUser($id: ID!, $payload: UserUpdatePayload!) {
+          updateUser(id: $id, payload: $payload) {
+            id wallet nickName email language
+          }
         }
-      });
+      `;
+      const variables = {id: user.data.id, payload: dissoc("__typename", merge(user.data, action.payload))};
+      const _user = path(["data", "updateUser"], yield client.mutate({mutation, variables}));
+      // const _user = yield call(callAPI, `/user/${user.data.wallet}`, {
+      //   method: "PUT",
+      //   body: JSON.stringify(action.payload),
+      //   headers: {
+      //     Accept: "application/json",
+      //     "Content-Type": "application/json; charset=utf-8"
+      //   }
+      // });
       yield put({
         type: USER_CHANGED,
         payload: _user
