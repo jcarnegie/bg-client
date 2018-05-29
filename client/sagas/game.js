@@ -1,14 +1,26 @@
+import gql from "graphql-tag";
 import {call, put, takeEvery} from "redux-saga/effects";
-import callAPI from "../utils/api";
+import {path} from "ramda";
+// import callAPI from "../utils/api";
+import {client} from "../utils/apollo";
 import {GAME_CHANGED, GAME_ERROR, GAME_LOADING, GAME_REQUEST, MESSAGE_ADD} from "../../shared/constants/actions";
-
 
 function * fetchGame(action) {
   try {
     yield put({
       type: GAME_LOADING
     });
-    const game = yield call(callAPI, `/game/${action.payload._id}`);
+    const query = gql`
+      query viewGame($id: ID!) {
+          viewGame(id: $id) {
+            id slug url api nft
+          }
+      }
+    `;
+    const variables = {id: action.payload.id};
+    const result = yield call(::client.query, {query, variables});
+    const game = path(["data", "viewGame"], result);
+    // const game = yield call(callAPI, `/game/${action.payload.id}`);
     if (game) {
       yield put({
         type: GAME_CHANGED,
