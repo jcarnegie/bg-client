@@ -24,4 +24,4 @@ artifacts:
 cache:
     paths:
       - './node_modules/**/*'
-      - 'build/**/*' 
+      - './build/**/*' 
