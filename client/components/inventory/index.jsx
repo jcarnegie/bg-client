@@ -160,7 +160,7 @@ export default class Inventory extends Component {
         </h2>
         <Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
           <Tab eventKey={1} title={<FormattedMessage id="pages.inventory.all-items" />}>
-            {games.data.map(game =>
+            {visibleGames.map(game =>
               this.renderTab(game, items.data.filter(item => item.game === game._id))
             )}
           </Tab>
