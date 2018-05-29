@@ -1,5 +1,7 @@
 import bluebird from "bluebird";
+import gql from "graphql-tag";
 import {call, put, select, takeEvery} from "redux-saga/effects";
+import {path} from "ramda";
 import {UPDATE as INTL_UPDATE} from "react-intl-redux";
 import {
   GIFT_REMOVE_ERROR,
@@ -18,8 +20,8 @@ import {
   USER_CHANGED
 } from "../../shared/constants/actions";
 import {readFromQueryString} from "../utils/location";
+import {client} from "../utils/apollo";
 import callAPI from "../utils/api";
-
 
 function * getItems(action) {
   try {
@@ -59,16 +61,12 @@ function * getGames(action) {
     yield put({
       type: INVENTORY_GAMES_LOADING
     });
-    const games = yield call(callAPI, "/games", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json; charset=utf-8"
-      }
-    });
+    const query = gql`{ listGames { id slug url api nft } }`;
+    const result = yield call(::client.query, {query});
+    const games = path(["data", "listGames"], result);
     yield put({
       type: INVENTORY_GAMES_CHANGED,
-      payload: games.list
+      payload: games
     });
   } catch (error) {
     yield put({
@@ -109,7 +107,6 @@ function * checkGifts() {
     });
   }
 }
-
 
 export default function * inventorySaga() {
   yield takeEvery(USER_CHANGED, getItems);
