@@ -8,6 +8,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      - echo "Code Build Directory: $CODEBUILD_SRC_DIR" 
       - echo Building the Docker image...          
       - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
@@ -23,5 +24,5 @@ artifacts:
       - imagedefinitions.json
 cache:
     paths:
-      - 'node_modules/**/*'
-      - 'build/**/*' 
+      - '/root/.node_modules/**/*'
+      - '/root/.build/**/*' 
