@@ -1,9 +1,9 @@
 version: "2"
 services:
-    mongo:
-        image: mongo
-        ports:
-          - "27017:27017"
+    # mongo:
+    #     image: mongo
+    #     ports:
+    #       - "27017:27017"
     postgres:
         image: postgres
         ports:
@@ -17,29 +17,14 @@ services:
             context: ../PortalApi
             args:
                 NODE_ENV: development
-        command: node_modules/.bin/nodemon server/server.js --exec babel-node
-        depends_on:
-          - mongo
-        ports:
-          - "7000:7000"
-        environment:
-          - NODE_ENV=development
-          - MONGO_URL=mongodb://mongo:27017/bitguild
-        volumes:
-          - ../PortalApi:/app
-          - /app/node_modules
-    gql:
-        build:
-            context: ../../oss/folieadeux
-            args:
-                NODE_ENV: development
         command: yarnpkg run dev
         ports:
-            - "4000:4000"
+            - "7000:7000"
         volumes:
-            - ../../oss/folieadeux:/app
+            - ../PortalApi:/app
             - /app/node_modules
         environment:
+            PORT: 7000
             PG_HOST: postgres
             PG_PORT: 5432
             PG_USER: postgres
@@ -70,7 +55,5 @@ services:
             - .:/app
             - /app/node_modules
         depends_on:
-            - mongo
             - postgres
             - api
-            - gql
