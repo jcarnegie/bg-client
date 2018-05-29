@@ -23,5 +23,5 @@ artifacts:
       - imagedefinitions.json
 cache:
     paths:
-      - './node_modules/**/*'
-      - './build/**/*' 
+      - 'node_modules/**/*'
+      - 'build/**/*' 
