@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
@@ -39,7 +40,7 @@ next.prepare().then(() => {
   app.use(bodyParser.text());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
-    extended: true
+    extended: true,
   }));
 
   app.use(morgan("tiny")); // "default", "short", "tiny", "dev"
@@ -48,7 +49,6 @@ next.prepare().then(() => {
     // /sandbox component={SandBox} exact
     // NotFound
 
-  // Server-side
   const route = pathMatch();
 
   app.get("/game/:_id", (req, res) => {
@@ -58,12 +58,12 @@ next.prepare().then(() => {
 
 
   app.get("/ping", (request, response) => {
-      response.status(200).json({pong: true});
-    });
+    response.status(200).json({pong: true});
+  });
 
   app.get("/favicon.png", (request, response) => {
-      response.sendFile(path.join(__dirname, "./static/favicon.png"));
-    });
+    response.sendFile(path.join(__dirname, "./static/favicon.png"));
+  });
 
   app.get("*", (req, res) => {
     return handle(req, res);

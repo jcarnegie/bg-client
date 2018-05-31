@@ -1,13 +1,14 @@
 import React, {Component} from "react";
-import ActiveLink from "../activelink";
 import Link from "next/link";
 import {Image, Nav, Navbar} from "react-bootstrap";
 import {FormattedMessage, injectIntl} from "react-intl";
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
+
+import ActiveLink from "../activelink";
 import Language from "../language";
 import Balance from "../balance";
 import User from "../user";
-import {connect} from "react-redux";
-import PropTypes from "prop-types";
 
 
 @injectIntl
@@ -38,7 +39,7 @@ export default class Header extends Component {
         <Nav navbar className="main-menu">
           <li>
             <ActiveLink
-              href={{pathname: "/inventory"}}
+              href="/inventory"
               activeStyle={{boxShadow: "inset 0px -4px 0px 0px #ffd57d"}}
             >
               <FormattedMessage id="components.menu.inventory" />

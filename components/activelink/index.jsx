@@ -19,10 +19,7 @@ const ActiveLink = ({children, router = Router, href, style, activeStyle}) => {
 ActiveLink.propTypes = {
   children: PropTypes.any,
   router: PropTypes.any,
-  href: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object,
-  ]),
+  href: PropTypes.string,
   style: PropTypes.object,
   activeStyle: PropTypes.object,
 };

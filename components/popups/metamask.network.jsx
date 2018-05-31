@@ -1,4 +1,3 @@
-
 import React, {Component} from "react";
 import {Modal} from "react-bootstrap";
 import PropTypes from "prop-types";

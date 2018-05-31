@@ -18,7 +18,7 @@ export default class User extends Component {
 
   render() {
     const {user} = this.props;
-    console.log('user: ', user);
+
     if (user.isLoading || !user.success) {
       return null;
     }

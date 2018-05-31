@@ -6,7 +6,7 @@ import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import ReactGA from "react-ga";
 import {connect} from "react-redux";
 
-import withFormHelper from "../../components/common/inputs/withFormHelper";
+import withFormHelper from "../inputs/withFormHelper";
 import {updateIntl} from "react-intl-redux/lib/index";
 import {localization} from "../../shared/intl/setup";
 

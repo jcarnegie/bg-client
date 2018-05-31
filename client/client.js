@@ -1,4 +1,3 @@
-
 import App from "./app";
 import render from "./utils/render";
 import configureStore from "./store";

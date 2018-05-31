@@ -7,7 +7,7 @@ import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import {wallet} from "../../shared/constants/placeholder";
 import nftABI from "../../shared/contracts/ERC721";
 import {GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD} from "../../shared/constants/actions";
-import withFormHelper from "../common/inputs/withFormHelper";
+import withFormHelper from "../inputs/withFormHelper";
 import InputGroupValidation from "../inputs/input.group.validation";
 
 

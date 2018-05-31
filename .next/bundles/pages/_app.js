@@ -319,14 +319,14 @@ function chatReducer() {
       });
 
     case __WEBPACK_IMPORTED_MODULE_1__shared_constants_actions__["k" /* CHAT_MESSAGE_RECEIVED */]:
-      var messages = action.payload.channel.url === state.currentChannel.url ? Object(__WEBPACK_IMPORTED_MODULE_0_ramda__["a" /* append */])(action.payload.message, state.messages) : state.messages;
+      var messages = action.payload.channel.url === state.currentChannel.url ? Object(__WEBPACK_IMPORTED_MODULE_0_ramda__["b" /* append */])(action.payload.message, state.messages) : state.messages;
       return _objectSpread({}, state, {
         messages: messages
       });
 
     case __WEBPACK_IMPORTED_MODULE_1__shared_constants_actions__["m" /* CHAT_MESSAGE_SENT */]:
       return _objectSpread({}, state, {
-        messages: Object(__WEBPACK_IMPORTED_MODULE_0_ramda__["a" /* append */])(action.payload, state.messages)
+        messages: Object(__WEBPACK_IMPORTED_MODULE_0_ramda__["b" /* append */])(action.payload, state.messages)
       });
 
     case __WEBPACK_IMPORTED_MODULE_1__shared_constants_actions__["n" /* CHAT_SET_CHANNEL */]:
@@ -1422,8 +1422,11 @@ function update() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator__ = __webpack_require__("./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__ = __webpack_require__("./node_modules/redux-saga/es/effects.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_chat__ = __webpack_require__("./client/utils/chat.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_xss_filters__ = __webpack_require__("./node_modules/xss-filters/src/xss-filters.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_xss_filters___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_xss_filters__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ramda__ = __webpack_require__("./node_modules/ramda/es/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_chat__ = __webpack_require__("./client/utils/chat.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
 
 
 (function () {
@@ -1460,8 +1463,10 @@ __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(chatSaga
 
 
 
+
+
 function sendChatMessage(action) {
-  var state, currentChannel, message, sentMessage;
+  var state, currentChannel, message, cleanMsg, sentMessage;
   return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function sendChatMessage$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -1474,32 +1479,42 @@ function sendChatMessage(action) {
           state = _context.sent;
           currentChannel = state.chat.currentChannel;
           message = action.payload;
-          _context.next = 8;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["g" /* sendMessage */])(message, currentChannel);
+          cleanMsg = __WEBPACK_IMPORTED_MODULE_2_xss_filters___default.a.inHTMLData(message);
 
-        case 8:
-          sentMessage = _context.sent;
+          if (!Object(__WEBPACK_IMPORTED_MODULE_3_ramda__["i" /* isEmpty */])(cleanMsg.trim())) {
+            _context.next = 9;
+            break;
+          }
+
+          return _context.abrupt("return", null);
+
+        case 9:
           _context.next = 11;
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["g" /* sendMessage */])(cleanMsg, currentChannel);
+
+        case 11:
+          sentMessage = _context.sent;
+          _context.next = 14;
           return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["m" /* CHAT_MESSAGE_SENT */],
+            type: __WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["m" /* CHAT_MESSAGE_SENT */],
             payload: sentMessage
           });
 
-        case 11:
-          _context.next = 16;
+        case 14:
+          _context.next = 19;
           break;
 
-        case 13:
-          _context.prev = 13;
+        case 16:
+          _context.prev = 16;
           _context.t0 = _context["catch"](0);
           console.log("sendChatMessage error:", _context.t0);
 
-        case 16:
+        case 19:
         case "end":
           return _context.stop();
       }
     }
-  }, _marked, this, [[0, 13]]);
+  }, _marked, this, [[0, 16]]);
 }
 
 function initChat(action) {
@@ -1511,7 +1526,7 @@ function initChat(action) {
         case 0:
           _action$payload = action.payload, wallet = _action$payload.wallet, nickName = _action$payload.nickName;
           _context2.next = 3;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["e" /* init */])(wallet, nickName);
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["e" /* init */])(wallet, nickName);
 
         case 3:
           _ref = _context2.sent;
@@ -1520,7 +1535,7 @@ function initChat(action) {
           user = _ref2[1];
           _context2.next = 9;
           return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["i" /* CHAT_INIT */],
+            type: __WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["i" /* CHAT_INIT */],
             payload: {
               sb: sb,
               user: user
@@ -1529,7 +1544,7 @@ function initChat(action) {
 
         case 9:
           _context2.next = 11;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["b" /* channels */])(sb);
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["b" /* channels */])(sb);
 
         case 11:
           channels = _context2.sent;
@@ -1540,18 +1555,18 @@ function initChat(action) {
 
         case 14:
           locale = _context2.sent;
-          channelName = Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["a" /* channelNameForLocale */])(locale);
+          channelName = Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["a" /* channelNameForLocale */])(locale);
           channelOperators = ["0xc40cD464ad0895571bB396071A4FaA81935353A5", // Jeff
           "0xa9Af3D88E5167cA6E9413CBB9b946EC95FE469ee" // Shain
           ];
 
-          if (Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["d" /* findChannelByName */])(channelName, channels)) {
+          if (Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["d" /* findChannelByName */])(channelName, channels)) {
             _context2.next = 22;
             break;
           }
 
           _context2.next = 20;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["c" /* createChannelWithName */])(channelName, channelOperators);
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["c" /* createChannelWithName */])(channelName, channelOperators);
 
         case 20:
           channel = _context2.sent;
@@ -1559,25 +1574,25 @@ function initChat(action) {
 
         case 22:
           _context2.next = 24;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["h" /* setChannelByName */])(channelName, channels);
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["h" /* setChannelByName */])(channelName, channels);
 
         case 24:
           channel = _context2.sent;
           _context2.next = 27;
           return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["n" /* CHAT_SET_CHANNEL */],
+            type: __WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["n" /* CHAT_SET_CHANNEL */],
             payload: channel
           });
 
         case 27:
           _context2.next = 29;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["f" /* messages */])(channel);
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["f" /* messages */])(channel);
 
         case 29:
           messages = _context2.sent;
           _context2.next = 32;
           return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["j" /* CHAT_LOAD_MESSAGES */],
+            type: __WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["j" /* CHAT_LOAD_MESSAGES */],
             payload: messages
           });
 
@@ -1595,11 +1610,11 @@ function chatSaga() {
       switch (_context3.prev = _context3.next) {
         case 0:
           _context3.next = 2;
-          return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["l" /* CHAT_MESSAGE_SEND */], sendChatMessage);
+          return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["l" /* CHAT_MESSAGE_SEND */], sendChatMessage);
 
         case 2:
           _context3.next = 4;
-          return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["X" /* USER_CHANGED */], initChat);
+          return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["X" /* USER_CHANGED */], initChat);
 
         case 4:
         case "end":
@@ -2061,9 +2076,11 @@ function rootSaga() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bluebird__ = __webpack_require__("./node_modules/bluebird/js/browser/bluebird.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bluebird___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_bluebird__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__ = __webpack_require__("./node_modules/redux-saga/es/effects.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_location__ = __webpack_require__("./client/utils/location.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_api__ = __webpack_require__("./client/utils/api.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_intl_redux__ = __webpack_require__("./node_modules/react-intl-redux/lib/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_intl_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_intl_redux__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_location__ = __webpack_require__("./client/utils/location.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_api__ = __webpack_require__("./client/utils/api.js");
 
 
 (function () {
@@ -2097,23 +2114,41 @@ __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(inventor
 
 
 
+
 function getItems(action) {
-  var testItems, itemsUrl, items;
+  var _ref, user, testItems, _user$data, language, wallet, itemsUrl, items;
+
   return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function getItems$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
           _context.next = 3;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["I" /* INVENTORY_ITEMS_LOADING */]
-          });
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["d" /* select */])();
 
         case 3:
-          testItems = Object(__WEBPACK_IMPORTED_MODULE_4__utils_location__["a" /* readFromQueryString */])("testItems") === "true" ? "?testItems=true" : "";
-          itemsUrl = "/items/".concat(action.payload.wallet).concat(testItems);
+          _ref = _context.sent;
+          user = _ref.user;
           _context.next = 7;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["b" /* call */])(__WEBPACK_IMPORTED_MODULE_5__utils_api__["a" /* default */], itemsUrl, {
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["I" /* INVENTORY_ITEMS_LOADING */]
+          });
+
+        case 7:
+          testItems = Object(__WEBPACK_IMPORTED_MODULE_5__utils_location__["a" /* readFromQueryString */])("testItems") === "true" ? "?testItems=true" : "";
+
+          if (user.data) {
+            _context.next = 10;
+            break;
+          }
+
+          return _context.abrupt("return");
+
+        case 10:
+          _user$data = user.data, language = _user$data.language, wallet = _user$data.wallet;
+          itemsUrl = "/items/".concat(wallet, "/").concat(language).concat(testItems);
+          _context.next = 14;
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["b" /* call */])(__WEBPACK_IMPORTED_MODULE_6__utils_api__["a" /* default */], itemsUrl, {
             method: "GET",
             headers: {
               Accept: "application/json",
@@ -2121,39 +2156,39 @@ function getItems(action) {
             }
           });
 
-        case 7:
+        case 14:
           items = _context.sent;
-          _context.next = 10;
+          _context.next = 17;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["G" /* INVENTORY_ITEMS_CHANGED */],
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["G" /* INVENTORY_ITEMS_CHANGED */],
             payload: items.list
           });
 
-        case 10:
-          _context.next = 18;
+        case 17:
+          _context.next = 25;
           break;
 
-        case 12:
-          _context.prev = 12;
+        case 19:
+          _context.prev = 19;
           _context.t0 = _context["catch"](0);
-          _context.next = 16;
+          _context.next = 23;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["H" /* INVENTORY_ITEMS_ERROR */]
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["H" /* INVENTORY_ITEMS_ERROR */]
           });
 
-        case 16:
-          _context.next = 18;
+        case 23:
+          _context.next = 25;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["K" /* MESSAGE_ADD */],
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["K" /* MESSAGE_ADD */],
             payload: _context.t0
           });
 
-        case 18:
+        case 25:
         case "end":
           return _context.stop();
       }
     }
-  }, _marked, this, [[0, 12]]);
+  }, _marked, this, [[0, 19]]);
 }
 
 function getGames(action) {
@@ -2165,12 +2200,12 @@ function getGames(action) {
           _context2.prev = 0;
           _context2.next = 3;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["E" /* INVENTORY_GAMES_LOADING */]
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["E" /* INVENTORY_GAMES_LOADING */]
           });
 
         case 3:
           _context2.next = 5;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["b" /* call */])(__WEBPACK_IMPORTED_MODULE_5__utils_api__["a" /* default */], "/games", {
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["b" /* call */])(__WEBPACK_IMPORTED_MODULE_6__utils_api__["a" /* default */], "/games", {
             method: "GET",
             headers: {
               Accept: "application/json",
@@ -2182,8 +2217,9 @@ function getGames(action) {
           games = _context2.sent;
           _context2.next = 8;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["C" /* INVENTORY_GAMES_CHANGED */],
-            payload: games
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["C" /* INVENTORY_GAMES_CHANGED */],
+            payload: games.list // TODO - perhaps remove list prop from API
+
           });
 
         case 8:
@@ -2195,13 +2231,13 @@ function getGames(action) {
           _context2.t0 = _context2["catch"](0);
           _context2.next = 14;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["D" /* INVENTORY_GAMES_ERROR */]
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["D" /* INVENTORY_GAMES_ERROR */]
           });
 
         case 14:
           _context2.next = 16;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["K" /* MESSAGE_ADD */],
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["K" /* MESSAGE_ADD */],
             payload: _context2.t0
           });
 
@@ -2231,7 +2267,7 @@ function checkGifts() {
 
           _context3.next = 7;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["A" /* GIFT_REMOVE_LOADING */]
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["A" /* GIFT_REMOVE_LOADING */]
           });
 
         case 7:
@@ -2251,7 +2287,7 @@ function checkGifts() {
           });
           _context3.next = 13;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["B" /* GIFT_REMOVE_SUCCESS */],
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["B" /* GIFT_REMOVE_SUCCESS */],
             payload: hashes // doesn't matter if tx succeed or failed
 
           });
@@ -2265,13 +2301,13 @@ function checkGifts() {
           _context3.t0 = _context3["catch"](0);
           _context3.next = 19;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["z" /* GIFT_REMOVE_ERROR */]
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["z" /* GIFT_REMOVE_ERROR */]
           });
 
         case 19:
           _context3.next = 21;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["c" /* put */])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["K" /* MESSAGE_ADD */],
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["K" /* MESSAGE_ADD */],
             payload: _context3.t0
           });
 
@@ -2289,25 +2325,29 @@ function inventorySaga() {
       switch (_context4.prev = _context4.next) {
         case 0:
           _context4.next = 2;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["X" /* USER_CHANGED */], getItems);
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_3_react_intl_redux__["UPDATE"], getItems);
 
         case 2:
           _context4.next = 4;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["F" /* INVENTORY_GAMES_REQUEST */], getGames);
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["F" /* INVENTORY_GAMES_REQUEST */], getGames);
 
         case 4:
           _context4.next = 6;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["X" /* USER_CHANGED */], getGames);
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["J" /* INVENTORY_ITEMS_REQUEST */], getItems);
 
         case 6:
           _context4.next = 8;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["J" /* INVENTORY_ITEMS_REQUEST */], getItems);
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["X" /* USER_CHANGED */], getGames);
 
         case 8:
           _context4.next = 10;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["R" /* NEW_BLOCK */], checkGifts);
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["X" /* USER_CHANGED */], getItems);
 
         case 10:
+          _context4.next = 12;
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["f" /* takeEvery */])(__WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["R" /* NEW_BLOCK */], checkGifts);
+
+        case 12:
         case "end":
           return _context4.stop();
       }
@@ -3316,7 +3356,7 @@ function userSaga() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(module, process) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__("./node_modules/redux/es/redux.js");
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__("./node_modules/redux/es/redux.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux_saga__ = __webpack_require__("./node_modules/redux-saga/es/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_devtools_extension__ = __webpack_require__("./node_modules/redux-devtools-extension/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_devtools_extension___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_redux_devtools_extension__);
@@ -3375,7 +3415,7 @@ function configureStore() {
   var sagaMiddleware = Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga__["b" /* default */])();
   var middlewares = [__WEBPACK_IMPORTED_MODULE_5_redux_thunk___default.a, sagaMiddleware];
 
-  if ("development" === "development" && !process.env.PORT) {// middlewares.push(createLogger()); // TODO - noise on server, perhaps use process.release.name
+  if (true) {// middlewares.push(createLogger()); // TODO
   }
 
   var composeEnhancers = __WEBPACK_IMPORTED_MODULE_0_redux__["compose"];
@@ -3445,7 +3485,7 @@ var _default2 = _default;
 })();
 
 ;
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__("./node_modules/next/node_modules/webpack/buildin/harmony-module.js")(module), __webpack_require__("./node_modules/process/browser.js")))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__("./node_modules/next/node_modules/webpack/buildin/harmony-module.js")(module)))
 
 /***/ }),
 
@@ -3587,11 +3627,11 @@ var sbp = function sbp(fn) {
   });
 };
 var firstNameLastInitial = function firstNameLastInitial(name) {
-  var parts = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["l" /* split */])(/\s+/, name);
-  var firstName = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["c" /* head */])(parts);
+  var parts = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["u" /* split */])(/\s+/, name);
+  var firstName = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["g" /* head */])(parts);
   var lastName = "";
-  if (Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["f" /* length */])(parts) > 1) lastName = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["e" /* last */])(parts);
-  var lastInitial = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["d" /* isEmpty */])(lastName) ? "" : " ".concat(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["m" /* toUpper */])(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["c" /* head */])(lastName)), ".");
+  if (Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["l" /* length */])(parts) > 1) lastName = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["k" /* last */])(parts);
+  var lastInitial = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["i" /* isEmpty */])(lastName) ? "" : " ".concat(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["v" /* toUpper */])(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["g" /* head */])(lastName)), ".");
   return "".concat(firstName).concat(lastInitial);
 };
 var chatNickName = function chatNickName(nickname) {
@@ -3671,7 +3711,7 @@ function () {
 }();
 var findChannelByName = function findChannelByName(name, channels) {
   var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _sb;
-  return Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["b" /* find */])(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["j" /* propEq */])("name", name), channels);
+  return Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["f" /* find */])(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["r" /* propEq */])("name", name), channels);
 };
 var getChannelByName =
 /*#__PURE__*/
@@ -3793,7 +3833,7 @@ function () {
 
           case 3:
             messages = _context6.sent;
-            return _context6.abrupt("return", Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["k" /* reverse */])(messages));
+            return _context6.abrupt("return", Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["t" /* reverse */])(messages));
 
           case 5:
           case "end":
@@ -4195,18 +4235,17 @@ function (_Component) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(module) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MetaMask; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/cjs/react.development.js");
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/cjs/react.development.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__popups_metamask_install__ = __webpack_require__("./components/popups/metamask.install.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__popups_metamask_login__ = __webpack_require__("./components/popups/metamask.login.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__popups_metamask_network__ = __webpack_require__("./components/popups/metamask.network.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__popups_register__ = __webpack_require__("./components/popups/register.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types__ = __webpack_require__("./node_modules/next/node_modules/prop-types/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_redux__ = __webpack_require__("./node_modules/react-redux/es/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__client_utils_network__ = __webpack_require__("./client/utils/network.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__("./node_modules/next/node_modules/prop-types/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__("./node_modules/react-redux/es/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__client_utils_network__ = __webpack_require__("./client/utils/network.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__popups_metamask_install__ = __webpack_require__("./components/popups/metamask.install.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__popups_metamask_login__ = __webpack_require__("./components/popups/metamask.login.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__popups_metamask_network__ = __webpack_require__("./components/popups/metamask.network.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__popups_register__ = __webpack_require__("./components/popups/register.jsx");
 var _dec,
     _class,
     _class2,
@@ -4241,14 +4280,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+ // import {injectIntl} from "react-intl";
 
 
 
 
 
 
+ // @injectIntl
 
-var MetaMask = (_dec = Object(__WEBPACK_IMPORTED_MODULE_6_react_redux__["connect"])(function (state) {
+var MetaMask = (_dec = Object(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(function (state) {
   return {
     account: state.account,
     network: state.network,
@@ -4286,14 +4327,14 @@ function (_Component) {
             if (window.web3.eth.accounts[0] !== _this2.props.account.wallet) {
               if (window.web3.eth.accounts.length) {
                 _this2.props.dispatch({
-                  type: __WEBPACK_IMPORTED_MODULE_7__shared_constants_actions__["a" /* ACCOUNT_CHANGED */],
+                  type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["a" /* ACCOUNT_CHANGED */],
                   payload: {
                     wallet: window.web3.eth.accounts[0]
                   }
                 });
               } else if (_this2.props.account.isLoading || _this2.props.account.success) {
                 _this2.props.dispatch({
-                  type: __WEBPACK_IMPORTED_MODULE_7__shared_constants_actions__["b" /* ACCOUNT_ERROR */]
+                  type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["b" /* ACCOUNT_ERROR */]
                 });
               }
             }
@@ -4302,12 +4343,12 @@ function (_Component) {
         window.web3.eth.filter("latest").watch(function (error, result) {
           if (error) {
             _this2.props.dispatch({
-              type: __WEBPACK_IMPORTED_MODULE_7__shared_constants_actions__["K" /* MESSAGE_ADD */],
+              type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["K" /* MESSAGE_ADD */],
               payload: error
             });
           } else {
             _this2.props.dispatch({
-              type: __WEBPACK_IMPORTED_MODULE_7__shared_constants_actions__["R" /* NEW_BLOCK */],
+              type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["R" /* NEW_BLOCK */],
               payload: result
             });
           }
@@ -4322,7 +4363,6 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log("metamask: this.props: ", this.props);
       var _props = this.props,
           network = _props.network,
           account = _props.account,
@@ -4334,29 +4374,29 @@ function (_Component) {
         return null;
       }
 
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Fragment, null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__popups_metamask_install__["a" /* default */], {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Fragment, null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__popups_metamask_install__["a" /* default */], {
         show: !MetaMask.isInstalled(),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 96
+          lineNumber: 100
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__popups_metamask_login__["a" /* default */], {
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__popups_metamask_login__["a" /* default */], {
         show: !account.isLoading && !account.success,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 97
+          lineNumber: 101
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__popups_metamask_network__["a" /* default */], {
-        show: !network.isLoading && network.success && !Object.keys(__WEBPACK_IMPORTED_MODULE_8__client_utils_network__["a" /* default */]).includes(network.data.id),
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__popups_metamask_network__["a" /* default */], {
+        show: !network.isLoading && network.success && !Object.keys(__WEBPACK_IMPORTED_MODULE_4__client_utils_network__["a" /* default */]).includes(network.data.id),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 98
+          lineNumber: 102
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__popups_register__["a" /* default */], {
-        show: !network.isLoading && network.success && Object.keys(__WEBPACK_IMPORTED_MODULE_8__client_utils_network__["a" /* default */]).includes(network.data.id) && !user.isLoading && !user.success,
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__popups_register__["a" /* default */], {
+        show: !network.isLoading && network.success && Object.keys(__WEBPACK_IMPORTED_MODULE_4__client_utils_network__["a" /* default */]).includes(network.data.id) && !user.isLoading && !user.success,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 99
+          lineNumber: 103
         }
       }));
     }
@@ -4370,9 +4410,9 @@ function (_Component) {
   }], [{
     key: "getInitialProps",
     value: function getInitialProps(ctx) {
-      return {
-        pathname: ctx.req.originalUrl
-      };
+      var props = {};
+      if (ctx && ctx.req) props.pathname = ctx.req.originalUrl;
+      return props;
     }
   }, {
     key: "isInstalled",
@@ -4383,13 +4423,15 @@ function (_Component) {
 
   return MetaMask;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]), _class2.propTypes = {
-  account: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.object,
-  network: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.object,
-  user: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.object,
-  dispatch: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.func,
-  pathname: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string
+  account: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
+  network: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
+  user: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
+  dispatch: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+  pathname: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string
 }, _temp2)) || _class);
-
+var _default = MetaMask;
+var _default2 = _default;
+/* harmony default export */ __webpack_exports__["a"] = (_default2);
 ;
 
 (function () {
@@ -4402,6 +4444,7 @@ function (_Component) {
   }
 
   reactHotLoader.register(MetaMask, "MetaMask", "/Users/shain/repositories/bitguild/PortalClient/components/common/metamask.jsx");
+  reactHotLoader.register(_default, "default", "/Users/shain/repositories/bitguild/PortalClient/components/common/metamask.jsx");
   leaveModule(module);
 })();
 
@@ -4418,6 +4461,7 @@ function (_Component) {
   }
 
   reactHotLoader.register(MetaMask, "MetaMask", "/Users/shain/repositories/bitguild/PortalClient/components/common/metamask.jsx");
+  reactHotLoader.register(_default2, "default", "/Users/shain/repositories/bitguild/PortalClient/components/common/metamask.jsx");
   leaveModule(module);
 })();
 
@@ -4609,7 +4653,7 @@ function (_Component) {
     value: function render() {
       var children = this.props.children;
       var props = this.props;
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["e" /* FormControl */], _extends({}, props, {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["g" /* FormControl */], _extends({}, props, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 47
@@ -4677,6 +4721,179 @@ function (_Component) {
   }
 
   reactHotLoader.register(Input, "Input", "/Users/shain/repositories/bitguild/PortalClient/components/inputs/input.jsx");
+  leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__("./node_modules/next/node_modules/webpack/buildin/harmony-module.js")(module)))
+
+/***/ }),
+
+/***/ "./components/inputs/withFormHelper.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony export (immutable) */ __webpack_exports__["a"] = withFormHelper;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/cjs/react.development.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _jsxFileName = "/Users/shain/repositories/bitguild/PortalClient/components/inputs/withFormHelper.jsx";
+
+(function () {
+  var enterModule = __webpack_require__("./node_modules/next/node_modules/react-hot-loader/index.js").enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+(function () {
+  var enterModule = __webpack_require__("./node_modules/next/node_modules/react-hot-loader/index.js").enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+function withFormHelper(WrappedComponent) {
+  return (
+    /*#__PURE__*/
+    function (_Component) {
+      _inherits(FormHelper, _Component);
+
+      function FormHelper() {
+        var _ref;
+
+        var _temp, _this;
+
+        _classCallCheck(this, FormHelper);
+
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_ref = FormHelper.__proto__ || Object.getPrototypeOf(FormHelper)).call.apply(_ref, [this].concat(args))), _this.state = {// don't remove
+        }, _temp));
+      }
+
+      _createClass(FormHelper, [{
+        key: "onChange",
+        value: function onChange(e) {
+          var _e$target = e.target,
+              name = _e$target.name,
+              type = _e$target.type,
+              checked = _e$target.checked,
+              value = _e$target.value;
+
+          if (e.target.tagName === "SELECT") {
+            if (type === "select-one") {
+              switch (e.target.getAttribute("type")) {
+                case "number":
+                  return this.setState(_defineProperty({}, name, value === "" ? value : parseFloat(value)));
+
+                default:
+                  return this.setState(_defineProperty({}, name, value));
+              }
+            } else {
+              // select-multiple
+              switch (e.target.getAttribute("type")) {
+                case "number":
+                  return this.setState(_defineProperty({}, name, [].slice.call(e.target.selectedOptions).map(function (a) {
+                    return parseFloat(a.value);
+                  })));
+
+                default:
+                  return this.setState(_defineProperty({}, name, [].slice.call(e.target.selectedOptions).map(function (a) {
+                    return a.value;
+                  })));
+              }
+            }
+          } else {
+            // INPUT
+            switch (type) {
+              case "number":
+                return this.setState(_defineProperty({}, name, value === "" ? value : parseFloat(value)));
+
+              case "checkbox":
+                return this.setState(_defineProperty({}, name, checked));
+
+              case "text":
+              case "email":
+              case "password":
+              default:
+                return this.setState(_defineProperty({}, name, value));
+            }
+          }
+        }
+      }, {
+        key: "render",
+        value: function render() {
+          // console.log("FormHelper:render", this.props, this.state);
+          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(WrappedComponent, _extends({}, this.props, {
+            formData: this.state,
+            onChange: this.onChange.bind(this),
+            setState: this.setState.bind(this),
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 60
+            }
+          }));
+        }
+      }, {
+        key: "__reactstandin__regenerateByEval",
+        // @ts-ignore
+        value: function __reactstandin__regenerateByEval(key, code) {
+          // @ts-ignore
+          this[key] = eval(code);
+        }
+      }]);
+
+      return FormHelper;
+    }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"])
+  );
+}
+;
+
+(function () {
+  var reactHotLoader = __webpack_require__("./node_modules/next/node_modules/react-hot-loader/index.js").default;
+
+  var leaveModule = __webpack_require__("./node_modules/next/node_modules/react-hot-loader/index.js").leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(withFormHelper, "withFormHelper", "/Users/shain/repositories/bitguild/PortalClient/components/inputs/withFormHelper.jsx");
+  leaveModule(module);
+})();
+
+;
+;
+
+(function () {
+  var reactHotLoader = __webpack_require__("./node_modules/next/node_modules/react-hot-loader/index.js").default;
+
+  var leaveModule = __webpack_require__("./node_modules/next/node_modules/react-hot-loader/index.js").leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(withFormHelper, "withFormHelper", "/Users/shain/repositories/bitguild/PortalClient/components/inputs/withFormHelper.jsx");
   leaveModule(module);
 })();
 
@@ -4754,15 +4971,15 @@ function withGroup(Input) {
             required = _props.required,
             validation = _props.validation;
         var props = Object(__WEBPACK_IMPORTED_MODULE_2_lodash__["omit"])(this.props, ["validation"]);
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["f" /* FormGroup */], {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["h" /* FormGroup */], {
           controlId: this.props.name,
           validationState: validation ? "error" : null,
           __source: {
             fileName: _jsxFileName,
             lineNumber: 24
           }
-        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */], {
-          componentClass: __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["c" /* ControlLabel */],
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Col */], {
+          componentClass: __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["e" /* ControlLabel */],
           __source: {
             fileName: _jsxFileName,
             lineNumber: 25
@@ -4778,13 +4995,13 @@ function withGroup(Input) {
             fileName: _jsxFileName,
             lineNumber: 27
           }
-        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["g" /* Glyphicon */], {
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["i" /* Glyphicon */], {
           glyph: "asterisk",
           __source: {
             fileName: _jsxFileName,
             lineNumber: 27
           }
-        })) : null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Col */], {
+        })) : null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Col */], {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 29
@@ -4794,7 +5011,7 @@ function withGroup(Input) {
             fileName: _jsxFileName,
             lineNumber: 30
           }
-        })), validation ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["i" /* HelpBlock */], {
+        })), validation ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["k" /* HelpBlock */], {
           __source: {
             fileName: _jsxFileName,
             lineNumber: 31
@@ -5130,14 +5347,14 @@ function (_Component) {
     key: "render",
     value: function render() {
       var show = this.props.show;
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["l" /* Modal */], {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["n" /* Modal */], {
         show: show,
         className: "metamask-install",
         __source: {
           fileName: _jsxFileName,
           lineNumber: 16
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["l" /* Modal */].Body, {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["n" /* Modal */].Body, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 17
@@ -5190,12 +5407,12 @@ function (_Component) {
           fileName: _jsxFileName,
           lineNumber: 24
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["d" /* Form */], {
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["f" /* Form */], {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 26
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Button */], {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["b" /* Button */], {
         className: "btn-block text-uppercase",
         href: "https://metamask.io/",
         target: "_blank",
@@ -5334,14 +5551,14 @@ function (_Component) {
     key: "render",
     value: function render() {
       var show = this.props.show;
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["l" /* Modal */], {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["n" /* Modal */], {
         show: show,
         className: "metamask-login",
         __source: {
           fileName: _jsxFileName,
           lineNumber: 16
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["l" /* Modal */].Body, {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["n" /* Modal */].Body, {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 17
@@ -5502,61 +5719,61 @@ function (_Component) {
     key: "render",
     value: function render() {
       var show = this.props.show;
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["l" /* Modal */], {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["n" /* Modal */], {
         show: show,
         className: "metamask-network",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 17
+          lineNumber: 16
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["l" /* Modal */].Body, {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["n" /* Modal */].Body, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 18
+          lineNumber: 17
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 19
+          lineNumber: 18
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h2", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 20
+          lineNumber: 19
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_intl__["FormattedMessage"], {
         id: "modals.metamask-network.title",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 20
+          lineNumber: 19
         }
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 21
+          lineNumber: 20
         }
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 22
+          lineNumber: 21
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_intl__["FormattedMessage"], {
         id: "modals.metamask-network.p1",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 22
+          lineNumber: 21
         }
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
         className: "note",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 23
+          lineNumber: 22
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_intl__["FormattedHTMLMessage"], {
         id: "modals.metamask-network.faq",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 24
+          lineNumber: 23
         }
       })))));
     }
@@ -5622,13 +5839,19 @@ function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_classnames__ = __webpack_require__("./node_modules/classnames/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_classnames__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__ = __webpack_require__("./node_modules/react-bootstrap/es/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux__ = __webpack_require__("./node_modules/react-redux/es/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_intl__ = __webpack_require__("./node_modules/react-intl/lib/index.es.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__shared_constants_placeholder__ = __webpack_require__("./shared/constants/placeholder.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__shared_constants_regexp__ = __webpack_require__("./shared/constants/regexp.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared_constants_language__ = __webpack_require__("./shared/constants/language.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__inputs_input_group_validation__ = __webpack_require__("./components/inputs/input.group.validation.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_intl__ = __webpack_require__("./node_modules/react-intl/lib/index.es.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_ga__ = __webpack_require__("./node_modules/react-ga/dist/react-ga.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_ga___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_ga__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_redux__ = __webpack_require__("./node_modules/react-redux/es/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputs_withFormHelper__ = __webpack_require__("./components/inputs/withFormHelper.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_intl_redux_lib_index__ = __webpack_require__("./node_modules/react-intl-redux/lib/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_intl_redux_lib_index___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_react_intl_redux_lib_index__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared_intl_setup__ = __webpack_require__("./shared/intl/setup.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shared_constants_placeholder__ = __webpack_require__("./shared/constants/placeholder.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_constants_regexp__ = __webpack_require__("./shared/constants/regexp.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shared_constants_language__ = __webpack_require__("./shared/constants/language.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__inputs_input_group_validation__ = __webpack_require__("./components/inputs/input.group.validation.jsx");
 var _dec,
     _class,
     _class2,
@@ -5648,10 +5871,6 @@ var _dec,
 })();
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5676,12 +5895,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var RegisterPopup = (_dec = Object(__WEBPACK_IMPORTED_MODULE_4_react_redux__["connect"])(function (state) {
+
+
+
+
+var RegisterPopup = (_dec = Object(__WEBPACK_IMPORTED_MODULE_6_react_redux__["connect"])(function (state) {
   return {
     account: state.account,
     messages: state.messages
   };
-}), Object(__WEBPACK_IMPORTED_MODULE_5_react_intl__["injectIntl"])(_class = _dec(_class = (_temp2 = _class2 =
+}), Object(__WEBPACK_IMPORTED_MODULE_7__inputs_withFormHelper__["a" /* default */])(_class = Object(__WEBPACK_IMPORTED_MODULE_4_react_intl__["injectIntl"])(_class = _dec(_class = (_temp2 = _class2 =
 /*#__PURE__*/
 function (_Component) {
   _inherits(RegisterPopup, _Component);
@@ -5697,15 +5920,7 @@ function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_ref = RegisterPopup.__proto__ || Object.getPrototypeOf(RegisterPopup)).call.apply(_ref, [this].concat(args))), _this.state = {
-      formData: {
-        get: function get(key) {
-          return this[key];
-        },
-        wallet: _this.props.account.wallet,
-        language: _this.props.intl.locale
-      }
-    }, _temp));
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_ref = RegisterPopup.__proto__ || Object.getPrototypeOf(RegisterPopup)).call.apply(_ref, [this].concat(args))), _this.state = {}, _temp));
   }
 
   _createClass(RegisterPopup, [{
@@ -5713,57 +5928,42 @@ function (_Component) {
     value: function onSubmit(e) {
       e.preventDefault();
 
-      if (!this.isValid(Array.from(e.target.elements))) {
+      if (!this.isValid()) {
         return false;
       }
 
-      this.setState({
-        formData: new FormData(e.target)
-      }, this.sign);
+      __WEBPACK_IMPORTED_MODULE_5_react_ga___default.a.event({
+        category: "Site Interaction",
+        action: "Sign-up",
+        label: "Create account"
+      });
+      this.sign();
     }
   }, {
     key: "isValid",
-    value: function isValid(a) {
-      var intl = this.props.intl;
+    value: function isValid() {
+      var _props = this.props,
+          intl = _props.intl,
+          formData = _props.formData;
+      var e;
       var isValid = true;
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
 
-      try {
-        for (var _iterator = a[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _e = _step.value;
+      for (var i in formData) {
+        switch (i) {
+          case "wallet":
+            if (!window.web3.isAddress(formData[i])) {
+              e = document.getElementsByName(i)[0];
+              e.parentNode.parentNode.classList.add("has-error");
+              e.setCustomValidity(intl.formatMessage({
+                id: "fields.wallet.invalid"
+              }));
+              isValid = false;
+            }
 
-          switch (_e.name) {
-            case "wallet":
-              if (!window.web3.isAddress(_e.value)) {
-                _e.parentNode.parentNode.classList.add("has-error");
+            break;
 
-                _e.setCustomValidity(intl.formatMessage({
-                  id: "fields.wallet.invalid"
-                }));
-
-                isValid = false;
-              }
-
-              break;
-
-            default:
-              break;
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return != null) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
+          default:
+            break;
         }
       }
 
@@ -5772,23 +5972,21 @@ function (_Component) {
   }, {
     key: "sign",
     value: function sign() {
-      var _this2 = this;
-
-      var _props = this.props,
-          dispatch = _props.dispatch,
-          intl = _props.intl;
+      var _props2 = this.props,
+          dispatch = _props2.dispatch,
+          intl = _props2.intl,
+          formData = _props2.formData;
       var message = window.web3.toHex(intl.formatMessage({
         id: "modals.register.text"
       }));
-      var from = this.state.formData.get("wallet");
       window.web3.currentProvider.sendAsync({
         method: "personal_sign",
-        params: [message, from],
-        from: from
+        params: [message, formData.wallet],
+        from: formData.wallet
       }, function (err, result) {
         if (err || result.error) {
           dispatch({
-            type: __WEBPACK_IMPORTED_MODULE_8__shared_constants_actions__["K" /* MESSAGE_ADD */],
+            type: __WEBPACK_IMPORTED_MODULE_12__shared_constants_actions__["K" /* MESSAGE_ADD */],
             payload: err || result.error
           });
           return;
@@ -5797,31 +5995,29 @@ function (_Component) {
         window.web3.currentProvider.sendAsync({
           method: "personal_ecRecover",
           params: [message, result.result],
-          from: from
+          from: formData.wallet
         }, function (err, recovered) {
           if (err || result.error) {
             dispatch({
-              type: __WEBPACK_IMPORTED_MODULE_8__shared_constants_actions__["K" /* MESSAGE_ADD */],
+              type: __WEBPACK_IMPORTED_MODULE_12__shared_constants_actions__["K" /* MESSAGE_ADD */],
               payload: err || result.error
             });
             return;
           }
 
-          if (recovered.result === from) {
+          if (recovered.result === formData.wallet) {
             dispatch({
-              type: __WEBPACK_IMPORTED_MODULE_8__shared_constants_actions__["o" /* CREATE_USER */],
-              payload: Array.from(_this2.state.formData.entries()).reduce(function (memo, pair) {
-                return _objectSpread({}, memo, _defineProperty({}, pair[0], pair[1]));
-              }, {})
+              type: __WEBPACK_IMPORTED_MODULE_12__shared_constants_actions__["o" /* CREATE_USER */],
+              payload: formData
             });
           } else {
             dispatch({
-              type: __WEBPACK_IMPORTED_MODULE_8__shared_constants_actions__["K" /* MESSAGE_ADD */],
+              type: __WEBPACK_IMPORTED_MODULE_12__shared_constants_actions__["K" /* MESSAGE_ADD */],
               payload: new Error(intl.formatMessage({
                 id: "errors.spoofing-attempt"
               }, {
                 wallet1: recovered.result,
-                wallet2: from
+                wallet2: formData.wallet
               }))
             });
           }
@@ -5829,63 +6025,74 @@ function (_Component) {
       });
     }
   }, {
+    key: "onChangeLang",
+    value: function onChangeLang(e) {
+      var _props3 = this.props,
+          dispatch = _props3.dispatch,
+          onChange = _props3.onChange;
+      dispatch(Object(__WEBPACK_IMPORTED_MODULE_8_react_intl_redux_lib_index__["updateIntl"])(__WEBPACK_IMPORTED_MODULE_9__shared_intl_setup__["a" /* localization */][e.target.value]));
+      onChange(e);
+    }
+  }, {
     key: "render",
     value: function render() {
-      var show = this.props.show;
-      var _props2 = this.props,
-          user = _props2.user,
-          intl = _props2.intl,
-          network = _props2.network;
-      var networkSuccess = network && !network.isLoading && network.success;
-      var userSuccess = user && !user.isLoading && user.success;
-      show = show || networkSuccess && userSuccess;
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["l" /* Modal */], {
+      var _props4 = this.props,
+          show = _props4.show,
+          formData = _props4.formData,
+          onChange = _props4.onChange; // let {show} = this.props;
+      // const {user, intl, network} = this.props;
+      // const networkSuccess = network && !network.isLoading && network.success;
+      // const userSuccess = user && !user.isLoading && user.success;
+      // show = show || (networkSuccess && userSuccess);
+
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["n" /* Modal */], {
         show: show,
         className: __WEBPACK_IMPORTED_MODULE_2_classnames___default()("register", {
           show: show
         }),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 153
+          lineNumber: 166
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["l" /* Modal */].Body, {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["n" /* Modal */].Body, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 154
+          lineNumber: 167
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["d" /* Form */], {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["f" /* Form */], {
         onSubmit: this.onSubmit.bind(this),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 155
+          lineNumber: 168
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h2", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 156
+          lineNumber: 169
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_intl__["FormattedMessage"], {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_intl__["FormattedMessage"], {
         id: "modals.register.title",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 157
+          lineNumber: 170
         }
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__inputs_input_group_validation__["a" /* default */], {
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14__inputs_input_group_validation__["a" /* default */], {
         name: "language",
         componentClass: "select",
-        value: this.state.formData.get("language"),
+        value: formData.language,
+        onChange: this.onChangeLang.bind(this),
         required: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 159
+          lineNumber: 172
         }
-      }, __WEBPACK_IMPORTED_MODULE_9__shared_constants_language__["b" /* enabledLanguages */].map(function (language) {
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_intl__["FormattedMessage"], {
+      }, __WEBPACK_IMPORTED_MODULE_13__shared_constants_language__["b" /* enabledLanguages */].map(function (language) {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_intl__["FormattedMessage"], {
           key: language,
           id: "components.language.".concat(language),
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 166
+            lineNumber: 180
           }
         }, function (formattedMessage) {
           return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
@@ -5893,85 +6100,88 @@ function (_Component) {
             value: language,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 167
+              lineNumber: 181
             }
           }, formattedMessage);
         });
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__inputs_input_group_validation__["a" /* default */], {
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14__inputs_input_group_validation__["a" /* default */], {
         name: "wallet",
-        defaultValue: this.state.formData.get("wallet"),
-        placeholder: __WEBPACK_IMPORTED_MODULE_6__shared_constants_placeholder__["c" /* wallet */],
+        defaultValue: formData.wallet,
+        onChange: onChange,
+        placeholder: __WEBPACK_IMPORTED_MODULE_10__shared_constants_placeholder__["c" /* wallet */],
         maxLength: "42",
         minLength: "42",
         required: true,
         readOnly: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 171
+          lineNumber: 185
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__inputs_input_group_validation__["a" /* default */], {
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14__inputs_input_group_validation__["a" /* default */], {
         type: "email",
         name: "email",
-        pattern: __WEBPACK_IMPORTED_MODULE_7__shared_constants_regexp__["a" /* reEmail */].source.replace("a-z", "a-zA-Z") // there is no `i` flag
+        pattern: __WEBPACK_IMPORTED_MODULE_11__shared_constants_regexp__["a" /* reEmail */].source.replace("a-z", "a-zA-Z") // there is no `i` flag
         ,
-        defaultValue: this.state.formData.get("email"),
-        placeholder: __WEBPACK_IMPORTED_MODULE_6__shared_constants_placeholder__["a" /* email */],
+        defaultValue: formData.email,
+        onChange: onChange,
+        placeholder: __WEBPACK_IMPORTED_MODULE_10__shared_constants_placeholder__["a" /* email */],
         required: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 180
+          lineNumber: 195
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__inputs_input_group_validation__["a" /* default */], {
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14__inputs_input_group_validation__["a" /* default */], {
         type: "text",
         name: "nickName",
-        defaultValue: this.state.formData.get("nickName"),
-        placeholder: __WEBPACK_IMPORTED_MODULE_6__shared_constants_placeholder__["b" /* nickName */],
+        defaultValue: formData.nickName,
+        onChange: onChange,
+        placeholder: __WEBPACK_IMPORTED_MODULE_10__shared_constants_placeholder__["b" /* nickName */],
         required: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 188
+          lineNumber: 204
         }
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
         className: "note",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 196
+          lineNumber: 213
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_intl__["FormattedMessage"], {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_intl__["FormattedMessage"], {
         id: "modals.register.n1",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 196
+          lineNumber: 213
         }
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
         className: "note",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 197
+          lineNumber: 214
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_intl__["FormattedMessage"], {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_intl__["FormattedMessage"], {
         id: "modals.register.n2",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 197
+          lineNumber: 214
         }
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 199
+          lineNumber: 216
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["a" /* Button */], {
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["b" /* Button */], {
         type: "submit",
         className: "btn-block text-uppercase",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 201
+          lineNumber: 218
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_intl__["FormattedMessage"], {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_intl__["FormattedMessage"], {
         id: "buttons.register",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 202
+          lineNumber: 219
         }
       })))));
     }
@@ -5985,26 +6195,33 @@ function (_Component) {
   }], [{
     key: "getDerivedStateFromProps",
     value: function getDerivedStateFromProps(nextProps) {
-      return {
-        formData: {
-          get: function get(key) {
-            return this[key];
-          },
-          wallet: nextProps.account.wallet,
+      if (nextProps.formData.wallet !== nextProps.account.wallet) {
+        nextProps.setState({
+          wallet: nextProps.account.wallet
+        });
+      }
+
+      if (nextProps.formData.language !== nextProps.intl.locale) {
+        nextProps.setState({
           language: nextProps.intl.locale
-        }
-      };
+        });
+      }
+
+      return null;
     }
   }]);
 
   return RegisterPopup;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]), _class2.propTypes = {
   account: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
+  formData: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
   dispatch: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+  setState: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+  onChange: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
   show: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool,
-  intl: __WEBPACK_IMPORTED_MODULE_5_react_intl__["intlShape"],
+  intl: __WEBPACK_IMPORTED_MODULE_4_react_intl__["intlShape"],
   messages: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.array
-}, _temp2)) || _class) || _class);
+}, _temp2)) || _class) || _class) || _class);
 
 ;
 
@@ -41335,7 +41552,7 @@ var constructN = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__internal_curry
  *      R.contains([42], [[42]]); //=> true
  */
 var contains = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_1__internal_curry2__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_0__internal_contains__["a" /* default */]);
-/* unused harmony default export */ var _unused_webpack_default_export = (contains);
+/* harmony default export */ __webpack_exports__["a"] = (contains);
 
 /***/ }),
 
@@ -43372,7 +43589,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__and__ = __webpack_require__("./node_modules/ramda/es/and.js");
 /* unused harmony reexport and */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__any__ = __webpack_require__("./node_modules/ramda/es/any.js");
-/* unused harmony reexport any */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_10__any__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__anyPass__ = __webpack_require__("./node_modules/ramda/es/anyPass.js");
 /* unused harmony reexport anyPass */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ap__ = __webpack_require__("./node_modules/ramda/es/ap.js");
@@ -43380,7 +43597,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__aperture__ = __webpack_require__("./node_modules/ramda/es/aperture.js");
 /* unused harmony reexport aperture */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__append__ = __webpack_require__("./node_modules/ramda/es/append.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_14__append__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_14__append__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__apply__ = __webpack_require__("./node_modules/ramda/es/apply.js");
 /* unused harmony reexport apply */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__applySpec__ = __webpack_require__("./node_modules/ramda/es/applySpec.js");
@@ -43426,13 +43643,13 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__constructN__ = __webpack_require__("./node_modules/ramda/es/constructN.js");
 /* unused harmony reexport constructN */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__contains__ = __webpack_require__("./node_modules/ramda/es/contains.js");
-/* unused harmony reexport contains */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_37__contains__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__converge__ = __webpack_require__("./node_modules/ramda/es/converge.js");
 /* unused harmony reexport converge */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__countBy__ = __webpack_require__("./node_modules/ramda/es/countBy.js");
 /* unused harmony reexport countBy */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__curry__ = __webpack_require__("./node_modules/ramda/es/curry.js");
-/* unused harmony reexport curry */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_40__curry__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__curryN__ = __webpack_require__("./node_modules/ramda/es/curryN.js");
 /* unused harmony reexport curryN */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__dec__ = __webpack_require__("./node_modules/ramda/es/dec.js");
@@ -43478,9 +43695,9 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_62__evolve__ = __webpack_require__("./node_modules/ramda/es/evolve.js");
 /* unused harmony reexport evolve */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_63__filter__ = __webpack_require__("./node_modules/ramda/es/filter.js");
-/* unused harmony reexport filter */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_63__filter__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_64__find__ = __webpack_require__("./node_modules/ramda/es/find.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_64__find__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_64__find__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_65__findIndex__ = __webpack_require__("./node_modules/ramda/es/findIndex.js");
 /* unused harmony reexport findIndex */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_66__findLast__ = __webpack_require__("./node_modules/ramda/es/findLast.js");
@@ -43510,7 +43727,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_78__hasIn__ = __webpack_require__("./node_modules/ramda/es/hasIn.js");
 /* unused harmony reexport hasIn */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_79__head__ = __webpack_require__("./node_modules/ramda/es/head.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_79__head__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_79__head__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_80__identical__ = __webpack_require__("./node_modules/ramda/es/identical.js");
 /* unused harmony reexport identical */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_81__identity__ = __webpack_require__("./node_modules/ramda/es/identity.js");
@@ -43544,11 +43761,11 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_95__invoker__ = __webpack_require__("./node_modules/ramda/es/invoker.js");
 /* unused harmony reexport invoker */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_96__is__ = __webpack_require__("./node_modules/ramda/es/is.js");
-/* unused harmony reexport is */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_96__is__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_97__isEmpty__ = __webpack_require__("./node_modules/ramda/es/isEmpty.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_97__isEmpty__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_97__isEmpty__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_98__isNil__ = __webpack_require__("./node_modules/ramda/es/isNil.js");
-/* unused harmony reexport isNil */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_98__isNil__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_99__join__ = __webpack_require__("./node_modules/ramda/es/join.js");
 /* unused harmony reexport join */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_100__juxt__ = __webpack_require__("./node_modules/ramda/es/juxt.js");
@@ -43558,11 +43775,11 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_102__keysIn__ = __webpack_require__("./node_modules/ramda/es/keysIn.js");
 /* unused harmony reexport keysIn */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_103__last__ = __webpack_require__("./node_modules/ramda/es/last.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_103__last__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_103__last__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_104__lastIndexOf__ = __webpack_require__("./node_modules/ramda/es/lastIndexOf.js");
 /* unused harmony reexport lastIndexOf */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_105__length__ = __webpack_require__("./node_modules/ramda/es/length.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_105__length__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_105__length__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_106__lens__ = __webpack_require__("./node_modules/ramda/es/lens.js");
 /* unused harmony reexport lens */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_107__lensIndex__ = __webpack_require__("./node_modules/ramda/es/lensIndex.js");
@@ -43580,7 +43797,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_113__lte__ = __webpack_require__("./node_modules/ramda/es/lte.js");
 /* unused harmony reexport lte */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_114__map__ = __webpack_require__("./node_modules/ramda/es/map.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_114__map__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return __WEBPACK_IMPORTED_MODULE_114__map__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_115__mapAccum__ = __webpack_require__("./node_modules/ramda/es/mapAccum.js");
 /* unused harmony reexport mapAccum */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_116__mapAccumRight__ = __webpack_require__("./node_modules/ramda/es/mapAccumRight.js");
@@ -43588,7 +43805,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_117__mapObjIndexed__ = __webpack_require__("./node_modules/ramda/es/mapObjIndexed.js");
 /* unused harmony reexport mapObjIndexed */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_118__match__ = __webpack_require__("./node_modules/ramda/es/match.js");
-/* unused harmony reexport match */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return __WEBPACK_IMPORTED_MODULE_118__match__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_119__mathMod__ = __webpack_require__("./node_modules/ramda/es/mathMod.js");
 /* unused harmony reexport mathMod */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_120__max__ = __webpack_require__("./node_modules/ramda/es/max.js");
@@ -43604,7 +43821,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_125__memoizeWith__ = __webpack_require__("./node_modules/ramda/es/memoizeWith.js");
 /* unused harmony reexport memoizeWith */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_126__merge__ = __webpack_require__("./node_modules/ramda/es/merge.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_126__merge__["a"]; });
+/* unused harmony reexport merge */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_127__mergeAll__ = __webpack_require__("./node_modules/ramda/es/mergeAll.js");
 /* unused harmony reexport mergeAll */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_128__mergeDeepLeft__ = __webpack_require__("./node_modules/ramda/es/mergeDeepLeft.js");
@@ -43634,7 +43851,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_140__none__ = __webpack_require__("./node_modules/ramda/es/none.js");
 /* unused harmony reexport none */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_141__not__ = __webpack_require__("./node_modules/ramda/es/not.js");
-/* unused harmony reexport not */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return __WEBPACK_IMPORTED_MODULE_141__not__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_142__nth__ = __webpack_require__("./node_modules/ramda/es/nth.js");
 /* unused harmony reexport nth */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_143__nthArg__ = __webpack_require__("./node_modules/ramda/es/nthArg.js");
@@ -43662,7 +43879,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_154__partition__ = __webpack_require__("./node_modules/ramda/es/partition.js");
 /* unused harmony reexport partition */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_155__path__ = __webpack_require__("./node_modules/ramda/es/path.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_155__path__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return __WEBPACK_IMPORTED_MODULE_155__path__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_156__pathEq__ = __webpack_require__("./node_modules/ramda/es/pathEq.js");
 /* unused harmony reexport pathEq */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_157__pathOr__ = __webpack_require__("./node_modules/ramda/es/pathOr.js");
@@ -43690,11 +43907,11 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_168__project__ = __webpack_require__("./node_modules/ramda/es/project.js");
 /* unused harmony reexport project */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_169__prop__ = __webpack_require__("./node_modules/ramda/es/prop.js");
-/* unused harmony reexport prop */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return __WEBPACK_IMPORTED_MODULE_169__prop__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_170__propEq__ = __webpack_require__("./node_modules/ramda/es/propEq.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_170__propEq__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return __WEBPACK_IMPORTED_MODULE_170__propEq__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_171__propIs__ = __webpack_require__("./node_modules/ramda/es/propIs.js");
-/* unused harmony reexport propIs */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return __WEBPACK_IMPORTED_MODULE_171__propIs__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_172__propOr__ = __webpack_require__("./node_modules/ramda/es/propOr.js");
 /* unused harmony reexport propOr */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_173__propSatisfies__ = __webpack_require__("./node_modules/ramda/es/propSatisfies.js");
@@ -43722,7 +43939,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_184__replace__ = __webpack_require__("./node_modules/ramda/es/replace.js");
 /* unused harmony reexport replace */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_185__reverse__ = __webpack_require__("./node_modules/ramda/es/reverse.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_185__reverse__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return __WEBPACK_IMPORTED_MODULE_185__reverse__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_186__scan__ = __webpack_require__("./node_modules/ramda/es/scan.js");
 /* unused harmony reexport scan */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_187__sequence__ = __webpack_require__("./node_modules/ramda/es/sequence.js");
@@ -43738,7 +43955,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_192__sortWith__ = __webpack_require__("./node_modules/ramda/es/sortWith.js");
 /* unused harmony reexport sortWith */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_193__split__ = __webpack_require__("./node_modules/ramda/es/split.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_193__split__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return __WEBPACK_IMPORTED_MODULE_193__split__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_194__splitAt__ = __webpack_require__("./node_modules/ramda/es/splitAt.js");
 /* unused harmony reexport splitAt */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_195__splitEvery__ = __webpack_require__("./node_modules/ramda/es/splitEvery.js");
@@ -43780,7 +43997,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_213__toString__ = __webpack_require__("./node_modules/ramda/es/toString.js");
 /* unused harmony reexport toString */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_214__toUpper__ = __webpack_require__("./node_modules/ramda/es/toUpper.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return __WEBPACK_IMPORTED_MODULE_214__toUpper__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return __WEBPACK_IMPORTED_MODULE_214__toUpper__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_215__transduce__ = __webpack_require__("./node_modules/ramda/es/transduce.js");
 /* unused harmony reexport transduce */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_216__transpose__ = __webpack_require__("./node_modules/ramda/es/transpose.js");
@@ -43806,7 +44023,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_226__unionWith__ = __webpack_require__("./node_modules/ramda/es/unionWith.js");
 /* unused harmony reexport unionWith */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_227__uniq__ = __webpack_require__("./node_modules/ramda/es/uniq.js");
-/* unused harmony reexport uniq */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return __WEBPACK_IMPORTED_MODULE_227__uniq__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_228__uniqBy__ = __webpack_require__("./node_modules/ramda/es/uniqBy.js");
 /* unused harmony reexport uniqBy */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_229__uniqWith__ = __webpack_require__("./node_modules/ramda/es/uniqWith.js");
@@ -43822,7 +44039,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_234__useWith__ = __webpack_require__("./node_modules/ramda/es/useWith.js");
 /* unused harmony reexport useWith */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_235__values__ = __webpack_require__("./node_modules/ramda/es/values.js");
-/* unused harmony reexport values */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return __WEBPACK_IMPORTED_MODULE_235__values__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_236__valuesIn__ = __webpack_require__("./node_modules/ramda/es/valuesIn.js");
 /* unused harmony reexport valuesIn */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_237__view__ = __webpack_require__("./node_modules/ramda/es/view.js");
@@ -48029,7 +48246,7 @@ var mapObjIndexed = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__internal_cu
 var match = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__internal_curry2__["a" /* default */])(function match(rx, str) {
   return str.match(rx) || [];
 });
-/* unused harmony default export */ var _unused_webpack_default_export = (match);
+/* harmony default export */ __webpack_exports__["a"] = (match);
 
 /***/ }),
 
@@ -48363,7 +48580,7 @@ var memoizeWith = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_1__internal_curr
 var merge = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_1__internal_curry2__["a" /* default */])(function merge(l, r) {
   return Object(__WEBPACK_IMPORTED_MODULE_0__internal_assign__["a" /* default */])({}, l, r);
 });
-/* harmony default export */ __webpack_exports__["a"] = (merge);
+/* unused harmony default export */ var _unused_webpack_default_export = (merge);
 
 /***/ }),
 
@@ -50187,7 +50404,7 @@ var propEq = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__internal_curry3__[
 var propIs = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__internal_curry3__["a" /* default */])(function propIs(type, name, obj) {
   return Object(__WEBPACK_IMPORTED_MODULE_1__is__["a" /* default */])(type, obj[name]);
 });
-/* unused harmony default export */ var _unused_webpack_default_export = (propIs);
+/* harmony default export */ __webpack_exports__["a"] = (propIs);
 
 /***/ }),
 
@@ -53593,7 +53810,7 @@ var Badge = function (_React$Component) {
 Badge.propTypes = propTypes;
 Badge.defaultProps = defaultProps;
 
-/* unused harmony default export */ var _unused_webpack_default_export = (Object(__WEBPACK_IMPORTED_MODULE_8__utils_bootstrapUtils__["a" /* bsClass */])('badge', Badge));
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_8__utils_bootstrapUtils__["a" /* bsClass */])('badge', Badge));
 
 /***/ }),
 
@@ -63839,7 +64056,7 @@ Tab.Container = __WEBPACK_IMPORTED_MODULE_6__TabContainer__["a" /* default */];
 Tab.Content = __WEBPACK_IMPORTED_MODULE_7__TabContent__["a" /* default */];
 Tab.Pane = __WEBPACK_IMPORTED_MODULE_8__TabPane__["a" /* default */];
 
-/* unused harmony default export */ var _unused_webpack_default_export = (Tab);
+/* harmony default export */ __webpack_exports__["a"] = (Tab);
 
 /***/ }),
 
@@ -64799,7 +65016,7 @@ Tabs.defaultProps = defaultProps;
 
 Object(__WEBPACK_IMPORTED_MODULE_13__utils_bootstrapUtils__["a" /* bsClass */])('tab', Tabs);
 
-/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_8_uncontrollable___default()(Tabs, { activeKey: 'onSelect' }));
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_8_uncontrollable___default()(Tabs, { activeKey: 'onSelect' }));
 
 /***/ }),
 
@@ -64905,7 +65122,7 @@ var Thumbnail = function (_React$Component) {
 
 Thumbnail.propTypes = propTypes;
 
-/* unused harmony default export */ var _unused_webpack_default_export = (Object(__WEBPACK_IMPORTED_MODULE_9__utils_bootstrapUtils__["a" /* bsClass */])('thumbnail', Thumbnail));
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_9__utils_bootstrapUtils__["a" /* bsClass */])('thumbnail', Thumbnail));
 
 /***/ }),
 
@@ -65393,15 +65610,15 @@ var Well = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Alert__ = __webpack_require__("./node_modules/react-bootstrap/es/Alert.js");
 /* unused harmony reexport Alert */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Badge__ = __webpack_require__("./node_modules/react-bootstrap/es/Badge.js");
-/* unused harmony reexport Badge */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__Badge__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Breadcrumb__ = __webpack_require__("./node_modules/react-bootstrap/es/Breadcrumb.js");
 /* unused harmony reexport Breadcrumb */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__BreadcrumbItem__ = __webpack_require__("./node_modules/react-bootstrap/es/BreadcrumbItem.js");
 /* unused harmony reexport BreadcrumbItem */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Button__ = __webpack_require__("./node_modules/react-bootstrap/es/Button.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_5__Button__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_5__Button__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ButtonGroup__ = __webpack_require__("./node_modules/react-bootstrap/es/ButtonGroup.js");
-/* unused harmony reexport ButtonGroup */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_6__ButtonGroup__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ButtonToolbar__ = __webpack_require__("./node_modules/react-bootstrap/es/ButtonToolbar.js");
 /* unused harmony reexport ButtonToolbar */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Carousel__ = __webpack_require__("./node_modules/react-bootstrap/es/Carousel.js");
@@ -65415,9 +65632,9 @@ var Well = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__CloseButton__ = __webpack_require__("./node_modules/react-bootstrap/es/CloseButton.js");
 /* unused harmony reexport CloseButton */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ControlLabel__ = __webpack_require__("./node_modules/react-bootstrap/es/ControlLabel.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_13__ControlLabel__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_13__ControlLabel__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__Col__ = __webpack_require__("./node_modules/react-bootstrap/es/Col.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_14__Col__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_14__Col__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__Collapse__ = __webpack_require__("./node_modules/react-bootstrap/es/Collapse.js");
 /* unused harmony reexport Collapse */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__Dropdown__ = __webpack_require__("./node_modules/react-bootstrap/es/Dropdown.js");
@@ -65427,19 +65644,19 @@ var Well = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__Fade__ = __webpack_require__("./node_modules/react-bootstrap/es/Fade.js");
 /* unused harmony reexport Fade */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__Form__ = __webpack_require__("./node_modules/react-bootstrap/es/Form.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_19__Form__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_19__Form__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__FormControl__ = __webpack_require__("./node_modules/react-bootstrap/es/FormControl.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_20__FormControl__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_20__FormControl__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__FormGroup__ = __webpack_require__("./node_modules/react-bootstrap/es/FormGroup.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_21__FormGroup__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_21__FormGroup__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__Glyphicon__ = __webpack_require__("./node_modules/react-bootstrap/es/Glyphicon.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_22__Glyphicon__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_22__Glyphicon__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__Grid__ = __webpack_require__("./node_modules/react-bootstrap/es/Grid.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_23__Grid__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_23__Grid__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__HelpBlock__ = __webpack_require__("./node_modules/react-bootstrap/es/HelpBlock.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_24__HelpBlock__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_24__HelpBlock__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__Image__ = __webpack_require__("./node_modules/react-bootstrap/es/Image.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_25__Image__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_25__Image__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__InputGroup__ = __webpack_require__("./node_modules/react-bootstrap/es/InputGroup.js");
 /* unused harmony reexport InputGroup */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__Jumbotron__ = __webpack_require__("./node_modules/react-bootstrap/es/Jumbotron.js");
@@ -65453,9 +65670,9 @@ var Well = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__Media__ = __webpack_require__("./node_modules/react-bootstrap/es/Media.js");
 /* unused harmony reexport Media */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__MenuItem__ = __webpack_require__("./node_modules/react-bootstrap/es/MenuItem.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_32__MenuItem__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return __WEBPACK_IMPORTED_MODULE_32__MenuItem__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__Modal__ = __webpack_require__("./node_modules/react-bootstrap/es/Modal.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_33__Modal__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return __WEBPACK_IMPORTED_MODULE_33__Modal__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__ModalBody__ = __webpack_require__("./node_modules/react-bootstrap/es/ModalBody.js");
 /* unused harmony reexport ModalBody */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__ModalFooter__ = __webpack_require__("./node_modules/react-bootstrap/es/ModalFooter.js");
@@ -65465,13 +65682,13 @@ var Well = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__ModalTitle__ = __webpack_require__("./node_modules/react-bootstrap/es/ModalTitle.js");
 /* unused harmony reexport ModalTitle */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__Nav__ = __webpack_require__("./node_modules/react-bootstrap/es/Nav.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return __WEBPACK_IMPORTED_MODULE_38__Nav__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return __WEBPACK_IMPORTED_MODULE_38__Nav__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__Navbar__ = __webpack_require__("./node_modules/react-bootstrap/es/Navbar.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return __WEBPACK_IMPORTED_MODULE_39__Navbar__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return __WEBPACK_IMPORTED_MODULE_39__Navbar__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__NavbarBrand__ = __webpack_require__("./node_modules/react-bootstrap/es/NavbarBrand.js");
 /* unused harmony reexport NavbarBrand */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__NavDropdown__ = __webpack_require__("./node_modules/react-bootstrap/es/NavDropdown.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return __WEBPACK_IMPORTED_MODULE_41__NavDropdown__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return __WEBPACK_IMPORTED_MODULE_41__NavDropdown__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__NavItem__ = __webpack_require__("./node_modules/react-bootstrap/es/NavItem.js");
 /* unused harmony reexport NavItem */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__Overlay__ = __webpack_require__("./node_modules/react-bootstrap/es/Overlay.js");
@@ -65499,13 +65716,13 @@ var Well = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__ResponsiveEmbed__ = __webpack_require__("./node_modules/react-bootstrap/es/ResponsiveEmbed.js");
 /* unused harmony reexport ResponsiveEmbed */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__Row__ = __webpack_require__("./node_modules/react-bootstrap/es/Row.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return __WEBPACK_IMPORTED_MODULE_55__Row__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return __WEBPACK_IMPORTED_MODULE_55__Row__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__SafeAnchor__ = __webpack_require__("./node_modules/react-bootstrap/es/SafeAnchor.js");
 /* unused harmony reexport SafeAnchor */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__SplitButton__ = __webpack_require__("./node_modules/react-bootstrap/es/SplitButton.js");
 /* unused harmony reexport SplitButton */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__Tab__ = __webpack_require__("./node_modules/react-bootstrap/es/Tab.js");
-/* unused harmony reexport Tab */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return __WEBPACK_IMPORTED_MODULE_58__Tab__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_59__TabContainer__ = __webpack_require__("./node_modules/react-bootstrap/es/TabContainer.js");
 /* unused harmony reexport TabContainer */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_60__TabContent__ = __webpack_require__("./node_modules/react-bootstrap/es/TabContent.js");
@@ -65515,9 +65732,9 @@ var Well = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_62__TabPane__ = __webpack_require__("./node_modules/react-bootstrap/es/TabPane.js");
 /* unused harmony reexport TabPane */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_63__Tabs__ = __webpack_require__("./node_modules/react-bootstrap/es/Tabs.js");
-/* unused harmony reexport Tabs */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return __WEBPACK_IMPORTED_MODULE_63__Tabs__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_64__Thumbnail__ = __webpack_require__("./node_modules/react-bootstrap/es/Thumbnail.js");
-/* unused harmony reexport Thumbnail */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return __WEBPACK_IMPORTED_MODULE_64__Thumbnail__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_65__ToggleButton__ = __webpack_require__("./node_modules/react-bootstrap/es/ToggleButton.js");
 /* unused harmony reexport ToggleButton */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_66__ToggleButtonGroup__ = __webpack_require__("./node_modules/react-bootstrap/es/ToggleButtonGroup.js");
@@ -66416,7 +66633,7 @@ function splitComponentProps(props, Component) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__("./node_modules/react/cjs/react.development.js"), __webpack_require__("./node_modules/next/node_modules/prop-types/index.js"));
+		module.exports = factory(__webpack_require__("./node_modules/react-ga/node_modules/react/cjs/react.development.js"), __webpack_require__("./node_modules/next/node_modules/prop-types/index.js"));
 	else if(typeof define === 'function' && define.amd)
 		define(["react", "prop-types"], factory);
 	else {
@@ -78516,6 +78733,1112 @@ module.exports = {"name":"websocket","description":"Websocket Client & Server Li
 /***/ (function(module, exports) {
 
 module.exports = XMLHttpRequest;
+
+
+/***/ }),
+
+/***/ "./node_modules/xss-filters/src/xss-filters.js":
+/***/ (function(module, exports) {
+
+/*
+Copyright (c) 2015, Yahoo! Inc. All rights reserved.
+Copyrights licensed under the New BSD License.
+See the accompanying LICENSE file for terms.
+
+Authors: Nera Liu <neraliu@yahoo-inc.com>
+         Adonis Fung <adon@yahoo-inc.com>
+         Albert Yu <albertyu@yahoo-inc.com>
+*/
+/*jshint node: true */
+
+exports._getPrivFilters = function () {
+
+    var LT     = /</g,
+        QUOT   = /"/g,
+        SQUOT  = /'/g,
+        AMP    = /&/g,
+        NULL   = /\x00/g,
+        SPECIAL_ATTR_VALUE_UNQUOTED_CHARS = /(?:^$|[\x00\x09-\x0D "'`=<>])/g,
+        SPECIAL_HTML_CHARS = /[&<>"'`]/g, 
+        SPECIAL_COMMENT_CHARS = /(?:\x00|^-*!?>|--!?>|--?!?$|\]>|\]$)/g;
+
+    // CSS sensitive chars: ()"'/,!*@{}:;
+    // By CSS: (Tab|NewLine|colon|semi|lpar|rpar|apos|sol|comma|excl|ast|midast);|(quot|QUOT)
+    // By URI_PROTOCOL: (Tab|NewLine);
+    var SENSITIVE_HTML_ENTITIES = /&(?:#([xX][0-9A-Fa-f]+|\d+);?|(Tab|NewLine|colon|semi|lpar|rpar|apos|sol|comma|excl|ast|midast|ensp|emsp|thinsp);|(nbsp|amp|AMP|lt|LT|gt|GT|quot|QUOT);?)/g,
+        SENSITIVE_NAMED_REF_MAP = {Tab: '\t', NewLine: '\n', colon: ':', semi: ';', lpar: '(', rpar: ')', apos: '\'', sol: '/', comma: ',', excl: '!', ast: '*', midast: '*', ensp: '\u2002', emsp: '\u2003', thinsp: '\u2009', nbsp: '\xA0', amp: '&', lt: '<', gt: '>', quot: '"', QUOT: '"'};
+
+    // var CSS_VALID_VALUE = 
+    //     /^(?:
+    //     (?!-*expression)#?[-\w]+
+    //     |[+-]?(?:\d+|\d*\.\d+)(?:em|ex|ch|rem|px|mm|cm|in|pt|pc|%|vh|vw|vmin|vmax)?
+    //     |!important
+    //     | //empty
+    //     )$/i;
+    var CSS_VALID_VALUE = /^(?:(?!-*expression)#?[-\w]+|[+-]?(?:\d+|\d*\.\d+)(?:r?em|ex|ch|cm|mm|in|px|pt|pc|%|vh|vw|vmin|vmax)?|!important|)$/i,
+        // TODO: prevent double css escaping by not encoding \ again, but this may require CSS decoding
+        // \x7F and \x01-\x1F less \x09 are for Safari 5.0, added []{}/* for unbalanced quote
+        CSS_DOUBLE_QUOTED_CHARS = /[\x00-\x1F\x7F\[\]{}\\"]/g,
+        CSS_SINGLE_QUOTED_CHARS = /[\x00-\x1F\x7F\[\]{}\\']/g,
+        // (, \u207D and \u208D can be used in background: 'url(...)' in IE, assumed all \ chars are encoded by QUOTED_CHARS, and null is already replaced with \uFFFD
+        // otherwise, use this CSS_BLACKLIST instead (enhance it with url matching): /(?:\\?\(|[\u207D\u208D]|\\0{0,4}28 ?|\\0{0,2}20[78][Dd] ?)+/g
+        CSS_BLACKLIST = /url[\(\u207D\u208D]+/g,
+        // this assumes encodeURI() and encodeURIComponent() has escaped 1-32, 127 for IE8
+        CSS_UNQUOTED_URL = /['\(\)]/g; // " \ treated by encodeURI()
+
+    // Given a full URI, need to support "[" ( IPv6address ) "]" in URI as per RFC3986
+    // Reference: https://tools.ietf.org/html/rfc3986
+    var URL_IPV6 = /\/\/%5[Bb]([A-Fa-f0-9:]+)%5[Dd]/;
+
+
+    // Reference: http://shazzer.co.uk/database/All/characters-allowd-in-html-entities
+    // Reference: http://shazzer.co.uk/vector/Characters-allowed-after-ampersand-in-named-character-references
+    // Reference: http://shazzer.co.uk/database/All/Characters-before-javascript-uri
+    // Reference: http://shazzer.co.uk/database/All/Characters-after-javascript-uri
+    // Reference: https://html.spec.whatwg.org/multipage/syntax.html#consume-a-character-reference
+    // Reference for named characters: https://html.spec.whatwg.org/multipage/entities.json
+    var URI_BLACKLIST_PROTOCOLS = {'javascript':1, 'data':1, 'vbscript':1, 'mhtml':1, 'x-schema':1},
+        URI_PROTOCOL_COLON = /(?::|&#[xX]0*3[aA];?|&#0*58;?|&colon;)/,
+        URI_PROTOCOL_WHITESPACES = /(?:^[\x00-\x20]+|[\t\n\r\x00]+)/g,
+        URI_PROTOCOL_NAMED_REF_MAP = {Tab: '\t', NewLine: '\n'};
+
+    var x, 
+        strReplace = function (s, regexp, callback) {
+            return s === undefined ? 'undefined'
+                    : s === null            ? 'null'
+                    : s.toString().replace(regexp, callback);
+        },
+        fromCodePoint = String.fromCodePoint || function(codePoint) {
+            if (arguments.length === 0) {
+                return '';
+            }
+            if (codePoint <= 0xFFFF) { // BMP code point
+                return String.fromCharCode(codePoint);
+            }
+
+            // Astral code point; split in surrogate halves
+            // http://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+            codePoint -= 0x10000;
+            return String.fromCharCode((codePoint >> 10) + 0xD800, (codePoint % 0x400) + 0xDC00);
+        };
+
+
+    function getProtocol(str) {
+        var s = str.split(URI_PROTOCOL_COLON, 2);
+        // str.length !== s[0].length is for older IE (e.g., v8), where delimeter residing at last will result in length equals 1, but not 2
+        return (s[0] && (s.length === 2 || str.length !== s[0].length)) ? s[0] : null;
+    }
+
+    function htmlDecode(s, namedRefMap, reNamedRef, skipReplacement) {
+        
+        namedRefMap = namedRefMap || SENSITIVE_NAMED_REF_MAP;
+        reNamedRef = reNamedRef || SENSITIVE_HTML_ENTITIES;
+
+        function regExpFunction(m, num, named, named1) {
+            if (num) {
+                num = Number(num[0] <= '9' ? num : '0' + num);
+                // switch(num) {
+                //     case 0x80: return '\u20AC';  // EURO SIGN (€)
+                //     case 0x82: return '\u201A';  // SINGLE LOW-9 QUOTATION MARK (‚)
+                //     case 0x83: return '\u0192';  // LATIN SMALL LETTER F WITH HOOK (ƒ)
+                //     case 0x84: return '\u201E';  // DOUBLE LOW-9 QUOTATION MARK („)
+                //     case 0x85: return '\u2026';  // HORIZONTAL ELLIPSIS (…)
+                //     case 0x86: return '\u2020';  // DAGGER (†)
+                //     case 0x87: return '\u2021';  // DOUBLE DAGGER (‡)
+                //     case 0x88: return '\u02C6';  // MODIFIER LETTER CIRCUMFLEX ACCENT (ˆ)
+                //     case 0x89: return '\u2030';  // PER MILLE SIGN (‰)
+                //     case 0x8A: return '\u0160';  // LATIN CAPITAL LETTER S WITH CARON (Š)
+                //     case 0x8B: return '\u2039';  // SINGLE LEFT-POINTING ANGLE QUOTATION MARK (‹)
+                //     case 0x8C: return '\u0152';  // LATIN CAPITAL LIGATURE OE (Œ)
+                //     case 0x8E: return '\u017D';  // LATIN CAPITAL LETTER Z WITH CARON (Ž)
+                //     case 0x91: return '\u2018';  // LEFT SINGLE QUOTATION MARK (‘)
+                //     case 0x92: return '\u2019';  // RIGHT SINGLE QUOTATION MARK (’)
+                //     case 0x93: return '\u201C';  // LEFT DOUBLE QUOTATION MARK (“)
+                //     case 0x94: return '\u201D';  // RIGHT DOUBLE QUOTATION MARK (”)
+                //     case 0x95: return '\u2022';  // BULLET (•)
+                //     case 0x96: return '\u2013';  // EN DASH (–)
+                //     case 0x97: return '\u2014';  // EM DASH (—)
+                //     case 0x98: return '\u02DC';  // SMALL TILDE (˜)
+                //     case 0x99: return '\u2122';  // TRADE MARK SIGN (™)
+                //     case 0x9A: return '\u0161';  // LATIN SMALL LETTER S WITH CARON (š)
+                //     case 0x9B: return '\u203A';  // SINGLE RIGHT-POINTING ANGLE QUOTATION MARK (›)
+                //     case 0x9C: return '\u0153';  // LATIN SMALL LIGATURE OE (œ)
+                //     case 0x9E: return '\u017E';  // LATIN SMALL LETTER Z WITH CARON (ž)
+                //     case 0x9F: return '\u0178';  // LATIN CAPITAL LETTER Y WITH DIAERESIS (Ÿ)
+                // }
+                // // num >= 0xD800 && num <= 0xDFFF, and 0x0D is separately handled, as it doesn't fall into the range of x.pec()
+                // return (num >= 0xD800 && num <= 0xDFFF) || num === 0x0D ? '\uFFFD' : x.frCoPt(num);
+
+                return skipReplacement ? fromCodePoint(num)
+                        : num === 0x80 ? '\u20AC'  // EURO SIGN (€)
+                        : num === 0x82 ? '\u201A'  // SINGLE LOW-9 QUOTATION MARK (‚)
+                        : num === 0x83 ? '\u0192'  // LATIN SMALL LETTER F WITH HOOK (ƒ)
+                        : num === 0x84 ? '\u201E'  // DOUBLE LOW-9 QUOTATION MARK („)
+                        : num === 0x85 ? '\u2026'  // HORIZONTAL ELLIPSIS (…)
+                        : num === 0x86 ? '\u2020'  // DAGGER (†)
+                        : num === 0x87 ? '\u2021'  // DOUBLE DAGGER (‡)
+                        : num === 0x88 ? '\u02C6'  // MODIFIER LETTER CIRCUMFLEX ACCENT (ˆ)
+                        : num === 0x89 ? '\u2030'  // PER MILLE SIGN (‰)
+                        : num === 0x8A ? '\u0160'  // LATIN CAPITAL LETTER S WITH CARON (Š)
+                        : num === 0x8B ? '\u2039'  // SINGLE LEFT-POINTING ANGLE QUOTATION MARK (‹)
+                        : num === 0x8C ? '\u0152'  // LATIN CAPITAL LIGATURE OE (Œ)
+                        : num === 0x8E ? '\u017D'  // LATIN CAPITAL LETTER Z WITH CARON (Ž)
+                        : num === 0x91 ? '\u2018'  // LEFT SINGLE QUOTATION MARK (‘)
+                        : num === 0x92 ? '\u2019'  // RIGHT SINGLE QUOTATION MARK (’)
+                        : num === 0x93 ? '\u201C'  // LEFT DOUBLE QUOTATION MARK (“)
+                        : num === 0x94 ? '\u201D'  // RIGHT DOUBLE QUOTATION MARK (”)
+                        : num === 0x95 ? '\u2022'  // BULLET (•)
+                        : num === 0x96 ? '\u2013'  // EN DASH (–)
+                        : num === 0x97 ? '\u2014'  // EM DASH (—)
+                        : num === 0x98 ? '\u02DC'  // SMALL TILDE (˜)
+                        : num === 0x99 ? '\u2122'  // TRADE MARK SIGN (™)
+                        : num === 0x9A ? '\u0161'  // LATIN SMALL LETTER S WITH CARON (š)
+                        : num === 0x9B ? '\u203A'  // SINGLE RIGHT-POINTING ANGLE QUOTATION MARK (›)
+                        : num === 0x9C ? '\u0153'  // LATIN SMALL LIGATURE OE (œ)
+                        : num === 0x9E ? '\u017E'  // LATIN SMALL LETTER Z WITH CARON (ž)
+                        : num === 0x9F ? '\u0178'  // LATIN CAPITAL LETTER Y WITH DIAERESIS (Ÿ)
+                        : (num >= 0xD800 && num <= 0xDFFF) || num === 0x0D ? '\uFFFD'
+                        : x.frCoPt(num);
+            }
+            return namedRefMap[named || named1] || m;
+        }
+
+        return s === undefined  ? 'undefined'
+            : s === null        ? 'null'
+            : s.toString().replace(NULL, '\uFFFD').replace(reNamedRef, regExpFunction);
+    }
+
+    function cssEncode(chr) {
+        // space after \\HEX is needed by spec
+        return '\\' + chr.charCodeAt(0).toString(16).toLowerCase() + ' ';
+    }
+    function cssBlacklist(s) {
+        return s.replace(CSS_BLACKLIST, function(m){ return '-x-' + m; });
+    }
+    function cssUrl(s) {
+        // encodeURI() in yufull() will throw error for use of the CSS_UNSUPPORTED_CODE_POINT (i.e., [\uD800-\uDFFF])
+        s = x.yufull(htmlDecode(s));
+        var protocol = getProtocol(s);
+
+        // prefix ## for blacklisted protocols
+        // here .replace(URI_PROTOCOL_WHITESPACES, '') is not needed since yufull has already percent-encoded the whitespaces
+        return (protocol && URI_BLACKLIST_PROTOCOLS[protocol.toLowerCase()]) ? '##' + s : s;
+    }
+
+    return (x = {
+        // turn invalid codePoints and that of non-characters to \uFFFD, and then fromCodePoint()
+        frCoPt: function(num) {
+            return num === undefined || num === null ? '' :
+                !isFinite(num = Number(num)) || // `NaN`, `+Infinity`, or `-Infinity`
+                num <= 0 ||                     // not a valid Unicode code point
+                num > 0x10FFFF ||               // not a valid Unicode code point
+                // Math.floor(num) != num || 
+
+                (num >= 0x01 && num <= 0x08) ||
+                (num >= 0x0E && num <= 0x1F) ||
+                (num >= 0x7F && num <= 0x9F) ||
+                (num >= 0xFDD0 && num <= 0xFDEF) ||
+                
+                 num === 0x0B || 
+                (num & 0xFFFF) === 0xFFFF || 
+                (num & 0xFFFF) === 0xFFFE ? '\uFFFD' : fromCodePoint(num);
+        },
+        d: htmlDecode,
+        /*
+         * @param {string} s - An untrusted uri input
+         * @returns {string} s - null if relative url, otherwise the protocol with whitespaces stripped and lower-cased
+         */
+        yup: function(s) {
+            s = getProtocol(s.replace(NULL, ''));
+            // URI_PROTOCOL_WHITESPACES is required for left trim and remove interim whitespaces
+            return s ? htmlDecode(s, URI_PROTOCOL_NAMED_REF_MAP, null, true).replace(URI_PROTOCOL_WHITESPACES, '').toLowerCase() : null;
+        },
+
+        /*
+         * @deprecated
+         * @param {string} s - An untrusted user input
+         * @returns {string} s - The original user input with & < > " ' ` encoded respectively as &amp; &lt; &gt; &quot; &#39; and &#96;.
+         *
+         */
+        y: function(s) {
+            return strReplace(s, SPECIAL_HTML_CHARS, function (m) {
+                return m === '&' ? '&amp;'
+                    :  m === '<' ? '&lt;'
+                    :  m === '>' ? '&gt;'
+                    :  m === '"' ? '&quot;'
+                    :  m === "'" ? '&#39;'
+                    :  /*m === '`'*/ '&#96;';       // in hex: 60
+            });
+        },
+
+        // This filter is meant to introduce double-encoding, and should be used with extra care.
+        ya: function(s) {
+            return strReplace(s, AMP, '&amp;');
+        },
+
+        // FOR DETAILS, refer to inHTMLData()
+        // Reference: https://html.spec.whatwg.org/multipage/syntax.html#data-state
+        yd: function (s) {
+            return strReplace(s, LT, '&lt;');
+        },
+
+        // FOR DETAILS, refer to inHTMLComment()
+        // All NULL characters in s are first replaced with \uFFFD.
+        // If s contains -->, --!>, or starts with -*>, insert a space right before > to stop state breaking at <!--{{{yc s}}}-->
+        // If s ends with --!, --, or -, append a space to stop collaborative state breaking at {{{yc s}}}>, {{{yc s}}}!>, {{{yc s}}}-!>, {{{yc s}}}->
+        // Reference: https://html.spec.whatwg.org/multipage/syntax.html#comment-state
+        // Reference: http://shazzer.co.uk/vector/Characters-that-close-a-HTML-comment-3
+        // Reference: http://shazzer.co.uk/vector/Characters-that-close-a-HTML-comment
+        // Reference: http://shazzer.co.uk/vector/Characters-that-close-a-HTML-comment-0021
+        // If s contains ]> or ends with ], append a space after ] is verified in IE to stop IE conditional comments.
+        // Reference: http://msdn.microsoft.com/en-us/library/ms537512%28v=vs.85%29.aspx
+        // We do not care --\s>, which can possibly be intepreted as a valid close comment tag in very old browsers (e.g., firefox 3.6), as specified in the html4 spec
+        // Reference: http://www.w3.org/TR/html401/intro/sgmltut.html#h-3.2.4
+        yc: function (s) {
+            return strReplace(s, SPECIAL_COMMENT_CHARS, function(m){
+                return m === '\x00' ? '\uFFFD'
+                    : m === '--!' || m === '--' || m === '-' || m === ']' ? m + ' '
+                    :/*
+                    :  m === ']>'   ? '] >'
+                    :  m === '-->'  ? '-- >'
+                    :  m === '--!>' ? '--! >'
+                    : /-*!?>/.test(m) ? */ m.slice(0, -1) + ' >';
+            });
+        },
+
+        // FOR DETAILS, refer to inDoubleQuotedAttr()
+        // Reference: https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(double-quoted)-state
+        yavd: function (s) {
+            return strReplace(s, QUOT, '&quot;');
+        },
+
+        // FOR DETAILS, refer to inSingleQuotedAttr()
+        // Reference: https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(single-quoted)-state
+        yavs: function (s) {
+            return strReplace(s, SQUOT, '&#39;');
+        },
+
+        // FOR DETAILS, refer to inUnQuotedAttr()
+        // PART A.
+        // if s contains any state breaking chars (\t, \n, \v, \f, \r, space, and >),
+        // they are escaped and encoded into their equivalent HTML entity representations. 
+        // Reference: http://shazzer.co.uk/database/All/Characters-which-break-attributes-without-quotes
+        // Reference: https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(unquoted)-state
+        //
+        // PART B. 
+        // if s starts with ', " or `, encode it resp. as &#39;, &quot;, or &#96; to 
+        // enforce the attr value (unquoted) state
+        // Reference: https://html.spec.whatwg.org/multipage/syntax.html#before-attribute-value-state
+        // Reference: http://shazzer.co.uk/vector/Characters-allowed-attribute-quote
+        // 
+        // PART C.
+        // Inject a \uFFFD character if an empty or all null string is encountered in 
+        // unquoted attribute value state.
+        // 
+        // Rationale 1: our belief is that developers wouldn't expect an 
+        //   empty string would result in ' name="passwd"' rendered as 
+        //   attribute value, even though this is how HTML5 is specified.
+        // Rationale 2: an empty or all null string (for IE) can 
+        //   effectively alter its immediate subsequent state, we choose
+        //   \uFFFD to end the unquoted attr 
+        //   state, which therefore will not mess up later contexts.
+        // Rationale 3: Since IE 6, it is verified that NULL chars are stripped.
+        // Reference: https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(unquoted)-state
+        // 
+        // Example:
+        // <input value={{{yavu s}}} name="passwd"/>
+        yavu: function (s) {
+            return strReplace(s, SPECIAL_ATTR_VALUE_UNQUOTED_CHARS, function (m) {
+                return m === '\t'   ? '&#9;'  // in hex: 09
+                    :  m === '\n'   ? '&#10;' // in hex: 0A
+                    :  m === '\x0B' ? '&#11;' // in hex: 0B  for IE. IE<9 \v equals v, so use \x0B instead
+                    :  m === '\f'   ? '&#12;' // in hex: 0C
+                    :  m === '\r'   ? '&#13;' // in hex: 0D
+                    :  m === ' '    ? '&#32;' // in hex: 20
+                    :  m === '='    ? '&#61;' // in hex: 3D
+                    :  m === '<'    ? '&lt;'
+                    :  m === '>'    ? '&gt;'
+                    :  m === '"'    ? '&quot;'
+                    :  m === "'"    ? '&#39;'
+                    :  m === '`'    ? '&#96;'
+                    : /*empty or null*/ '\uFFFD';
+            });
+        },
+
+        yu: encodeURI,
+        yuc: encodeURIComponent,
+
+        // Notice that yubl MUST BE APPLIED LAST, and will not be used independently (expected output from encodeURI/encodeURIComponent and yavd/yavs/yavu)
+        // This is used to disable JS execution capabilities by prefixing x- to ^javascript:, ^vbscript: or ^data: that possibly could trigger script execution in URI attribute context
+        yubl: function (s) {
+            return URI_BLACKLIST_PROTOCOLS[x.yup(s)] ? 'x-' + s : s;
+        },
+
+        // This is NOT a security-critical filter.
+        // Reference: https://tools.ietf.org/html/rfc3986
+        yufull: function (s) {
+            return x.yu(s).replace(URL_IPV6, function(m, p) {
+                return '//[' + p + ']';
+            });
+        },
+
+        // chain yufull() with yubl()
+        yublf: function (s) {
+            return x.yubl(x.yufull(s));
+        },
+
+        // The design principle of the CSS filter MUST meet the following goal(s).
+        // (1) The input cannot break out of the context (expr) and this is to fulfill the just sufficient encoding principle.
+        // (2) The input cannot introduce CSS parsing error and this is to address the concern of UI redressing.
+        //
+        // term
+        //   : unary_operator?
+        //     [ NUMBER S* | PERCENTAGE S* | LENGTH S* | EMS S* | EXS S* | ANGLE S* |
+        //     TIME S* | FREQ S* ]
+        //   | STRING S* | IDENT S* | URI S* | hexcolor | function
+        // 
+        // Reference:
+        // * http://www.w3.org/TR/CSS21/grammar.html 
+        // * http://www.w3.org/TR/css-syntax-3/
+        // 
+        // NOTE: delimiter in CSS -  \  _  :  ;  (  )  "  '  /  ,  %  #  !  *  @  .  {  }
+        //                        2d 5c 5f 3a 3b 28 29 22 27 2f 2c 25 23 21 2a 40 2e 7b 7d
+
+        yceu: function(s) {
+            s = htmlDecode(s);
+            return CSS_VALID_VALUE.test(s) ? s : ";-x:'" + cssBlacklist(s.replace(CSS_SINGLE_QUOTED_CHARS, cssEncode)) + "';-v:";
+        },
+
+        // string1 = \"([^\n\r\f\\"]|\\{nl}|\\[^\n\r\f0-9a-f]|\\[0-9a-f]{1,6}(\r\n|[ \n\r\t\f])?)*\"
+        yced: function(s) {
+            return cssBlacklist(htmlDecode(s).replace(CSS_DOUBLE_QUOTED_CHARS, cssEncode));
+        },
+
+        // string2 = \'([^\n\r\f\\']|\\{nl}|\\[^\n\r\f0-9a-f]|\\[0-9a-f]{1,6}(\r\n|[ \n\r\t\f])?)*\'
+        yces: function(s) {
+            return cssBlacklist(htmlDecode(s).replace(CSS_SINGLE_QUOTED_CHARS, cssEncode));
+        },
+
+        // for url({{{yceuu url}}}
+        // unquoted_url = ([!#$%&*-~]|\\{h}{1,6}(\r\n|[ \t\r\n\f])?|\\[^\r\n\f0-9a-f])* (CSS 2.1 definition)
+        // unquoted_url = ([^"'()\\ \t\n\r\f\v\u0000\u0008\u000b\u000e-\u001f\u007f]|\\{h}{1,6}(\r\n|[ \t\r\n\f])?|\\[^\r\n\f0-9a-f])* (CSS 3.0 definition)
+        // The state machine in CSS 3.0 is more well defined - http://www.w3.org/TR/css-syntax-3/#consume-a-url-token0
+        // CSS_UNQUOTED_URL = /['\(\)]/g; // " \ treated by encodeURI()   
+        yceuu: function(s) {
+            return cssUrl(s).replace(CSS_UNQUOTED_URL, function (chr) {
+                return  chr === '\''        ? '\\27 ' :
+                        chr === '('         ? '%28' :
+                        /* chr === ')' ? */   '%29';
+            });
+        },
+
+        // for url("{{{yceud url}}}
+        yceud: function(s) { 
+            return cssUrl(s);
+        },
+
+        // for url('{{{yceus url}}}
+        yceus: function(s) { 
+            return cssUrl(s).replace(SQUOT, '\\27 ');
+        }
+    });
+};
+
+// exposing privFilters
+// this is an undocumented feature, and please use it with extra care
+var privFilters = exports._privFilters = exports._getPrivFilters();
+
+
+/* chaining filters */
+
+// uriInAttr and literally uriPathInAttr
+// yubl is always used 
+// Rationale: given pattern like this: <a href="{{{uriPathInDoubleQuotedAttr s}}}">
+//            developer may expect s is always prefixed with ? or /, but an attacker can abuse it with 'javascript:alert(1)'
+function uriInAttr (s, yav, yu) {
+    return privFilters.yubl(yav((yu || privFilters.yufull)(s)));
+}
+
+/** 
+* Yahoo Secure XSS Filters - just sufficient output filtering to prevent XSS!
+* @module xss-filters 
+*/
+
+/**
+* @function module:xss-filters#inHTMLData
+*
+* @param {string} s - An untrusted user input
+* @returns {string} The string s with '<' encoded as '&amp;lt;'
+*
+* @description
+* This filter is to be placed in HTML Data context to encode all '<' characters into '&amp;lt;'
+* <ul>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#data-state">HTML5 Data State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <div>{{{inHTMLData htmlData}}}</div>
+*
+*/
+exports.inHTMLData = privFilters.yd;
+
+/**
+* @function module:xss-filters#inHTMLComment
+*
+* @param {string} s - An untrusted user input
+* @returns {string} All NULL characters in s are first replaced with \uFFFD. If s contains -->, --!>, or starts with -*>, insert a space right before > to stop state breaking at <!--{{{yc s}}}-->. If s ends with --!, --, or -, append a space to stop collaborative state breaking at {{{yc s}}}>, {{{yc s}}}!>, {{{yc s}}}-!>, {{{yc s}}}->. If s contains ]> or ends with ], append a space after ] is verified in IE to stop IE conditional comments.
+*
+* @description
+* This filter is to be placed in HTML Comment context
+* <ul>
+* <li><a href="http://shazzer.co.uk/vector/Characters-that-close-a-HTML-comment-3">Shazzer - Closing comments for -.-></a>
+* <li><a href="http://shazzer.co.uk/vector/Characters-that-close-a-HTML-comment">Shazzer - Closing comments for --.></a>
+* <li><a href="http://shazzer.co.uk/vector/Characters-that-close-a-HTML-comment-0021">Shazzer - Closing comments for .></a>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#comment-start-state">HTML5 Comment Start State</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#comment-start-dash-state">HTML5 Comment Start Dash State</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#comment-state">HTML5 Comment State</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#comment-end-dash-state">HTML5 Comment End Dash State</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#comment-end-state">HTML5 Comment End State</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#comment-end-bang-state">HTML5 Comment End Bang State</a></li>
+* <li><a href="http://msdn.microsoft.com/en-us/library/ms537512%28v=vs.85%29.aspx">Conditional Comments in Internet Explorer</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <!-- {{{inHTMLComment html_comment}}} -->
+*
+*/
+exports.inHTMLComment = privFilters.yc;
+
+/**
+* @function module:xss-filters#inSingleQuotedAttr
+*
+* @param {string} s - An untrusted user input
+* @returns {string} The string s with any single-quote characters encoded into '&amp;&#39;'.
+*
+* @description
+* <p class="warning">Warning: This is NOT designed for any onX (e.g., onclick) attributes!</p>
+* <p class="warning">Warning: If you're working on URI/components, use the more specific uri___InSingleQuotedAttr filter </p>
+* This filter is to be placed in HTML Attribute Value (single-quoted) state to encode all single-quote characters into '&amp;&#39;'
+*
+* <ul>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(single-quoted)-state">HTML5 Attribute Value (Single-Quoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <input name='firstname' value='{{{inSingleQuotedAttr firstname}}}' />
+*
+*/
+exports.inSingleQuotedAttr = privFilters.yavs;
+
+/**
+* @function module:xss-filters#inDoubleQuotedAttr
+*
+* @param {string} s - An untrusted user input
+* @returns {string} The string s with any single-quote characters encoded into '&amp;&quot;'.
+*
+* @description
+* <p class="warning">Warning: This is NOT designed for any onX (e.g., onclick) attributes!</p>
+* <p class="warning">Warning: If you're working on URI/components, use the more specific uri___InDoubleQuotedAttr filter </p>
+* This filter is to be placed in HTML Attribute Value (double-quoted) state to encode all single-quote characters into '&amp;&quot;'
+*
+* <ul>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(double-quoted)-state">HTML5 Attribute Value (Double-Quoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <input name="firstname" value="{{{inDoubleQuotedAttr firstname}}}" />
+*
+*/
+exports.inDoubleQuotedAttr = privFilters.yavd;
+
+/**
+* @function module:xss-filters#inUnQuotedAttr
+*
+* @param {string} s - An untrusted user input
+* @returns {string} If s contains any state breaking chars (\t, \n, \v, \f, \r, space, null, ', ", `, <, >, and =), they are escaped and encoded into their equivalent HTML entity representations. If the string is empty, inject a \uFFFD character.
+*
+* @description
+* <p class="warning">Warning: This is NOT designed for any onX (e.g., onclick) attributes!</p>
+* <p class="warning">Warning: If you're working on URI/components, use the more specific uri___InUnQuotedAttr filter </p>
+* <p>Regarding \uFFFD injection, given <a id={{{id}}} name="passwd">,<br/>
+*        Rationale 1: our belief is that developers wouldn't expect when id equals an
+*          empty string would result in ' name="passwd"' rendered as 
+*          attribute value, even though this is how HTML5 is specified.<br/>
+*        Rationale 2: an empty or all null string (for IE) can 
+*          effectively alter its immediate subsequent state, we choose
+*          \uFFFD to end the unquoted attr 
+*          state, which therefore will not mess up later contexts.<br/>
+*        Rationale 3: Since IE 6, it is verified that NULL chars are stripped.<br/>
+*        Reference: https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(unquoted)-state</p>
+* <ul>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(unquoted)-state">HTML5 Attribute Value (Unquoted) State</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#before-attribute-value-state">HTML5 Before Attribute Value State</a></li>
+* <li><a href="http://shazzer.co.uk/database/All/Characters-which-break-attributes-without-quotes">Shazzer - Characters-which-break-attributes-without-quotes</a></li>
+* <li><a href="http://shazzer.co.uk/vector/Characters-allowed-attribute-quote">Shazzer - Characters-allowed-attribute-quote</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <input name="firstname" value={{{inUnQuotedAttr firstname}}} />
+*
+*/
+exports.inUnQuotedAttr = privFilters.yavu;
+
+
+/**
+* @function module:xss-filters#uriInSingleQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly an <strong>absolute</strong> URI
+* @returns {string} The string s encoded first by window.encodeURI(), then inSingleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (single-quoted) state for an <strong>absolute</strong> URI.<br/>
+* The correct order of encoders is thus: first window.encodeURI(), then inSingleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* <p>Notice: This filter is IPv6 friendly by not encoding '[' and ']'.</p>
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">encodeURI | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(single-quoted)-state">HTML5 Attribute Value (Single-Quoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href='{{{uriInSingleQuotedAttr full_uri}}}'>link</a>
+* 
+*/
+exports.uriInSingleQuotedAttr = function (s) {
+    return uriInAttr(s, privFilters.yavs);
+};
+
+/**
+* @function module:xss-filters#uriInDoubleQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly an <strong>absolute</strong> URI
+* @returns {string} The string s encoded first by window.encodeURI(), then inDoubleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (double-quoted) state for an <strong>absolute</strong> URI.<br/>
+* The correct order of encoders is thus: first window.encodeURI(), then inDoubleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* <p>Notice: This filter is IPv6 friendly by not encoding '[' and ']'.</p>
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">encodeURI | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(double-quoted)-state">HTML5 Attribute Value (Double-Quoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href="{{{uriInDoubleQuotedAttr full_uri}}}">link</a>
+* 
+*/
+exports.uriInDoubleQuotedAttr = function (s) {
+    return uriInAttr(s, privFilters.yavd);
+};
+
+
+/**
+* @function module:xss-filters#uriInUnQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly an <strong>absolute</strong> URI
+* @returns {string} The string s encoded first by window.encodeURI(), then inUnQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (unquoted) state for an <strong>absolute</strong> URI.<br/>
+* The correct order of encoders is thus: first the built-in encodeURI(), then inUnQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* <p>Notice: This filter is IPv6 friendly by not encoding '[' and ']'.</p>
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">encodeURI | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(unquoted)-state">HTML5 Attribute Value (Unquoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href={{{uriInUnQuotedAttr full_uri}}}>link</a>
+* 
+*/
+exports.uriInUnQuotedAttr = function (s) {
+    return uriInAttr(s, privFilters.yavu);
+};
+
+/**
+* @function module:xss-filters#uriInHTMLData
+*
+* @param {string} s - An untrusted user input, supposedly an <strong>absolute</strong> URI
+* @returns {string} The string s encoded by window.encodeURI() and then inHTMLData()
+*
+* @description
+* This filter is to be placed in HTML Data state for an <strong>absolute</strong> URI.
+*
+* <p>Notice: The actual implementation skips inHTMLData(), since '<' is already encoded as '%3C' by encodeURI().</p>
+* <p>Notice: This filter is IPv6 friendly by not encoding '[' and ']'.</p>
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">encodeURI | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#data-state">HTML5 Data State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href="/somewhere">{{{uriInHTMLData full_uri}}}</a>
+* 
+*/
+exports.uriInHTMLData = privFilters.yufull;
+
+
+/**
+* @function module:xss-filters#uriInHTMLComment
+*
+* @param {string} s - An untrusted user input, supposedly an <strong>absolute</strong> URI
+* @returns {string} The string s encoded by window.encodeURI(), and finally inHTMLComment()
+*
+* @description
+* This filter is to be placed in HTML Comment state for an <strong>absolute</strong> URI.
+*
+* <p>Notice: This filter is IPv6 friendly by not encoding '[' and ']'.</p>
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">encodeURI | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#data-state">HTML5 Data State</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#comment-state">HTML5 Comment State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <!-- {{{uriInHTMLComment full_uri}}} -->
+* 
+*/
+exports.uriInHTMLComment = function (s) {
+    return privFilters.yc(privFilters.yufull(s));
+};
+
+
+
+
+/**
+* @function module:xss-filters#uriPathInSingleQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly a URI Path/Query or relative URI
+* @returns {string} The string s encoded first by window.encodeURI(), then inSingleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (single-quoted) state for a URI Path/Query or relative URI.<br/>
+* The correct order of encoders is thus: first window.encodeURI(), then inSingleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">encodeURI | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(single-quoted)-state">HTML5 Attribute Value (Single-Quoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href='http://example.com/{{{uriPathInSingleQuotedAttr uri_path}}}'>link</a>
+* <a href='http://example.com/?{{{uriQueryInSingleQuotedAttr uri_query}}}'>link</a>
+* 
+*/
+exports.uriPathInSingleQuotedAttr = function (s) {
+    return uriInAttr(s, privFilters.yavs, privFilters.yu);
+};
+
+/**
+* @function module:xss-filters#uriPathInDoubleQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly a URI Path/Query or relative URI
+* @returns {string} The string s encoded first by window.encodeURI(), then inDoubleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (double-quoted) state for a URI Path/Query or relative URI.<br/>
+* The correct order of encoders is thus: first window.encodeURI(), then inDoubleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">encodeURI | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(double-quoted)-state">HTML5 Attribute Value (Double-Quoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href="http://example.com/{{{uriPathInDoubleQuotedAttr uri_path}}}">link</a>
+* <a href="http://example.com/?{{{uriQueryInDoubleQuotedAttr uri_query}}}">link</a>
+* 
+*/
+exports.uriPathInDoubleQuotedAttr = function (s) {
+    return uriInAttr(s, privFilters.yavd, privFilters.yu);
+};
+
+
+/**
+* @function module:xss-filters#uriPathInUnQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly a URI Path/Query or relative URI
+* @returns {string} The string s encoded first by window.encodeURI(), then inUnQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (unquoted) state for a URI Path/Query or relative URI.<br/>
+* The correct order of encoders is thus: first the built-in encodeURI(), then inUnQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">encodeURI | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(unquoted)-state">HTML5 Attribute Value (Unquoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href=http://example.com/{{{uriPathInUnQuotedAttr uri_path}}}>link</a>
+* <a href=http://example.com/?{{{uriQueryInUnQuotedAttr uri_query}}}>link</a>
+* 
+*/
+exports.uriPathInUnQuotedAttr = function (s) {
+    return uriInAttr(s, privFilters.yavu, privFilters.yu);
+};
+
+/**
+* @function module:xss-filters#uriPathInHTMLData
+*
+* @param {string} s - An untrusted user input, supposedly a URI Path/Query or relative URI
+* @returns {string} The string s encoded by window.encodeURI() and then inHTMLData()
+*
+* @description
+* This filter is to be placed in HTML Data state for a URI Path/Query or relative URI.
+*
+* <p>Notice: The actual implementation skips inHTMLData(), since '<' is already encoded as '%3C' by encodeURI().</p>
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">encodeURI | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#data-state">HTML5 Data State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href="http://example.com/">http://example.com/{{{uriPathInHTMLData uri_path}}}</a>
+* <a href="http://example.com/">http://example.com/?{{{uriQueryInHTMLData uri_query}}}</a>
+* 
+*/
+exports.uriPathInHTMLData = privFilters.yu;
+
+
+/**
+* @function module:xss-filters#uriPathInHTMLComment
+*
+* @param {string} s - An untrusted user input, supposedly a URI Path/Query or relative URI
+* @returns {string} The string s encoded by window.encodeURI(), and finally inHTMLComment()
+*
+* @description
+* This filter is to be placed in HTML Comment state for a URI Path/Query or relative URI.
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">encodeURI | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#data-state">HTML5 Data State</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#comment-state">HTML5 Comment State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <!-- http://example.com/{{{uriPathInHTMLComment uri_path}}} -->
+* <!-- http://example.com/?{{{uriQueryInHTMLComment uri_query}}} -->
+*/
+exports.uriPathInHTMLComment = function (s) {
+    return privFilters.yc(privFilters.yu(s));
+};
+
+
+/**
+* @function module:xss-filters#uriQueryInSingleQuotedAttr
+* @description This is an alias of {@link module:xss-filters#uriPathInSingleQuotedAttr}
+* 
+* @alias module:xss-filters#uriPathInSingleQuotedAttr
+*/
+exports.uriQueryInSingleQuotedAttr = exports.uriPathInSingleQuotedAttr;
+
+/**
+* @function module:xss-filters#uriQueryInDoubleQuotedAttr
+* @description This is an alias of {@link module:xss-filters#uriPathInDoubleQuotedAttr}
+* 
+* @alias module:xss-filters#uriPathInDoubleQuotedAttr
+*/
+exports.uriQueryInDoubleQuotedAttr = exports.uriPathInDoubleQuotedAttr;
+
+/**
+* @function module:xss-filters#uriQueryInUnQuotedAttr
+* @description This is an alias of {@link module:xss-filters#uriPathInUnQuotedAttr}
+* 
+* @alias module:xss-filters#uriPathInUnQuotedAttr
+*/
+exports.uriQueryInUnQuotedAttr = exports.uriPathInUnQuotedAttr;
+
+/**
+* @function module:xss-filters#uriQueryInHTMLData
+* @description This is an alias of {@link module:xss-filters#uriPathInHTMLData}
+* 
+* @alias module:xss-filters#uriPathInHTMLData
+*/
+exports.uriQueryInHTMLData = exports.uriPathInHTMLData;
+
+/**
+* @function module:xss-filters#uriQueryInHTMLComment
+* @description This is an alias of {@link module:xss-filters#uriPathInHTMLComment}
+* 
+* @alias module:xss-filters#uriPathInHTMLComment
+*/
+exports.uriQueryInHTMLComment = exports.uriPathInHTMLComment;
+
+
+
+/**
+* @function module:xss-filters#uriComponentInSingleQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly a URI Component
+* @returns {string} The string s encoded first by window.encodeURIComponent(), then inSingleQuotedAttr()
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (single-quoted) state for a URI Component.<br/>
+* The correct order of encoders is thus: first window.encodeURIComponent(), then inSingleQuotedAttr()
+*
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">encodeURIComponent | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(single-quoted)-state">HTML5 Attribute Value (Single-Quoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href='http://example.com/?q={{{uriComponentInSingleQuotedAttr uri_component}}}'>link</a>
+* 
+*/
+exports.uriComponentInSingleQuotedAttr = function (s) {
+    return privFilters.yavs(privFilters.yuc(s));
+};
+
+/**
+* @function module:xss-filters#uriComponentInDoubleQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly a URI Component
+* @returns {string} The string s encoded first by window.encodeURIComponent(), then inDoubleQuotedAttr()
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (double-quoted) state for a URI Component.<br/>
+* The correct order of encoders is thus: first window.encodeURIComponent(), then inDoubleQuotedAttr()
+*
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">encodeURIComponent | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(double-quoted)-state">HTML5 Attribute Value (Double-Quoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href="http://example.com/?q={{{uriComponentInDoubleQuotedAttr uri_component}}}">link</a>
+* 
+*/
+exports.uriComponentInDoubleQuotedAttr = function (s) {
+    return privFilters.yavd(privFilters.yuc(s));
+};
+
+
+/**
+* @function module:xss-filters#uriComponentInUnQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly a URI Component
+* @returns {string} The string s encoded first by window.encodeURIComponent(), then inUnQuotedAttr()
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (unquoted) state for a URI Component.<br/>
+* The correct order of encoders is thus: first the built-in encodeURIComponent(), then inUnQuotedAttr()
+*
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">encodeURIComponent | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(unquoted)-state">HTML5 Attribute Value (Unquoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href=http://example.com/?q={{{uriComponentInUnQuotedAttr uri_component}}}>link</a>
+* 
+*/
+exports.uriComponentInUnQuotedAttr = function (s) {
+    return privFilters.yavu(privFilters.yuc(s));
+};
+
+/**
+* @function module:xss-filters#uriComponentInHTMLData
+*
+* @param {string} s - An untrusted user input, supposedly a URI Component
+* @returns {string} The string s encoded by window.encodeURIComponent() and then inHTMLData()
+*
+* @description
+* This filter is to be placed in HTML Data state for a URI Component.
+*
+* <p>Notice: The actual implementation skips inHTMLData(), since '<' is already encoded as '%3C' by encodeURIComponent().</p>
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">encodeURIComponent | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#data-state">HTML5 Data State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href="http://example.com/">http://example.com/?q={{{uriComponentInHTMLData uri_component}}}</a>
+* <a href="http://example.com/">http://example.com/#{{{uriComponentInHTMLData uri_fragment}}}</a>
+* 
+*/
+exports.uriComponentInHTMLData = privFilters.yuc;
+
+
+/**
+* @function module:xss-filters#uriComponentInHTMLComment
+*
+* @param {string} s - An untrusted user input, supposedly a URI Component
+* @returns {string} The string s encoded by window.encodeURIComponent(), and finally inHTMLComment()
+*
+* @description
+* This filter is to be placed in HTML Comment state for a URI Component.
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">encodeURIComponent | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#data-state">HTML5 Data State</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#comment-state">HTML5 Comment State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <!-- http://example.com/?q={{{uriComponentInHTMLComment uri_component}}} -->
+* <!-- http://example.com/#{{{uriComponentInHTMLComment uri_fragment}}} -->
+*/
+exports.uriComponentInHTMLComment = function (s) {
+    return privFilters.yc(privFilters.yuc(s));
+};
+
+
+// uriFragmentInSingleQuotedAttr
+// added yubl on top of uriComponentInAttr 
+// Rationale: given pattern like this: <a href='{{{uriFragmentInSingleQuotedAttr s}}}'>
+//            developer may expect s is always prefixed with #, but an attacker can abuse it with 'javascript:alert(1)'
+
+/**
+* @function module:xss-filters#uriFragmentInSingleQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly a URI Fragment
+* @returns {string} The string s encoded first by window.encodeURIComponent(), then inSingleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (single-quoted) state for a URI Fragment.<br/>
+* The correct order of encoders is thus: first window.encodeURIComponent(), then inSingleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">encodeURIComponent | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(single-quoted)-state">HTML5 Attribute Value (Single-Quoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href='http://example.com/#{{{uriFragmentInSingleQuotedAttr uri_fragment}}}'>link</a>
+* 
+*/
+exports.uriFragmentInSingleQuotedAttr = function (s) {
+    return privFilters.yubl(privFilters.yavs(privFilters.yuc(s)));
+};
+
+// uriFragmentInDoubleQuotedAttr
+// added yubl on top of uriComponentInAttr 
+// Rationale: given pattern like this: <a href="{{{uriFragmentInDoubleQuotedAttr s}}}">
+//            developer may expect s is always prefixed with #, but an attacker can abuse it with 'javascript:alert(1)'
+
+/**
+* @function module:xss-filters#uriFragmentInDoubleQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly a URI Fragment
+* @returns {string} The string s encoded first by window.encodeURIComponent(), then inDoubleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (double-quoted) state for a URI Fragment.<br/>
+* The correct order of encoders is thus: first window.encodeURIComponent(), then inDoubleQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">encodeURIComponent | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(double-quoted)-state">HTML5 Attribute Value (Double-Quoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href="http://example.com/#{{{uriFragmentInDoubleQuotedAttr uri_fragment}}}">link</a>
+* 
+*/
+exports.uriFragmentInDoubleQuotedAttr = function (s) {
+    return privFilters.yubl(privFilters.yavd(privFilters.yuc(s)));
+};
+
+// uriFragmentInUnQuotedAttr
+// added yubl on top of uriComponentInAttr 
+// Rationale: given pattern like this: <a href={{{uriFragmentInUnQuotedAttr s}}}>
+//            developer may expect s is always prefixed with #, but an attacker can abuse it with 'javascript:alert(1)'
+
+/**
+* @function module:xss-filters#uriFragmentInUnQuotedAttr
+*
+* @param {string} s - An untrusted user input, supposedly a URI Fragment
+* @returns {string} The string s encoded first by window.encodeURIComponent(), then inUnQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* @description
+* This filter is to be placed in HTML Attribute Value (unquoted) state for a URI Fragment.<br/>
+* The correct order of encoders is thus: first the built-in encodeURIComponent(), then inUnQuotedAttr(), and finally prefix the resulted string with 'x-' if it begins with 'javascript:' or 'vbscript:' that could possibly lead to script execution
+*
+* <ul>
+* <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">encodeURIComponent | MDN</a></li>
+* <li><a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a></li>
+* <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#attribute-value-(unquoted)-state">HTML5 Attribute Value (Unquoted) State</a></li>
+* </ul>
+*
+* @example
+* // output context to be applied by this filter.
+* <a href=http://example.com/#{{{uriFragmentInUnQuotedAttr uri_fragment}}}>link</a>
+* 
+*/
+exports.uriFragmentInUnQuotedAttr = function (s) {
+    return privFilters.yubl(privFilters.yavu(privFilters.yuc(s)));
+};
+
+
+/**
+* @function module:xss-filters#uriFragmentInHTMLData
+* @description This is an alias of {@link module:xss-filters#uriComponentInHTMLData}
+* 
+* @alias module:xss-filters#uriComponentInHTMLData
+*/
+exports.uriFragmentInHTMLData = exports.uriComponentInHTMLData;
+
+/**
+* @function module:xss-filters#uriFragmentInHTMLComment
+* @description This is an alias of {@link module:xss-filters#uriComponentInHTMLComment}
+* 
+* @alias module:xss-filters#uriComponentInHTMLComment
+*/
+exports.uriFragmentInHTMLComment = exports.uriComponentInHTMLComment;
 
 
 /***/ }),

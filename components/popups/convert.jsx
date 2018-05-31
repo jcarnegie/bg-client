@@ -4,7 +4,7 @@ import {Button, Form, Glyphicon, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage} from "react-intl";
 
-import withFormHelper from "../common/inputs/withFormHelper";
+import withFormHelper from "../inputs/withFormHelper";
 import topupABI from "../../shared/contracts/topup";
 import networkConfig from "../../client/utils/network";
 import {MESSAGE_ADD} from "../../shared/constants/actions";
@@ -102,7 +102,6 @@ export default class ConvertPopup extends Component {
   }
 
   render() {
-<<<<<<< HEAD:client/components/popups/convert.jsx
     const {rate, show, onHide, formData} = this.props;
 
     if (!rate.data) {

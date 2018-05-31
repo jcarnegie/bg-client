@@ -27,7 +27,7 @@ function configureStore(initialState = defaultState) {
   const middlewares = [thunkMiddleware, sagaMiddleware];
 
   if (process.env.NODE_ENV === "development") {
-    middlewares.push(createLogger());
+    // middlewares.push(createLogger()); // TODO
   }
 
   let composeEnhancers = compose;

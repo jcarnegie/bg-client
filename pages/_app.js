@@ -37,10 +37,10 @@ class BGApp extends App {
       <Container warnings={false}>
           <Provider store={store}>
             <>
-            <MetaMask {...metaMaskProps} />
-            <Register />
-            <GAListener {...gaListenerProps} />
-            <Component {...pageProps} />
+              <MetaMask {...metaMaskProps} />
+              <Register />
+              <GAListener {...gaListenerProps} />
+              <Component {...pageProps} />
             </>
           </Provider>
       </Container>

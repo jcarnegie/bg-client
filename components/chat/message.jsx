@@ -104,7 +104,6 @@ export default class Message extends Component {
         </div>
         <div className="avatar">
           {this.renderAvatar(isMyMessage)}
-        <div className="avatar-right">
         </div>
       </div>
     );

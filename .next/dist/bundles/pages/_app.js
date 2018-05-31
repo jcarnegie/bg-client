@@ -1147,8 +1147,12 @@ function update() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__ = __webpack_require__("redux-saga/effects");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux_saga_effects___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_chat__ = __webpack_require__("./client/utils/chat.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_xss_filters__ = __webpack_require__("xss-filters");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_xss_filters___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_xss_filters__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ramda__ = __webpack_require__("ramda");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ramda___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_ramda__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_chat__ = __webpack_require__("./client/utils/chat.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
 
 
 (function () {
@@ -1179,8 +1183,10 @@ __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(chatSaga
 
 
 
+
+
 function sendChatMessage(action) {
-  var state, currentChannel, message, sentMessage;
+  var state, currentChannel, message, cleanMsg, sentMessage;
   return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function sendChatMessage$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -1193,32 +1199,42 @@ function sendChatMessage(action) {
           state = _context.sent;
           currentChannel = state.chat.currentChannel;
           message = action.payload;
-          _context.next = 8;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["g" /* sendMessage */])(message, currentChannel);
+          cleanMsg = __WEBPACK_IMPORTED_MODULE_2_xss_filters___default.a.inHTMLData(message);
 
-        case 8:
-          sentMessage = _context.sent;
+          if (!Object(__WEBPACK_IMPORTED_MODULE_3_ramda__["isEmpty"])(cleanMsg.trim())) {
+            _context.next = 9;
+            break;
+          }
+
+          return _context.abrupt("return", null);
+
+        case 9:
           _context.next = 11;
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["g" /* sendMessage */])(cleanMsg, currentChannel);
+
+        case 11:
+          sentMessage = _context.sent;
+          _context.next = 14;
           return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["m" /* CHAT_MESSAGE_SENT */],
+            type: __WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["m" /* CHAT_MESSAGE_SENT */],
             payload: sentMessage
           });
 
-        case 11:
-          _context.next = 16;
+        case 14:
+          _context.next = 19;
           break;
 
-        case 13:
-          _context.prev = 13;
+        case 16:
+          _context.prev = 16;
           _context.t0 = _context["catch"](0);
           console.log("sendChatMessage error:", _context.t0);
 
-        case 16:
+        case 19:
         case "end":
           return _context.stop();
       }
     }
-  }, _marked, this, [[0, 13]]);
+  }, _marked, this, [[0, 16]]);
 }
 
 function initChat(action) {
@@ -1230,7 +1246,7 @@ function initChat(action) {
         case 0:
           _action$payload = action.payload, wallet = _action$payload.wallet, nickName = _action$payload.nickName;
           _context2.next = 3;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["e" /* init */])(wallet, nickName);
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["e" /* init */])(wallet, nickName);
 
         case 3:
           _ref = _context2.sent;
@@ -1239,7 +1255,7 @@ function initChat(action) {
           user = _ref2[1];
           _context2.next = 9;
           return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["i" /* CHAT_INIT */],
+            type: __WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["i" /* CHAT_INIT */],
             payload: {
               sb: sb,
               user: user
@@ -1248,7 +1264,7 @@ function initChat(action) {
 
         case 9:
           _context2.next = 11;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["b" /* channels */])(sb);
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["b" /* channels */])(sb);
 
         case 11:
           channels = _context2.sent;
@@ -1259,18 +1275,18 @@ function initChat(action) {
 
         case 14:
           locale = _context2.sent;
-          channelName = Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["a" /* channelNameForLocale */])(locale);
+          channelName = Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["a" /* channelNameForLocale */])(locale);
           channelOperators = ["0xc40cD464ad0895571bB396071A4FaA81935353A5", // Jeff
           "0xa9Af3D88E5167cA6E9413CBB9b946EC95FE469ee" // Shain
           ];
 
-          if (Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["d" /* findChannelByName */])(channelName, channels)) {
+          if (Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["d" /* findChannelByName */])(channelName, channels)) {
             _context2.next = 22;
             break;
           }
 
           _context2.next = 20;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["c" /* createChannelWithName */])(channelName, channelOperators);
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["c" /* createChannelWithName */])(channelName, channelOperators);
 
         case 20:
           channel = _context2.sent;
@@ -1278,25 +1294,25 @@ function initChat(action) {
 
         case 22:
           _context2.next = 24;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["h" /* setChannelByName */])(channelName, channels);
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["h" /* setChannelByName */])(channelName, channels);
 
         case 24:
           channel = _context2.sent;
           _context2.next = 27;
           return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["n" /* CHAT_SET_CHANNEL */],
+            type: __WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["n" /* CHAT_SET_CHANNEL */],
             payload: channel
           });
 
         case 27:
           _context2.next = 29;
-          return Object(__WEBPACK_IMPORTED_MODULE_2__utils_chat__["f" /* messages */])(channel);
+          return Object(__WEBPACK_IMPORTED_MODULE_4__utils_chat__["f" /* messages */])(channel);
 
         case 29:
           messages = _context2.sent;
           _context2.next = 32;
           return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["j" /* CHAT_LOAD_MESSAGES */],
+            type: __WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["j" /* CHAT_LOAD_MESSAGES */],
             payload: messages
           });
 
@@ -1314,11 +1330,11 @@ function chatSaga() {
       switch (_context3.prev = _context3.next) {
         case 0:
           _context3.next = 2;
-          return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["l" /* CHAT_MESSAGE_SEND */], sendChatMessage);
+          return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["l" /* CHAT_MESSAGE_SEND */], sendChatMessage);
 
         case 2:
           _context3.next = 4;
-          return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["X" /* USER_CHANGED */], initChat);
+          return Object(__WEBPACK_IMPORTED_MODULE_1_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_5__shared_constants_actions__["X" /* USER_CHANGED */], initChat);
 
         case 4:
         case "end":
@@ -1696,9 +1712,11 @@ function rootSaga() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bluebird___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_bluebird__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__ = __webpack_require__("redux-saga/effects");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_saga_effects___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_location__ = __webpack_require__("./client/utils/location.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_api__ = __webpack_require__("./client/utils/api.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_intl_redux__ = __webpack_require__("react-intl-redux");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_intl_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_intl_redux__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_location__ = __webpack_require__("./client/utils/location.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_api__ = __webpack_require__("./client/utils/api.js");
 
 
 (function () {
@@ -1726,23 +1744,41 @@ __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.mark(inventor
 
 
 
+
 function getItems(action) {
-  var testItems, itemsUrl, items;
+  var _ref, user, testItems, _user$data, language, wallet, itemsUrl, items;
+
   return __WEBPACK_IMPORTED_MODULE_0__babel_runtime_regenerator___default.a.wrap(function getItems$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
           _context.next = 3;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["I" /* INVENTORY_ITEMS_LOADING */]
-          });
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["select"])();
 
         case 3:
-          testItems = Object(__WEBPACK_IMPORTED_MODULE_4__utils_location__["a" /* readFromQueryString */])("testItems") === "true" ? "?testItems=true" : "";
-          itemsUrl = "/items/".concat(action.payload.wallet).concat(testItems);
+          _ref = _context.sent;
+          user = _ref.user;
           _context.next = 7;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["call"])(__WEBPACK_IMPORTED_MODULE_5__utils_api__["a" /* default */], itemsUrl, {
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["I" /* INVENTORY_ITEMS_LOADING */]
+          });
+
+        case 7:
+          testItems = Object(__WEBPACK_IMPORTED_MODULE_5__utils_location__["a" /* readFromQueryString */])("testItems") === "true" ? "?testItems=true" : "";
+
+          if (user.data) {
+            _context.next = 10;
+            break;
+          }
+
+          return _context.abrupt("return");
+
+        case 10:
+          _user$data = user.data, language = _user$data.language, wallet = _user$data.wallet;
+          itemsUrl = "/items/".concat(wallet, "/").concat(language).concat(testItems);
+          _context.next = 14;
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["call"])(__WEBPACK_IMPORTED_MODULE_6__utils_api__["a" /* default */], itemsUrl, {
             method: "GET",
             headers: {
               Accept: "application/json",
@@ -1750,39 +1786,39 @@ function getItems(action) {
             }
           });
 
-        case 7:
+        case 14:
           items = _context.sent;
-          _context.next = 10;
+          _context.next = 17;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["G" /* INVENTORY_ITEMS_CHANGED */],
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["G" /* INVENTORY_ITEMS_CHANGED */],
             payload: items.list
           });
 
-        case 10:
-          _context.next = 18;
+        case 17:
+          _context.next = 25;
           break;
 
-        case 12:
-          _context.prev = 12;
+        case 19:
+          _context.prev = 19;
           _context.t0 = _context["catch"](0);
-          _context.next = 16;
+          _context.next = 23;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["H" /* INVENTORY_ITEMS_ERROR */]
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["H" /* INVENTORY_ITEMS_ERROR */]
           });
 
-        case 16:
-          _context.next = 18;
+        case 23:
+          _context.next = 25;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["K" /* MESSAGE_ADD */],
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["K" /* MESSAGE_ADD */],
             payload: _context.t0
           });
 
-        case 18:
+        case 25:
         case "end":
           return _context.stop();
       }
     }
-  }, _marked, this, [[0, 12]]);
+  }, _marked, this, [[0, 19]]);
 }
 
 function getGames(action) {
@@ -1794,12 +1830,12 @@ function getGames(action) {
           _context2.prev = 0;
           _context2.next = 3;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["E" /* INVENTORY_GAMES_LOADING */]
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["E" /* INVENTORY_GAMES_LOADING */]
           });
 
         case 3:
           _context2.next = 5;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["call"])(__WEBPACK_IMPORTED_MODULE_5__utils_api__["a" /* default */], "/games", {
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["call"])(__WEBPACK_IMPORTED_MODULE_6__utils_api__["a" /* default */], "/games", {
             method: "GET",
             headers: {
               Accept: "application/json",
@@ -1811,8 +1847,9 @@ function getGames(action) {
           games = _context2.sent;
           _context2.next = 8;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["C" /* INVENTORY_GAMES_CHANGED */],
-            payload: games
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["C" /* INVENTORY_GAMES_CHANGED */],
+            payload: games.list // TODO - perhaps remove list prop from API
+
           });
 
         case 8:
@@ -1824,13 +1861,13 @@ function getGames(action) {
           _context2.t0 = _context2["catch"](0);
           _context2.next = 14;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["D" /* INVENTORY_GAMES_ERROR */]
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["D" /* INVENTORY_GAMES_ERROR */]
           });
 
         case 14:
           _context2.next = 16;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["K" /* MESSAGE_ADD */],
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["K" /* MESSAGE_ADD */],
             payload: _context2.t0
           });
 
@@ -1860,7 +1897,7 @@ function checkGifts() {
 
           _context3.next = 7;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["A" /* GIFT_REMOVE_LOADING */]
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["A" /* GIFT_REMOVE_LOADING */]
           });
 
         case 7:
@@ -1880,7 +1917,7 @@ function checkGifts() {
           });
           _context3.next = 13;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["B" /* GIFT_REMOVE_SUCCESS */],
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["B" /* GIFT_REMOVE_SUCCESS */],
             payload: hashes // doesn't matter if tx succeed or failed
 
           });
@@ -1894,13 +1931,13 @@ function checkGifts() {
           _context3.t0 = _context3["catch"](0);
           _context3.next = 19;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["z" /* GIFT_REMOVE_ERROR */]
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["z" /* GIFT_REMOVE_ERROR */]
           });
 
         case 19:
           _context3.next = 21;
           return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["put"])({
-            type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["K" /* MESSAGE_ADD */],
+            type: __WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["K" /* MESSAGE_ADD */],
             payload: _context3.t0
           });
 
@@ -1918,25 +1955,29 @@ function inventorySaga() {
       switch (_context4.prev = _context4.next) {
         case 0:
           _context4.next = 2;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["X" /* USER_CHANGED */], getItems);
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_3_react_intl_redux__["UPDATE"], getItems);
 
         case 2:
           _context4.next = 4;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["F" /* INVENTORY_GAMES_REQUEST */], getGames);
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["F" /* INVENTORY_GAMES_REQUEST */], getGames);
 
         case 4:
           _context4.next = 6;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["X" /* USER_CHANGED */], getGames);
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["J" /* INVENTORY_ITEMS_REQUEST */], getItems);
 
         case 6:
           _context4.next = 8;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["J" /* INVENTORY_ITEMS_REQUEST */], getItems);
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["X" /* USER_CHANGED */], getGames);
 
         case 8:
           _context4.next = 10;
-          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["R" /* NEW_BLOCK */], checkGifts);
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["X" /* USER_CHANGED */], getItems);
 
         case 10:
+          _context4.next = 12;
+          return Object(__WEBPACK_IMPORTED_MODULE_2_redux_saga_effects__["takeEvery"])(__WEBPACK_IMPORTED_MODULE_4__shared_constants_actions__["R" /* NEW_BLOCK */], checkGifts);
+
+        case 12:
         case "end":
           return _context4.stop();
       }
@@ -2909,7 +2950,7 @@ function configureStore() {
   var sagaMiddleware = __WEBPACK_IMPORTED_MODULE_1_redux_saga___default()();
   var middlewares = [__WEBPACK_IMPORTED_MODULE_5_redux_thunk___default.a, sagaMiddleware];
 
-  if ("development" === "development" && !process.env.PORT) {// middlewares.push(createLogger()); // TODO - noise on server, perhaps use process.release.name
+  if (true) {// middlewares.push(createLogger()); // TODO
   }
 
   var composeEnhancers = __WEBPACK_IMPORTED_MODULE_0_redux__["compose"];
@@ -3586,19 +3627,18 @@ function (_Component) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(module) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MetaMask; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__popups_metamask_install__ = __webpack_require__("./components/popups/metamask.install.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__popups_metamask_login__ = __webpack_require__("./components/popups/metamask.login.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__popups_metamask_network__ = __webpack_require__("./components/popups/metamask.network.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__popups_register__ = __webpack_require__("./components/popups/register.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types__ = __webpack_require__("prop-types");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_redux__ = __webpack_require__("react-redux");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__client_utils_network__ = __webpack_require__("./client/utils/network.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__("prop-types");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__("react-redux");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__client_utils_network__ = __webpack_require__("./client/utils/network.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__popups_metamask_install__ = __webpack_require__("./components/popups/metamask.install.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__popups_metamask_login__ = __webpack_require__("./components/popups/metamask.login.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__popups_metamask_network__ = __webpack_require__("./components/popups/metamask.network.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__popups_register__ = __webpack_require__("./components/popups/register.jsx");
 var _dec,
     _class,
     _class2,
@@ -3627,14 +3667,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+ // import {injectIntl} from "react-intl";
 
 
 
 
 
 
+ // @injectIntl
 
-var MetaMask = (_dec = Object(__WEBPACK_IMPORTED_MODULE_6_react_redux__["connect"])(function (state) {
+var MetaMask = (_dec = Object(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(function (state) {
   return {
     account: state.account,
     network: state.network,
@@ -3672,14 +3714,14 @@ function (_Component) {
             if (window.web3.eth.accounts[0] !== _this2.props.account.wallet) {
               if (window.web3.eth.accounts.length) {
                 _this2.props.dispatch({
-                  type: __WEBPACK_IMPORTED_MODULE_7__shared_constants_actions__["a" /* ACCOUNT_CHANGED */],
+                  type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["a" /* ACCOUNT_CHANGED */],
                   payload: {
                     wallet: window.web3.eth.accounts[0]
                   }
                 });
               } else if (_this2.props.account.isLoading || _this2.props.account.success) {
                 _this2.props.dispatch({
-                  type: __WEBPACK_IMPORTED_MODULE_7__shared_constants_actions__["b" /* ACCOUNT_ERROR */]
+                  type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["b" /* ACCOUNT_ERROR */]
                 });
               }
             }
@@ -3688,12 +3730,12 @@ function (_Component) {
         window.web3.eth.filter("latest").watch(function (error, result) {
           if (error) {
             _this2.props.dispatch({
-              type: __WEBPACK_IMPORTED_MODULE_7__shared_constants_actions__["K" /* MESSAGE_ADD */],
+              type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["K" /* MESSAGE_ADD */],
               payload: error
             });
           } else {
             _this2.props.dispatch({
-              type: __WEBPACK_IMPORTED_MODULE_7__shared_constants_actions__["R" /* NEW_BLOCK */],
+              type: __WEBPACK_IMPORTED_MODULE_3__shared_constants_actions__["R" /* NEW_BLOCK */],
               payload: result
             });
           }
@@ -3708,7 +3750,6 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log("metamask: this.props: ", this.props);
       var _props = this.props,
           network = _props.network,
           account = _props.account,
@@ -3720,29 +3761,29 @@ function (_Component) {
         return null;
       }
 
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Fragment, null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__popups_metamask_install__["a" /* default */], {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Fragment, null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__popups_metamask_install__["a" /* default */], {
         show: !MetaMask.isInstalled(),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 96
+          lineNumber: 100
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__popups_metamask_login__["a" /* default */], {
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__popups_metamask_login__["a" /* default */], {
         show: !account.isLoading && !account.success,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 97
+          lineNumber: 101
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__popups_metamask_network__["a" /* default */], {
-        show: !network.isLoading && network.success && !Object.keys(__WEBPACK_IMPORTED_MODULE_8__client_utils_network__["a" /* default */]).includes(network.data.id),
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__popups_metamask_network__["a" /* default */], {
+        show: !network.isLoading && network.success && !Object.keys(__WEBPACK_IMPORTED_MODULE_4__client_utils_network__["a" /* default */]).includes(network.data.id),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 98
+          lineNumber: 102
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__popups_register__["a" /* default */], {
-        show: !network.isLoading && network.success && Object.keys(__WEBPACK_IMPORTED_MODULE_8__client_utils_network__["a" /* default */]).includes(network.data.id) && !user.isLoading && !user.success,
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__popups_register__["a" /* default */], {
+        show: !network.isLoading && network.success && Object.keys(__WEBPACK_IMPORTED_MODULE_4__client_utils_network__["a" /* default */]).includes(network.data.id) && !user.isLoading && !user.success,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 99
+          lineNumber: 103
         }
       }));
     }
@@ -3756,9 +3797,9 @@ function (_Component) {
   }], [{
     key: "getInitialProps",
     value: function getInitialProps(ctx) {
-      return {
-        pathname: ctx.req.originalUrl
-      };
+      var props = {};
+      if (ctx && ctx.req) props.pathname = ctx.req.originalUrl;
+      return props;
     }
   }, {
     key: "isInstalled",
@@ -3769,13 +3810,14 @@ function (_Component) {
 
   return MetaMask;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]), _class2.propTypes = {
-  account: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.object,
-  network: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.object,
-  user: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.object,
-  dispatch: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.func,
-  pathname: __WEBPACK_IMPORTED_MODULE_5_prop_types___default.a.string
+  account: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
+  network: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
+  user: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
+  dispatch: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+  pathname: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string
 }, _temp2)) || _class);
-
+var _default = MetaMask;
+/* harmony default export */ __webpack_exports__["a"] = (_default);
 ;
 
 (function () {
@@ -3788,6 +3830,7 @@ function (_Component) {
   }
 
   reactHotLoader.register(MetaMask, "MetaMask", "/Users/shain/repositories/bitguild/PortalClient/components/common/metamask.jsx");
+  reactHotLoader.register(_default, "default", "/Users/shain/repositories/bitguild/PortalClient/components/common/metamask.jsx");
   leaveModule(module);
 })();
 
@@ -3980,6 +4023,157 @@ function (_Component) {
   }
 
   reactHotLoader.register(Input, "Input", "/Users/shain/repositories/bitguild/PortalClient/components/inputs/input.jsx");
+  leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__("./node_modules/next/node_modules/webpack/buildin/harmony-module.js")(module)))
+
+/***/ }),
+
+/***/ "./components/inputs/withFormHelper.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony export (immutable) */ __webpack_exports__["a"] = withFormHelper;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("react");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _jsxFileName = "/Users/shain/repositories/bitguild/PortalClient/components/inputs/withFormHelper.jsx";
+
+(function () {
+  var enterModule = __webpack_require__("react-hot-loader").enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+function withFormHelper(WrappedComponent) {
+  return (
+    /*#__PURE__*/
+    function (_Component) {
+      _inherits(FormHelper, _Component);
+
+      function FormHelper() {
+        var _ref;
+
+        var _temp, _this;
+
+        _classCallCheck(this, FormHelper);
+
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_ref = FormHelper.__proto__ || Object.getPrototypeOf(FormHelper)).call.apply(_ref, [this].concat(args))), _this.state = {// don't remove
+        }, _temp));
+      }
+
+      _createClass(FormHelper, [{
+        key: "onChange",
+        value: function onChange(e) {
+          var _e$target = e.target,
+              name = _e$target.name,
+              type = _e$target.type,
+              checked = _e$target.checked,
+              value = _e$target.value;
+
+          if (e.target.tagName === "SELECT") {
+            if (type === "select-one") {
+              switch (e.target.getAttribute("type")) {
+                case "number":
+                  return this.setState(_defineProperty({}, name, value === "" ? value : parseFloat(value)));
+
+                default:
+                  return this.setState(_defineProperty({}, name, value));
+              }
+            } else {
+              // select-multiple
+              switch (e.target.getAttribute("type")) {
+                case "number":
+                  return this.setState(_defineProperty({}, name, [].slice.call(e.target.selectedOptions).map(function (a) {
+                    return parseFloat(a.value);
+                  })));
+
+                default:
+                  return this.setState(_defineProperty({}, name, [].slice.call(e.target.selectedOptions).map(function (a) {
+                    return a.value;
+                  })));
+              }
+            }
+          } else {
+            // INPUT
+            switch (type) {
+              case "number":
+                return this.setState(_defineProperty({}, name, value === "" ? value : parseFloat(value)));
+
+              case "checkbox":
+                return this.setState(_defineProperty({}, name, checked));
+
+              case "text":
+              case "email":
+              case "password":
+              default:
+                return this.setState(_defineProperty({}, name, value));
+            }
+          }
+        }
+      }, {
+        key: "render",
+        value: function render() {
+          // console.log("FormHelper:render", this.props, this.state);
+          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(WrappedComponent, _extends({}, this.props, {
+            formData: this.state,
+            onChange: this.onChange.bind(this),
+            setState: this.setState.bind(this),
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 60
+            }
+          }));
+        }
+      }, {
+        key: "__reactstandin__regenerateByEval",
+        // @ts-ignore
+        value: function __reactstandin__regenerateByEval(key, code) {
+          // @ts-ignore
+          this[key] = eval(code);
+        }
+      }]);
+
+      return FormHelper;
+    }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"])
+  );
+}
+;
+
+(function () {
+  var reactHotLoader = __webpack_require__("react-hot-loader").default;
+
+  var leaveModule = __webpack_require__("react-hot-loader").leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(withFormHelper, "withFormHelper", "/Users/shain/repositories/bitguild/PortalClient/components/inputs/withFormHelper.jsx");
   leaveModule(module);
 })();
 
@@ -4726,56 +4920,56 @@ function (_Component) {
         className: "metamask-network",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 17
+          lineNumber: 16
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["Modal"].Body, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 18
+          lineNumber: 17
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 19
+          lineNumber: 18
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h2", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 20
+          lineNumber: 19
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_intl__["FormattedMessage"], {
         id: "modals.metamask-network.title",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 20
+          lineNumber: 19
         }
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 21
+          lineNumber: 20
         }
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 22
+          lineNumber: 21
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_intl__["FormattedMessage"], {
         id: "modals.metamask-network.p1",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 22
+          lineNumber: 21
         }
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
         className: "note",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 23
+          lineNumber: 22
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_intl__["FormattedHTMLMessage"], {
         id: "modals.metamask-network.faq",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 24
+          lineNumber: 23
         }
       })))));
     }
@@ -4826,15 +5020,21 @@ function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_classnames__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_bootstrap__ = __webpack_require__("react-bootstrap");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux__ = __webpack_require__("react-redux");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_intl__ = __webpack_require__("react-intl");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_intl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_intl__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__shared_constants_placeholder__ = __webpack_require__("./shared/constants/placeholder.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__shared_constants_regexp__ = __webpack_require__("./shared/constants/regexp.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared_constants_language__ = __webpack_require__("./shared/constants/language.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__inputs_input_group_validation__ = __webpack_require__("./components/inputs/input.group.validation.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_intl__ = __webpack_require__("react-intl");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_intl___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_intl__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_ga__ = __webpack_require__("react-ga");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_ga___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_ga__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_redux__ = __webpack_require__("react-redux");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_redux__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputs_withFormHelper__ = __webpack_require__("./components/inputs/withFormHelper.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_intl_redux_lib_index__ = __webpack_require__("react-intl-redux/lib/index");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_intl_redux_lib_index___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_react_intl_redux_lib_index__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared_intl_setup__ = __webpack_require__("./shared/intl/setup.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shared_constants_placeholder__ = __webpack_require__("./shared/constants/placeholder.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_constants_regexp__ = __webpack_require__("./shared/constants/regexp.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shared_constants_actions__ = __webpack_require__("./shared/constants/actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shared_constants_language__ = __webpack_require__("./shared/constants/language.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__inputs_input_group_validation__ = __webpack_require__("./components/inputs/input.group.validation.jsx");
 var _dec,
     _class,
     _class2,
@@ -4848,10 +5048,6 @@ var _dec,
 })();
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4876,12 +5072,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var RegisterPopup = (_dec = Object(__WEBPACK_IMPORTED_MODULE_4_react_redux__["connect"])(function (state) {
+
+
+
+
+var RegisterPopup = (_dec = Object(__WEBPACK_IMPORTED_MODULE_6_react_redux__["connect"])(function (state) {
   return {
     account: state.account,
     messages: state.messages
   };
-}), Object(__WEBPACK_IMPORTED_MODULE_5_react_intl__["injectIntl"])(_class = _dec(_class = (_temp2 = _class2 =
+}), Object(__WEBPACK_IMPORTED_MODULE_7__inputs_withFormHelper__["a" /* default */])(_class = Object(__WEBPACK_IMPORTED_MODULE_4_react_intl__["injectIntl"])(_class = _dec(_class = (_temp2 = _class2 =
 /*#__PURE__*/
 function (_Component) {
   _inherits(RegisterPopup, _Component);
@@ -4897,15 +5097,7 @@ function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_ref = RegisterPopup.__proto__ || Object.getPrototypeOf(RegisterPopup)).call.apply(_ref, [this].concat(args))), _this.state = {
-      formData: {
-        get: function get(key) {
-          return this[key];
-        },
-        wallet: _this.props.account.wallet,
-        language: _this.props.intl.locale
-      }
-    }, _temp));
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_ref = RegisterPopup.__proto__ || Object.getPrototypeOf(RegisterPopup)).call.apply(_ref, [this].concat(args))), _this.state = {}, _temp));
   }
 
   _createClass(RegisterPopup, [{
@@ -4913,57 +5105,42 @@ function (_Component) {
     value: function onSubmit(e) {
       e.preventDefault();
 
-      if (!this.isValid(Array.from(e.target.elements))) {
+      if (!this.isValid()) {
         return false;
       }
 
-      this.setState({
-        formData: new FormData(e.target)
-      }, this.sign);
+      __WEBPACK_IMPORTED_MODULE_5_react_ga___default.a.event({
+        category: "Site Interaction",
+        action: "Sign-up",
+        label: "Create account"
+      });
+      this.sign();
     }
   }, {
     key: "isValid",
-    value: function isValid(a) {
-      var intl = this.props.intl;
+    value: function isValid() {
+      var _props = this.props,
+          intl = _props.intl,
+          formData = _props.formData;
+      var e;
       var isValid = true;
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
 
-      try {
-        for (var _iterator = a[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _e = _step.value;
+      for (var i in formData) {
+        switch (i) {
+          case "wallet":
+            if (!window.web3.isAddress(formData[i])) {
+              e = document.getElementsByName(i)[0];
+              e.parentNode.parentNode.classList.add("has-error");
+              e.setCustomValidity(intl.formatMessage({
+                id: "fields.wallet.invalid"
+              }));
+              isValid = false;
+            }
 
-          switch (_e.name) {
-            case "wallet":
-              if (!window.web3.isAddress(_e.value)) {
-                _e.parentNode.parentNode.classList.add("has-error");
+            break;
 
-                _e.setCustomValidity(intl.formatMessage({
-                  id: "fields.wallet.invalid"
-                }));
-
-                isValid = false;
-              }
-
-              break;
-
-            default:
-              break;
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return != null) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
+          default:
+            break;
         }
       }
 
@@ -4972,23 +5149,21 @@ function (_Component) {
   }, {
     key: "sign",
     value: function sign() {
-      var _this2 = this;
-
-      var _props = this.props,
-          dispatch = _props.dispatch,
-          intl = _props.intl;
+      var _props2 = this.props,
+          dispatch = _props2.dispatch,
+          intl = _props2.intl,
+          formData = _props2.formData;
       var message = window.web3.toHex(intl.formatMessage({
         id: "modals.register.text"
       }));
-      var from = this.state.formData.get("wallet");
       window.web3.currentProvider.sendAsync({
         method: "personal_sign",
-        params: [message, from],
-        from: from
+        params: [message, formData.wallet],
+        from: formData.wallet
       }, function (err, result) {
         if (err || result.error) {
           dispatch({
-            type: __WEBPACK_IMPORTED_MODULE_8__shared_constants_actions__["K" /* MESSAGE_ADD */],
+            type: __WEBPACK_IMPORTED_MODULE_12__shared_constants_actions__["K" /* MESSAGE_ADD */],
             payload: err || result.error
           });
           return;
@@ -4997,31 +5172,29 @@ function (_Component) {
         window.web3.currentProvider.sendAsync({
           method: "personal_ecRecover",
           params: [message, result.result],
-          from: from
+          from: formData.wallet
         }, function (err, recovered) {
           if (err || result.error) {
             dispatch({
-              type: __WEBPACK_IMPORTED_MODULE_8__shared_constants_actions__["K" /* MESSAGE_ADD */],
+              type: __WEBPACK_IMPORTED_MODULE_12__shared_constants_actions__["K" /* MESSAGE_ADD */],
               payload: err || result.error
             });
             return;
           }
 
-          if (recovered.result === from) {
+          if (recovered.result === formData.wallet) {
             dispatch({
-              type: __WEBPACK_IMPORTED_MODULE_8__shared_constants_actions__["o" /* CREATE_USER */],
-              payload: Array.from(_this2.state.formData.entries()).reduce(function (memo, pair) {
-                return _objectSpread({}, memo, _defineProperty({}, pair[0], pair[1]));
-              }, {})
+              type: __WEBPACK_IMPORTED_MODULE_12__shared_constants_actions__["o" /* CREATE_USER */],
+              payload: formData
             });
           } else {
             dispatch({
-              type: __WEBPACK_IMPORTED_MODULE_8__shared_constants_actions__["K" /* MESSAGE_ADD */],
+              type: __WEBPACK_IMPORTED_MODULE_12__shared_constants_actions__["K" /* MESSAGE_ADD */],
               payload: new Error(intl.formatMessage({
                 id: "errors.spoofing-attempt"
               }, {
                 wallet1: recovered.result,
-                wallet2: from
+                wallet2: formData.wallet
               }))
             });
           }
@@ -5029,16 +5202,26 @@ function (_Component) {
       });
     }
   }, {
+    key: "onChangeLang",
+    value: function onChangeLang(e) {
+      var _props3 = this.props,
+          dispatch = _props3.dispatch,
+          onChange = _props3.onChange;
+      dispatch(Object(__WEBPACK_IMPORTED_MODULE_8_react_intl_redux_lib_index__["updateIntl"])(__WEBPACK_IMPORTED_MODULE_9__shared_intl_setup__["a" /* localization */][e.target.value]));
+      onChange(e);
+    }
+  }, {
     key: "render",
     value: function render() {
-      var show = this.props.show;
-      var _props2 = this.props,
-          user = _props2.user,
-          intl = _props2.intl,
-          network = _props2.network;
-      var networkSuccess = network && !network.isLoading && network.success;
-      var userSuccess = user && !user.isLoading && user.success;
-      show = show || networkSuccess && userSuccess;
+      var _props4 = this.props,
+          show = _props4.show,
+          formData = _props4.formData,
+          onChange = _props4.onChange; // let {show} = this.props;
+      // const {user, intl, network} = this.props;
+      // const networkSuccess = network && !network.isLoading && network.success;
+      // const userSuccess = user && !user.isLoading && user.success;
+      // show = show || (networkSuccess && userSuccess);
+
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["Modal"], {
         show: show,
         className: __WEBPACK_IMPORTED_MODULE_2_classnames___default()("register", {
@@ -5046,46 +5229,47 @@ function (_Component) {
         }),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 153
+          lineNumber: 166
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["Modal"].Body, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 154
+          lineNumber: 167
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["Form"], {
         onSubmit: this.onSubmit.bind(this),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 155
+          lineNumber: 168
         }
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h2", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 156
+          lineNumber: 169
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_intl__["FormattedMessage"], {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_intl__["FormattedMessage"], {
         id: "modals.register.title",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 157
+          lineNumber: 170
         }
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__inputs_input_group_validation__["a" /* default */], {
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14__inputs_input_group_validation__["a" /* default */], {
         name: "language",
         componentClass: "select",
-        value: this.state.formData.get("language"),
+        value: formData.language,
+        onChange: this.onChangeLang.bind(this),
         required: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 159
+          lineNumber: 172
         }
-      }, __WEBPACK_IMPORTED_MODULE_9__shared_constants_language__["b" /* enabledLanguages */].map(function (language) {
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_intl__["FormattedMessage"], {
+      }, __WEBPACK_IMPORTED_MODULE_13__shared_constants_language__["b" /* enabledLanguages */].map(function (language) {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_intl__["FormattedMessage"], {
           key: language,
           id: "components.language.".concat(language),
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 166
+            lineNumber: 180
           }
         }, function (formattedMessage) {
           return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
@@ -5093,85 +5277,88 @@ function (_Component) {
             value: language,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 167
+              lineNumber: 181
             }
           }, formattedMessage);
         });
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__inputs_input_group_validation__["a" /* default */], {
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14__inputs_input_group_validation__["a" /* default */], {
         name: "wallet",
-        defaultValue: this.state.formData.get("wallet"),
-        placeholder: __WEBPACK_IMPORTED_MODULE_6__shared_constants_placeholder__["c" /* wallet */],
+        defaultValue: formData.wallet,
+        onChange: onChange,
+        placeholder: __WEBPACK_IMPORTED_MODULE_10__shared_constants_placeholder__["c" /* wallet */],
         maxLength: "42",
         minLength: "42",
         required: true,
         readOnly: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 171
+          lineNumber: 185
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__inputs_input_group_validation__["a" /* default */], {
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14__inputs_input_group_validation__["a" /* default */], {
         type: "email",
         name: "email",
-        pattern: __WEBPACK_IMPORTED_MODULE_7__shared_constants_regexp__["a" /* reEmail */].source.replace("a-z", "a-zA-Z") // there is no `i` flag
+        pattern: __WEBPACK_IMPORTED_MODULE_11__shared_constants_regexp__["a" /* reEmail */].source.replace("a-z", "a-zA-Z") // there is no `i` flag
         ,
-        defaultValue: this.state.formData.get("email"),
-        placeholder: __WEBPACK_IMPORTED_MODULE_6__shared_constants_placeholder__["a" /* email */],
+        defaultValue: formData.email,
+        onChange: onChange,
+        placeholder: __WEBPACK_IMPORTED_MODULE_10__shared_constants_placeholder__["a" /* email */],
         required: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 180
+          lineNumber: 195
         }
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__inputs_input_group_validation__["a" /* default */], {
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14__inputs_input_group_validation__["a" /* default */], {
         type: "text",
         name: "nickName",
-        defaultValue: this.state.formData.get("nickName"),
-        placeholder: __WEBPACK_IMPORTED_MODULE_6__shared_constants_placeholder__["b" /* nickName */],
+        defaultValue: formData.nickName,
+        onChange: onChange,
+        placeholder: __WEBPACK_IMPORTED_MODULE_10__shared_constants_placeholder__["b" /* nickName */],
         required: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 188
+          lineNumber: 204
         }
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
         className: "note",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 196
+          lineNumber: 213
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_intl__["FormattedMessage"], {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_intl__["FormattedMessage"], {
         id: "modals.register.n1",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 196
+          lineNumber: 213
         }
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
         className: "note",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 197
+          lineNumber: 214
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_intl__["FormattedMessage"], {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_intl__["FormattedMessage"], {
         id: "modals.register.n2",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 197
+          lineNumber: 214
         }
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 199
+          lineNumber: 216
         }
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_bootstrap__["Button"], {
         type: "submit",
         className: "btn-block text-uppercase",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 201
+          lineNumber: 218
         }
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_intl__["FormattedMessage"], {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_intl__["FormattedMessage"], {
         id: "buttons.register",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 202
+          lineNumber: 219
         }
       })))));
     }
@@ -5185,26 +5372,33 @@ function (_Component) {
   }], [{
     key: "getDerivedStateFromProps",
     value: function getDerivedStateFromProps(nextProps) {
-      return {
-        formData: {
-          get: function get(key) {
-            return this[key];
-          },
-          wallet: nextProps.account.wallet,
+      if (nextProps.formData.wallet !== nextProps.account.wallet) {
+        nextProps.setState({
+          wallet: nextProps.account.wallet
+        });
+      }
+
+      if (nextProps.formData.language !== nextProps.intl.locale) {
+        nextProps.setState({
           language: nextProps.intl.locale
-        }
-      };
+        });
+      }
+
+      return null;
     }
   }]);
 
   return RegisterPopup;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]), _class2.propTypes = {
   account: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
+  formData: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
   dispatch: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+  setState: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+  onChange: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
   show: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool,
-  intl: __WEBPACK_IMPORTED_MODULE_5_react_intl__["intlShape"],
+  intl: __WEBPACK_IMPORTED_MODULE_4_react_intl__["intlShape"],
   messages: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.array
-}, _temp2)) || _class) || _class);
+}, _temp2)) || _class) || _class) || _class);
 
 ;
 
@@ -6189,6 +6383,13 @@ module.exports = require("react-intl-redux");
 
 /***/ }),
 
+/***/ "react-intl-redux/lib/index":
+/***/ (function(module, exports) {
+
+module.exports = require("react-intl-redux/lib/index");
+
+/***/ }),
+
 /***/ "react-intl/locale-data/en":
 /***/ (function(module, exports) {
 
@@ -6319,6 +6520,13 @@ module.exports = require("redux-thunk");
 /***/ (function(module, exports) {
 
 module.exports = require("sendbird");
+
+/***/ }),
+
+/***/ "xss-filters":
+/***/ (function(module, exports) {
+
+module.exports = require("xss-filters");
 
 /***/ })
 

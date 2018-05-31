@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {injectIntl} from "react-intl";
+// import {injectIntl} from "react-intl";
 
-import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../../shared/constants/actions";
+import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../shared/constants/actions";
 import networkConfig from "../../client/utils/network";
 
 import MetaMaskInstall from "../popups/metamask.install";
@@ -12,7 +12,7 @@ import MetaMaskNetwork from "../popups/metamask.network";
 import Register from "../popups/register";
 
 
-@injectIntl
+// @injectIntl
 @connect(
   state => ({
     account: state.account,
@@ -20,7 +20,7 @@ import Register from "../popups/register";
     user: state.user,
   })
 )
-export default class MetaMask extends Component {
+class MetaMask extends Component {
   static propTypes = {
     account: PropTypes.object,
     network: PropTypes.object,
@@ -34,7 +34,9 @@ export default class MetaMask extends Component {
   };
 
   static getInitialProps(ctx) {
-    return {pathname: ctx.req.originalUrl};
+    let props = {};
+    if (ctx && ctx.req) props.pathname = ctx.req.originalUrl;
+    return props;
   }
 
   static isInstalled() {
@@ -103,3 +105,6 @@ export default class MetaMask extends Component {
     );
   }
 }
+
+export default MetaMask;
+

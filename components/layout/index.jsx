@@ -24,9 +24,7 @@ function Layout(props) {
       <Main offsetTop={HEADER_HEIGHT} offsetRight={ASIDE_WIDTH} contentPadding={props.contentPadding}>
         {props.main}
       </Main>
-
       {aside}
-
       {props.children}
     </div>
   );
