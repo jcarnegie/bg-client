@@ -24,4 +24,6 @@ RUN NODE_ENV=development yarn install
 
 ADD . .
 
-RUN yarnpkg run dev
+RUN yarnpkg run build
+
+CMD yarnpkg start
