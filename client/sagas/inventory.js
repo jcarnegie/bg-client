@@ -21,7 +21,6 @@ import {
 } from "../../shared/constants/actions";
 import {readFromQueryString} from "../utils/location";
 import {client} from "../utils/apollo";
-import callAPI from "../utils/api";
 
 function * getItems(action) {
   try {
@@ -33,7 +32,6 @@ function * getItems(action) {
       ? "?testItems=true"
       : "";
     const {language, wallet} = user.data;
-    const itemsUrl = `/items/${wallet}/${language}${testItems}`;
     const query = gql`
       query listItems($wallet: String!, $userId: ID!, $language: String!, $testItems: Boolean) {
         listItems(wallet: $wallet, userId: $userId, language: $language, testItems: $testItems) {
@@ -41,16 +39,9 @@ function * getItems(action) {
         }
       }
     `;
-    const variables = {wallet, language, userId: user.data.id};
+    const variables = {wallet, language, userId: user.data.id, testItems};
     const result = yield call(::client.query, {query, variables});
     const items = path(["data", "listItems"], result);
-    // const items = yield call(callAPI, itemsUrl, {
-    //   method: "GET",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json; charset=utf-8"
-    //   }
-    // });
     yield put({
       type: INVENTORY_ITEMS_CHANGED,
       payload: items
