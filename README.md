@@ -1,26 +1,30 @@
 # PortalClient
 
-## Installation
+## Dependencies
 
-### Node
+## Setup
 
-1. edit config file
-```sh
-nano ecosystem.development.json
+```bash
+yarn
 ```
 
-2. run
-```sh
-npm i
+## Run
 
-# dev
-npm start
-
-# prod
-npm run build
-NODE_ENV=production npm start
+```bash
+yarn dev
 ```
 
+## Build
+
+- To build
+```bash
+yarn build
+```
+
+- To start build files
+```bash
+yarn start
+```
 
 ### Nginx
 

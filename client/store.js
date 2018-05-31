@@ -36,9 +36,11 @@ function configureStore(initialState = defaultState) {
     composeEnhancers = composeWithDevTools;
   }
 
+  const mockStorage = {getItem: () => {}, setItem: () => {}};
+
   const storage = compose(
     filter(["gifts"])
-  )(adapter(typeof window !== "undefined" ? window.localStorage : {})); // this fixes bug with SSR
+  )(adapter(typeof window !== "undefined" && window.localStorage ? window.localStorage : mockStorage)); // this fixes bug with SSR
 
   const reducers = compose(mergePersistedState())(rootReducers);
   const store = createStore(reducers, initialState, composeEnhancers(applyMiddleware(...middlewares), persistState(storage, "gitbuild")));

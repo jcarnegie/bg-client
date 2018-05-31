@@ -17,14 +17,11 @@ ENV NODE_ENV $NODE_ENV
 RUN echo $RENDERING
 RUN echo $NODE_ENV
 
-ADD package.json ./
+ADD package.json yarn.lock ./
 
-# RUN NODE_ENV=development npm install -g -s --no-progress yarn && yarn
-RUN NODE_ENV=development npm install
+RUN NODE_ENV=development npm install -g -s --no-progress yarn
+RUN NODE_ENV=development yarn install
 
 ADD . .
 
-# RUN chmod 777 build.sh
-# RUN npm run build
-
-# CMD NODE_ENV=${NODE_ENV} node build/server/server.js
+RUN yarnpkg run dev

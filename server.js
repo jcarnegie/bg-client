@@ -1,11 +1,10 @@
 /* eslint-disable no-console */
 const express = require("express");
+const compression = require("compression");
 const path = require("path");
 const bodyParser = require("body-parser");
-// const session = require("express-session");
-// const path = require("path");
 const morgan = require("morgan");
-const fileUpload = require("express-fileupload");
+// const fileUpload = require("express-fileupload");
 const dev = process.env.NODE_ENV !== "production";
 const Next = require("next");
 const pathMatch = require("path-match");
@@ -13,7 +12,7 @@ const next = Next({dev});
 const handle = next.getRequestHandler();
 const {parse} = require("url");
 
-// const apiRoutes = require("./app/routes/apiRoutes.js");
+const cors = require("./server/routes/cors");
 
 console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 console.log("process.env.PORT: ", process.env.PORT);
@@ -33,10 +32,14 @@ const PORT = process.env.PORT || 5000;
 next.prepare().then(() => {
   const app = express();
 
+  if (process.env.NODE_ENV === "production") {
+    app.use(compression());
+  }
+
   app.disable("x-powered-by");
   app.enable("trust proxy");
 
-  app.use(fileUpload());
+  // app.use(fileUpload());
   app.use(bodyParser.text());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
@@ -44,11 +47,13 @@ next.prepare().then(() => {
   }));
 
   app.use(morgan("tiny")); // "default", "short", "tiny", "dev"
+  app.use(cors);
 
 
     // /sandbox component={SandBox} exact
     // NotFound
 
+  // TODO - https://github.com/fridays/next-routes
   const route = pathMatch();
 
   app.get("/game/:_id", (req, res) => {
