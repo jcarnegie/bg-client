@@ -1,8 +1,18 @@
 import PropTypes from "prop-types";
 import xssFilters from "xss-filters";
 import React, {Component} from "react";
-import {path} from "ramda";
+import {path, merge} from "ramda";
 import {Image} from "react-bootstrap";
+
+const styles = {
+  message: {display: "flex", marginTop: 20},
+  avatarLeft: {alignSelf: "flex-end", flexGrow: 1, margin: "0 10px", width: 34},
+  messageBox: {backgroundColor: "#FFF", borderRadius: 5, flexGrow: 10, padding: "5px 10px 10px 10px", width: 185},
+  messageBoxHeader: {color: "#E3E3E3", display: "flex", fontSize: 10, justifyContent: "space-between"},
+  messageContents: {fontSize: 13, marginTop: 5},
+  avatarRight: {alignSelf: "flex-end", flexGrow: 1, margin: "0 10px", width: 34},
+};
+
 
 const reWebUrl = new RegExp(
   "^" +
@@ -62,13 +72,13 @@ export default class Message extends Component {
     user: PropTypes.object,
   };
 
-  renderAvatar(flag) {
+  renderAvatar(flag, diameter = 34) {
     if (!flag) {
       return null;
     }
 
     return (
-      <Image src="/static/images/avatar.png" width="34" height="34" />
+      <Image src="/static/images/avatar.png" width={diameter} height={diameter} />
     );
   }
 
@@ -90,20 +100,65 @@ export default class Message extends Component {
 
     const isMyMessage = path(["sender", "userId"], message) === path(["data", "wallet"], user);
 
+    let backgroundColor = "#FFF";
+    let textColor = "#393939";
+    let headerColor = "#9FB1CD";
+
+    if (isMyMessage) {
+      backgroundColor = "#DEECFB";
+      textColor = "#191F24";
+    }
+
+
     return (
-      <div className="message">
-        <div className="avatar">
+      <div className="message" style={styles.message}>
+        <style jsx global>{`
+          .chat .message {
+            display: flex;
+            margin-top: 20px;
+          }
+          .chat .message .message-box {
+            background-color: #FFF;
+            border-radius: 5px;
+            flex-grow: 10;
+            padding: 5px 10px 10px;
+            width: 185px;
+          }
+          .chat .message .message-box.my {
+            background-color: #DEECFB;
+          }
+          .chat .message .message-box .header {
+            color: #9FB1CD;
+            display: flex;
+            font-size: 10px;
+            justify-content: space-between;
+          }
+          .chat .message .message-box .body {
+            font-size: 13px;
+            margin-top: 5px;
+          }
+          .chat .message .message-box .body .contents {
+            overflow-wrap: break-word;
+          }
+          .chat .message .avatar {
+            align-self: flex-end;
+            flex-grow: 1;
+            margin: 0 10px;
+            width: 34px;
+          }
+        `}</style>
+        <div className="avatar" style={styles.avatarLeft}>
           {this.renderAvatar(!isMyMessage)}
         </div>
-        <div className={"message-box" + (isMyMessage ? " my" : "")}>
-          <div className="header">
+        <div className={"message-box" + (isMyMessage ? " my" : "")} style={merge(styles.messageBox, {backgroundColor})}>
+          <div className="header" style={merge(styles.messageBoxHeader, {color: headerColor})}>
             <div>{path(["sender", "nickname"], message)}</div>
             <div>{formatTime(new Date(message.createdAt))}</div>
           </div>
-          <div className="body">{this.createMessage()}</div>
+          <div className="body contents" style={merge(styles.messageContents, {textColor, overflowWrap: "break-word"})}>{this.createMessage()}</div>
         </div>
-        <div className="avatar">
-          {this.renderAvatar(isMyMessage)}
+        <div className="avatar" style={styles.avatarRight}>
+          {this.renderAvatar(isMyMessage, 18)}
         </div>
       </div>
     );

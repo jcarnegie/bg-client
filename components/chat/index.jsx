@@ -106,13 +106,74 @@ export default class Chat extends Component {
     const {user} = this.props;
     return (
       <>
-        <div style={styles.container}>
-          <div style={styles.header}>
-            <div>
-              <FormattedMessage id="chat.chat" />
-            </div>
+        <div className="wrapper" style={styles.container}>
+          <style jsx global>{`
+            .chat {
+              background: #F2F3F8;
+              position: fixed;
+              right: 0;
+              padding: 0;
+              width: 285px;
+            }
+            .chat .wrapper {
+              background-color: #F2F3F8;
+              border-left: solid 1px #C2C3D2;
+              display: flex;
+              flex-direction: column;
+              height: calc(100vh - 62px);
+            }
+            .chat .wrapper .top {
+              align-items: center;
+              background-color: #DEE6F4;
+              color: #8AA0C8;
+              display: flex;
+              font-size: 14px;
+              height: 32px;
+              justify-content: center;
+              min-height: 32px;
+            }
+            .chat .wrapper .list {
+              flex-grow: 1;
+              overflow-y: scroll;
+              padding-bottom: 10px;
+            }
+            .chat form {
+              width: auto;
+              margin: 0;
+            }
+            .chat form .form-group {
+              background-color: #FFF;
+              border-top: solid 1px #E5E5EB;
+              display: flex;
+              flex-grow: 6;
+              margin-bottom: 0;
+            }
+            .chat form .form-group .form-control[type=text] {
+              border: none;
+              border-bottom: solid 1px #D1D1D1;
+              flex: 1;
+              outline: none;
+              margin: 10px 10px 15px 10px;
+              border-radius: 0;
+              box-shadow: none;
+              padding: 0;
+              height: auto;
+              background-color: #fff;
+            }
+            .chat form .form-group .btn {
+              background-color: #4D4D83;
+              border-radius: 3px;
+              color: #F9F9FB;
+              flex-grow: 1;
+              padding: 15px 10px;
+              text-transform: uppercase;
+              max-width: 60px;
+            }
+          `}</style>
+          <div className="top" style={styles.header}>
+            <FormattedMessage id="chat.chat" />
           </div>
-          <StayScrolled component="div" provideControllers={this.storeScrolledControllers} style={styles.messageList}>
+          <StayScrolled className="list" component="div" provideControllers={this.storeScrolledControllers} style={styles.messageList}>
             {map(msg => <Message key={msg.messageId} message={msg} user={user} />, messages)}
           </StayScrolled>
           <div>

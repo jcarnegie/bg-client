@@ -3627,11 +3627,11 @@ var sbp = function sbp(fn) {
   });
 };
 var firstNameLastInitial = function firstNameLastInitial(name) {
-  var parts = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["u" /* split */])(/\s+/, name);
+  var parts = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["v" /* split */])(/\s+/, name);
   var firstName = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["g" /* head */])(parts);
   var lastName = "";
   if (Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["l" /* length */])(parts) > 1) lastName = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["k" /* last */])(parts);
-  var lastInitial = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["i" /* isEmpty */])(lastName) ? "" : " ".concat(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["v" /* toUpper */])(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["g" /* head */])(lastName)), ".");
+  var lastInitial = Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["i" /* isEmpty */])(lastName) ? "" : " ".concat(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["w" /* toUpper */])(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["g" /* head */])(lastName)), ".");
   return "".concat(firstName).concat(lastInitial);
 };
 var chatNickName = function chatNickName(nickname) {
@@ -3711,7 +3711,7 @@ function () {
 }();
 var findChannelByName = function findChannelByName(name, channels) {
   var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _sb;
-  return Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["f" /* find */])(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["r" /* propEq */])("name", name), channels);
+  return Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["f" /* find */])(Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["s" /* propEq */])("name", name), channels);
 };
 var getChannelByName =
 /*#__PURE__*/
@@ -3833,7 +3833,7 @@ function () {
 
           case 3:
             messages = _context6.sent;
-            return _context6.abrupt("return", Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["t" /* reverse */])(messages));
+            return _context6.abrupt("return", Object(__WEBPACK_IMPORTED_MODULE_4_ramda__["u" /* reverse */])(messages));
 
           case 5:
           case "end":
@@ -43821,7 +43821,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_125__memoizeWith__ = __webpack_require__("./node_modules/ramda/es/memoizeWith.js");
 /* unused harmony reexport memoizeWith */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_126__merge__ = __webpack_require__("./node_modules/ramda/es/merge.js");
-/* unused harmony reexport merge */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return __WEBPACK_IMPORTED_MODULE_126__merge__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_127__mergeAll__ = __webpack_require__("./node_modules/ramda/es/mergeAll.js");
 /* unused harmony reexport mergeAll */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_128__mergeDeepLeft__ = __webpack_require__("./node_modules/ramda/es/mergeDeepLeft.js");
@@ -43851,7 +43851,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_140__none__ = __webpack_require__("./node_modules/ramda/es/none.js");
 /* unused harmony reexport none */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_141__not__ = __webpack_require__("./node_modules/ramda/es/not.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return __WEBPACK_IMPORTED_MODULE_141__not__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return __WEBPACK_IMPORTED_MODULE_141__not__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_142__nth__ = __webpack_require__("./node_modules/ramda/es/nth.js");
 /* unused harmony reexport nth */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_143__nthArg__ = __webpack_require__("./node_modules/ramda/es/nthArg.js");
@@ -43879,7 +43879,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_154__partition__ = __webpack_require__("./node_modules/ramda/es/partition.js");
 /* unused harmony reexport partition */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_155__path__ = __webpack_require__("./node_modules/ramda/es/path.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return __WEBPACK_IMPORTED_MODULE_155__path__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return __WEBPACK_IMPORTED_MODULE_155__path__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_156__pathEq__ = __webpack_require__("./node_modules/ramda/es/pathEq.js");
 /* unused harmony reexport pathEq */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_157__pathOr__ = __webpack_require__("./node_modules/ramda/es/pathOr.js");
@@ -43907,11 +43907,11 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_168__project__ = __webpack_require__("./node_modules/ramda/es/project.js");
 /* unused harmony reexport project */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_169__prop__ = __webpack_require__("./node_modules/ramda/es/prop.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return __WEBPACK_IMPORTED_MODULE_169__prop__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return __WEBPACK_IMPORTED_MODULE_169__prop__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_170__propEq__ = __webpack_require__("./node_modules/ramda/es/propEq.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return __WEBPACK_IMPORTED_MODULE_170__propEq__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return __WEBPACK_IMPORTED_MODULE_170__propEq__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_171__propIs__ = __webpack_require__("./node_modules/ramda/es/propIs.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return __WEBPACK_IMPORTED_MODULE_171__propIs__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return __WEBPACK_IMPORTED_MODULE_171__propIs__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_172__propOr__ = __webpack_require__("./node_modules/ramda/es/propOr.js");
 /* unused harmony reexport propOr */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_173__propSatisfies__ = __webpack_require__("./node_modules/ramda/es/propSatisfies.js");
@@ -43939,7 +43939,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_184__replace__ = __webpack_require__("./node_modules/ramda/es/replace.js");
 /* unused harmony reexport replace */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_185__reverse__ = __webpack_require__("./node_modules/ramda/es/reverse.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return __WEBPACK_IMPORTED_MODULE_185__reverse__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return __WEBPACK_IMPORTED_MODULE_185__reverse__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_186__scan__ = __webpack_require__("./node_modules/ramda/es/scan.js");
 /* unused harmony reexport scan */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_187__sequence__ = __webpack_require__("./node_modules/ramda/es/sequence.js");
@@ -43955,7 +43955,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_192__sortWith__ = __webpack_require__("./node_modules/ramda/es/sortWith.js");
 /* unused harmony reexport sortWith */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_193__split__ = __webpack_require__("./node_modules/ramda/es/split.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return __WEBPACK_IMPORTED_MODULE_193__split__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return __WEBPACK_IMPORTED_MODULE_193__split__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_194__splitAt__ = __webpack_require__("./node_modules/ramda/es/splitAt.js");
 /* unused harmony reexport splitAt */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_195__splitEvery__ = __webpack_require__("./node_modules/ramda/es/splitEvery.js");
@@ -43997,7 +43997,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_213__toString__ = __webpack_require__("./node_modules/ramda/es/toString.js");
 /* unused harmony reexport toString */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_214__toUpper__ = __webpack_require__("./node_modules/ramda/es/toUpper.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return __WEBPACK_IMPORTED_MODULE_214__toUpper__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return __WEBPACK_IMPORTED_MODULE_214__toUpper__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_215__transduce__ = __webpack_require__("./node_modules/ramda/es/transduce.js");
 /* unused harmony reexport transduce */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_216__transpose__ = __webpack_require__("./node_modules/ramda/es/transpose.js");
@@ -44023,7 +44023,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_226__unionWith__ = __webpack_require__("./node_modules/ramda/es/unionWith.js");
 /* unused harmony reexport unionWith */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_227__uniq__ = __webpack_require__("./node_modules/ramda/es/uniq.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return __WEBPACK_IMPORTED_MODULE_227__uniq__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return __WEBPACK_IMPORTED_MODULE_227__uniq__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_228__uniqBy__ = __webpack_require__("./node_modules/ramda/es/uniqBy.js");
 /* unused harmony reexport uniqBy */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_229__uniqWith__ = __webpack_require__("./node_modules/ramda/es/uniqWith.js");
@@ -44039,7 +44039,7 @@ var inc = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__add__["a" /* default 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_234__useWith__ = __webpack_require__("./node_modules/ramda/es/useWith.js");
 /* unused harmony reexport useWith */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_235__values__ = __webpack_require__("./node_modules/ramda/es/values.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return __WEBPACK_IMPORTED_MODULE_235__values__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return __WEBPACK_IMPORTED_MODULE_235__values__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_236__valuesIn__ = __webpack_require__("./node_modules/ramda/es/valuesIn.js");
 /* unused harmony reexport valuesIn */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_237__view__ = __webpack_require__("./node_modules/ramda/es/view.js");
@@ -48580,7 +48580,7 @@ var memoizeWith = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_1__internal_curr
 var merge = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_1__internal_curry2__["a" /* default */])(function merge(l, r) {
   return Object(__WEBPACK_IMPORTED_MODULE_0__internal_assign__["a" /* default */])({}, l, r);
 });
-/* unused harmony default export */ var _unused_webpack_default_export = (merge);
+/* harmony default export */ __webpack_exports__["a"] = (merge);
 
 /***/ }),
 
