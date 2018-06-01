@@ -19,8 +19,7 @@ RUN echo $NODE_ENV
 
 ADD package.json yarn.lock ./
 
-RUN NODE_ENV=development npm install -g -s --no-progress yarn
-RUN NODE_ENV=development yarn install
+RUN NODE_ENV=development yarnpkg install
 
 ADD . .
 

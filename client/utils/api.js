@@ -1,9 +1,8 @@
 import fetch from "isomorphic-fetch";
-
+import {uri} from "./apollo";
 
 export default function callAPI(url, options = {}) {
-  const prefix = (process.env.NODE_ENV === "development" ? "http://localhost:7000" : "") + "/api";
-  return fetch(prefix + url, options)
+  return fetch(uri + url, options)
     .then(response =>
       response.json().then(json => ({json, response}))
     )

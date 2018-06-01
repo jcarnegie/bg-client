@@ -34,7 +34,7 @@
     "body-parser": "1.18.3",
     "bootstrap": "3.3.7",
     "classnames": "2.2.5",
-    "compression": "^1.7.2",
+    "compression": "1.7.2",
     "core-decorators": "0.20.0",
     "express": "5.0.0-alpha.6",
     "graphql": "^0.13.2",
@@ -81,6 +81,7 @@
   "devDependencies": {
     "babel-plugin-transform-decorators-legacy": "1.3.4",
     "babel-plugin-transform-function-bind": "6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3",
     "css-loader": "0.28.11",
     "eslint": "4.19.1",
     "eslint-config-standard": "11.0.0",
@@ -108,7 +109,7 @@
     "style-loader": "0.21.0",
     "styled-jsx-plugin-less": "0.0.1-alpha.1",
     "url-loader": "1.0.1",
-    "webpack": "4.8.3",
+    "webpack": "3.10.0",
     "webpack-cli": "2.1.4",
     "webpack-dev-middleware": "3.1.3",
     "webpack-hot-middleware": "2.22.2"
@@ -121,7 +122,7 @@
     "prev-build": "./build.sh",
     "lint": "node_modules/.bin/eslint server/* client/* --ext .jsx --quiet --fix",
     "dev": "source ./.env && node server.js",
-    "build": "next build",
+    "build": "source ./.env.production && next build",
     "start": "source ./.env.production && node server.js"
   }
 }

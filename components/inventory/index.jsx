@@ -84,8 +84,8 @@ export default class Inventory extends Component {
   }
 
   renderBackToGameButton() {
-	const {lastLocation} = this.props;
-    console.log("lastLocation: ", lastLocation);
+    const {lastLocation} = this.props;
+
     if (!lastLocation || !lastLocation.pathname.startsWith("/game/")) {
       return null;
     }
@@ -131,8 +131,8 @@ export default class Inventory extends Component {
         <h3>{game.name}</h3>
         <Row className="flex-row">
         {items.filter(item => Object.keys(this.state.filters).includes(item.game) ? this.state.filters[item.game].filter(x => !!~item.categories.indexOf(x)).length : true)
-            .map(item =>
-              <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
+            .map((item, i) =>
+              <Item key={i} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
             )}
         </Row>
       </Fragment>
@@ -159,7 +159,7 @@ export default class Inventory extends Component {
             )}
           </Tab>
           {visibleGames.map((game, i) =>
-            <Tab eventKey={i + 2} title={game.name} key={game._id}>
+            <Tab eventKey={i + 2} title={game.name} key={i}>
               {this.renderTab(game, items.data.filter(item => item.game === game._id))}
             </Tab>
           )}

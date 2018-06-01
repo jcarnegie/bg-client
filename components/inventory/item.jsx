@@ -83,13 +83,13 @@ export default class Item extends Component {
     const {item, onClick} = this.props;
     return (
       <div className="categories">
-       {item.categories
+       {(item.categories && item.categories.length) ? item.categories
           .filter(isValidItemCategory)
           .map(category =>
             <Badge onClick={onClick(item.game, [category])} key={category}>
               {category}
             </Badge>
-          )}
+          ) : null}
       </div>
     );
   }
@@ -217,7 +217,7 @@ export default class Item extends Component {
         `}</style>
         <Gift show={this.state.gift} item={item} game={game} onHide={::this.onHideGift} />
         <Sell show={this.state.sell} item={item} game={game} onHide={::this.onHideSell} />
-        <Thumbnail src={`/static${item.image}`}>
+        <Thumbnail src={item.image}>
           <h4>{item.name}</h4>
           {this.renderStats()}
           {this.renderButtons()}
