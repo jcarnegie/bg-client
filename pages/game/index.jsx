@@ -7,6 +7,7 @@ const GamePage = props => (
   <Layout
     main={<Game {...props} />}
     aside={<Chat />}
+    contentPadding={false}
   />
 );
 
