@@ -8,11 +8,11 @@ const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
 
 const GAMES = {
   "etheronline": {
-    url: "/game/ether.online",
+    url: "/game/1",
     name: "etheronline",
   },
   "magicacademy": {
-    url: "/game/magicacademy",
+    url: "/game/2",
     name: "magicacademy",
   },
 };

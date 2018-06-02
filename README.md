@@ -4,7 +4,7 @@
 x - SpreadOperator --> SpreadElement warning (babel-plugin-transform-object-rest-spread)
 x - Update internationalization
 x - Production image runs as expected
-- Game fetching needs to be updated (by id)
+x - Game fetching needs to be updated (by id)
 - Browser History
 - Styles on each page are matching
 - Production app runs as expected on dev.bitguild.io

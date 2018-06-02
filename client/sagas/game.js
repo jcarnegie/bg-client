@@ -1,15 +1,15 @@
 import gql from "graphql-tag";
 import {call, put, takeEvery} from "redux-saga/effects";
 import {path} from "ramda";
-// import callAPI from "../utils/api";
 import {client} from "../utils/apollo";
 import {GAME_CHANGED, GAME_ERROR, GAME_LOADING, GAME_REQUEST, MESSAGE_ADD} from "../../shared/constants/actions";
 
 function * fetchGame(action) {
   try {
     yield put({
-      type: GAME_LOADING
+      type: GAME_LOADING,
     });
+
     const query = gql`
       query viewGame($id: ID!) {
           viewGame(id: $id) {
@@ -17,27 +17,28 @@ function * fetchGame(action) {
           }
       }
     `;
+
     const variables = {id: action.payload.id};
     const result = yield call(::client.query, {query, variables});
     const game = path(["data", "viewGame"], result);
-    // const game = yield call(callAPI, `/game/${action.payload.id}`);
+
     if (game) {
       yield put({
         type: GAME_CHANGED,
-        payload: game
+        payload: game,
       });
     } else {
       yield put({
-        type: GAME_ERROR
+        type: GAME_ERROR,
       });
     }
   } catch (error) {
     yield put({
-      type: GAME_ERROR
+      type: GAME_ERROR,
     });
     yield put({
       type: MESSAGE_ADD,
-      payload: error
+      payload: error,
     });
   }
 }

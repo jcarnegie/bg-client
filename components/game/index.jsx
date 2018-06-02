@@ -38,7 +38,7 @@ export default class Game extends Component {
     if (!game || !game.data) {
       dispatch({
         type: GAME_REQUEST,
-        payload: {_id},
+        payload: {id: _id},
       });
     }
   }
