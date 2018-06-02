@@ -15,6 +15,11 @@ x - Game fetching needs to be updated (by id)
 - Implement "Back to Game" button on inventory page
 - Merge new ReactGA implementations from Oleg
 - Merge other changes from master, if any
+- Update inventory categories render
+- Modals
+- - Buy Plat modal needs to work
+- - After logout, login modal needs to work
+
 
 ## Dependencies
 
