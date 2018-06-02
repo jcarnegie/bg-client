@@ -19,6 +19,7 @@ x - Game fetching needs to be updated (by id)
 - Modals
 - - Buy Plat modal needs to work
 - - After logout, login modal needs to work
+- css autoprefixer
 
 
 ## Dependencies
