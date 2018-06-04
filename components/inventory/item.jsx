@@ -185,10 +185,10 @@ export default class Item extends Component {
           .item .thumbnail .caption .btn.gift {
             font-weight: 500;
             color: #ffffff;
-            background-color: var(--link-color);
+            background-color: rgb(49, 75, 136);
           }
           .item .thumbnail .caption .btn.gift:hover {
-            background-color: var(--link-hover-color);
+            background-color: rgb(83, 110, 173);
           }
           .item .thumbnail .caption .tx {
             height: 28px;

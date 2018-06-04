@@ -11,14 +11,17 @@ x - Styles on each page are matching
 x - Update airdrop pages
 x - Update FAQ page
 x - Modal css loads only after first modal renders
-- Buy Plat modal needs to work
-- After logout, login modal needs to work
-- Browser History
+x - After logout, login modal needs to work
+x - Update inventory categories render
 - Any updates for Sandbox
+- Browser History
 - Implement "Back to Game" button on inventory page
-- Merge new ReactGA implementations from Oleg
+- Buy Plat modal needs to work
+
+Updates
 - Merge other changes from master, if any
-- Update inventory categories render
+- Merge new ReactGA implementations from Oleg
+- Update mobile styles if necessary
 
 Plus
 - Docker-compose integrates with development GraphQL API

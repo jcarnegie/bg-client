@@ -111,7 +111,7 @@ export default class Header extends Component {
             background-color: transparent;
           }
           .navbar .dropdown-menu li a:hover {
-            background: var(--link-color) !important;
+            background: rgb(49, 75, 136) !important;
           }
           .navbar .main-menu > li > a {
             color: #ffffff;

@@ -141,7 +141,7 @@ export default class GiftPopup extends Component {
             <h2>{item.name}</h2>
             <br />
 
-            <Thumbnail src={`/static${item.image}`} />
+            <Thumbnail src={item.image} />
             <InputGroupValidation
               type="text"
               name="wallet"
