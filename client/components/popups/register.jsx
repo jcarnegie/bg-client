@@ -61,12 +61,6 @@ export default class RegisterPopup extends Component {
       return false;
     }
 
-    ReactGA.event({
-      category: "Site Interaction",
-      action: "Sign-up",
-      label: "Create account"
-    });
-
     this.sign();
   }
 
@@ -121,6 +115,12 @@ export default class RegisterPopup extends Component {
           dispatch({
             type: MESSAGE_ADD,
             payload: err || result.error
+          });
+
+          ReactGA.event({
+            category: "Site Interaction",
+            action: "Sign-up",
+            label: "Create account"
           });
           return;
         }

@@ -194,7 +194,13 @@ export default class GameList extends Component {
           <Link to="/faq">
             <FormattedMessage id="pages.games.explore.faq" />
           </Link>
-          <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer">
+          <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer" onClick={() => {
+            ReactGA.event({
+              category: "Site Interaction",
+              action: "Page Visit",
+              label: "Discord"
+            });
+          }}>
             <FormattedMessage id="pages.games.explore.discord" />
           </a>
         </div>
