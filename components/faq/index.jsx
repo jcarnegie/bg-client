@@ -7,7 +7,7 @@ export default class Faq extends Component {
   render() {
     return (
       <div>
-        <style jsx>{`
+        <style jsx global>{`
           .faq h2 {
             font-weight: 700;
             font-size: 38px;

@@ -1,26 +1,28 @@
 # PortalClient
 
 ## Next Migration Fix List
+Feature Complete
 x - SpreadOperator --> SpreadElement warning (babel-plugin-transform-object-rest-spread)
 x - Update internationalization
 x - Production image runs as expected
 x - Game fetching needs to be updated (by id)
+x - Production app runs as expected on dev.bitguild.io
+x - Styles on each page are matching
+x - Update airdrop pages
+x - Update FAQ page
+x - Modal css loads only after first modal renders
+- Buy Plat modal needs to work
+- After logout, login modal needs to work
 - Browser History
-- Styles on each page are matching
-- Production app runs as expected on dev.bitguild.io
-- Docker-compose integrates with development GraphQL API
-- Update airdrop pages
-- Modal css loads only after first modal renders
 - Any updates for Sandbox
 - Implement "Back to Game" button on inventory page
 - Merge new ReactGA implementations from Oleg
 - Merge other changes from master, if any
 - Update inventory categories render
-- Modals
-- - Buy Plat modal needs to work
-- - After logout, login modal needs to work
-- css autoprefixer
 
+Plus
+- Docker-compose integrates with development GraphQL API
+- css autoprefixer
 
 ## Dependencies
 
