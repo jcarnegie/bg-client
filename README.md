@@ -13,10 +13,12 @@ x - Update FAQ page
 x - Modal css loads only after first modal renders
 x - After logout, login modal needs to work
 x - Update inventory categories render
-- Any updates for Sandbox
+x - Any updates for Sandbox
 - Browser History
 - Implement "Back to Game" button on inventory page
-- Buy Plat modal needs to work
+- Modal initial load style
+
+? - Buy Plat modal needs to work
 
 Updates
 - Merge other changes from master, if any
