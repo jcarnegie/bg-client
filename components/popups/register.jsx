@@ -22,7 +22,7 @@ import InputGroupValidation from "../inputs/input.group.validation";
 @connect(
   state => ({
     account: state.account,
-    messages: state.messages
+    messages: state.messages,
   })
 )
 export default class RegisterPopup extends Component {
@@ -34,7 +34,7 @@ export default class RegisterPopup extends Component {
     onChange: PropTypes.func,
     show: PropTypes.bool,
     intl: intlShape,
-    messages: PropTypes.array
+    messages: PropTypes.array,
   };
 
   state = {};
@@ -42,13 +42,13 @@ export default class RegisterPopup extends Component {
   static getDerivedStateFromProps(nextProps) {
     if (nextProps.formData.wallet !== nextProps.account.wallet) {
       nextProps.setState({
-        wallet: nextProps.account.wallet
+        wallet: nextProps.account.wallet,
       });
     }
 
     if (nextProps.formData.language !== nextProps.intl.locale) {
       nextProps.setState({
-        language: nextProps.intl.locale
+        language: nextProps.intl.locale,
       });
     }
 
@@ -77,7 +77,7 @@ export default class RegisterPopup extends Component {
             e = document.getElementsByName(i)[0];
             e.parentNode.parentNode.classList.add("has-error");
             e.setCustomValidity(intl.formatMessage({
-              id: "fields.wallet.invalid"
+              id: "fields.wallet.invalid",
             }));
             isValid = false;
           }
@@ -97,12 +97,12 @@ export default class RegisterPopup extends Component {
     window.web3.currentProvider.sendAsync({
       method: "personal_sign",
       params: [message, formData.wallet],
-      from: formData.wallet
+      from: formData.wallet,
     }, (err, result) => {
       if (err || result.error) {
         dispatch({
           type: MESSAGE_ADD,
-          payload: err || result.error
+          payload: err || result.error,
         });
         return;
       }
@@ -110,12 +110,12 @@ export default class RegisterPopup extends Component {
       window.web3.currentProvider.sendAsync({
         method: "personal_ecRecover",
         params: [message, result.result],
-        from: formData.wallet
+        from: formData.wallet,
       }, (err, recovered) => {
         if (err || result.error) {
           dispatch({
             type: MESSAGE_ADD,
-            payload: err || result.error
+            payload: err || result.error,
           });
 
           ReactGA.event({
@@ -126,20 +126,26 @@ export default class RegisterPopup extends Component {
           return;
         }
 
+        ReactGA.event({
+          category: "Site Interaction",
+          action: "Sign-up",
+          label: "Create account",
+        });
+
         if (recovered.result === formData.wallet) {
           dispatch({
             type: CREATE_USER,
-            payload: formData
+            payload: formData,
           });
         } else {
           dispatch({
             type: MESSAGE_ADD,
             payload: new Error(intl.formatMessage({
-              id: "errors.spoofing-attempt"
+              id: "errors.spoofing-attempt",
             }, {
               wallet1: recovered.result,
-              wallet2: formData.wallet
-            }))
+              wallet2: formData.wallet,
+            })),
           });
         }
       });

@@ -4,7 +4,7 @@ import Chat from "../../components/chat";
 
 
 const InventoryPage = () => (
-  <Layout main={<Inventory />} aside={<Chat />} />
+  <Layout main={<Inventory />} aside={<Chat />} contentPadding />
 );
 
 

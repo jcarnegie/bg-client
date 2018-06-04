@@ -15,7 +15,7 @@ x - After logout, login modal needs to work
 x - Update inventory categories render
 x - Any updates for Sandbox
 x - Browser History
-- Implement "Back to Game" button on inventory page
+x - Implement "Back to Game" button on inventory page
 - Modal initial load style
 
 ? - Buy Plat modal needs to work
@@ -24,7 +24,7 @@ Updates
 - Merge other changes from master, if any
 - Merge new ReactGA implementations from Oleg
 - Update mobile styles if necessary
-- Clean up unused files
+x - Clean up unused files
 
 Plus
 - Docker-compose integrates with development GraphQL API

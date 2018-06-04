@@ -49,10 +49,6 @@ next.prepare().then(() => {
   app.use(morgan("tiny")); // "default", "short", "tiny", "dev"
   app.use(cors);
 
-
-    // /sandbox component={SandBox} exact
-    // NotFound
-
   // TODO - https://github.com/fridays/next-routes
   const route = pathMatch();
 
@@ -60,7 +56,6 @@ next.prepare().then(() => {
     const params = route("/game/:_id")(parse(req.url).pathname);
     return next.render(req, res, "/game", {params});
   });
-
 
   app.get("/ping", (request, response) => {
     response.status(200).json({pong: true});

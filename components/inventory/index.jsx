@@ -5,7 +5,7 @@ import React, {Component, Fragment} from "react";
 import {Button, Image, Row, Tab, Tabs} from "react-bootstrap";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import Router from "next/router";
+import Link from "next/link";
 import {contains, isEmpty, filter, map, prop, uniq} from "ramda";
 import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
 
@@ -20,6 +20,7 @@ import Item from "./item";
 	state => ({
 		items: state.items,
 		games: state.games,
+		game: state.game,
 		user: state.user,
 	})
 )
@@ -84,17 +85,19 @@ export default class Inventory extends Component {
 	}
 
 	renderBackToGameButton() {
-		// TODO - dev
-		const {lastLocation} = this.props;
-		if (!lastLocation || !lastLocation.pathname.startsWith("/game/")) {
+		const {game} = this.props;
+
+		if (!game.data || !game.data.id) {
 			return null;
 		}
 
 		return (
 			<div className="pull-right">
-				<Button onClick={Router.back}>
-					<FormattedMessage id="pages.inventory.back-to-game" />
-				</Button>
+				<Link href={`/game/${game.data.id}`}>
+					<a>
+						<Button><FormattedMessage id="pages.inventory.back-to-game" /></Button>
+					</a>
+				</Link>
 			</div>
 		);
 	}

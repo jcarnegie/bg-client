@@ -10,7 +10,7 @@ const headers = [
   "If-Modified-Since",
   "Origin",
   "Pragma",
-  "X-XSRF-TOKEN"
+  "X-XSRF-TOKEN",
 ];
 
 router.use((request, response, next) => {

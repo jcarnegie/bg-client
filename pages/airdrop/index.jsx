@@ -4,7 +4,7 @@ import Chat from "../../components/chat";
 
 
 const AirdropPage = () => (
-  <Layout main={<Airdrop />} aside={<Chat />} />
+  <Layout main={<Airdrop />} aside={<Chat />} contentPadding />
 );
 
 export default AirdropPage;
