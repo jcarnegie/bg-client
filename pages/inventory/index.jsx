@@ -7,4 +7,5 @@ const InventoryPage = () => (
   <Layout main={<Inventory />} aside={<Chat />} />
 );
 
+
 export default InventoryPage;

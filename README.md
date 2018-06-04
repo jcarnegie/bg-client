@@ -14,7 +14,7 @@ x - Modal css loads only after first modal renders
 x - After logout, login modal needs to work
 x - Update inventory categories render
 x - Any updates for Sandbox
-- Browser History
+x - Browser History
 - Implement "Back to Game" button on inventory page
 - Modal initial load style
 

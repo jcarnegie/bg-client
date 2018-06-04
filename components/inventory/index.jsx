@@ -84,9 +84,8 @@ export default class Inventory extends Component {
 	}
 
 	renderBackToGameButton() {
-		// TODO - devs
+		// TODO - dev
 		const {lastLocation} = this.props;
-
 		if (!lastLocation || !lastLocation.pathname.startsWith("/game/")) {
 			return null;
 		}

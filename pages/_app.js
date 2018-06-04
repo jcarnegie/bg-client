@@ -21,6 +21,13 @@ class BGApp extends App {
     const gaListenerProps = GAListener.getInitialProps(ctx);
     const metaMaskProps = MetaMask.getInitialProps(ctx);
 
+    // router.__history = []; // TODO
+
+    router.beforePopState(ctx => {
+      GAListener.sendPageView(ctx.url);
+      return true; /* To confirm pop state */
+    });
+
     return {pageProps, metaMaskProps, gaListenerProps};
   }
 

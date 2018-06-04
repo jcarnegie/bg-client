@@ -24,7 +24,6 @@ export default class GAListener extends Component {
     if (!process.browser) return;
     ReactGA.initialize(this.props.trackingId);
     GAListener.sendPageView(this.context.router.pathname);
-    this.context.router.beforePopState(pathname => GAListener.sendPageView(pathname));
   }
 
   static sendPageView(pathname) {
