@@ -333,7 +333,20 @@ export default class GameList extends Component {
               text-transform: uppercase;
               margin-left: 20px;
               color: #88789A;
-            }          
+            }       
+
+            .giveaway button {
+              font-size: 14px;
+              background-color: rgb(49, 75, 136);
+              color: #fff;
+              border: 0;
+              padding: 10px;
+              border-radius: 2px;
+              width: 150px;
+              margin: 0 auto;
+              margin-bottom: 50px;
+              display: block;
+            }   
           `}</style>
           <Col className="grap gap games">
             {this.banner()}
