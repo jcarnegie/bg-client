@@ -120,11 +120,11 @@ export default class Inventory extends Component {
 		);
 	}
 
-	renderTab(game, items) {
+	renderTab(tabKey, game, items) {
 		const categories = uniq([].concat(...items.map(item => item.categories)));
 		const maxStats = calcMaxItemsStats(items);
 		return (
-			<Fragment key={game._id}>
+			<Fragment key={tabKey}>
 				<div className="arrow-right pull-right">
 					{this.renderCategories(game, categories)}
 				</div>
@@ -153,13 +153,13 @@ export default class Inventory extends Component {
 				</h2>
 				<Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
 					<Tab eventKey={1} title={<FormattedMessage id="pages.inventory.all-items" />}>
-						{visibleGames.map(game =>
-							this.renderTab(game, items.data.filter(item => item.game === game._id))
+						{visibleGames.map((game, i) =>
+							this.renderTab(i, game, items.data.filter(item => item.game === game._id))
 						)}
 					</Tab>
 					{visibleGames.map((game, i) =>
 						<Tab eventKey={i + 2} title={game.name} key={i}>
-							{this.renderTab(game, items.data.filter(item => item.game === game._id))}
+							{this.renderTab(i, game, items.data.filter(item => item.game === game._id))}
 						</Tab>
 					)}
 				</Tabs>

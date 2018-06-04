@@ -22,6 +22,7 @@ Updates
 - Merge other changes from master, if any
 - Merge new ReactGA implementations from Oleg
 - Update mobile styles if necessary
+- Clean up unused files
 
 Plus
 - Docker-compose integrates with development GraphQL API

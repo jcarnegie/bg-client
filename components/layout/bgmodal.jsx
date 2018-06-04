@@ -26,7 +26,7 @@ class BGModal extends Component {
 
   render() {
     const {modal} = this.props;
-    console.log('modal: ', modal)
+
     if (!modal) return null;
 
     return (

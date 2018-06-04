@@ -55,7 +55,6 @@ export default function withFormHelper(WrappedComponent) {
     }
 
     render() {
-      // console.log("FormHelper:render", this.props, this.state);
       return (
         <WrappedComponent
           {...this.props}
