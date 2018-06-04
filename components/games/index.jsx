@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Grid, Button, Col, Image, Row} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import Link from "next/link";
+import ReactGA from "react-ga";
 
 const BANNER_SWITCH_INTERVAL = 10e3;
 const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
@@ -371,7 +372,13 @@ export default class GameList extends Component {
                   <FormattedMessage id="pages.games.explore.faq" />
                 </a>
               </Link>
-              <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer">
+              <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer" onClick={() => {
+                ReactGA.event({
+                  category: "Site Interaction",
+                  action: "Page Visit",
+                  label: "Discord",
+                });
+              }}>
                 <FormattedMessage id="pages.games.explore.discord" />
               </a>
             </div>
