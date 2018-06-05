@@ -7,5 +7,5 @@ export const enabledLanguages = [
   "ja",
   "fr",
   "es",
-  "ru"
+  "ru",
 ];

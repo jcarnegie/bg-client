@@ -3,7 +3,7 @@ import {ACCOUNT_CHANGED, ACCOUNT_ERROR} from "../../shared/constants/actions";
 const account = {
   isLoading: true, // TODO should be false, but popup is showing in the beginning
   success: false,
-  wallet: null
+  wallet: null,
 };
 
 export default function accountReducer(state = account, action) {

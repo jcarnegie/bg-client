@@ -3,7 +3,7 @@ import {GAME_CHANGED, GAME_ERROR, GAME_LOADING} from "../../shared/constants/act
 const game = {
   isLoading: false,
   success: false,
-  data: null
+  data: null,
 };
 
 export default function gameReducer(state = game, action) {
@@ -12,19 +12,19 @@ export default function gameReducer(state = game, action) {
       return Object.assign({}, state, {
         data: null,
         isLoading: true,
-        success: false
+        success: false,
       });
     case GAME_CHANGED:
       return Object.assign({}, state, {
         data: action.payload,
         isLoading: false,
-        success: true
+        success: true,
       });
     case GAME_ERROR:
       return Object.assign({}, state, {
         data: null,
         isLoading: false,
-        success: false
+        success: false,
       });
     default:
       return state;

@@ -3,7 +3,7 @@ import {USER_CHANGED, USER_ERROR, USER_LOADING} from "../../shared/constants/act
 const user = {
   isLoading: false,
   success: false,
-  data: null
+  data: null,
 };
 
 export default function userReducer(state = user, action) {
@@ -12,19 +12,19 @@ export default function userReducer(state = user, action) {
       return Object.assign({}, state, {
         data: null,
         isLoading: true,
-        success: false
+        success: false,
       });
     case USER_CHANGED:
       return Object.assign({}, state, {
         data: action.payload,
         isLoading: false,
-        success: true
+        success: true,
       });
     case USER_ERROR:
       return Object.assign({}, state, {
         data: null,
         isLoading: false,
-        success: false
+        success: false,
       });
     default:
       return state;

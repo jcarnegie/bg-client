@@ -1,9 +1,5 @@
 import {enabledLanguages} from "../constants/language";
 
-// this object will have language-specific data added to it which will be placed in the state when that language is active
-// if localization data get to big, stop importing in all languages and switch to using API requests to load upon switching languages
-export const localization = {};
-
 // here you bring in "intl" browser polyfill and language-specific polyfills
 // (needed as safari doesn't have native intl: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)
 // as well as react-intl"s language-specific data
@@ -13,6 +9,44 @@ import {addLocaleData} from "react-intl";
 // need Intl polyfill, Intl not supported in Safari
 import Intl from "intl";
 import areIntlLocalesSupported from "intl-locales-supported";
+
+// bring in intl polyfill, react-intl, and app-specific language data
+import "intl/locale-data/jsonp/en";
+import en from "react-intl/locale-data/en";
+import enData from "./localization/en";
+
+import "intl/locale-data/jsonp/zh";
+import zh from "react-intl/locale-data/zh";
+import zhData from "./localization/zh";
+
+
+import "intl/locale-data/jsonp/fr";
+import fr from "react-intl/locale-data/fr";
+import frData from "./localization/fr";
+
+
+import "intl/locale-data/jsonp/pt";
+import pt from "react-intl/locale-data/pt";
+import ptData from "./localization/pt";
+
+
+import "intl/locale-data/jsonp/ja";
+import ja from "react-intl/locale-data/ja";
+import jaData from "./localization/ja";
+
+
+import "intl/locale-data/jsonp/ru";
+import ru from "react-intl/locale-data/ru";
+import ruData from "./localization/ru";
+
+
+import "intl/locale-data/jsonp/es";
+import es from "react-intl/locale-data/es";
+import esData from "./localization/es";
+
+// this object will have language-specific data added to it which will be placed in the state when that language is active
+// if localization data get to big, stop importing in all languages and switch to using API requests to load upon switching languages
+export const localization = {};
 
 if (global.Intl) {
 	// Determine if the built-in `Intl` has the locale data we need.
@@ -43,74 +77,40 @@ function flattenMessages(nestedMessages = {}, prefix = "") {
 		return messages;
 	}, {});
 }
-
-// bring in intl polyfill, react-intl, and app-specific language data
-import "intl/locale-data/jsonp/en";
-import en from "react-intl/locale-data/en";
-import enData from "./localization/en";
 addLocaleData(en);
 const defaultMessages = flattenMessages(enData);
 localization.en = {
   locale: "en",
-	messages: defaultMessages
+	messages: defaultMessages,
 };
-
-import "intl/locale-data/jsonp/zh";
-import zh from "react-intl/locale-data/zh";
-import zhData from "./localization/zh";
 addLocaleData(zh);
 localization.zh = {
   locale: "zh",
-	messages: Object.assign({}, defaultMessages, flattenMessages(zhData))
+	messages: Object.assign({}, defaultMessages, flattenMessages(zhData)),
 };
-
-
-import "intl/locale-data/jsonp/fr";
-import fr from "react-intl/locale-data/fr";
-import frData from "./localization/fr";
 addLocaleData(fr);
 localization.fr = {
   locale: "fr",
-	messages: Object.assign({}, defaultMessages, flattenMessages(frData))
+	messages: Object.assign({}, defaultMessages, flattenMessages(frData)),
 };
-
-
-import "intl/locale-data/jsonp/pt";
-import pt from "react-intl/locale-data/pt";
-import ptData from "./localization/pt";
 addLocaleData(pt);
 localization.pt = {
   locale: "pt",
-	messages: Object.assign({}, defaultMessages, flattenMessages(ptData))
+	messages: Object.assign({}, defaultMessages, flattenMessages(ptData)),
 };
-
-
-import "intl/locale-data/jsonp/ja";
-import ja from "react-intl/locale-data/ja";
-import jaData from "./localization/ja";
 addLocaleData(ja);
 localization.ja = {
   locale: "ja",
-	messages: Object.assign({}, defaultMessages, flattenMessages(jaData))
+	messages: Object.assign({}, defaultMessages, flattenMessages(jaData)),
 };
-
-
-import "intl/locale-data/jsonp/ru";
-import ru from "react-intl/locale-data/ru";
-import ruData from "./localization/ru";
 addLocaleData(ru);
 localization.ru = {
   locale: "ru",
-	messages: Object.assign({}, defaultMessages, flattenMessages(ruData))
+	messages: Object.assign({}, defaultMessages, flattenMessages(ruData)),
 };
-
-
-import "intl/locale-data/jsonp/es";
-import es from "react-intl/locale-data/es";
-import esData from "./localization/es";
 addLocaleData(es);
 localization.es = {
   locale: "es",
-	messages: Object.assign({}, defaultMessages, flattenMessages(esData))
+	messages: Object.assign({}, defaultMessages, flattenMessages(esData)),
 };
 

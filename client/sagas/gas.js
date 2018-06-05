@@ -6,7 +6,7 @@ import fetch from "isomorphic-fetch";
 const defaultData = {
   average: 8,
   fast: 16,
-  fastest: 30
+  fastest: 30,
 };
 
 function callAPI() {
@@ -17,22 +17,22 @@ function callAPI() {
 function * fetchGas() {
   try {
     yield put({
-      type: GAS_LOADING
+      type: GAS_LOADING,
     });
     const json = yield call(callAPI);
     const newData = Object.keys(defaultData)
       .reduce((memo, key) => ({
         ...memo,
-        [key]: Number(window.web3.toWei(json[key] / 10, "shannon")) + 1000000000 // gwei
+        [key]: Number(window.web3.toWei(json[key] / 10, "shannon")) + 1000000000, // gwei
       }), {});
     yield put({
       type: GAS_CHANGED,
-      payload: newData
+      payload: newData,
     });
   } catch (error) {
     yield put({
       type: GAS_CHANGED,
-      payload: defaultData
+      payload: defaultData,
     });
   }
 }

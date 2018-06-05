@@ -17,29 +17,29 @@ import {
   USER_CHANGED,
   USER_ERROR,
   USER_LOADING,
-  VALIDATION_ADD_ALL
+  VALIDATION_ADD_ALL,
 } from "../../shared/constants/actions";
 
 function * fetchUser() {
   try {
     yield put({
-      type: USER_LOADING
+      type: USER_LOADING,
     });
     const account = yield select(state => state.account);
     if (!account.wallet) {
       yield put({
         type: BALANCE_ETH_CHANGED,
-        payload: 0
+        payload: 0,
       });
       yield put({
         type: BALANCE_PLAT_CHANGED,
-        payload: 0
+        payload: 0,
       });
       yield put({
-        type: INVENTORY_ITEMS_ERROR
+        type: INVENTORY_ITEMS_ERROR,
       });
       yield put({
-        type: INVENTORY_GAMES_ERROR
+        type: INVENTORY_GAMES_ERROR,
       });
       return;
     }
@@ -56,29 +56,29 @@ function * fetchUser() {
     if (user) {
       yield put({
         type: USER_CHANGED,
-        payload: user
+        payload: user,
       });
       yield put(updateIntl(localization[user.language]));
     } else {
       yield put({
-        type: USER_ERROR
+        type: USER_ERROR,
       });
       yield put({
         type: BALANCE_ETH_CHANGED,
-        payload: 0
+        payload: 0,
       });
       yield put({
         type: BALANCE_PLAT_CHANGED,
-        payload: 0
+        payload: 0,
       });
     }
   } catch (error) {
     yield put({
-      type: USER_ERROR
+      type: USER_ERROR,
     });
     yield put({
       type: MESSAGE_ADD,
-      payload: error
+      payload: error,
     });
   }
 }
@@ -86,7 +86,7 @@ function * fetchUser() {
 function * createUser(action) {
   try {
     yield put({
-      type: USER_LOADING
+      type: USER_LOADING,
     });
     const mutation = gql`
       mutation createUser($payload: UserCreatePayload!) {
@@ -103,23 +103,23 @@ function * createUser(action) {
 
     yield put({
       type: USER_CHANGED,
-      payload: user.data.createUser
+      payload: user.data.createUser,
     });
   } catch (error) {
     yield put({
-      type: USER_ERROR
+      type: USER_ERROR,
     });
     const dupErrors = filter(propEq("name", "UniqueConstraintError"), error.graphQLErrors);
     const dups = map(prop("data"), dupErrors);
     if (!isEmpty(dups)) {
       yield put({
         type: VALIDATION_ADD_ALL,
-        payload: dups
+        payload: dups,
       });
     } else {
       yield put({
         type: MESSAGE_ADD_ALL,
-        payload: [error]
+        payload: [error],
       });
     }
   }
@@ -140,19 +140,19 @@ function * updateUser(action) {
       const _user = path(["data", "updateUser"], yield client.mutate({mutation, variables}));
       yield put({
         type: USER_CHANGED,
-        payload: _user
+        payload: _user,
       });
     } catch (error) {
       const errors = [].concat(error);
       if ([400, 409].includes(errors[0].status)) {
         yield put({
           type: VALIDATION_ADD_ALL,
-          payload: errors
+          payload: errors,
         });
       } else {
         yield put({
           type: MESSAGE_ADD_ALL,
-          payload: errors
+          payload: errors,
         });
       }
     }

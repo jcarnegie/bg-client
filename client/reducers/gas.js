@@ -3,7 +3,7 @@ import {GAS_CHANGED, GAS_ERROR, GAS_LOADING} from "../../shared/constants/action
 const gas = {
   isLoading: false,
   success: false,
-  data: null
+  data: null,
 };
 
 export default function gameReducer(state = gas, action) {
@@ -12,19 +12,19 @@ export default function gameReducer(state = gas, action) {
       return Object.assign({}, state, {
         data: null,
         isLoading: true,
-        success: false
+        success: false,
       });
     case GAS_CHANGED:
       return Object.assign({}, state, {
         data: action.payload,
         isLoading: false,
-        success: true
+        success: true,
       });
     case GAS_ERROR:
       return Object.assign({}, state, {
         data: null,
         isLoading: false,
-        success: false
+        success: false,
       });
     default:
       return state;

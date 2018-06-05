@@ -11,7 +11,7 @@ import {channels as chatChannels,
   channelNameForLocale,
   createChannelWithName,
   findChannelByName,
-  setChannelByName
+  setChannelByName,
 } from "../utils/chat";
 import {CHAT_INIT, CHAT_LOAD_MESSAGES, CHAT_MESSAGE_SEND, CHAT_MESSAGE_SENT, CHAT_SET_CHANNEL, USER_CHANGED} from "../../shared/constants/actions";
 
@@ -42,7 +42,7 @@ function * initChat(action) {
   const [sb, user] = yield chatInit(wallet, nickName);
   yield put({
     type: CHAT_INIT,
-    payload: {sb, user}
+    payload: {sb, user},
   });
 
   const channels = yield chatChannels(sb);
@@ -50,7 +50,7 @@ function * initChat(action) {
   const channelName = channelNameForLocale(locale);
   const channelOperators = [
     "0xc40cD464ad0895571bB396071A4FaA81935353A5", // Jeff
-    "0xa9Af3D88E5167cA6E9413CBB9b946EC95FE469ee" // Shain
+    "0xa9Af3D88E5167cA6E9413CBB9b946EC95FE469ee", // Shain
   ];
 
   let channel;

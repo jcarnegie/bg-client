@@ -17,7 +17,7 @@ import {
   INVENTORY_ITEMS_REQUEST,
   MESSAGE_ADD,
   NEW_BLOCK,
-  USER_CHANGED
+  USER_CHANGED,
 } from "../../shared/constants/actions";
 import {readFromQueryString} from "../utils/location";
 import {client} from "../utils/apollo";
@@ -44,15 +44,15 @@ function * getItems(action) {
     const items = path(["data", "listItems"], result);
     yield put({
       type: INVENTORY_ITEMS_CHANGED,
-      payload: items
+      payload: items,
     });
   } catch (error) {
     yield put({
-      type: INVENTORY_ITEMS_ERROR
+      type: INVENTORY_ITEMS_ERROR,
     });
     yield put({
       type: MESSAGE_ADD,
-      payload: error
+      payload: error,
     });
   }
 }
@@ -67,7 +67,7 @@ function * getGames(action) {
     const games = path(["data", "listGames"], result);
     yield put({
       type: INVENTORY_GAMES_CHANGED,
-      payload: games
+      payload: games,
     });
   } catch (error) {
     yield put({
@@ -87,7 +87,7 @@ function * checkGifts() {
     gifts.data = gifts.data || []; // TODO - following unsafe operations, ex: map
 
     yield put({
-      type: GIFT_REMOVE_LOADING
+      type: GIFT_REMOVE_LOADING,
     });
     const result = yield Promise.all(gifts.data.map(gift =>
       // will return null while transaction is in process
@@ -96,15 +96,15 @@ function * checkGifts() {
     const hashes = result.filter(tx => tx).map(tx => tx.transactionHash);
     yield put({
       type: GIFT_REMOVE_SUCCESS,
-      payload: hashes // doesn't matter if tx succeed or failed
+      payload: hashes, // doesn't matter if tx succeed or failed
     });
   } catch (error) {
     yield put({
-      type: GIFT_REMOVE_ERROR
+      type: GIFT_REMOVE_ERROR,
     });
     yield put({
       type: MESSAGE_ADD,
-      payload: error
+      payload: error,
     });
   }
 }

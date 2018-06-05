@@ -19,7 +19,7 @@ import {
   RATE_ERROR,
   RATE_LOADING,
   RATE_REQUEST,
-  USER_CHANGED
+  USER_CHANGED,
 } from "../../shared/constants/actions";
 
 
@@ -28,22 +28,22 @@ function * getRate() {
     const network = yield select(state => state.network);
     if (Object.keys(networkConfig).includes(network.data.id)) {
       yield put({
-        type: RATE_LOADING
+        type: RATE_LOADING,
       });
       const contract = window.web3.eth.contract(oracleABI).at(networkConfig[network.data.id].oracle);
       const ETHPrice = yield bluebird.promisify(contract.ETHPrice)();
       yield put({
         type: RATE_CHANGED,
-        payload: window.web3.fromWei(ETHPrice, "ether").toNumber()
+        payload: window.web3.fromWei(ETHPrice, "ether").toNumber(),
       });
     }
   } catch (error) {
     yield put({
-      type: RATE_ERROR
+      type: RATE_ERROR,
     });
     yield put({
       type: MESSAGE_ADD,
-      payload: error
+      payload: error,
     });
   }
 }
@@ -55,21 +55,21 @@ function * getBalanceETH() {
       const network = yield select(state => state.network);
       if (Object.keys(networkConfig).includes(network.data.id)) {
         yield put({
-          type: BALANCE_ETH_LOADING
+          type: BALANCE_ETH_LOADING,
         });
         const balance = yield bluebird.promisify(window.web3.eth.getBalance)(user.data.wallet);
         yield put({
           type: BALANCE_ETH_CHANGED,
-          payload: window.web3.fromWei(balance, "ether").toNumber()
+          payload: window.web3.fromWei(balance, "ether").toNumber(),
         });
       }
     } catch (error) {
       yield put({
-        type: BALANCE_ETH_ERROR
+        type: BALANCE_ETH_ERROR,
       });
       yield put({
         type: MESSAGE_ADD,
-        payload: error
+        payload: error,
       });
     }
   }
@@ -82,22 +82,22 @@ function * getBalancePLAT() {
       const network = yield select(state => state.network);
       if (Object.keys(networkConfig).includes(network.data.id)) {
         yield put({
-          type: BALANCE_PLAT_LOADING
+          type: BALANCE_PLAT_LOADING,
         });
         const contract = window.web3.eth.contract(tokenABI).at(networkConfig[network.data.id].token);
         const balance = yield bluebird.promisify(contract.balanceOf)(user.data.wallet);
         yield put({
           type: BALANCE_PLAT_CHANGED,
-          payload: window.web3.fromWei(balance, "ether").toNumber()
+          payload: window.web3.fromWei(balance, "ether").toNumber(),
         });
       }
     } catch (error) {
       yield put({
-        type: BALANCE_PLAT_ERROR
+        type: BALANCE_PLAT_ERROR,
       });
       yield put({
         type: MESSAGE_ADD,
-        payload: error
+        payload: error,
       });
     }
   }
@@ -106,22 +106,22 @@ function * getBalancePLAT() {
 function * getNetwork() {
   try {
     yield put({
-      type: NETWORK_LOADING
+      type: NETWORK_LOADING,
     });
     const netId = yield bluebird.promisify(window.web3.version.getNetwork)();
     yield put({
       type: NETWORK_CHANGED,
       payload: {
-        id: netId
-      }
+        id: netId,
+      },
     });
     yield put({
-      type: RATE_REQUEST
+      type: RATE_REQUEST,
     });
   } catch (error) {
     yield put({
       type: MESSAGE_ADD,
-      payload: error
+      payload: error,
     });
   }
 }

@@ -3,7 +3,7 @@ import {GIFT_ADD_LOADING, GIFT_ADD_ERROR, GIFT_REMOVE_ERROR, GIFT_REMOVE_LOADING
 const gift = {
   isLoading: false,
   success: true,
-  data: []
+  data: [],
 };
 
 export default function giftReducer(state = gift, action) {
@@ -12,25 +12,25 @@ export default function giftReducer(state = gift, action) {
     case GIFT_REMOVE_LOADING:
       return Object.assign({}, state, {
         isLoading: true,
-        success: false
+        success: false,
       });
     case GIFT_ADD_SUCCESS:
       return Object.assign({}, state, {
         data: state.data.concat(action.payload),
         isLoading: false,
-        success: true
+        success: true,
       });
     case GIFT_REMOVE_SUCCESS:
       return Object.assign({}, state, {
         data: state.data.filter(gift => !action.payload.includes(gift.tx)),
         isLoading: false,
-        success: true
+        success: true,
       });
     case GIFT_ADD_ERROR:
     case GIFT_REMOVE_ERROR:
       return Object.assign({}, state, {
         isLoading: false,
-        success: false
+        success: false,
       });
     default:
       return state;

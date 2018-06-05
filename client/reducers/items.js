@@ -3,7 +3,7 @@ import {INVENTORY_ITEMS_CHANGED, INVENTORY_ITEMS_ERROR, INVENTORY_ITEMS_LOADING}
 const balance = {
   isLoading: false,
   success: false,
-  data: null
+  data: null,
 };
 
 export default function itemsReducer(state = balance, action) {
@@ -12,19 +12,19 @@ export default function itemsReducer(state = balance, action) {
       return Object.assign({}, balance, {
         data: null,
         isLoading: true,
-        success: false
+        success: false,
       });
     case INVENTORY_ITEMS_CHANGED:
       return Object.assign({}, balance, {
         data: action.payload,
         isLoading: false,
-        success: true
+        success: true,
       });
     case INVENTORY_ITEMS_ERROR:
       return Object.assign({}, balance, {
         data: null,
         isLoading: false,
-        success: false
+        success: false,
       });
     default:
       return state;

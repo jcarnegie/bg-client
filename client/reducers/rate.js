@@ -3,7 +3,7 @@ import {RATE_CHANGED, RATE_ERROR, RATE_LOADING} from "../../shared/constants/act
 const rate = {
   isLoading: false,
   success: false,
-  data: null
+  data: null,
 };
 
 export default function rateReducer(state = rate, action) {
@@ -12,19 +12,19 @@ export default function rateReducer(state = rate, action) {
       return Object.assign({}, rate, {
         data: null,
         isLoading: true,
-        success: false
+        success: false,
       });
     case RATE_CHANGED:
       return Object.assign({}, rate, {
         data: action.payload,
         isLoading: false,
-        success: true
+        success: true,
       });
     case RATE_ERROR:
       return Object.assign({}, rate, {
         data: null,
         isLoading: false,
-        success: false
+        success: false,
       });
     default:
       return state;

@@ -10,7 +10,7 @@ import {
   propEq,
   reverse,
   split,
-  toUpper
+  toUpper,
 } from "ramda";
 
 export let _sb = null;

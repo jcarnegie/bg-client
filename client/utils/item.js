@@ -5,7 +5,7 @@ import {
   map,
   not,
   propIs,
-  values
+  values,
 } from "ramda";
 import {matchesOneOf} from "./string";
 
@@ -13,7 +13,7 @@ export const STATS_MATCHERS = [
   // +10%, +20%, etc
   /\+\d+%/,
   // range: "1 - 10", "20-30", etc
-  /\d+\s*-\s*\d+/
+  /\d+\s*-\s*\d+/,
 ];
 
 export const isStat = attr =>
