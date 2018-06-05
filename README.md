@@ -16,14 +16,14 @@ x - Update inventory categories render
 x - Any updates for Sandbox
 x - Browser History
 x - Implement "Back to Game" button on inventory page
-- Modal initial load style
+x - Modal initial load style
 
 ? - Buy Plat modal needs to work
 
 Updates
 - Merge other changes from master, if any
-- Merge new ReactGA implementations from Oleg
 - Update mobile styles if necessary
+x - Merge new ReactGA implementations from Oleg
 x - Clean up unused files
 
 Plus

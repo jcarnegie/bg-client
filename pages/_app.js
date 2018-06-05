@@ -9,6 +9,7 @@ import GAListener from "../components/common/galistener";
 import MetaMask from "../components/common/metamask";
 import Register from "../components/popups/register";
 
+import GlobalStyles from "./globalstyles";
 
 class BGApp extends App {
   static async getInitialProps({Component, router, ctx}) {
@@ -20,8 +21,6 @@ class BGApp extends App {
 
     const gaListenerProps = GAListener.getInitialProps(ctx);
     const metaMaskProps = MetaMask.getInitialProps(ctx);
-
-    // router.__history = []; // TODO
 
     router.beforePopState(ctx => {
       GAListener.sendPageView(ctx.url);
@@ -42,6 +41,7 @@ class BGApp extends App {
 
     return (
       <Container warnings={false}>
+          <GlobalStyles />
           <Provider store={store}>
             <>
               <MetaMask {...metaMaskProps} />

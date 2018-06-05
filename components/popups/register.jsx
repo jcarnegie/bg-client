@@ -160,13 +160,6 @@ export default class RegisterPopup extends Component {
 
   render() {
     const {show, formData, onChange} = this.props;
-    // let {show} = this.props;
-    // const {user, intl, network} = this.props;
-
-    // const networkSuccess = network && !network.isLoading && network.success;
-    // const userSuccess = user && !user.isLoading && user.success;
-
-    // show = show || (networkSuccess && userSuccess);
 
     return (
       <Modal show={show} className={cx("register", {show})}>
