@@ -17,6 +17,7 @@ x - Any updates for Sandbox
 x - Browser History
 x - Implement "Back to Game" button on inventory page
 x - Modal initial load style
+x - Serve static files (SDK)
 
 ? - Buy Plat modal needs to work
 

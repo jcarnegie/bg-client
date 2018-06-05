@@ -49,6 +49,8 @@ next.prepare().then(() => {
   app.use(morgan("tiny")); // "default", "short", "tiny", "dev"
   app.use(cors);
 
+  app.use("/", express.static(path.join(__dirname, "./static")));
+
   // TODO - https://github.com/fridays/next-routes
   const route = pathMatch();
 
