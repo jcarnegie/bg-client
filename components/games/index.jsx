@@ -162,226 +162,217 @@ export default class GameList extends Component {
 
   render() {
     return (
-      <Grid fluid>
+      <Grid fluid className="games">
+        <style jsx global>{`
+          .carousel-nav-button {
+            position: absolute;
+            top: 50%;
+            height: 70px;
+            width: 55px;
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: translate(0, -50%);
+            cursor: pointer;
+          }
+          .carousel-nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.75);
+          }
+          .carousel-nav-button-left {
+            left: 0;
+          }
+          .carousel-nav-button-left img {
+            top: 50%;
+            transform: translateY(-50%);
+            height: 38px;
+            width: 25px;
+            position: absolute;
+            left: 12px;
+          }
+          .carousel-nav-button-right {
+            right: 0;
+            transform: translate(0, -50%) rotate(180deg);
+          }
+          .carousel-nav-button-right img {
+            top: 50%;
+            transform: translateY(-50%);
+            height: 38px;
+            width: 25px;
+            position: absolute;
+            left: 12px;
+          }
+          .games .banner {
+            background-size: auto 100%;
+            background-position: center;
+            background-repeat: none;
+            height: 450px;
+            position: relative;
+          }
+          .games .banner.etheronline {
+            background-image: url("/static/images/landing.png");
+          }
+          .games .banner.magicacademy {
+            background-image: url("/static/images/magic_banner.png");
+          }
+          .games .banner .btn {
+            color: #130029;
+            background: linear-gradient(to right, #b1c8e8 0%, #fbfcff 100%);
+            font-size: 22px;
+            font-weight: 700;
+            padding: 0;
+            width: 148px;
+            height: 54px;
+            line-height: 54px;
+            border: 0;
+            border-radius: 2px;
+            text-transform: uppercase;
+            position: absolute;
+            bottom: 0;
+            margin: 30px auto;
+            left: 0;
+            right: 0;
+          }
+          .games .banner .btn:hover {
+            background: linear-gradient(to right, #7189b6 0%, #dcdee8 100%);
+            color: #130029;
+          }
+          .games .banner .btn img {
+            width: 16px;
+            height: 16px;
+            margin-top: -5px;
+            margin-right: 5px;
+          }
+          .airdrop {
+            background-color: #F1F5FF;
+            color: #314B88;
+            text-align: center;
+            padding: 15px 0 25px 0;
+            border-bottom: 1px solid #c7c6f2;
+          }
+          .games .airdrop .btn {
+            margin: 0 auto;
+          }
+          .games .airdrop .countdown {
+            margin-top: 30px;
+          }
+          .games .airdrop .countdown .caption {
+            text-transform: uppercase;
+            font-size: 12px;
+          }
+          .games .airdrop .countdown .time {
+            max-width: 500px;
+            margin: 0 auto;
+          }
+          .games .airdrop .countdown .time .value {
+            font-weight: 400;
+            font-size: 65px;
+            line-height: 65px;
+          }
+          .games .airdrop .countdown .time .units {
+            font-weight: 400;
+            font-size: 11px;
+            text-transform: uppercase;
+          }
+          .giveaway img {
+            width: 66px;
+            height: 45px;
+            display: block;
+            margin: 0 auto;
+          }
+          .giveaway .caption {
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 24px;
+            color: #130029;
+            text-transform: uppercase;
+            margin-top: 15px;
+            margin-bottom: 15px;
+          }
+          .giveaway .btn {
+            text-transform: uppercase;
+          }
+          .giveaway button {
+            font-size: 14px;
+            background-color: rgb(49, 75, 136);
+            color: #fff;
+            border: 0;
+            padding: 10px;
+            border-radius: 2px;
+            width: 150px;
+            margin: 0 auto;
+            margin-bottom: 50px;
+            display: block;
+          }
+          .games .announce {
+            margin-bottom: 62px;
+            margin-top: 18px;
+          }
+          .games .announce h3 {
+            font-size: 24px;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+          }
+          .games .announce img {
+            margin: 0 auto;
+            display: block;
+            width: 100%;
+          }
+          .games .announce .upcoming-thumbnail {
+            margin-top: 40px;
+          }
+          .games .announce .upcoming-thumbnail:nth-child(1),
+          .games .announce .upcoming-thumbnail:nth-child(2) {
+            margin-top: 0;
+          }
+          .games .announce .upcoming-thumbnail img {
+            max-width: 400px;
+            height: 200px;
+          }
+          .games .explore {
+            line-height: 32px;
+            font-size: 14px;
+            background-color: #fef9fb;
+            color: #88789a;
+            padding: 0 90px;
+          }
+          .games .explore a {
+            text-transform: uppercase;
+            margin-left: 20px;
+            color: #88789A;
+          }  
+        `}</style>
         <Row>
-          <style jsx global>{`
-            .carousel-nav-button {
-              position: absolute;
-              top: 50%;
-              height: 70px;
-              width: 55px;
-              background-color: rgba(255, 255, 255, 0.4);
-              transform: translate(0, -50%);
-              cursor: pointer;
-            }
-            .carousel-nav-button:hover {
-              background-color: rgba(255, 255, 255, 0.75);
-            }
-            .carousel-nav-button-left {
-              left: 0;
-            }
-            .carousel-nav-button-left img {
-              top: 50%;
-              transform: translateY(-50%);
-              height: 38px;
-              width: 25px;
-              position: absolute;
-              left: 12px;
-            }
-            .carousel-nav-button-right {
-              right: 0;
-              transform: translate(0, -50%) rotate(180deg);
-            }
-            .carousel-nav-button-right img {
-              top: 50%;
-              transform: translateY(-50%);
-              height: 38px;
-              width: 25px;
-              position: absolute;
-              left: 12px;
-            }
-            .games .banner {
-              background-size: auto 100%;
-              background-position: center;
-              background-repeat: none;
-              height: 450px;
-              margin: 0 -90px;
-              position: relative;
-            }
-            .games .banner.etheronline {
-              background-image: url("/static/images/landing.png");
-            }
-            .games .banner.magicacademy {
-              background-image: url("/static/images/magic_banner.png");
-            }
-            .games .banner .btn {
-              color: #130029;
-              background: linear-gradient(to right, #b1c8e8 0%, #fbfcff 100%);
-              font-size: 22px;
-              font-weight: 700;
-              padding: 0;
-              width: 148px;
-              height: 54px;
-              line-height: 54px;
-              border: 0;
-              border-radius: 2px;
-              text-transform: uppercase;
-              position: absolute;
-              bottom: 0;
-              margin: 30px auto;
-              left: 0;
-              right: 0;
-            }
-            .games .banner .btn:hover {
-              background: linear-gradient(to right, #7189b6 0%, #dcdee8 100%);
-              color: #130029;
-            }
-            .games .banner .btn img {
-              width: 16px;
-              height: 16px;
-              margin-top: -5px;
-              margin-right: 5px;
-            }
-            .games .airdrop {
-              background-color: #F1F5FF;
-              margin: 0 -90px;
-              color: #314B88;
-              text-align: center;
-              padding: 15px 0 25px 0;
-              border-bottom: 1px solid #c7c6f2;
-            }
-            .games .airdrop .btn {
-              margin: 0 auto;
-            }
-            .games .airdrop .countdown {
-              margin-top: 30px;
-            }
-            .games .airdrop .countdown .caption {
-              text-transform: uppercase;
-              font-size: 12px;
-            }
-            .games .airdrop .countdown .time {
-              max-width: 500px;
-              margin: 0 auto;
-            }
-            .games .airdrop .countdown .time .value {
-              font-weight: 400;
-              font-size: 65px;
-              line-height: 65px;
-            }
-            .games .airdrop .countdown .time .units {
-              font-weight: 400;
-              font-size: 11px;
-              text-transform: uppercase;
-            }
-            .games .airdrop .giveaway img {
-              width: 66px;
-              height: 45px;
-              display: block;
-              margin: 0 auto;
-            }
-            .games .airdrop .giveaway .caption {
-              font-weight: 600;
-              font-size: 24px;
-              line-height: 24px;
-              color: #130029;
-              text-transform: uppercase;
-              margin-top: 15px;
-              margin-bottom: 15px;
-            }
-            .games .airdrop .giveaway .btn {
-              text-transform: uppercase;
-            }
-            .games .announce {
-              margin-bottom: 62px;
-              margin-top: 18px;
-            }
-            .games .announce h3 {
-              font-size: 24px;
-              text-align: center;
-              font-weight: 500;
-              margin-bottom: 25px;
-              text-transform: uppercase;
-            }
-            .games .announce img {
-              margin: 0 auto;
-              display: block;
-              width: 100%;
-            }
-            .games .announce .upcoming-thumbnail {
-              margin-top: 40px;
-            }
-            .games .announce .upcoming-thumbnail:nth-child(1),
-            .games .announce .upcoming-thumbnail:nth-child(2) {
-              margin-top: 0;
-            }
-            .games .announce .upcoming-thumbnail img {
-              max-width: 400px;
-              height: 200px;
-            }
-            .games .explore {
-              line-height: 32px;
-              font-size: 14px;
-              background-color: #fef9fb;
-              color: #88789a;
-              padding: 0 90px;
-              position: absolute;
-              bottom: 0;
-              left: 0;
-              right: 0;
-            }
-            .games .explore a {
-              text-transform: uppercase;
-              margin-left: 20px;
-              color: #88789A;
-            }       
-
-            .giveaway button {
-              font-size: 14px;
-              background-color: rgb(49, 75, 136);
-              color: #fff;
-              border: 0;
-              padding: 10px;
-              border-radius: 2px;
-              width: 150px;
-              margin: 0 auto;
-              margin-bottom: 50px;
-              display: block;
-            }   
-          `}</style>
-          <Col className="grap gap games">
+          <Col>
             {this.banner()}
-            <Row className="airdrop">
-              {this.countdown()}
-              {this.countdownIsOver() ? this.airdropOver() : this.airdrop()}
-            </Row>
-            <Row>
-              <Col className="announce">
-                <Row>
-                  {this.comingSoon("/static/images/axie_banner.png")}
-                  {this.comingSoon("/static/images/eth_town.png")}
-                  {this.comingSoon("/static/images/mythereum_banner.png")}
-                  {this.comingSoon("/static/images/in-development.png", "pages.games.announce.in-development")}
-                </Row>
-              </Col>
-            </Row>
-            <div className="explore">
-              <FormattedMessage id="pages.games.explore.questions" />
-              <Link href="/faq">
-                <a>
-                  <FormattedMessage id="pages.games.explore.faq" />
-                </a>
-              </Link>
-              <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer" onClick={() => {
-                ReactGA.event({
-                  category: "Site Interaction",
-                  action: "Page Visit",
-                  label: "Discord",
-                });
-              }}>
-                <FormattedMessage id="pages.games.explore.discord" />
+          </Col>
+        </Row>
+        <Row className="airdrop">
+          {this.countdown()}
+          {this.countdownIsOver() ? this.airdropOver() : this.airdrop()}
+        </Row>
+        <Row className="announce">
+          {this.comingSoon("/static/images/axie_banner.png")}
+          {this.comingSoon("/static/images/eth_town.png")}
+          {this.comingSoon("/static/images/mythereum_banner.png")}
+          {this.comingSoon("/static/images/in-development.png", "pages.games.announce.in-development")}
+        </Row>
+        <Row className="explore">
+          <Col>
+            <FormattedMessage id="pages.games.explore.questions" />
+            <Link href="/faq">
+              <a>
+                <FormattedMessage id="pages.games.explore.faq" />
               </a>
-            </div>
+            </Link>
+            <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer" onClick={() => {
+              ReactGA.event({
+                category: "Site Interaction",
+                action: "Page Visit",
+                label: "Discord",
+              });
+            }}>
+              <FormattedMessage id="pages.games.explore.discord" />
+            </a>
           </Col>
         </Row>
       </Grid>
