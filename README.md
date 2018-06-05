@@ -2,9 +2,6 @@
 
 ## Next Migration Fix List
 
-Resolve before deploy
-? - Buy Plat modal -- check config, rates not resolving
-
 Minor Updates
 - Update mobile styles if necessary
 - Chat style updates
