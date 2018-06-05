@@ -10,6 +10,7 @@ Minor Updates
 - Chat style updates
 - css autoprefixer
 - Docker-compose integrates with development GraphQL API
+- Fix bootstrap navbar collapse warning
 
 ## Dependencies
 
