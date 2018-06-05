@@ -5,14 +5,16 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 // const fileUpload = require("express-fileupload");
-const dev = process.env.NODE_ENV !== "production";
 const Next = require("next");
 const pathMatch = require("path-match");
-const next = Next({dev});
-const handle = next.getRequestHandler();
 const {parse} = require("url");
 
+const dev = process.env.NODE_ENV !== "production";
+const next = Next({dev});
+const handle = next.getRequestHandler();
+
 const cors = require("./server/routes/cors");
+const pre = require("./server/routes/pre");
 
 console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 console.log("process.env.PORT: ", process.env.PORT);
@@ -47,9 +49,9 @@ next.prepare().then(() => {
   }));
 
   app.use(morgan("tiny")); // "default", "short", "tiny", "dev"
-  app.use(cors);
-
   app.use("/", express.static(path.join(__dirname, "./static")));
+  app.use(pre);
+  app.use(cors);
 
   // TODO - https://github.com/fridays/next-routes
   const route = pathMatch();

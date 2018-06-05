@@ -22,14 +22,16 @@ x - Serve static files (SDK)
 ? - Buy Plat modal needs to work
 
 Updates
-- Merge other changes from master, if any
-- Update mobile styles if necessary
 x - Merge new ReactGA implementations from Oleg
 x - Clean up unused files
-
-Plus
-- Docker-compose integrates with development GraphQL API
+x - Update server routing
+- Merge other changes from master, if any
+- Update mobile styles if necessary
+- Chat style updates
 - css autoprefixer
+
+Dev
+- Docker-compose integrates with development GraphQL API
 
 ## Dependencies
 
