@@ -117,7 +117,7 @@
       "metamask": {
         "title": "Metamask",
         "q1": "What is Metamask?",
-        "a1": "It’s a browser plug-in that connects your digital ethereum wallet to the Portal.",
+        "a1": "It’s a browser plug-in that connects your digital ethereum wallet to the Portal. For a step-to-step tutorial on how to set up a Metamask account, please check this <a href='https://medium.com/the-notice-board/a-cryptogamers-comprehensive-guide-to-metamask-4d448cb1337c' target='_blank' rel='noopener noreferrer'>helpful guide.</a>",
         "q2": "Do I really need to use metamask?",
         "a2": "For now, the only supported way of using the BitGuild Portal involves MetaMask. We are open to integrating functionality for other Ethereum-enabled browser wallets in the future.",
         "q3": "I can’t see my PLAT in my wallet! Where is it?",
