@@ -2,12 +2,16 @@
 
 ## Next Migration Fix List
 
-Minor Updates
-- Update mobile styles if necessary
-- Chat style updates
-- css autoprefixer
+TODO
+x - css autoprefixer (next does this in production)
+- Fix bootstrap navbar collapse warning / replace bootstrap nav w/ custom
+- Style jsx / eslint and editor support
+- Style updates, component rewrites.
+- Mobile, Tablet, Desktop rendering
+- Chat-specific style rewrites
 - Docker-compose integrates with development GraphQL API
-- Fix bootstrap navbar collapse warning
+- Update redux-logger for node -- or silence
+
 
 ## Dependencies
 
