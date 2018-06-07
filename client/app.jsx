@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import {Switch} from "react-router";
 import {Grid, Row, Col} from "react-bootstrap";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
 
 import GameList from "./components/games/index";
 import Game from "./components/games/game";
@@ -20,22 +18,15 @@ import GAListener from "./components/common/galistener";
 import LLRoute from "./components/common/routes/last-location";
 import Chat from "./components/chat/chat";
 
-@connect(
-  state => ({
-    chat: state.chat
-  })
-)
+
 export default class App extends Component {
-  static propTypes = {
-    chat: PropTypes.object
-  }
   render() {
     return (
       <>
         <GAListener trackingId={process.env.GOOGLE_ANALYTICS_TRACKING_ID} />
         <Header />
         <MetaMask />
-        <Grid fluid>
+        <Grid fluid className="app-grid">
           <Message />
           <Row>
             <Col className="content">
@@ -49,9 +40,7 @@ export default class App extends Component {
                 <LLRoute component={NotFound} />
               </Switch>
             </Col>
-            <Col className={"chat" + (this.props.chat.visible ? " chat-visible" : "")}>
-              <Chat />
-            </Col>
+            <Chat />
           </Row>
         </Grid>
       </>

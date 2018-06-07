@@ -7,7 +7,7 @@ import StayScrolled from "react-stay-scrolled";
 import {sendChatMessage} from "../../actions/chat";
 import Message from "./message";
 import {FormattedMessage} from "react-intl";
-import {Button, Form, FormControl, FormGroup} from "react-bootstrap";
+import {Button, Col, Form, FormControl, FormGroup} from "react-bootstrap";
 
 
 @connect(
@@ -66,22 +66,24 @@ export default class Chat extends Component {
     const {user, chat} = this.props;
 
     return (
-      <div className="wrapper">
-        <div className="top">
-          <FormattedMessage id="chat.chat" />
+      <Col className={"chat" + (chat.visible ? " chat-visible" : "")}>
+        <div className="wrapper">
+          <div className="top">
+            <FormattedMessage id="chat.chat" />
+          </div>
+          <StayScrolled component="div" provideControllers={::this.storeScrolledControllers} className="list">
+            {chat.messages.map(msg => <Message key={msg.messageId} message={msg} user={user} />)}
+          </StayScrolled>
+          <Form onSubmit={::this.handleSubmit}>
+            <FormGroup>
+              <FormControl onChange={::this.handleMessageChange} type="text" value={this.state.newMessage} />
+              <Button type="submit">
+                <FormattedMessage id="chat.send" />
+              </Button>
+            </FormGroup>
+          </Form>
         </div>
-        <StayScrolled component="div" provideControllers={::this.storeScrolledControllers} className="list">
-          {chat.messages.map(msg => <Message key={msg.messageId} message={msg} user={user} />)}
-        </StayScrolled>
-        <Form onSubmit={::this.handleSubmit}>
-          <FormGroup>
-            <FormControl onChange={::this.handleMessageChange} type="text" value={this.state.newMessage} />
-            <Button type="submit">
-              <FormattedMessage id="chat.send" />
-            </Button>
-          </FormGroup>
-        </Form>
-      </div>
+      </Col>
     );
   }
 }

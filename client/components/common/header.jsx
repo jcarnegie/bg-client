@@ -12,11 +12,9 @@ import Balance from "./balance";
 import User from "./user";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {withRouter} from "react-router";
 
 
 @injectIntl
-@withRouter
 @connect(
   state => ({
     account: state.account,
@@ -84,11 +82,11 @@ export default class Header extends Component {
   mobileMenu() {
     return (
       <Nav className="mobile-menu">
-        <ul className="menu-nav">
+        <div className="menu-nav">
           <LinkContainer to="/inventory" className="menu-list-item">
             <NavItem><FormattedMessage id="components.menu.inventory" /></NavItem>
           </LinkContainer>
-        </ul>
+        </div>
         <Balance />
         <User />
         <Language />
@@ -122,13 +120,12 @@ export default class Header extends Component {
   render() {
     const {showMenu} = this.state;
     return (
-      <Navbar fixedTop fluid>
-        <Link to="/" className="navbar-logo-mobile">
-          <Image src="/images/logo.png" />
-        </Link>
+      <Navbar fixedTop fluid className="no-select">
         <Navbar.Header>
           <Navbar.Brand>
-            <Image src="/images/logo.png" className="navbar-logo" />
+            <Link to="/" className="navbar-logo">
+              <Image src="/images/logo.png" className="navbar-logo" />
+            </Link>
             <Link to="/" className="navbar-name">
               <FormattedMessage id="components.title" />
             </Link>
