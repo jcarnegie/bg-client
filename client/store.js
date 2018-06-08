@@ -17,8 +17,8 @@ const defaultState = {
     locale: defaultLanguage,
     defaultLocale: defaultLanguage,
     enabledLanguages,
-    ...(localization[defaultLanguage] || {}),
-  },
+    ...(localization[defaultLanguage] || {})
+  }
 };
 
 function configureStore(initialState = defaultState) {

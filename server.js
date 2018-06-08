@@ -4,7 +4,6 @@ const compression = require("compression");
 const path = require("path");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-// const fileUpload = require("express-fileupload");
 const Next = require("next");
 const pathMatch = require("path-match");
 const {parse} = require("url");
@@ -29,8 +28,6 @@ console.log("process.env.RINKEBY_ORACLE_CONTRACT_ADDR: ", process.env.RINKEBY_OR
 console.log("process.env.SENDBIRD_APP_ID: ", process.env.SENDBIRD_APP_ID);
 
 
-const PORT = process.env.PORT || 5000;
-
 next.prepare().then(() => {
   const app = express();
 
@@ -45,7 +42,7 @@ next.prepare().then(() => {
   app.use(bodyParser.text());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
-    extended: true,
+    extended: true
   }));
 
   app.use(morgan("tiny")); // "default", "short", "tiny", "dev"
@@ -74,8 +71,8 @@ next.prepare().then(() => {
   });
 
   /* eslint-disable no-console */
-  app.listen(PORT, err => {
+  app.listen(process.env.PORT, err => {
     if (err) throw err;
-    console.log(`Server ready on http://localhost:${PORT}`);
+    console.log(`Server ready on http://localhost:${process.env.PORT}`);
   });
 });

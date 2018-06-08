@@ -47,13 +47,10 @@
     "no-tabs": [
       0
     ],
-    "comma-dangle": ["warn", {
-      "arrays": "always-multiline",
-      "objects": "always-multiline",
-      "imports": "always-multiline",
-      "exports": "always-multiline",
-      "functions": "ignore"
-    }],
+    "comma-dangle": [
+      2,
+      "never"
+    ],
     "indent": [
       0,
       "tab"
@@ -74,7 +71,7 @@
       }
     ],
     "react/react-in-jsx-scope": [
-      "off",
+      "off"
     ],
     "react/require-default-props": [
       0

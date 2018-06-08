@@ -4,6 +4,7 @@
 - create new feature branch (no git flow yet)
 - do required changes
 - covers new code with tests (no tests yet)
+- run eslint
 - pushes changes and tests to new feature branch
 - adds note of how to see changes on site in PR comments
 - one commit should not be longer than 300 lines

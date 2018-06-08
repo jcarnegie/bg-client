@@ -58,10 +58,3 @@ yarn start
 - - intl/
 - static/
 
-
-### Nginx
-
-```
-sudo nano /etc/nginx/sites-available/default
-sudo nginx -s reload
-```
