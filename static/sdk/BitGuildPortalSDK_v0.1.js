@@ -18,17 +18,13 @@
   });
   _exports.default = void 0;
 
-  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-  function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
   function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
   function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-  var prefix = "https://bitguild.com/api/";
+  var prefix = "https://www.bitguild.com/api/";
 
   var _default = new (
     /*#__PURE__*/
@@ -142,34 +138,27 @@
         key: "getUsersByAddress",
         value: function getUsersByAddress() {
           var address = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-          return fetch("".concat(prefix, "users?").concat(address.map(function (address) {
-            return "address=".concat(address);
-          }).join("&")), {
-            method: "GET",
+          var query = "{ usersByWallet(wallets:".concat(JSON.stringify(address), ") { id wallet nickName language } }");
+          return fetch(prefix, {
+            method: "POST",
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json; charset=utf-8"
-            }
+            },
+            body: JSON.stringify({
+              query: query
+            })
           }).then(function (response) {
             return response.json().then(function (json) {
-              return {
-                json: json,
-                response: response
+              if (!response.ok) {
+                return Promise.reject(json.errors);
+              }
+
+              var result = {
+                list: json.data.usersByWallet
               };
+              return result;
             });
-          }).then(function (_ref4) {
-            var json = _ref4.json,
-              response = _ref4.response;
-
-            if (!response.ok) {
-              return Promise.reject(json.errors);
-            }
-
-            return json.list;
-          }).then(function (list) {
-            return list.reduce(function (memo, item) {
-              return _extends({}, memo, _defineProperty({}, item.wallet, item));
-            }, {});
           });
         }
       }]);
