@@ -3,6 +3,7 @@ import {Grid, Button, Col, Image, Row} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import Link from "next/link";
 import ReactGA from "react-ga";
+import PropTypes from "prop-types";
 
 const BANNER_SWITCH_INTERVAL = 10e3;
 const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
@@ -10,20 +11,26 @@ const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
 const GAMES = {
   "etheronline": {
     url: "/game/1",
-    name: "etheronline",
+    name: "etheronline"
   },
   "magicacademy": {
     url: "/game/2",
-    name: "magicacademy",
-  },
+    name: "magicacademy"
+  }
 };
 
 export default class GameList extends Component {
+  static propTypes = {
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired
+    }).isRequired
+  };
+
   state = {
     interval: null,
     bannerInterval: null,
     countdown: null,
-    showingGame: GAMES.magicacademy,
+    showingGame: GAMES.magicacademy
   };
 
   componentDidMount() {
@@ -45,21 +52,16 @@ export default class GameList extends Component {
             days: Math.floor(distance / (1000 * 60 * 60 * 24)),
             hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
             minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-            seconds: Math.floor((distance % (1000 * 60)) / 1000),
-          },
+            seconds: Math.floor((distance % (1000 * 60)) / 1000)
+          }
         });
 
         // If the count down is over, write some text
         if (distance < 0) {
           clearInterval(this.state.interval);
         }
-      }, 1000),
+      }, 1000)
     });
-
-    this.airdrop = ::this.airdrop;
-    this.banner = ::this.banner;
-    this.countdown = ::this.countdown;
-    this.switchBanner = ::this.switchBanner;
   }
 
   componentWillUnmount() {
@@ -78,18 +80,28 @@ export default class GameList extends Component {
   banner() {
     return (
       <div className={`banner ${this.state.showingGame.name}`}>
-        <div onClick={this.switchBanner} className="carousel-nav-button carousel-nav-button-left">
-          <Image src="/static/images/buttons/arrow_large_left.png" className="no-select" />
+        <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-left">
+          <Image src="/static/images/buttons/arrow_large_left.png" />
         </div>
-        <div onClick={this.switchBanner} className="carousel-nav-button carousel-nav-button-right">
-          <Image src="/static/images/buttons/arrow_large_left.png" className="no-select" />
+        <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-right">
+          <Image src="/static/images/buttons/arrow_large_left.png" />
         </div>
-        <Button href={this.state.showingGame.url}>
+        <Button onClick={::this.onBannerClick}>
           <Image src="/static/images/buttons/play/black.png" />
           <FormattedMessage id="pages.games.banner.play" />
         </Button>
       </div>
     );
+  }
+
+  onBannerClick() {
+    ReactGA.event({
+      category: "Site Interaction",
+      action: "Play",
+      label: this.state.showingGame.name
+    });
+
+    this.props.history.push(this.state.showingGame.url);
   }
 
   comingSoon(url = "", messageId = "pages.games.announce.coming-soon") {
@@ -339,7 +351,7 @@ export default class GameList extends Component {
             text-transform: uppercase;
             margin-left: 20px;
             color: #88789A;
-          }  
+          }
         `}</style>
         <Row>
           <Col>
@@ -368,7 +380,7 @@ export default class GameList extends Component {
               ReactGA.event({
                 category: "Site Interaction",
                 action: "Page Visit",
-                label: "Discord",
+                label: "Discord"
               });
             }}>
               <FormattedMessage id="pages.games.explore.discord" />
