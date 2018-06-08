@@ -1,8 +1,7 @@
 import {eventChannel} from "redux-saga";
 import {call, put, select, take, takeEvery} from "redux-saga/effects";
-import {CHAT_INIT, CHAT_MESSAGE_RECEIVED} from "../../shared/constants/actions";
+import {CHAT_INIT, CHAT_MESSAGE_RECEIVED, GLOBAL_HANDLER} from "../../shared/constants/actions";
 
-const GLOBAL_HANDLER = "GLOBAL_HANDLER";
 
 function sendBirdListen(state) {
   return eventChannel(emit => {
