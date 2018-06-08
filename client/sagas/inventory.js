@@ -22,7 +22,7 @@ import {
 import {readFromQueryString} from "../utils/location";
 import {client} from "../utils/apollo";
 
-function * getItems(action) {
+function * getItems() {
   try {
     const {user} = yield select();
     yield put({
@@ -57,7 +57,7 @@ function * getItems(action) {
   }
 }
 
-function * getGames(action) {
+function * getGames() {
   try {
     yield put({
       type: INVENTORY_GAMES_LOADING
