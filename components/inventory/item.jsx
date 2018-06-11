@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {Badge, Button, ButtonGroup, Col, Thumbnail} from "react-bootstrap";
 import PropTypes from "prop-types";
-import {FormattedMessage} from "react-intl";
+import {FormattedMessage, injectIntl} from "react-intl";
 import {map} from "ramda";
 import Gift from "../popups/gift";
 import Sell from "../popups/sell";
@@ -9,6 +9,7 @@ import {isValidItemCategory, itemStats} from "../../client/utils/item";
 import {connect} from "react-redux";
 
 
+@injectIntl
 @connect(
   state => ({
     gifts: state.gifts,

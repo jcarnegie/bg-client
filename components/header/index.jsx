@@ -1,3 +1,4 @@
+// TODO - split into two separate header components for mobile and desktop
 import React, {Component} from "react";
 import Link from "next/link";
 import {FormattedMessage, injectIntl} from "react-intl";
@@ -39,12 +40,10 @@ export default class Header extends Component {
       <div className="navigation">
         <style jsx>{`
           .navigation {
-            position: absolute;
-            top: 0;
-            left: 0;
             height: 100%;
             display: flex;
             align-items: center;
+            float: left;
           }
           .navigation .navigation-link {
             color: white;
@@ -56,10 +55,15 @@ export default class Header extends Component {
           }
           .logo-img {
             width: 24px;
-            margin-left: 15px;
+          }
+          .logo-img-mobile {
+            margin: 0 0 0 15px;
+          }
+          .logo-img-desktop {
+            margin: 0 0 0 30px;
           }
           .logo-text > a {
-            margin: 0 15px;
+            margin: 0 45px 0 15px;
             color: ${style.colors.logos}; // #FFD57D
             text-decoration: none;
             font-size: 20px;
@@ -67,10 +71,15 @@ export default class Header extends Component {
             letter-spacing: .04em;
           }
         `}</style>
-        <Link href="/">
-          <img src="/static/images/logo-small.png" className="logo-img no-select" />
-        </Link>
+        <Mobile>
+          <Link href="/">
+            <img src="/static/images/logo-small.png" className="logo-img logo-img-mobile no-select" />
+          </Link>
+        </Mobile>
         <Desktop>
+          <Link href="/">
+            <img src="/static/images/logo-small.png" className="logo-img logo-img-desktop no-select" />
+          </Link>
           <span className="logo-text">
             <Link href="/">
               <a><FormattedMessage id="components.title" /></a>
@@ -82,7 +91,7 @@ export default class Header extends Component {
             style={{textDecoration: "none"}}
           >
             <span className="navigation-link"><FormattedMessage id="components.menu.inventory" /></span>
-        </ActiveLink>
+          </ActiveLink>
         </Desktop>
       </div>
     );
@@ -93,12 +102,11 @@ export default class Header extends Component {
       <div className="settings">
         <style jsx>{`
           .settings {
-            position: absolute;
-            right: 5px;
-            top: 0;
             height: 100%;
             width: auto;
             display: flex;
+            float: right;
+            margin: 0 15px 0 0;
           }
         `}</style>
         <Balance />

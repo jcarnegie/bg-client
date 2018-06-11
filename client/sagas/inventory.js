@@ -42,6 +42,7 @@ function * getItems() {
     const variables = {wallet, language, userId: user.data.id, testItems};
     const result = yield call(::client.query, {query, variables});
     const items = path(["data", "listItems"], result);
+    console.log("changing with language: ", language);
     yield put({
       type: INVENTORY_ITEMS_CHANGED,
       payload: items,

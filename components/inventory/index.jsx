@@ -1,5 +1,5 @@
 /*
- * TODO - Modularize sub-componnts for re-use
+ * TODO - Modularize sub-components for re-use
 **/
 import React, {Component, Fragment} from "react";
 import {Button, Image, Row, Tab, Tabs} from "react-bootstrap";
@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import Link from "next/link";
 import {contains, isEmpty, filter, map, prop, uniq} from "ramda";
-import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
+import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 
 import Loader from "@/components/common/loader";
 import {calcMaxItemsStats, isValidItemCategory} from "@/client/utils/item";
@@ -15,7 +15,7 @@ import {INVENTORY_GAMES_REQUEST, INVENTORY_ITEMS_REQUEST} from "@/shared/constan
 
 import Item from "./item";
 
-
+@injectIntl
 @connect(
 	state => ({
 		items: state.items,
@@ -29,6 +29,7 @@ export default class Inventory extends Component {
 		dispatch: PropTypes.func,
 		items: PropTypes.object,
 		games: PropTypes.object,
+		game: PropTypes.object,
 		user: PropTypes.object,
 		lastLocation: PropTypes.shape({
 		pathname: PropTypes.string,
@@ -125,6 +126,7 @@ export default class Inventory extends Component {
 	renderTab(tabKey, game, items) {
 		const categories = uniq([].concat(...items.map(item => item.categories)));
 		const maxStats = calcMaxItemsStats(items);
+		console.log("item", items[0]);
 		return (
 			<Fragment key={tabKey}>
 				<div className="arrow-right pull-right">

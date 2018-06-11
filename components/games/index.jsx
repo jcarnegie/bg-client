@@ -13,26 +13,26 @@ const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
 const GAMES = {
   "etheronline": {
     url: "/game/1",
-    name: "etheronline"
+    name: "etheronline",
   },
   "magicacademy": {
     url: "/game/2",
-    name: "magicacademy"
-  }
+    name: "magicacademy",
+  },
 };
 
 export default class GameList extends Component {
   static propTypes = {
     history: PropTypes.shape({
-      push: PropTypes.func.isRequired
-    }).isRequired
+      push: PropTypes.func.isRequired,
+    }).isRequired,
   };
 
   state = {
     interval: null,
     bannerInterval: null,
     countdown: null,
-    showingGame: GAMES.magicacademy
+    showingGame: GAMES.magicacademy,
   };
 
   componentDidMount() {
@@ -54,15 +54,15 @@ export default class GameList extends Component {
             days: Math.floor(distance / (1000 * 60 * 60 * 24)),
             hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
             minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-            seconds: Math.floor((distance % (1000 * 60)) / 1000)
-          }
+            seconds: Math.floor((distance % (1000 * 60)) / 1000),
+          },
         });
 
         // If the count down is over, write some text
         if (distance < 0) {
           clearInterval(this.state.interval);
         }
-      }, 1000)
+      }, 1000),
     });
   }
 
@@ -100,7 +100,7 @@ export default class GameList extends Component {
     ReactGA.event({
       category: "Site Interaction",
       action: "Play",
-      label: this.state.showingGame.name
+      label: this.state.showingGame.name,
     });
 
     this.props.history.push(this.state.showingGame.url);
@@ -360,10 +360,10 @@ export default class GameList extends Component {
             {this.banner()}
           </Col>
         </Row>
-        <Row className="airdrop">
-          {this.countdown()}
-          {this.countdownIsOver() ? this.airdropOver() : this.airdrop()}
-        </Row>
+        {/* <Row className="airdrop"> */}
+          {/* {this.countdown()} */}
+          {/* {this.countdownIsOver() ? this.airdropOver() : this.airdrop()} */}
+        {/* </Row> */}
         <Row className="announce">
           {this.comingSoon("/static/images/axie_banner.png")}
           {this.comingSoon("/static/images/eth_town.png")}
@@ -382,7 +382,7 @@ export default class GameList extends Component {
               ReactGA.event({
                 category: "Site Interaction",
                 action: "Page Visit",
-                label: "Discord"
+                label: "Discord",
               });
             }}>
               <FormattedMessage id="pages.games.explore.discord" />
