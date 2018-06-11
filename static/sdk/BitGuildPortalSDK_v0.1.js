@@ -18,6 +18,10 @@
   });
   _exports.default = void 0;
 
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
   function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -154,10 +158,11 @@
                 return Promise.reject(json.errors);
               }
 
-              var result = {
-                list: json.data.usersByWallet
+              return {
+                list: json.data.usersByWallet.reduce(function (memo, item) {
+                  return _extends({}, memo, _defineProperty({}, item.wallet, item));
+                }, {})
               };
-              return result;
             });
           });
         }
