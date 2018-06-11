@@ -1,20 +1,22 @@
 import {combineReducers} from "redux";
 import {routerReducer as routing} from "react-router-redux";
 import {intlReducer as intl} from "react-intl-redux";
-import account from "./account";
-import balanceETH from "./balanceETH";
-import balancePLAT from "./balancePLAT";
-import chat from "./chat";
-import game from "./game";
-import games from "./games";
-import gas from "./gas";
-import gifts from "./gifts";
-import items from "./items";
-import rate from "./rate";
-import network from "./network";
-import messages from "./messages";
-import user from "./user";
-import validations from "./validations";
+
+import account from "@/client/reducers/account";
+import balanceETH from "@/client/reducers/balanceETH";
+import balancePLAT from "@/client/reducers/balancePLAT";
+import chat from "@/client/reducers/chat";
+import game from "@/client/reducers/game";
+import games from "@/client/reducers/games";
+import gas from "@/client/reducers/gas";
+import gifts from "@/client/reducers/gifts";
+import items from "@/client/reducers/items";
+import layout from "@/client/reducers/layout";
+import messages from "@/client/reducers/messages";
+import network from "@/client/reducers/network";
+import rate from "@/client/reducers/rate";
+import user from "@/client/reducers/user";
+import validations from "@/client/reducers/validations";
 
 
 export default combineReducers({
@@ -29,9 +31,10 @@ export default combineReducers({
   gifts,
   intl,
   items,
+  layout,
   messages,
   network,
   rate,
   user,
-  validations
+  validations,
 });

@@ -1,160 +1,144 @@
 import React, {Component} from "react";
 import Link from "next/link";
-import {Image, Nav, Navbar} from "react-bootstrap";
 import {FormattedMessage, injectIntl} from "react-intl";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 
-import ActiveLink from "../activelink";
-import Language from "../language";
-import Balance from "../balance";
-import User from "../user";
+import style from "@/shared/constants/style";
+import ActiveLink from "@/components/activelink";
+import Language from "@/components/language";
+import Balance from "@/components/balance";
+import User from "@/components/user";
+import MobileMenu from "@/components/mobilemenu";
+import {Desktop, Mobile} from "@/components/responsive";
 
 
 @injectIntl
 @connect(
   state => ({
     account: state.account,
+    responsive: state.responsive,
+    chat: state.chat,
   })
 )
 export default class Header extends Component {
-  static propTypes = {
-    account: PropTypes.object,
-  };
-
   constructor(props) {
     super(props);
-    this.renderNav = ::this.renderNav;
+    this.state = {
+      showMenu: false,
+    };
+  }
+  static propTypes = {
+    account: PropTypes.object,
+    dispatch: PropTypes.any,
+    chat: PropTypes.object,
+  };
+
+  navigation() {
+    return (
+      <div className="navigation">
+        <style jsx>{`
+          .navigation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+          }
+          .navigation .navigation-link {
+            color: white;
+            text-transform: uppercase;
+            text-decoration: none;
+            line-height: 62px;
+            font-size: 13px;
+            font-weight: 100;
+          }
+          .logo-img {
+            width: 24px;
+            margin-left: 15px;
+          }
+          .logo-text > a {
+            margin: 0 15px;
+            color: ${style.colors.logos}; // #FFD57D
+            text-decoration: none;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+          }
+        `}</style>
+        <Link href="/">
+          <img src="/static/images/logo-small.png" className="logo-img no-select" />
+        </Link>
+        <Desktop>
+          <span className="logo-text">
+            <Link href="/">
+              <a><FormattedMessage id="components.title" /></a>
+            </Link>
+          </span>
+          <ActiveLink
+            href="/inventory"
+            activeStyle={{boxShadow: "inset 0px -4px 0px 0px #ffd57d"}}
+            style={{textDecoration: "none"}}
+          >
+            <span className="navigation-link"><FormattedMessage id="components.menu.inventory" /></span>
+        </ActiveLink>
+        </Desktop>
+      </div>
+    );
   }
 
-  renderNav() {
-    const {account} = this.props;
-
-    if (account.isLoading || !account.success) {
-      return null;
-    }
-
+  settings() {
     return (
-      <Navbar.Collapse>
-        <Nav navbar className="main-menu">
-          <li>
-            <ActiveLink
-              href="/inventory"
-              activeStyle={{boxShadow: "inset 0px -4px 0px 0px #ffd57d"}}
-            >
-              <FormattedMessage id="components.menu.inventory" />
-          </ActiveLink>
-          </li>
-        </Nav>
-        <Nav navbar pullRight>
-          <Balance />
-          <User />
-          <Language />
-        </Nav>
-      </Navbar.Collapse>
+      <div className="settings">
+        <style jsx>{`
+          .settings {
+            position: absolute;
+            right: 5px;
+            top: 0;
+            height: 100%;
+            width: auto;
+            display: flex;
+          }
+        `}</style>
+        <Balance />
+        <User />
+        <Language />
+      </div>
     );
   }
 
   render() {
     return (
-      <Navbar fixedTop fluid>
-        <style jsx global>{`
-          .navbar {
-            background-color: #314B88;
-            border-radius: 0;
-            border: 0;
-            margin: 0;
-            z-index: 1060;
+      <header className="header">
+        <style jsx>{`
+          .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1060; /* Bootstrap modal is 1040, 1050 - MenuDrawer is 1030 */
+            background-color: ${style.colors.secondary};
+            height: ${style.header.height};
           }
-          .navbar .container-fluid {
-            padding-left: 90px;
-            padding-right: 90px;
-          }
-          .navbar .navbar-brand {
-            padding: 13px 15px;
+          .mobile-settings {
+            position: absolute;
+            top: 0;
+            right: 0;
             height: 62px;
           }
-          .navbar .navbar-brand .navbar-logo {
-            margin-top: 4px;
-            width: 24px;
-            display: inline-block;
-            float: left;
-          }
-          .navbar .navbar-brand .navbar-name,
-          .navbar .navbar-brand .navbar-name a {
-            font-weight: 700;
-            font-size: 20px;
-            margin-left: 5px;
-            line-height: 36px;
-            color: #FFD57D;
-            text-transform: uppercase;
-            letter-spacing: .04em;
-          }
-          .navbar .navbar-brand .navbar-name,
-          .navbar .navbar-brand .navbar-name:hover,
-          .navbar .navbar-brand .navbar-name a,
-          .navbar .navbar-brand .navbar-name a:hover {
-            text-decoration: none;
-          }
-          .navbar .navbar-text,
-          .nav a,
-          .navbar a {
-            color: #ffffff;
-            line-height: 62px;
-            font-size: 13px;
-            margin: 0;
-          }
-          .navbar .navbar-nav > .open > a,
-          .navbar .navbar-nav > .open > a:hover,
-          .navbar .navbar-nav > .open > a:focus {
-            color: #ffffff;
-            background-color: transparent;
-          }
-          .navbar .dropdown-menu li a:hover {
-            background: rgb(49, 75, 136) !important;
-          }
-          .navbar .main-menu > li > a {
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 15px;
-            text-transform: uppercase;
-            padding-top: 0;
-            padding-bottom: 0;
-          }
-          .navbar .main-menu > li > a:hover,
-          .navbar .main-menu > li > a:focus {
-            color: #ffffff;
-          }
-          .navbar .main-menu > li > a span {
-            line-height: 62px;
-            display: inline-block;
-          }
-          .navbar .main-menu > li > a,
-          .navbar .main-menu > li > a:hover,
-          .navbar .main-menu > li > a:focus {
-            color: #ffffff;
-            background-color: initial;
-          }
-          .navbar-text {
-            padding: 0 20px;
-          }
-          .navbar-text span {
-            margin: 0 10px 0 0;
-          }
         `}</style>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <Image src="/static/images/logo-small.png" className="navbar-logo" />
-            <span className="navbar-name">
-              <Link href="/">
-                <a><FormattedMessage id="components.title" /></a>
-              </Link>
-            </span>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        {this.renderNav()}
-      </Navbar>
+          {::this.navigation()}
+        <Desktop>
+          {::this.settings()}
+        </Desktop>
+        <Mobile>
+          <div className="mobile-settings">
+            <MobileMenu />
+          </div>
+        </Mobile>
+      </header>
     );
   }
 }

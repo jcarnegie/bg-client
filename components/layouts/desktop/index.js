@@ -1,17 +1,14 @@
 import PropTypes from "prop-types";
+import Header from "@/components/header";
 
-import Header from "../header";
-
-import Aside from "./aside";
-import Main from "./main";
-// import BGModal from "./bgmodal";
-
+import Aside from "@/components/layouts/desktop/aside";
+import Main from "@/components/layouts/desktop/main";
+import {Desktop} from "@/components/responsive";
 
 const HEADER_HEIGHT = "62px";
 const ASIDE_WIDTH = "285px";
 
-
-function Layout(props) {
+function DesktopLayout(props) {
   const aside = props.aside ? (
     <Aside offsetTop={HEADER_HEIGHT}>
       {props.aside}
@@ -19,29 +16,27 @@ function Layout(props) {
   ) : null;
 
   return (
-    <div>
+    <Desktop {...props}>
       <Header />
-      <Main offsetTop={HEADER_HEIGHT} offsetRight={ASIDE_WIDTH} contentPadding={props.contentPadding}>
+      <Main offsetRight={ASIDE_WIDTH}>
         {props.main}
       </Main>
       {aside}
       {props.children}
-    </div>
+    </Desktop>
   );
 }
 
-Layout.propTypes = {
+DesktopLayout.propTypes = {
   main: PropTypes.any,
   aside: PropTypes.any,
   children: PropTypes.any,
-  contentPadding: PropTypes.bool,
 };
 
-Layout.defaultProps = {
+DesktopLayout.defaultProps = {
   aside: null,
   main: null,
   children: null,
-  contentPadding: true,
 };
 
-export default Layout;
+export default DesktopLayout;

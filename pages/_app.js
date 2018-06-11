@@ -4,12 +4,15 @@ import {Provider} from "react-intl-redux";
 import withRedux from "next-redux-wrapper";
 import withReduxSaga from "next-redux-saga";
 
-import configureStore from "../client/utils/store";
-import GAListener from "../components/common/galistener";
-import MetaMask from "../components/common/metamask";
-import Register from "../components/popups/register";
+import configureStore from "@/client/utils/store";
 
-import GlobalStyles from "./globalstyles";
+import GAListener from "@/components/common/galistener";
+import MetaMask from "@/components/common/metamask";
+import Register from "@/components/popups/register";
+
+import GlobalStyles from "@/pages/globalstyles";
+import style from "@/shared/constants/style";
+
 
 class BGApp extends App {
   static async getInitialProps({Component, router, ctx}) {
@@ -27,7 +30,9 @@ class BGApp extends App {
       return true; /* To confirm pop state */
     });
 
-    return {pageProps, metaMaskProps, gaListenerProps};
+    const locals = ctx.isServer ? ctx.res.locals : {};
+
+    return {pageProps, metaMaskProps, gaListenerProps, locals};
   }
 
   render() {
@@ -37,19 +42,20 @@ class BGApp extends App {
       metaMaskProps,
       gaListenerProps,
       store,
+      locals,
     } = this.props;
 
     return (
       <Container warnings={false}>
-          <GlobalStyles />
-          <Provider store={store}>
-            <>
-              <MetaMask {...metaMaskProps} />
-              <Register />
-              <GAListener {...gaListenerProps} />
-              <Component {...pageProps} />
-            </>
-          </Provider>
+        <GlobalStyles style={style} />
+        <Provider store={store}>
+          <>
+            <MetaMask {...metaMaskProps} />
+            <Register />
+            <GAListener {...gaListenerProps} />
+            <Component {...pageProps} {...locals} />
+          </>
+        </Provider>
       </Container>
     );
   }

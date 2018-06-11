@@ -14,6 +14,7 @@ const handle = next.getRequestHandler();
 
 const cors = require("./server/routes/cors");
 const pre = require("./server/routes/pre");
+const responsive = require("./server/routes/responsive");
 
 console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 console.log("process.env.PORT: ", process.env.PORT);
@@ -44,11 +45,11 @@ next.prepare().then(() => {
   app.use(bodyParser.urlencoded({
     extended: true
   }));
-
   app.use(morgan("tiny")); // "default", "short", "tiny", "dev"
   app.use("/", express.static(path.join(__dirname, "./static")));
   app.use(pre);
   app.use(cors);
+  app.use(responsive);
 
   // TODO - https://github.com/fridays/next-routes
   const route = pathMatch();

@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {updateIntl} from "react-intl-redux";
 import {injectIntl, intlShape} from "react-intl";
-import {Image, MenuItem, NavDropdown} from "react-bootstrap";
-import {enabledLanguages} from "../../shared/constants/language";
-import {localization} from "../../shared/intl/setup";
-import {UPDATE_USER} from "../../shared/constants/actions";
-
+import {Image, MenuItem, DropdownButton} from "react-bootstrap";
+import {enabledLanguages} from "@/shared/constants/language";
+import {localization} from "@/shared/intl/setup";
+import {UPDATE_USER} from "@/shared/constants/actions";
+import {Mobile, Desktop} from "@/components/responsive";
 
 @injectIntl
 @connect(
@@ -41,8 +41,121 @@ export default class Language extends Component {
     const language = !user.isLoading && user.success ? user.data.language : intl.locale;
 
     return (
-      <>
-        <NavDropdown title={<Image src={`/static/images/language/${language}.png`} />} className="lang-menu" id="lang-menu">
+      <div className="lang-dropdown">
+        <Desktop>
+          <style jsx global>{`
+            /* Global to affect Bootstrap styles */
+            .lang-menu {
+              background: transparent !important; /* Bootstrap overrides*/
+              border: 0;
+            }
+
+            .lang-menu .caret {
+              color: gray;
+            }
+            .lang-menu:hover .caret {
+              color: white;
+            }
+            
+            .lang-menu > a {
+              line-height: 32px !important; /* Bootstrap overrides*/
+            }
+
+            .lang-dropdown {
+              padding: 0 0 !important;
+              display: flex;
+              align-items: center;
+            }
+            
+            .lang-dropdown,
+            .lang-dropdown .dropdown,
+            .lang-dropdown .dropdown .btn {
+              height: 100%;
+            }
+
+            .lang-dropdown .dropdown .btn {
+              padding: 15px;
+            }
+
+            .lang-dropdown .dropdown .btn img,
+            .lang-dropdown .dropdown .btn .caret {
+              transform: translateX(4px);
+            }
+
+            .lang-dropdown .dropdown-menu {
+              background-color: #BCC4DE;
+              min-width: 0;
+              margin-right: 10px;
+              margin-top: 0;
+              border-top-left-radius: 0;
+              border-top-right-radius: 0;
+            }
+
+            .lang-dropdown .dropdown .dropdown-menu li a:focus,
+            .lang-dropdown .dropdown .dropdown-menu li a:hover {
+              background: rgb(49,75,136) !important;
+            }
+           
+            .lang-menu img,
+            .lang-dropdown .dropdown .dropdown-menu li a img {
+              width: 25px;
+            }
+
+            .lang-dropdown .dropdown .dropdown-menu {
+              min-width: 0;
+              background-color: rgb(188, 196, 222);
+            }
+
+            .lang-dropdown > div > ul > li:nth-child(1) > a > img
+            
+            .lang-dropdown {
+              line-height: 0;
+              list-style-type: none;
+              padding: 10px 15px;
+            }
+          `}</style>
+        </Desktop>
+        <Mobile>
+          <style jsx global>{`
+            .lang-menu,
+            .lang-dropdown .dropdown .dropdown-menu,
+            .lang-menu .dropdown-toggle {
+              background: transparent !important; /* Bootstrap overrides */
+              border: 0;
+              box-shadow: none !important;
+            }
+            .lang-menu img,
+            .lang-dropdown .dropdown .dropdown-menu li a img {
+              width: 25px;
+            }
+            .lang-dropdown {
+              padding: 0 7px;
+            }
+            .lang-dropdown .dropdown-menu {
+              background-color: #BCC4DE;
+              min-width: 0;
+              margin-right: 10px;
+              margin-top: 0;
+              border-top-left-radius: 0;
+              border-top-right-radius: 0;
+            }
+
+            .lang-dropdown .dropdown .btn .caret {
+              color: white;
+            }
+
+            .lang-dropdown .dropdown .btn img,
+            .lang-dropdown .dropdown .btn .caret {
+              transform: translateX(8px);
+            }
+
+            .lang-dropdown .dropdown .dropdown-menu li a:focus,
+            .lang-dropdown .dropdown .dropdown-menu li a:hover {
+              background: rgba(255, 255, 255, 0.15) !important;
+            }
+          `}</style>
+        </Mobile>
+        <DropdownButton title={<Image src={`/static/images/language/${language}.png`} />} className="lang-menu" id="lang-menu">
           {enabledLanguages.map(language =>
             (
               <MenuItem key={language} eventKey={language} onSelect={::this.onSelect}>
@@ -50,28 +163,8 @@ export default class Language extends Component {
               </MenuItem>
             )
           )}
-        </NavDropdown>
-        <style jsx global>{`
-          @media (min-width: 768px) {
-            .lang-menu {
-              padding-left: 0;
-            }
-          }
-          .lang-menu > a {
-            line-height: 32px !important;
-          }
-          .lang-menu > a img {
-            width: 25px;
-          }
-          .lang-menu .dropdown-menu {
-            background-color: #BCC4DE;
-            min-width: 0;
-          }
-          .lang-menu .dropdown-menu img {
-            width: 25px;
-          }        
-        `}</style>
-      </>
+        </DropdownButton>
+      </div>
     );
   }
 }

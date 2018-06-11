@@ -8,6 +8,8 @@ import PropTypes from "prop-types";
 const BANNER_SWITCH_INTERVAL = 10e3;
 const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
 
+// TODO use store, re-factor styles and rebuild UI
+
 const GAMES = {
   "etheronline": {
     url: "/game/1",

@@ -6,7 +6,7 @@ import {
   CHAT_MESSAGE_SENT,
   CHAT_SET_CHANNEL,
   CHAT_TOGGLE,
-} from "../../shared/constants/actions";
+} from "@/shared/constants/actions";
 
 const chat = {
     sb: null,
@@ -14,7 +14,7 @@ const chat = {
     currentChannel: null,
     messages: [],
     user: null,
-    visible: false,
+    show: false,
 };
 
 export default function chatReducer(state = chat, action) {
@@ -51,7 +51,7 @@ export default function chatReducer(state = chat, action) {
     case CHAT_TOGGLE:
       return {
         ...state,
-        visible: !state.visible,
+        show: !state.show,
       };
     default:
       return state;
