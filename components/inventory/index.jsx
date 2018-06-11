@@ -9,9 +9,9 @@ import Link from "next/link";
 import {contains, isEmpty, filter, map, prop, uniq} from "ramda";
 import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
 
-import Loader from "../common/loader";
-import {calcMaxItemsStats, isValidItemCategory} from "../../client/utils/item";
-import {INVENTORY_GAMES_REQUEST, INVENTORY_ITEMS_REQUEST} from "../../shared/constants/actions";
+import Loader from "@/components/common/loader";
+import {calcMaxItemsStats, isValidItemCategory} from "@/client/utils/item";
+import {INVENTORY_GAMES_REQUEST, INVENTORY_ITEMS_REQUEST} from "@/shared/constants/actions";
 
 import Item from "./item";
 
@@ -274,6 +274,7 @@ export default class Inventory extends Component {
 					font-size: 14px;
 					font-weight: 400;
 					line-height: 16px;
+					background-color: transparent !important; /* Bootstrap override */
 				}
 				.nav-tabs li a:hover,
 				.nav-tabs li a:focus {
@@ -302,7 +303,7 @@ export default class Inventory extends Component {
 
 	render() {
 		return (
-			<div className="gap inventory">
+			<div className="inventory">
 				{this.indexStyle()}
 				{this.flexStyle()}
 				{this.tabsStyle()}

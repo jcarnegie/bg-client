@@ -1,10 +1,18 @@
-import Layout from "../../components/layout";
-import Games from "../../components/games";
-import Chat from "../../components/chat";
+import {DesktopLayout, MobileLayout} from "@/components/layouts";
+import Games from "@/components/games";
+import Chat from "@/components/chat";
 
 
-const GamesPage = () => (
-  <Layout main={<Games />} aside={<Chat />} contentPadding={false} />
+const GamesPage = props => (
+  <>
+    <MobileLayout
+      main={<Games {...props} />}
+    />
+    <DesktopLayout
+      main={<Games {...props} />}
+      aside={<Chat {...props} />}
+    />
+  </>
 );
 
 export default GamesPage;

@@ -1,14 +1,18 @@
-import Layout from "../../components/layout";
-import Game from "../../components/game";
-import Chat from "../../components/chat";
+import {DesktopLayout, MobileLayout} from "@/components/layouts";
+import Game from "@/components/game";
+import Chat from "@/components/chat";
 
 
 const GamePage = props => (
-  <Layout
-    main={<Game {...props} />}
-    aside={<Chat />}
-    contentPadding={false}
-  />
+  <>
+    <MobileLayout
+      main={<Game {...props} />}
+    />
+    <DesktopLayout
+      main={<Game {...props} />}
+      aside={<Chat {...props} />}
+    />
+  </>
 );
 
 GamePage.getInitialProps = ctx => Game.getInitialProps(ctx);

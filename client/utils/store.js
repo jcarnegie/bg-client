@@ -5,11 +5,12 @@ import persistState, {mergePersistedState} from "redux-localstorage";
 import adapter from "redux-localstorage/lib/adapters/localStorage";
 import thunkMiddleware from "redux-thunk";
 import {createLogger} from "redux-logger";
-import rootReducers from "../reducers/index";
-import rootSaga from "../sagas/index";
-import {defaultLanguage, enabledLanguages} from "../../shared/constants/language";
-import {localization} from "../../shared/intl/setup";
 import filter from "redux-localstorage-filter";
+
+import rootReducers from "@/client/reducers";
+import rootSaga from "@/client/sagas";
+import {defaultLanguage, enabledLanguages} from "@/shared/constants/language";
+import {localization} from "@/shared/intl/setup";
 
 
 const defaultState = {
@@ -55,7 +56,7 @@ function configureStore(initialState = defaultState) {
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
-    module.hot.accept(require.resolve("./reducers"), () => {
+    module.hot.accept(require.resolve("../reducers"), () => {
       store.replaceReducer(rootReducers);
     });
   }

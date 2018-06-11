@@ -1,11 +1,18 @@
-import Inventory from "../../components/inventory";
-import Layout from "../../components/layout";
-import Chat from "../../components/chat";
+import {DesktopContent, MobileContent, DesktopLayout, MobileLayout} from "@/components/layouts";
+import Inventory from "@/components/inventory";
+import Chat from "@/components/chat";
 
 
-const InventoryPage = () => (
-  <Layout main={<Inventory />} aside={<Chat />} contentPadding />
+const InventoryPage = props => (
+  <>
+    <MobileLayout
+      main={<MobileContent><Inventory {...props} /></MobileContent>}
+    />
+    <DesktopLayout
+      main={<DesktopContent><Inventory {...props} /></DesktopContent>}
+      aside={<Chat {...props} />}
+    />
+  </>
 );
-
 
 export default InventoryPage;

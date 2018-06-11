@@ -1,10 +1,18 @@
-import Layout from "../../components/layout";
-import Faq from "../../components/faq";
-import Chat from "../../components/chat";
+import {DesktopContent, MobileContent, DesktopLayout, MobileLayout} from "@/components/layouts";
+import FAQ from "@/components/faq";
+import Chat from "@/components/chat";
 
 
-const FaqPage = () => (
-  <Layout main={<Faq />} aside={<Chat />} contentPadding />
+const FAQPage = props => (
+  <>
+    <MobileLayout
+      main={<MobileContent><FAQ {...props} /></MobileContent>}
+    />
+    <DesktopLayout
+      main={<DesktopContent><FAQ {...props} /></DesktopContent>}
+      aside={<Chat {...props} />}
+    />
+  </>
 );
 
-export default FaqPage;
+export default FAQPage;

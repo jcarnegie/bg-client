@@ -29,6 +29,7 @@ export default class Game extends Component {
     if (err) {
       log.error(err);
     }
+
     return {query: req.query, ...query.params};
   };
 

@@ -126,12 +126,6 @@ export default class RegisterPopup extends Component {
           return;
         }
 
-        ReactGA.event({
-          category: "Site Interaction",
-          action: "Sign-up",
-          label: "Create account",
-        });
-
         if (recovered.result === formData.wallet) {
           dispatch({
             type: CREATE_USER,

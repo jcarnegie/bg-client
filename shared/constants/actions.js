@@ -57,6 +57,8 @@ export const CHAT_RECEIVE_MESSAGE = "CHAT_RECEIVE_MESSAGE";
 export const CHAT_TOGGLE = "CHAT_TOGGLE";
 export const GLOBAL_HANDLER = "GLOBAL_HANDLER";
 
+export const MENU_SHOW = "MENU_SHOW";
+
 export const GAME_REQUEST = "GAME_REQUEST";
 export const GAME_LOADING = "GAME_LOADING";
 export const GAME_CHANGED = "GAME_CHANGED";

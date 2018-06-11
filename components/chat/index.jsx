@@ -64,10 +64,6 @@ export default class Chat extends Component {
           <style jsx global>{`
             .chat {
               background: #F2F3F8;
-              position: fixed;
-              right: 0;
-              padding: 0;
-              width: 285px;
             }
             .chat .wrapper {
               background-color: #F2F3F8;
