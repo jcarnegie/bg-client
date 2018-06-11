@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-// import {injectIntl} from "react-intl";
+import {injectIntl} from "react-intl";
 
 import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../shared/constants/actions";
 import networkConfig from "../../client/utils/network";
@@ -12,7 +12,7 @@ import MetaMaskNetwork from "../popups/metamask.network";
 import Register from "../popups/register";
 
 
-// @injectIntl
+@injectIntl
 @connect(
   state => ({
     account: state.account,

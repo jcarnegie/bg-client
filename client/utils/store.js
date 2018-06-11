@@ -18,8 +18,8 @@ const defaultState = {
     locale: defaultLanguage,
     defaultLocale: defaultLanguage,
     enabledLanguages,
-    ...(localization[defaultLanguage] || {})
-  }
+    ...(localization[defaultLanguage] || {}),
+  },
 };
 
 function configureStore(initialState = defaultState) {
@@ -46,7 +46,6 @@ function configureStore(initialState = defaultState) {
   const reducers = compose(mergePersistedState())(rootReducers);
   const store = createStore(reducers, initialState, composeEnhancers(applyMiddleware(...middlewares), persistState(storage, "gitbuild")));
 
-  // sagaMiddleware.run(rootSaga);
   store.runSagaTask = () => {
     store.sagaTask = sagaMiddleware.run(rootSaga);
   };
