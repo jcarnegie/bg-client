@@ -22,12 +22,6 @@ const GAMES = {
 };
 
 export default class GameList extends Component {
-  static propTypes = {
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired,
-    }).isRequired,
-  };
-
   state = {
     interval: null,
     bannerInterval: null,
@@ -88,7 +82,7 @@ export default class GameList extends Component {
         <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-right">
           <Image src="/static/images/buttons/arrow_large_left.png" />
         </div>
-        <Button onClick={::this.onBannerClick}>
+        <Button onClick={::this.onBannerClick} href={this.state.showingGame.url}>
           <Image src="/static/images/buttons/play/black.png" />
           <FormattedMessage id="pages.games.banner.play" />
         </Button>
@@ -102,8 +96,6 @@ export default class GameList extends Component {
       action: "Play",
       label: this.state.showingGame.name,
     });
-
-    this.props.history.push(this.state.showingGame.url);
   }
 
   comingSoon(url = "", messageId = "pages.games.announce.coming-soon") {
