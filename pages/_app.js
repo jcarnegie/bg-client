@@ -4,7 +4,7 @@ import {Provider} from "react-intl-redux";
 import withRedux from "next-redux-wrapper";
 import withReduxSaga from "next-redux-saga";
 
-import configureStore from "../client/store";
+import configureStore from "../client/utils/store";
 import GAListener from "../components/common/galistener";
 import MetaMask from "../components/common/metamask";
 import Register from "../components/popups/register";
