@@ -92,7 +92,7 @@ export default class RegisterPopup extends Component {
 
   sign() {
     const {dispatch, intl, formData} = this.props;
-    const message = window.web3.toHex(intl.formatMessage({id: "modals.register.text"}));
+    const message = window.web3.toHex(localization.en.messages["modals.register.text"]);
 
     window.web3.currentProvider.sendAsync({
       method: "personal_sign",
@@ -121,7 +121,7 @@ export default class RegisterPopup extends Component {
           ReactGA.event({
             category: "Site Interaction",
             action: "Sign-up",
-            label: "Create account"
+            label: "Create account",
           });
           return;
         }
