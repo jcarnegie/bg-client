@@ -66,7 +66,7 @@ function * getGames() {
     yield put({
       type: INVENTORY_GAMES_LOADING
     });
-    const query = gql`{ listGames { id slug url api nft } }`;
+    const query = gql`{ listGames { id name slug url api nft } }`;
     const result = yield call(::client.query, {query});
     const games = path(["data", "listGames"], result);
     yield put({
