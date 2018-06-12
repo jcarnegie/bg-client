@@ -4,6 +4,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
 import {connect} from "react-redux";
+import {withRouter} from "next/router";
 import {GAME_REQUEST} from "../../shared/constants/actions";
 import InitGameIframeConnection from "../common/init";
 import Loader from "../common/loader";
@@ -16,12 +17,12 @@ import {defaultLanguage} from "../../shared/constants/language";
     user: state.user,
   })
 )
-export default class Game extends Component {
+class Game extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     game: PropTypes.object,
     user: PropTypes.object,
-    _id: PropTypes.string,
+    id: PropTypes.string,
     query: PropTypes.object,
   };
 
@@ -29,17 +30,16 @@ export default class Game extends Component {
     if (err) {
       log.error(err);
     }
-
-    return {query: req.query, ...query.params};
+    return {...query};
   };
 
   componentDidMount() {
-    const {dispatch, game, _id} = this.props;
+    const {dispatch, game, id} = this.props;
 
-    if (!game || !game.data) {
+    if (!game || !game.data || game.data.id !== id) {
       dispatch({
         type: GAME_REQUEST,
-        payload: {id: _id},
+        payload: {id},
       });
     }
   }
@@ -62,7 +62,6 @@ export default class Game extends Component {
     }
 
     const url = game.data.url + (game.data.url.includes("?") ? "&" : "?") + queryString.stringify(query);
-
     return (<iframe src={url} key={user.data ? user.data.language : defaultLanguage} className="game" />);
   }
 
@@ -83,3 +82,5 @@ export default class Game extends Component {
     );
   }
 }
+
+export default withRouter(Game);

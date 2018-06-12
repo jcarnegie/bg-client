@@ -16,6 +16,7 @@ const cors = require("./server/routes/cors");
 const pre = require("./server/routes/pre");
 const responsive = require("./server/routes/responsive");
 
+const route = pathMatch();
 console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 console.log("process.env.PORT: ", process.env.PORT);
 console.log("process.env.RENDERING: ", process.env.RENDERING);
@@ -43,7 +44,7 @@ next.prepare().then(() => {
   app.use(bodyParser.text());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
-    extended: true
+    extended: true,
   }));
   app.use(morgan("tiny")); // "default", "short", "tiny", "dev"
   app.use("/", express.static(path.join(__dirname, "./static")));
@@ -51,20 +52,17 @@ next.prepare().then(() => {
   app.use(cors);
   app.use(responsive);
 
-  // TODO - https://github.com/fridays/next-routes
-  const route = pathMatch();
-
-  app.get("/game/:_id", (req, res) => {
-    const params = route("/game/:_id")(parse(req.url).pathname);
-    return next.render(req, res, "/game", {params});
-  });
-
   app.get("/ping", (request, response) => {
     response.status(200).json({pong: true});
   });
 
   app.get("/favicon.png", (request, response) => {
     response.sendFile(path.join(__dirname, "./static/favicon.png"));
+  });
+
+  app.get("/game/:id", (req, res) => {
+    const params = route("/game/:id")(parse(req.url).pathname);
+    return next.render(req, res, "/game", {id: params.id});
   });
 
   app.get("*", (req, res) => {

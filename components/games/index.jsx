@@ -3,7 +3,6 @@ import {Grid, Button, Col, Image, Row} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import Link from "next/link";
 import ReactGA from "react-ga";
-import PropTypes from "prop-types";
 
 const BANNER_SWITCH_INTERVAL = 10e3;
 const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
@@ -12,11 +11,11 @@ const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
 
 const GAMES = {
   "etheronline": {
-    url: "/game/1",
+    id: "1",
     name: "etheronline",
   },
   "magicacademy": {
-    url: "/game/2",
+    id: "2",
     name: "magicacademy",
   },
 };
@@ -74,6 +73,7 @@ export default class GameList extends Component {
   }
 
   banner() {
+    const {id} = this.state.showingGame;
     return (
       <div className={`banner ${this.state.showingGame.name}`}>
         <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-left">
@@ -82,10 +82,12 @@ export default class GameList extends Component {
         <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-right">
           <Image src="/static/images/buttons/arrow_large_left.png" />
         </div>
-        <Button onClick={::this.onBannerClick} href={this.state.showingGame.url}>
-          <Image src="/static/images/buttons/play/black.png" />
-          <FormattedMessage id="pages.games.banner.play" />
-        </Button>
+        <Link href={{pathname: "/game", query: {id}}} as={`/game/${id}`}>
+          <Button onClick={::this.onBannerClick}>
+            <Image src="/static/images/buttons/play/black.png" />
+            <FormattedMessage id="pages.games.banner.play" />
+          </Button>
+        </Link>
       </div>
     );
   }
