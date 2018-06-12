@@ -22,7 +22,7 @@ class Game extends Component {
     dispatch: PropTypes.func,
     game: PropTypes.object,
     user: PropTypes.object,
-    id: PropTypes.string,
+    slug: PropTypes.string,
     query: PropTypes.object,
   };
 
@@ -34,12 +34,12 @@ class Game extends Component {
   };
 
   componentDidMount() {
-    const {dispatch, game, id} = this.props;
+    const {dispatch, game, slug} = this.props;
 
-    if (!game || !game.data || game.data.id !== id) {
+    if (!game || !game.data || game.data.slug !== slug) {
       dispatch({
         type: GAME_REQUEST,
-        payload: {id},
+        payload: {slug},
       });
     }
   }

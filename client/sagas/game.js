@@ -11,16 +11,17 @@ function * fetchGame(action) {
     });
 
     const query = gql`
-      query viewGame($id: ID!) {
-          viewGame(id: $id) {
-            id slug url api nft
+      query viewGameBySlug($slug: String!) {
+          viewGameBySlug(slug: $slug) {
+            id name slug url api nft
           }
       }
     `;
 
-    const variables = {id: action.payload.id};
+    const variables = {slug: action.payload.slug};
+    console.log('variables:', variables);
     const result = yield call(::client.query, {query, variables});
-    const game = path(["data", "viewGame"], result);
+    const game = path(["data", "viewGameBySlug"], result);
 
     if (game) {
       yield put({

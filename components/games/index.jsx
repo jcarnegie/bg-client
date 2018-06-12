@@ -11,11 +11,11 @@ const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
 
 const GAMES = {
   "etheronline": {
-    id: "1",
+    slug: "ether.online",
     name: "etheronline",
   },
   "magicacademy": {
-    id: "2",
+    slug: "magicacademy",
     name: "magicacademy",
   },
 };
@@ -73,7 +73,7 @@ export default class GameList extends Component {
   }
 
   banner() {
-    const {id} = this.state.showingGame;
+    const {slug} = this.state.showingGame;
     return (
       <div className={`banner ${this.state.showingGame.name}`}>
         <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-left">
@@ -82,7 +82,7 @@ export default class GameList extends Component {
         <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-right">
           <Image src="/static/images/buttons/arrow_large_left.png" />
         </div>
-        <Link href={{pathname: "/game", query: {id}}} as={`/game/${id}`}>
+        <Link href={{pathname: "/game", query: {slug}}} as={`/game/${slug}`}>
           <Button onClick={::this.onBannerClick}>
             <Image src="/static/images/buttons/play/black.png" />
             <FormattedMessage id="pages.games.banner.play" />

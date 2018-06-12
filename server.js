@@ -60,9 +60,9 @@ next.prepare().then(() => {
     response.sendFile(path.join(__dirname, "./static/favicon.png"));
   });
 
-  app.get("/game/:id", (req, res) => {
-    const params = route("/game/:id")(parse(req.url).pathname);
-    return next.render(req, res, "/game", {id: params.id});
+  app.get("/game/:slug", (req, res) => {
+    const params = route("/game/:slug")(parse(req.url).pathname);
+    return next.render(req, res, "/game", {slug: params.slug});
   });
 
   app.get("*", (req, res) => {
