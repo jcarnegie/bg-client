@@ -8,6 +8,7 @@ import Sell from "../popups/sell";
 import {isValidItemCategory, itemStats} from "../../client/utils/item";
 import {connect} from "react-redux";
 
+import style from "@/shared/constants/style";
 
 @injectIntl
 @connect(
@@ -22,7 +23,7 @@ export default class Item extends Component {
       game: PropTypes.string,
       name: PropTypes.string,
       image: PropTypes.string,
-      categories: PropTypes.array,
+      attrs: PropTypes.object,
     }),
     game: PropTypes.shape({
       nft: PropTypes.object,
@@ -80,17 +81,18 @@ export default class Item extends Component {
     );
   }
 
-  renderCategories() {
+  renderAttributes() {
     const {item, onClick} = this.props;
+    const categories = Object.values(item.attrs || []).map(attr => Object.values(attr)[1]);
     return (
-      <div className="categories">
-       {(item.categories && item.categories.length) ? item.categories
+      <div className="attrs">
+        {categories
           .filter(isValidItemCategory)
           .map(category =>
             <Badge onClick={onClick(item.game, [category])} key={category}>
               {category}
             </Badge>
-          ) : null}
+          )}
       </div>
     );
   }
@@ -125,7 +127,7 @@ export default class Item extends Component {
 
     return (
       <Col sm={6} md={4} lg={3} className="item">
-        <style jsx global>{`
+      <style jsx global>{`
           .item {
             padding-left: 35px;
             padding-right: 35px;
@@ -199,10 +201,11 @@ export default class Item extends Component {
             font-size: 13px;
             text-align: center;
           }
-          .item .thumbnail .caption .categories {
+          .item .thumbnail .caption .attrs {
             margin-top: 10px;
+            background-color: ${style.colors.background};
           }
-          .item .thumbnail .caption .categories .badge {
+          .item .thumbnail .caption .attrs .badge {
             margin-right: 3px;
             margin-bottom: 5px;
             background-color: #ffffff;
@@ -214,7 +217,6 @@ export default class Item extends Component {
             line-height: 18px;
             cursor: pointer;
           }
-
         `}</style>
         <Gift show={this.state.gift} item={item} game={game} onHide={::this.onHideGift} />
         <Sell show={this.state.sell} item={item} game={game} onHide={::this.onHideSell} />
@@ -222,7 +224,7 @@ export default class Item extends Component {
           <h4>{item.name}</h4>
           {this.renderStats()}
           {this.renderButtons()}
-          {this.renderCategories()}
+          {this.renderAttributes()}
         </Thumbnail>
       </Col>
     );

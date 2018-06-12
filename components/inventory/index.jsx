@@ -6,7 +6,7 @@ import {Button, Image, Row, Tab, Tabs} from "react-bootstrap";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import {contains, isEmpty, filter, map, prop, uniq} from "ramda";
+import {contains, filter, map, path, uniq, values} from "ramda";
 import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 
 import Loader from "@/components/common/loader";
@@ -103,73 +103,73 @@ export default class Inventory extends Component {
 		);
 	}
 
-	renderCategories(game, categories) {
-		if (!categories.length) {
-			return null;
-		}
-		return (
-			<>
-				<Button onClick={::this.onClick(game._id, categories)} bsStyle="link">
-					<FormattedMessage id="pages.inventory.all" />
-				</Button>
-				{categories
-					.filter(isValidItemCategory)
-					.map((category, i) =>
-						<Button key={i} onClick={::this.onClick(game._id, [category])} bsStyle="link">
-							{category}
-						</Button>
-					)}
-			</>
-		);
-	}
+  renderCategories(game, categories) {
+    if (!categories.length) {
+      return null;
+    }
+    return (
+      <>
+        <Button onClick={::this.onClick(game._id, categories)} bsStyle="link">
+          <FormattedMessage id="pages.inventory.all" />
+        </Button>
+        {categories
+          .filter(isValidItemCategory)
+          .map((category, i) =>
+            <Button key={i} onClick={::this.onClick(game._id, [category])} bsStyle="link">
+              {category}
+            </Button>
+          )}
+      </>
+    );
+  }
 
-	renderTab(tabKey, game, items) {
-		const categories = uniq([].concat(...items.map(item => item.categories)));
-		const maxStats = calcMaxItemsStats(items);
-		console.log("item", items[0]);
-		return (
-			<Fragment key={tabKey}>
-				<div className="arrow-right pull-right">
-					{this.renderCategories(game, categories)}
-				</div>
-				<h3>{game.name}</h3>
-				<Row className="flex-row">
-				{items.filter(item => Object.keys(this.state.filters).includes(item.game) ? this.state.filters[item.game].filter(x => !!~item.categories.indexOf(x)).length : true)
-						.map((item, i) =>
-							<Item key={i} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
-						)}
-				</Row>
-			</Fragment>
-		);
-	}
+	renderTab(game, items) {
+    const attrs = items.map(item => values(item.attrs || {}))[0];
+    const maxStats = calcMaxItemsStats(items);
+    const categories = uniq(attrs.map(attr => attr.value));
+
+    return (
+      <Fragment key={game._id}>
+        <div className="arrow-right pull-right">
+          {this.renderCategories(game, categories)}
+        </div>
+        <h3>{game.name}</h3>
+        <Row className="flex-row">
+          {items.filter(item => Object.keys(this.state.filters).includes(item.game.id) ? this.state.filters[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
+            .map(item =>
+              <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
+            )}
+        </Row>
+      </Fragment>
+    );
+  }
 
 	renderTabs() {
-		const {items, games} = this.props;
-		const gameIdsWithItems = uniq(map(prop("game"), items.data));
-		let visibleGames = filter(g => contains(g._id, gameIdsWithItems), games.data);
-		if (isEmpty(visibleGames)) visibleGames = [];
+    const {items, games} = this.props;
+    const gameIdsWithItems = uniq(map(path(["game", "id"]), items.data));
+    const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games.data);
 
-		return (
-			<>
-				<h2>
-					<FormattedMessage id="pages.inventory.title" />
-					{this.renderBackToGameButton()}
-				</h2>
-				<Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
-					<Tab eventKey={1} title={<FormattedMessage id="pages.inventory.all-items" />}>
-						{visibleGames.map((game, i) =>
-							this.renderTab(i, game, items.data.filter(item => item.game === game._id))
-						)}
-					</Tab>
-					{visibleGames.map((game, i) =>
-						<Tab eventKey={i + 2} title={game.name} key={i}>
-							{this.renderTab(i, game, items.data.filter(item => item.game === game._id))}
-						</Tab>
-					)}
-				</Tabs>
-			</>
-		);
-	}
+    return (
+      <>
+        <h2>
+          <FormattedMessage id="pages.inventory.title" />
+          {this.renderBackToGameButton()}
+        </h2>
+        <Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
+          <Tab eventKey={1} title={<FormattedMessage id="pages.inventory.all-items" />}>
+            {visibleGames.map(game =>
+              this.renderTab(game, items.data.filter(item => item.game.id === game.id))
+            )}
+          </Tab>
+          {visibleGames.map((game, i) =>
+            <Tab eventKey={i + 2} title={game.name || game.slug} key={game.id}>
+              {this.renderTab(game, items.data.filter(item => item.game.id === game.id))}
+            </Tab>
+          )}
+        </Tabs>
+      </>
+    );
+  }
 
 	renderEmpty() {
 		return (
@@ -268,6 +268,7 @@ export default class Inventory extends Component {
 			`}</style>
 		);
 	}
+
 	tabsStyle() {
 		return (
 			<style jsx global>{`

@@ -31,18 +31,21 @@ function * getItems() {
     const testItems = (readFromQueryString("testItems") === "true")
       ? "?testItems=true"
       : "";
+
+    if (!user.data) return;
+
     const {language, wallet} = user.data;
     const query = gql`
       query listItems($wallet: String!, $userId: ID!, $language: String!, $testItems: Boolean) {
         listItems(wallet: $wallet, userId: $userId, language: $language, testItems: $testItems) {
-          id lan tokenId image name description attrs
+          id lan tokenId image name description attrs game { id }
         }
       }
     `;
     const variables = {wallet, language, userId: user.data.id, testItems};
     const result = yield call(::client.query, {query, variables});
     const items = path(["data", "listItems"], result);
-    console.log("changing with language: ", language);
+
     yield put({
       type: INVENTORY_ITEMS_CHANGED,
       payload: items,
