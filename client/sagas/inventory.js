@@ -38,7 +38,7 @@ function * getItems() {
     const query = gql`
       query listItems($wallet: String!, $userId: ID!, $language: String!, $testItems: Boolean) {
         listItems(wallet: $wallet, userId: $userId, language: $language, testItems: $testItems) {
-          id lan tokenId image name description attrs game { id }
+          id lan tokenId image name description attrs categories game { id }
         }
       }
     `;

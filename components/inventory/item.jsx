@@ -2,13 +2,15 @@ import React, {Component, Fragment} from "react";
 import {Badge, Button, ButtonGroup, Col, Thumbnail} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {FormattedMessage, injectIntl} from "react-intl";
-import {map} from "ramda";
+import {compose, filter, isNil, map, not} from "ramda";
 import Gift from "../popups/gift";
 import Sell from "../popups/sell";
 import {isValidItemCategory, itemStats} from "../../client/utils/item";
 import {connect} from "react-redux";
 
 import style from "@/shared/constants/style";
+
+const notNil = compose(not, isNil);
 
 @injectIntl
 @connect(
@@ -20,7 +22,7 @@ export default class Item extends Component {
   static propTypes = {
     onClick: PropTypes.func,
     item: PropTypes.shape({
-      game: PropTypes.string,
+      game: PropTypes.object,
       name: PropTypes.string,
       image: PropTypes.string,
       attrs: PropTypes.object,
@@ -83,13 +85,13 @@ export default class Item extends Component {
 
   renderAttributes() {
     const {item, onClick} = this.props;
-    const categories = Object.values(item.attrs || []).map(attr => Object.values(attr)[1]);
+    const categories = filter(notNil, Object.values(item.attrs || []).map(attr => Object.values(attr)[1]));
     return (
       <div className="attrs">
         {categories
           .filter(isValidItemCategory)
           .map(category =>
-            <Badge onClick={onClick(item.game, [category])} key={category}>
+            <Badge onClick={onClick(item.game.id, [category])} key={category}>
               {category}
             </Badge>
           )}
@@ -100,7 +102,7 @@ export default class Item extends Component {
   renderButtons() {
     const {gifts, item, game} = this.props;
 
-    const gift = gifts.data.find(gift => gift.item === item.tokenId && gift.game === game._id);
+    const gift = gifts.data.find(gift => gift.item === item.tokenId && gift.game === game.id);
 
     if (gift) {
       return (

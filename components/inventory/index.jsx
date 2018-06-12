@@ -6,7 +6,7 @@ import {Button, Image, Row, Tab, Tabs} from "react-bootstrap";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import {contains, filter, map, path, uniq, values} from "ramda";
+import {contains, filter, flatten, map, path, uniq, values} from "ramda";
 import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 
 import Loader from "@/components/common/loader";
@@ -109,13 +109,13 @@ export default class Inventory extends Component {
     }
     return (
       <>
-        <Button onClick={::this.onClick(game._id, categories)} bsStyle="link">
+        <Button onClick={::this.onClick(game.id, categories)} bsStyle="link">
           <FormattedMessage id="pages.inventory.all" />
         </Button>
         {categories
           .filter(isValidItemCategory)
           .map((category, i) =>
-            <Button key={i} onClick={::this.onClick(game._id, [category])} bsStyle="link">
+            <Button key={i} onClick={::this.onClick(game.id, [category])} bsStyle="link">
               {category}
             </Button>
           )}
@@ -124,12 +124,12 @@ export default class Inventory extends Component {
   }
 
 	renderTab(game, items) {
-    const attrs = items.map(item => values(item.attrs || {}))[0];
-    const maxStats = calcMaxItemsStats(items);
-    const categories = uniq(attrs.map(attr => attr.value));
+		const attrs = flatten(items.map(item => values(item.attrs || {})));
+		const maxStats = calcMaxItemsStats(items);
+		const categories = uniq(attrs.map(attr => attr.value));
 
     return (
-      <Fragment key={game._id}>
+      <Fragment key={game.id}>
         <div className="arrow-right pull-right">
           {this.renderCategories(game, categories)}
         </div>

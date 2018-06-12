@@ -77,7 +77,7 @@ export default class GiftPopup extends Component {
             type: GIFT_ADD_SUCCESS,
             payload: {
               item: item.tokenId,
-              game: game._id,
+              game: game.id,
               tx,
             },
           });
