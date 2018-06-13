@@ -94,7 +94,7 @@ export default class Inventory extends Component {
 
 		return (
 			<div className="pull-right">
-				<Link href={`/game/${game.data.id}`}>
+				<Link href={`/game/${game.data.slug}`}>
 					<a>
 						<Button><FormattedMessage id="pages.inventory.back-to-game" /></Button>
 					</a>
