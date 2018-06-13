@@ -19,7 +19,6 @@ function * fetchGame(action) {
     `;
 
     const variables = {slug: action.payload.slug};
-    console.log('variables:', variables);
     const result = yield call(::client.query, {query, variables});
     const game = path(["data", "viewGameBySlug"], result);
 

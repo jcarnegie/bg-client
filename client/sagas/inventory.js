@@ -43,7 +43,7 @@ function * getItems() {
       }
     `;
     const variables = {wallet, language, userId: user.data.id, testItems};
-    const result = yield call(::client.query, {query, variables});
+    const result = yield call(::client.query, {query, variables, fetchPolicy: "no-cache"});
     const items = path(["data", "listItems"], result);
 
     yield put({
