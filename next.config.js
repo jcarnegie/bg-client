@@ -1,7 +1,11 @@
 const webpack = require("webpack");
 const path = require("path");
+const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
+/* eslint-disable-next-line no-unused-vars */
+const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer"); /* BundleAnalyzerPlugin must be in scope. */
 
-module.exports = {
+
+module.exports = withBundleAnalyzer({
 	webpack: config => {
 		config.plugins.push(
 			new webpack.DefinePlugin({
@@ -22,4 +26,16 @@ module.exports = {
 
 		return config;
 	},
-};
+	analyzeServer: ["server", "both"].includes(process.env.BUNDLE_ANALYZE),
+  analyzeBrowser: ["browser", "both"].includes(process.env.BUNDLE_ANALYZE),
+  bundleAnalyzerConfig: {
+    server: {
+      analyzerMode: "static",
+      reportFilename: "./analyzer-output/server.html",
+    },
+    browser: {
+      analyzerMode: "static",
+      reportFilename: "./analyzer-output/client.html",
+    },
+  },
+});

@@ -11,6 +11,8 @@ x - css autoprefixer (next does this in production)
 - Chat-specific style rewrites
 - Docker-compose integrates with development GraphQL API
 - Update redux-logger for node -- or silence
+- Bundle size updates:
+- - Remove lodash
 
 
 ## Dependencies
@@ -37,6 +39,14 @@ yarn build
 - To start built files
 ```bash
 yarn start
+```
+
+## Bundles
+
+- To view statistics on client output files
+- Reports build to .next/analyzer-output
+```bash
+yarn analyze-bundles
 ```
 
 ## File Structure
