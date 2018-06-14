@@ -34,7 +34,7 @@ export default class SandBox extends Component {
             display: block;
           }
         `}</style>
-        <Col className="grap sandbox">
+        <Col className="sandbox">
           <Init />
           {this.renderIframe(query)}
         </Col>

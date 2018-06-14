@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
 import {Button, Form, Modal} from "react-bootstrap";
+import BGModal from "@/components/modal";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import ReactGA from "react-ga";
 import {connect} from "react-redux";
@@ -161,7 +162,7 @@ export default class RegisterPopup extends Component {
     const {show, formData, onChange, onHide} = this.props;
 
     return (
-      <Modal show={show} className={cx("register", {show})} onHide={onHide}>
+      <BGModal show={show} className={cx("register", {show})} onHide={onHide}>
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
             <h2>
@@ -218,7 +219,7 @@ export default class RegisterPopup extends Component {
             </Button>
           </Form>
         </Modal.Body>
-      </Modal>
+      </BGModal>
     );
   }
 }
