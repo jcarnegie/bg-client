@@ -6,15 +6,15 @@ import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 import ReactGA from "react-ga";
 import {connect} from "react-redux";
 
-import withFormHelper from "../inputs/withFormHelper";
+import withFormHelper from "@/components/inputs/withFormHelper";
 import {updateIntl} from "react-intl-redux/lib/index";
-import {localization} from "../../shared/intl/setup";
+import {localization} from "@/shared/intl/setup";
 
-import {email, nickName, wallet} from "../../shared/constants/placeholder";
-import {reEmail} from "../../shared/constants/regexp";
-import {CREATE_USER, MESSAGE_ADD} from "../../shared/constants/actions";
-import {enabledLanguages} from "../../shared/constants/language";
-import InputGroupValidation from "../inputs/input.group.validation";
+import {email, nickName, wallet} from "@/shared/constants/placeholder";
+import {reEmail} from "@/shared/constants/regexp";
+import {CREATE_USER, MESSAGE_ADD} from "@/shared/constants/actions";
+import {enabledLanguages} from "@/shared/constants/language";
+import InputGroupValidation from "@/components/inputs/input.group.validation";
 
 
 @withFormHelper
@@ -26,6 +26,10 @@ import InputGroupValidation from "../inputs/input.group.validation";
   })
 )
 export default class RegisterPopup extends Component {
+  static defaultProps = {
+    onHide: () => {},
+  }
+
   static propTypes = {
     account: PropTypes.object,
     formData: PropTypes.object,
@@ -33,6 +37,7 @@ export default class RegisterPopup extends Component {
     setState: PropTypes.func,
     onChange: PropTypes.func,
     show: PropTypes.bool,
+    onHide: PropTypes.func,
     intl: intlShape,
     messages: PropTypes.array,
   };
@@ -153,10 +158,10 @@ export default class RegisterPopup extends Component {
   }
 
   render() {
-    const {show, formData, onChange} = this.props;
+    const {show, formData, onChange, onHide} = this.props;
 
     return (
-      <Modal show={show} className={cx("register", {show})}>
+      <Modal show={show} className={cx("register", {show})} onHide={onHide}>
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
             <h2>

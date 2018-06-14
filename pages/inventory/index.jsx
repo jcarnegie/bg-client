@@ -1,6 +1,7 @@
 import {DesktopContent, MobileContent, DesktopLayout, MobileLayout} from "@/components/layouts";
 import Inventory from "@/components/inventory";
 import Chat from "@/components/chat";
+import {userLoginRouteGuard} from "@/shared/utils";
 
 
 const InventoryPage = props => (
@@ -14,5 +15,11 @@ const InventoryPage = props => (
     />
   </>
 );
+
+InventoryPage.getInitialProps = ctx => {
+  userLoginRouteGuard(ctx);
+  return {};
+};
+
 
 export default InventoryPage;

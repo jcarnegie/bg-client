@@ -715,7 +715,7 @@
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.5.3.tgz#91b728599544efbb7386d8b6633693a3c2e7ade5"
 
-"@zeit/next-bundle-analyzer@^0.1.1":
+"@zeit/next-bundle-analyzer@0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@zeit/next-bundle-analyzer/-/next-bundle-analyzer-0.1.1.tgz#b84a9703cab6a97a249c1b7b98f8f66bf9d6fb4e"
   dependencies:

@@ -58,6 +58,7 @@ export default class User extends Component {
             display: block;
             float: left;
             clear: both;
+            font-size: 12px;
           }
           .user .user-mobile {
             border-bottom: 1px solid rgba(133, 148, 183);

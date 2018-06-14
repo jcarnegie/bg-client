@@ -1,9 +1,10 @@
-import {USER_CHANGED, USER_ERROR, USER_LOADING} from "../../shared/constants/actions";
+import {USER_SHOW_REGISTER_WORKFLOW, USER_CHANGED, USER_ERROR, USER_RESET, USER_LOADING} from "@/shared/constants/actions";
 
 const user = {
   isLoading: false,
   success: false,
   data: null,
+  showRegisterWorkflow: false,
 };
 
 export default function userReducer(state = user, action) {
@@ -19,12 +20,23 @@ export default function userReducer(state = user, action) {
         data: action.payload,
         isLoading: false,
         success: true,
+        showRegisterWorkflow: false,
+      });
+    case USER_RESET:
+      return Object.assign({}, {
+        data: user.data, /* Note, re-setting to initial user.data */
+        isLoading: user.isLoading,
+        success: user.success,
       });
     case USER_ERROR:
       return Object.assign({}, state, {
         data: null,
         isLoading: false,
         success: false,
+      });
+    case USER_SHOW_REGISTER_WORKFLOW:
+      return Object.assign({}, state, {
+        showRegisterWorkflow: action.payload,
       });
     default:
       return state;

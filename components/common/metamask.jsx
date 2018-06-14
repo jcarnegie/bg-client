@@ -2,17 +2,28 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
+import * as log from "loglevel";
+import {withRouter} from "next/router";
 
-import {ACCOUNT_CHANGED, ACCOUNT_ERROR, MESSAGE_ADD, NEW_BLOCK} from "../../shared/constants/actions";
-import networkConfig from "../../client/utils/network";
+import {
+  ACCOUNT_CHANGED,
+  ACCOUNT_ERROR,
+  MESSAGE_ADD,
+  NEW_BLOCK,
+  USER_RESET,
+  USER_SHOW_REGISTER_WORKFLOW,
+} from "@/shared/constants/actions";
 
-import MetaMaskInstall from "../popups/metamask.install";
-import MetaMaskLogin from "../popups/metamask.login";
-import MetaMaskNetwork from "../popups/metamask.network";
-import Register from "../popups/register";
+import networkConfig from "@/client/utils/network";
+
+import MetaMaskInstall from "@/components/popups/metamask.install";
+import MetaMaskLogin from "@/components/popups/metamask.login";
+import MetaMaskNetwork from "@/components/popups/metamask.network";
+import Register from "@/components/popups/register";
 
 
 @injectIntl
+@withRouter
 @connect(
   state => ({
     account: state.account,
@@ -23,6 +34,7 @@ import Register from "../popups/register";
 class MetaMask extends Component {
   static propTypes = {
     account: PropTypes.object,
+    router: PropTypes.object,
     network: PropTypes.object,
     user: PropTypes.object,
     dispatch: PropTypes.func,
@@ -48,20 +60,25 @@ class MetaMask extends Component {
       this.setState({
         interval: setInterval(() => {
           if (window.web3.eth.accounts[0] !== this.props.account.wallet) {
-            if (window.web3.eth.accounts.length) {
+            const wallet = window.web3.eth.accounts.length ? window.web3.eth.accounts[0] : null;
               this.props.dispatch({
                 type: ACCOUNT_CHANGED,
-                payload: {
-                  wallet: window.web3.eth.accounts[0],
-                },
+                payload: {wallet},
               });
-            } else if (this.props.account.isLoading || this.props.account.success) {
-              this.props.dispatch({
-                type: ACCOUNT_ERROR,
-              });
+            if (!wallet) {
+              if (this.props.user.data) {
+                log.info("Resetting user: ", window.web3.eth.accounts[0]);
+                this.props.dispatch({type: USER_RESET});
+              }
+
+              if ((this.props.account.isLoading || this.props.account.success)) {
+                this.props.dispatch({
+                  type: ACCOUNT_ERROR,
+                });
+              }
             }
           }
-        }, 100),
+        }, 500),
       });
 
       window.web3.eth.filter("latest").watch((error, result) => {
@@ -85,22 +102,38 @@ class MetaMask extends Component {
   }
 
   render() {
-    const {network, account, pathname, user} = this.props;
+    const {network, account, pathname, router, user} = this.props;
     const whitelist = [
+      "/",
       "/faq",
       "/airdrop",
     ];
 
-    if (!pathname || whitelist.includes(pathname)) {
+    const path = pathname || router.pathname;
+
+    if (!path || (whitelist.includes(path) && !user.showRegisterWorkflow)) {
       return null;
     }
 
+    if (user.showRegisterWorkflow && !MetaMask.isInstalled()) {
+      return <MetaMaskInstall show />;
+    }
+
+    const onSupportedNetwork = network.data && network.data.id && Object.keys(networkConfig).includes(network.data.id);
+    const networkLoadedSuccess = !network.isLoading && network.success;
+    const showNetwork = networkLoadedSuccess && !onSupportedNetwork;
+    const showMetaMaskLogin = !account.isLoading && !account.success;
+    const showRegister = !showNetwork && !showMetaMaskLogin && (
+      user.showRegisterWorkflow || (
+        networkLoadedSuccess && onSupportedNetwork && !user.isLoading && !user.success
+      )
+    );
+
     return (
       <>
-        <MetaMaskInstall show={!MetaMask.isInstalled()} />
-        <MetaMaskLogin show={!account.isLoading && !account.success} />
-        <MetaMaskNetwork show={!network.isLoading && network.success && !Object.keys(networkConfig).includes(network.data.id)} />
-        <Register show={!network.isLoading && network.success && Object.keys(networkConfig).includes(network.data.id) && !user.isLoading && !user.success} />
+        <MetaMaskLogin show={showMetaMaskLogin} />
+        <MetaMaskNetwork show={showNetwork} />
+        <Register show={showRegister} onHide={() => this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: false})} />
       </>
     );
   }

@@ -1,9 +1,9 @@
 import gql from "graphql-tag";
 import {call, put, select, takeEvery} from "redux-saga/effects";
-import {localization} from "../../shared/intl/setup";
 import {updateIntl} from "react-intl-redux";
 import {dissoc, filter, isEmpty, map, merge, path, pickAll, prop, propEq} from "ramda";
-import {client} from "../utils/apollo";
+
+import {client} from "@/client/utils/apollo";
 import {
   BALANCE_ETH_CHANGED,
   BALANCE_PLAT_CHANGED,
@@ -18,7 +18,8 @@ import {
   USER_ERROR,
   USER_LOADING,
   VALIDATION_ADD_ALL,
-} from "../../shared/constants/actions";
+} from "@/shared/constants/actions";
+import {localization} from "@/shared/intl/setup";
 
 function * fetchUser() {
   try {

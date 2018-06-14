@@ -1,16 +1,21 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
+import {FormattedMessage} from "react-intl";
 import {connect} from "react-redux";
 
-import {MENU_SHOW, CHAT_TOGGLE} from "@/shared/constants/actions";
+import {MENU_SHOW, CHAT_TOGGLE, USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
+import style from "@/shared/constants/style";
+
 
 class HeaderItem extends Component {
   static defaultProps = {
     active: false,
+    className: "",
     onClick: () => {},
   }
 
   static propTypes = {
+    className: PropTypes.string,
     onClick: PropTypes.func,
     children: PropTypes.any,
     active: PropTypes.bool,
@@ -18,7 +23,7 @@ class HeaderItem extends Component {
 
   render() {
     return (
-      <div className="header-item no-select" onClick={this.props.onClick}>
+      <div className={`header-item no-select ${this.props.className}`} onClick={this.props.onClick}>
         <style jsx>{`
           .header-item {
             display: flex;
@@ -26,8 +31,6 @@ class HeaderItem extends Component {
             height: 100%;
             padding: 0 15px;
             background: ${this.props.active ? "rgba(255, 255, 255, .2)" : "transparent"};
-            border: 1px solid ${this.props.active ? "rgba(133, 148, 183)" : "transparent"};
-            margin: 0 0 0 -1px; /* Offset border so 1px even when multiple HeaderItems are highlighted */
           }
         `}</style>
         {this.props.children}
@@ -80,12 +83,10 @@ class MenuToggle extends Component {
   })
 )
 class ChatToggle extends Component {
-  static defaultProps = {
-    active: false,
-  }
-
   static propTypes = {
-    show: PropTypes.bool,
+    chat: PropTypes.shape({
+      show: PropTypes.bool,
+    }),
     dispatch: PropTypes.func,
   }
 
@@ -109,9 +110,20 @@ class ChatToggle extends Component {
   }
 }
 
-
+@connect(
+  state => ({
+    user: state.user,
+  })
+)
 class MobileMenu extends Component {
+  static propTypes = {
+    user: PropTypes.object,
+    dispatch: PropTypes.func,
+  }
+
   render() {
+    const {user, dispatch} = this.props;
+
     return (
       <div className="menu-wrapper">
         <style jsx>{`
@@ -120,9 +132,29 @@ class MobileMenu extends Component {
             align-items: center;
             height: 100%;
           }
+          :global(.settings-button) {
+            display: ${user.data ? "none" : "flex"} !important; /* module overrides */
+            color: ${style.colors.secondary};
+            border: 0;
+            background: #B0C3EE !important; /* module overrides */
+            padding: 0 30px !important; /* module overrides */
+            text-transform: uppercase;
+            font-weight: 500;
+            align-items: center;
+            justify-content: center;
+          }
+          :global(.settings-button:hover) {
+            background: #9BB2E7 !important;
+          }
         `}</style>
         <ChatToggle />
         <MenuToggle />
+        <HeaderItem className="settings-button" onClick={() => dispatch({
+          type: USER_SHOW_REGISTER_WORKFLOW,
+          payload: !this.props.user.showRegisterWorkflow,
+        })}>
+          <FormattedMessage id="buttons.register" />
+        </HeaderItem>
       </div>
     );
   }

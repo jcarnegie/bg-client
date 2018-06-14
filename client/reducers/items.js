@@ -9,19 +9,19 @@ const items = {
 export default function itemsReducer(state = items, action) {
   switch (action.type) {
     case INVENTORY_ITEMS_LOADING:
-      return Object.assign({}, items, {
+      return Object.assign({}, state, {
         data: null,
         isLoading: true,
         success: false,
       });
     case INVENTORY_ITEMS_CHANGED:
-      return Object.assign({}, items, {
+      return Object.assign({}, state, {
         data: action.payload,
         isLoading: false,
         success: true,
       });
     case INVENTORY_ITEMS_ERROR:
-      return Object.assign({}, items, {
+      return Object.assign({}, state, {
         data: null,
         isLoading: false,
         success: false,

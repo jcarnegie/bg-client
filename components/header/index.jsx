@@ -4,8 +4,11 @@ import Link from "next/link";
 import {FormattedMessage, injectIntl} from "react-intl";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import cx from "classnames";
 
+import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
 import style from "@/shared/constants/style";
+
 import ActiveLink from "@/components/activelink";
 import Language from "@/components/language";
 import Balance from "@/components/balance";
@@ -18,21 +21,16 @@ import {Desktop, Mobile} from "@/components/responsive";
 @connect(
   state => ({
     account: state.account,
-    responsive: state.responsive,
     chat: state.chat,
+    user: state.user,
   })
 )
 export default class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showMenu: false,
-    };
-  }
   static propTypes = {
     account: PropTypes.object,
-    dispatch: PropTypes.any,
+    dispatch: PropTypes.func,
     chat: PropTypes.object,
+    user: PropTypes.object,
   };
 
   navigation() {
@@ -53,6 +51,9 @@ export default class Header extends Component {
             font-size: 13px;
             font-weight: 100;
           }
+          .navigation :global(.navigation-link span) {
+            vertical-align: middle;
+          }
           .logo-img {
             width: 24px;
           }
@@ -63,10 +64,11 @@ export default class Header extends Component {
             margin: 0 0 0 30px;
           }
           .logo-text > a {
-            margin: 0 45px 0 15px;
-            color: ${style.colors.logos}; // #FFD57D
+            margin: 0 45px 0 10px;
+            color: ${style.colors.logos};
             text-decoration: none;
             font-size: 20px;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: .04em;
           }
@@ -98,6 +100,7 @@ export default class Header extends Component {
   }
 
   settings() {
+    const {user, dispatch} = this.props;
     return (
       <div className="settings">
         <style jsx>{`
@@ -108,10 +111,44 @@ export default class Header extends Component {
             float: right;
             margin: 0 15px 0 0;
           }
+          .settings div {
+            display: flex;
+            align-items: center;
+          }
+          .settings .spaced-right {
+            margin: 0 25px 0 0;
+          }
+          .settings .user {
+            margin: 0 10px 0 0;
+            display: ${user.data ? "initial" : "none"};
+          }
+          .settings .settings-button {
+            display: ${user.data ? "none" : "initial"};
+            color: ${style.colors.secondary};
+            margin: 0 -15px 0 0;
+            border: 0;
+            background-color: #B0C3EE;
+            padding: 0 30px;
+            text-transform: uppercase;
+            font-weight: 500;
+          }
+          .settings .settings-button:hover {
+            background-color: #9BB2E7;
+          }
         `}</style>
-        <Balance />
-        <User />
+        <div className={cx({"spaced-right": !!user.data})}>
+          <Balance />
+        </div>
+        <div className="user">
+          <User />
+        </div>
         <Language />
+        <button className="settings-button" onClick={() => dispatch({
+          type: USER_SHOW_REGISTER_WORKFLOW,
+          payload: !user.showRegisterWorkflow,
+        })}>
+          <FormattedMessage id="buttons.register" />
+        </button>
       </div>
     );
   }

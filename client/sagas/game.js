@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 import {call, put, takeEvery} from "redux-saga/effects";
 import {path} from "ramda";
-import {client} from "../utils/apollo";
-import {GAME_CHANGED, GAME_ERROR, GAME_LOADING, GAME_REQUEST, MESSAGE_ADD} from "../../shared/constants/actions";
+import {client} from "@/client/utils/apollo";
+import {GAME_CHANGED, GAME_ERROR, GAME_LOADING, GAME_REQUEST, MESSAGE_ADD} from "@/shared/constants/actions";
 
 function * fetchGame(action) {
   try {

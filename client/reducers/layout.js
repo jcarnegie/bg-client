@@ -7,7 +7,7 @@ const menu = {
 export default function itemsReducer(state = menu, action) {
   switch (action.type) {
     case MENU_SHOW:
-      return Object.assign({}, menu, {
+      return Object.assign({}, state, {
         showMenu: action.payload.showMenu,
       });
     default:

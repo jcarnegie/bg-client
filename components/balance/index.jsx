@@ -5,6 +5,8 @@ import {connect} from "react-redux";
 import Convert from "@/components/popups/convert";
 import {Mobile, Desktop} from "@/components/responsive";
 
+import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
+
 
 @connect(
   state => ({
@@ -45,6 +47,9 @@ export default class Balance extends Component {
 
   onClick(e) {
     e.preventDefault();
+    if (!this.props.user.data) {
+      return this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: true});
+    }
     this.setState({
       show: true,
     });
@@ -70,11 +75,11 @@ export default class Balance extends Component {
             display: flex;
             align-items: center;
             color: white;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 100;
           }
           .balance-text {
-            margin:  0 10px 0 5px;
+            margin:  0 0 0 8px;
           }
           .balance-value {
             text-transform: uppercase;

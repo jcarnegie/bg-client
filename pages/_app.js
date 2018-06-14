@@ -3,16 +3,22 @@ import React from "react";
 import {Provider} from "react-intl-redux";
 import withRedux from "next-redux-wrapper";
 import withReduxSaga from "next-redux-saga";
+import * as log from "loglevel";
 
 import configureStore from "@/client/utils/store";
 
 import GAListener from "@/components/common/galistener";
 import MetaMask from "@/components/common/metamask";
-import Register from "@/components/popups/register";
 
 import GlobalStyles from "@/pages/globalstyles";
 import style from "@/shared/constants/style";
 
+
+if (process.env.NODE_ENV === "production") {
+  log.setDefaultLevel(log.levels.ERROR);
+} else {
+  log.setDefaultLevel(log.levels.INFO);
+}
 
 class BGApp extends App {
   static async getInitialProps({Component, router, ctx}) {
@@ -24,11 +30,6 @@ class BGApp extends App {
 
     const gaListenerProps = GAListener.getInitialProps(ctx);
     const metaMaskProps = MetaMask.WrappedComponent.getInitialProps(ctx);
-
-    router.beforePopState(ctx => {
-      GAListener.sendPageView(ctx.url);
-      return true; /* To confirm pop state */
-    });
 
     const locals = ctx.isServer ? ctx.res.locals : {};
 
@@ -51,7 +52,6 @@ class BGApp extends App {
         <Provider store={store}>
           <>
             <MetaMask {...metaMaskProps} />
-            <Register />
             <GAListener {...gaListenerProps} />
             <Component {...pageProps} {...locals} />
           </>
