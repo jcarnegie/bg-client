@@ -15,6 +15,10 @@ export const chat = {
   width: "285px",
 };
 
+export const aside = {
+  width: "285px",
+};
+
 export const mobile = {
   maxWidth: 991,
 };
@@ -24,6 +28,7 @@ export const desktop = {
 };
 
 export default {
+  aside,
   colors,
   header,
   chat,

@@ -4,11 +4,12 @@ import {Button, Form, Modal, Thumbnail} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
 
-import {wallet} from "../../shared/constants/placeholder";
-import nftABI from "../../shared/contracts/ERC721";
-import {GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD} from "../../shared/constants/actions";
-import withFormHelper from "../inputs/withFormHelper";
-import InputGroupValidation from "../inputs/input.group.validation";
+import BGModal from "@/components/modal";
+import withFormHelper from "@/components/inputs/withFormHelper";
+import InputGroupValidation from "@/components/inputs/input.group.validation";
+import {wallet} from "@/shared/constants/placeholder";
+import nftABI from "@/shared/contracts/ERC721";
+import {GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD} from "@/shared/constants/actions";
 
 
 @injectIntl
@@ -116,7 +117,7 @@ export default class GiftPopup extends Component {
     const {show, onHide, item, formData, onChange} = this.props;
 
     return (
-      <Modal show={show} className="gift" onHide={onHide} backdropClassName="semi">
+      <BGModal show={show} className="gift" onHide={onHide} backdropClassName="semi">
         <style jsx global>{`
           .gift .modal-header {
             border: 0;
@@ -159,7 +160,7 @@ export default class GiftPopup extends Component {
             </Button>
           </Form>
         </Modal.Body>
-      </Modal>
+      </BGModal>
     );
   }
 }

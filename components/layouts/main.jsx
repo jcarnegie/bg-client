@@ -9,7 +9,7 @@ function Main(props) {
         main {
           width: 100%;
           margin-top: ${style.header.height};
-          width: calc(100% - ${props.offsetRight ? props.offsetRight : 0});
+          width: calc(100% - ${props.offsetRight ? props.offsetRight : "0"});
         }
       `}</style>
       {props.children}
@@ -23,7 +23,7 @@ Main.propTypes = {
 };
 
 Main.defaultProps = {
-  offsetRight: false,
+  offsetRight: "0",
   children: null,
 };
 

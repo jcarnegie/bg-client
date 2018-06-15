@@ -1,16 +1,16 @@
 import PropTypes from "prop-types";
-import Header from "@/components/header";
+import Header from "@/components/header/desktop";
 
-import Aside from "@/components/layouts/desktop/aside";
-import Main from "@/components/layouts/desktop/main";
+import Main from "@/components/layouts/main";
+import Aside from "@/components/layouts/aside";
 import {Desktop} from "@/components/responsive";
 
-const HEADER_HEIGHT = "62px";
-const ASIDE_WIDTH = "285px";
+import style from "@/shared/constants/style";
+
 
 function DesktopLayout(props) {
   const aside = props.aside ? (
-    <Aside offsetTop={HEADER_HEIGHT}>
+    <Aside offsetTop={style.header.height}>
       {props.aside}
     </Aside>
   ) : null;
@@ -18,7 +18,7 @@ function DesktopLayout(props) {
   return (
     <Desktop {...props}>
       <Header />
-      <Main offsetRight={ASIDE_WIDTH}>
+      <Main offsetRight={style.aside.width}>
         {props.main}
       </Main>
       {aside}

@@ -3,17 +3,19 @@ import {Modal} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
 
+import BGModal from "@/components/modal";
+
 
 export default class MetaMaskLoginPopup extends Component {
   static propTypes = {
-    show: PropTypes.bool
+    show: PropTypes.bool,
   };
 
   render() {
     const {show} = this.props;
 
     return (
-      <Modal show={show} className="metamask-login">
+      <BGModal show={show} className="metamask-login">
         <Modal.Body>
           <div>
             <h2><FormattedMessage id="modals.metamask-login.title" /></h2>
@@ -24,7 +26,7 @@ export default class MetaMaskLoginPopup extends Component {
             </p>
           </div>
         </Modal.Body>
-      </Modal>
+      </BGModal>
     );
   }
 }

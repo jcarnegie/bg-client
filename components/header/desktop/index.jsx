@@ -1,4 +1,3 @@
-// TODO - split into two separate header components for mobile and desktop
 import React, {Component} from "react";
 import Link from "next/link";
 import {FormattedMessage, injectIntl} from "react-intl";
@@ -13,8 +12,6 @@ import ActiveLink from "@/components/activelink";
 import Language from "@/components/language";
 import Balance from "@/components/balance";
 import User from "@/components/user";
-import MobileMenu from "@/components/mobilemenu";
-import {Desktop, Mobile} from "@/components/responsive";
 
 
 @injectIntl
@@ -56,11 +53,6 @@ export default class Header extends Component {
           }
           .logo-img {
             width: 24px;
-          }
-          .logo-img-mobile {
-            margin: 0 0 0 15px;
-          }
-          .logo-img-desktop {
             margin: 0 0 0 30px;
           }
           .logo-text > a {
@@ -73,28 +65,21 @@ export default class Header extends Component {
             letter-spacing: .04em;
           }
         `}</style>
-        <Mobile>
+        <Link href="/">
+          <img src="/static/images/logo-small.png" className="logo-img no-select" />
+        </Link>
+        <span className="logo-text">
           <Link href="/">
-            <img src="/static/images/logo-small.png" className="logo-img logo-img-mobile no-select" />
+            <a><FormattedMessage id="components.title" /></a>
           </Link>
-        </Mobile>
-        <Desktop>
-          <Link href="/">
-            <img src="/static/images/logo-small.png" className="logo-img logo-img-desktop no-select" />
-          </Link>
-          <span className="logo-text">
-            <Link href="/">
-              <a><FormattedMessage id="components.title" /></a>
-            </Link>
-          </span>
-          <ActiveLink
-            href="/inventory"
-            activeStyle={{boxShadow: "inset 0px -4px 0px 0px #ffd57d"}}
-            style={{textDecoration: "none"}}
-          >
-            <span className="navigation-link"><FormattedMessage id="components.menu.inventory" /></span>
-          </ActiveLink>
-        </Desktop>
+        </span>
+        <ActiveLink
+          href="/inventory"
+          activeStyle={{boxShadow: "inset 0px -4px 0px 0px #ffd57d"}}
+          style={{textDecoration: "none"}}
+        >
+          <span className="navigation-link"><FormattedMessage id="components.menu.inventory" /></span>
+        </ActiveLink>
       </div>
     );
   }
@@ -167,22 +152,9 @@ export default class Header extends Component {
             background-color: ${style.colors.secondary};
             height: ${style.header.height};
           }
-          .mobile-settings {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 62px;
-          }
         `}</style>
-          {::this.navigation()}
-        <Desktop>
-          {::this.settings()}
-        </Desktop>
-        <Mobile>
-          <div className="mobile-settings">
-            <MobileMenu />
-          </div>
-        </Mobile>
+        {::this.navigation()}
+        {::this.settings()}
       </header>
     );
   }

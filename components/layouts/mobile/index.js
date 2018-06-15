@@ -2,9 +2,8 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
-import Header from "@/components/header";
-import Chat from "@/components/chat";
-import Main from "@/components/layouts/mobile/main";
+import Main from "@/components/layouts/main";
+import Header from "@/components/header/mobile";
 import MenuDrawer from "@/components/menudrawer";
 import ChatDrawer from "@/components/chatdrawer";
 import {Mobile} from "@/components/responsive";
@@ -19,7 +18,7 @@ import {Mobile} from "@/components/responsive";
 class MobileLayout extends Component {
   render() {
     const props = Object.assign({}, this.props);
-    
+
     delete props.dispatch; /* Cannot pass dispatch prop to children */
 
     return (

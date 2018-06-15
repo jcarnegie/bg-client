@@ -3,17 +3,18 @@ import {Modal} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
 
+import BGModal from "@/components/modal";
 
 export default class MetaMaskNetworkPopup extends Component {
   static propTypes = {
-    show: PropTypes.bool
+    show: PropTypes.bool,
   };
 
   render() {
     const {show} = this.props;
 
     return (
-      <Modal show={show} className="metamask-network">
+      <BGModal show={show} className="metamask-network">
         <Modal.Body>
           <div>
             <h2><FormattedMessage id="modals.metamask-network.title" /></h2>
@@ -24,7 +25,7 @@ export default class MetaMaskNetworkPopup extends Component {
             </p>
           </div>
         </Modal.Body>
-      </Modal>
+      </BGModal>
     );
   }
 }

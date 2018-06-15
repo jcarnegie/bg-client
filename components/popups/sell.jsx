@@ -4,6 +4,8 @@ import {Form, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage, FormattedHTMLMessage} from "react-intl";
 
+import BGModal from "@/components/modal";
+
 
 @connect(
   state => ({
@@ -25,7 +27,7 @@ export default class SellPopup extends Component {
     const {show, onHide} = this.props;
 
     return (
-      <Modal show={show} className="sell" onHide={onHide} backdropClassName="semi">
+      <BGModal show={show} className="sell" onHide={onHide} backdropClassName="semi">
         <style jsx global>{`
           .sell .modal-header {
             border: 0;
@@ -50,7 +52,7 @@ export default class SellPopup extends Component {
             </p>
           </Form>
         </Modal.Body>
-      </Modal>
+      </BGModal>
     );
   }
 }

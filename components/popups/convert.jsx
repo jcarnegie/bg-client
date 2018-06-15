@@ -4,11 +4,12 @@ import {Button, Form, Glyphicon, Modal} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage} from "react-intl";
 
-import withFormHelper from "../inputs/withFormHelper";
-import topupABI from "../../shared/contracts/topup";
-import networkConfig from "../../client/utils/network";
-import {MESSAGE_ADD} from "../../shared/constants/actions";
-import InputGroup from "../inputs/input.group";
+import BGModal from "@/components/modal";
+import withFormHelper from "@/components/inputs/withFormHelper";
+import topupABI from "@/shared/contracts/topup";
+import {MESSAGE_ADD} from "@/shared/constants/actions";
+import networkConfig from "@/client/utils/network";
+import InputGroup from "@/components/inputs/input.group";
 
 
 function precisionRound(number, precision) {
@@ -44,14 +45,14 @@ export default class ConvertPopup extends Component {
     const {setState, rate} = this.props;
     setState({
       eth: 1,
-      plat: rate.data
+      plat: rate.data,
     });
   }
 
   static getDerivedStateFromProps(nextProps) {
     if (!nextProps.rate.isLoading && nextProps.rate.success && nextProps.rate.data * nextProps.formData.eth !== nextProps.formData.plat) {
       nextProps.setState({
-        plat: nextProps.rate.data * nextProps.formData.eth
+        plat: nextProps.rate.data * nextProps.formData.eth,
       });
     }
 
@@ -62,7 +63,7 @@ export default class ConvertPopup extends Component {
     const {setState, rate} = this.props;
     setState({
       eth: e.target.value,
-      plat: rate.data * e.target.value
+      plat: rate.data * e.target.value,
     });
   }
 
@@ -70,7 +71,7 @@ export default class ConvertPopup extends Component {
     const {setState, rate} = this.props;
     setState({
       eth: e.target.value / rate.data,
-      plat: e.target.value
+      plat: e.target.value,
     });
   }
 
@@ -111,7 +112,7 @@ export default class ConvertPopup extends Component {
     const step = 0.1;
 
     return (
-      <Modal show={show} className="convert" onHide={onHide}>
+      <BGModal show={show} className="convert" onHide={onHide}>
         <style jsx global>{`
           .convert h2 {
             font-size: 20px !important;
@@ -174,7 +175,7 @@ export default class ConvertPopup extends Component {
             </Button>
           </Form>
         </Modal.Body>
-      </Modal>
+      </BGModal>
     );
   }
 }
