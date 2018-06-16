@@ -10,7 +10,7 @@ import {
   ACCOUNT_ERROR,
   MESSAGE_ADD,
   NEW_BLOCK,
-  USER_RESET,
+  SIGN_OUT_USER,
   USER_SHOW_REGISTER_WORKFLOW,
 } from "@/shared/constants/actions";
 
@@ -56,29 +56,35 @@ class MetaMask extends Component {
   }
 
   componentDidMount() {
+    const {dispatch} = this.props;
     if (MetaMask.isInstalled()) {
       this.setState({
         interval: setInterval(() => {
-          if (window.web3.eth.accounts[0] !== this.props.account.wallet) {
-            const wallet = window.web3.eth.accounts.length ? window.web3.eth.accounts[0] : null;
-              this.props.dispatch({
-                type: ACCOUNT_CHANGED,
-                payload: {wallet},
-              });
-            if (!wallet) {
-              if (this.props.user.data) {
-                log.info("Resetting user: ", window.web3.eth.accounts[0]);
-                this.props.dispatch({type: USER_RESET});
-              }
+          const web3EthWallets = window.web3.eth.accounts;
+          const web3EthWallet = web3EthWallets[0];
+          const web3AccountSignedIn = Boolean(web3EthWallets.length);
+          const accountInStoreDoesNotMatchWeb3Account = Boolean(web3EthWallet !== this.props.account.wallet);
 
-              if ((this.props.account.isLoading || this.props.account.success)) {
-                this.props.dispatch({
-                  type: ACCOUNT_ERROR,
-                });
-              }
-            }
+          /* Update stored account if wallet do not match web3 account */
+          if (web3AccountSignedIn && accountInStoreDoesNotMatchWeb3Account) {
+            log.info(`User will be updated in store in because a web3 account exists and ${
+              this.props.account.wallet ? "the stored account.wallet does not match" : "no account.wallet is stored"
+            }.`);
+            dispatch({
+              type: ACCOUNT_CHANGED,
+              payload: {wallet: web3EthWallet},
+            });
+            /* Log account error if we register account success while wallet is falsy */
+            if (!this.props.account.wallet && this.props.account.success) dispatch({type: ACCOUNT_ERROR});
+            return;
           }
-        }, 500),
+
+          /* Sign out user if accounts do not match, or if stored account is signed out in web3 */
+          if (!web3AccountSignedIn && accountInStoreDoesNotMatchWeb3Account && this.props.account.wallet) {
+            log.info("User will be removed from store because the web3 account does not match the stored value.");
+            dispatch({type: SIGN_OUT_USER});
+          }
+        }, 200),
       });
 
       window.web3.eth.filter("latest").watch((error, result) => {

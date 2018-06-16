@@ -5,21 +5,26 @@ import {dissoc, filter, isEmpty, map, merge, path, pickAll, prop, propEq} from "
 
 import {client} from "@/client/utils/apollo";
 import {
+  ACCOUNT_RESET,
   BALANCE_ETH_CHANGED,
   BALANCE_PLAT_CHANGED,
   CREATE_USER,
+  CHAT_GUEST_INIT,
   INVENTORY_GAMES_ERROR,
   INVENTORY_ITEMS_ERROR,
   MESSAGE_ADD,
   MESSAGE_ADD_ALL,
   NETWORK_CHANGED,
+  SIGN_OUT_USER,
   UPDATE_USER,
   USER_CHANGED,
   USER_ERROR,
   USER_LOADING,
+  USER_RESET,
   VALIDATION_ADD_ALL,
 } from "@/shared/constants/actions";
 import {localization} from "@/shared/intl/setup";
+
 
 function * fetchUser() {
   try {
@@ -27,6 +32,7 @@ function * fetchUser() {
       type: USER_LOADING,
     });
     const account = yield select(state => state.account);
+
     if (!account.wallet) {
       yield put({
         type: BALANCE_ETH_CHANGED,
@@ -42,8 +48,13 @@ function * fetchUser() {
       yield put({
         type: INVENTORY_GAMES_ERROR,
       });
+      yield put({
+        type: CHAT_GUEST_INIT,
+        payload: {wallet: "0xanonymous", nickName: "Guest"},
+      });
       return;
     }
+
     const query = gql`
       query viewUserByWallet($wallet: String!) {
         viewUserByWallet(wallet: $wallet) {
@@ -51,6 +62,7 @@ function * fetchUser() {
         }
       }
     `;
+
     const variables = {wallet: account.wallet};
     const result = yield client.query({query, variables});
     const user = path(["data", "viewUserByWallet"], result);
@@ -61,6 +73,10 @@ function * fetchUser() {
       });
       yield put(updateIntl(localization[user.language]));
     } else {
+      yield put({
+        type: CHAT_GUEST_INIT,
+        payload: {wallet: account.wallet, nickName: "Guest"},
+      });
       yield put({
         type: USER_ERROR,
       });
@@ -160,8 +176,18 @@ function * updateUser(action) {
   }
 }
 
+function * signOutUser(action) {
+  yield put({
+    type: USER_RESET,
+  });
+  yield put({
+    type: ACCOUNT_RESET,
+  });
+}
+
 export default function * userSaga() {
   yield takeEvery(NETWORK_CHANGED, fetchUser);
   yield takeEvery(CREATE_USER, createUser);
   yield takeEvery(UPDATE_USER, updateUser);
+  yield takeEvery(SIGN_OUT_USER, signOutUser);
 }

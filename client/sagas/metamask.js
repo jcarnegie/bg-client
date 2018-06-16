@@ -1,9 +1,10 @@
 import bluebird from "bluebird";
 import {put, select, takeEvery} from "redux-saga/effects";
-import tokenABI from "../../shared/contracts/token";
-import oracleABI from "../../shared/contracts/oracle";
-import networkConfig from "../utils/network";
+import tokenABI from "@/shared/contracts/token";
+import oracleABI from "@/shared/contracts/oracle";
+import networkConfig from "@/client/utils/network";
 import {
+  APP_INIT,
   ACCOUNT_CHANGED,
   BALANCE_ETH_CHANGED,
   BALANCE_ETH_ERROR,
@@ -20,7 +21,7 @@ import {
   RATE_LOADING,
   RATE_REQUEST,
   USER_CHANGED,
-} from "../../shared/constants/actions";
+} from "@/shared/constants/actions";
 
 
 function * getRate() {
@@ -128,11 +129,12 @@ function * getNetwork() {
 
 
 export default function * metaMaskSaga() {
+  yield takeEvery(APP_INIT, getNetwork);
   yield takeEvery(ACCOUNT_CHANGED, getNetwork);
-  yield takeEvery(USER_CHANGED, getBalanceETH);
   yield takeEvery(NEW_BLOCK, getBalanceETH);
-  yield takeEvery(USER_CHANGED, getBalancePLAT);
   yield takeEvery(NEW_BLOCK, getBalancePLAT);
+  yield takeEvery(USER_CHANGED, getBalancePLAT);
+  yield takeEvery(USER_CHANGED, getBalanceETH);
   yield takeEvery(RATE_REQUEST, getRate);
 }
 

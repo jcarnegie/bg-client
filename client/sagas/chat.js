@@ -1,9 +1,10 @@
 import {put, select, takeEvery} from "redux-saga/effects";
 import xssFilters from "xss-filters";
-
+import * as log from "loglevel";
 import {
   isEmpty,
 } from "ramda";
+
 import {channels as chatChannels,
   init as chatInit,
   messages as chatMessages,
@@ -12,8 +13,17 @@ import {channels as chatChannels,
   createChannelWithName,
   findChannelByName,
   setChannelByName,
-} from "../utils/chat";
-import {CHAT_INIT, CHAT_LOAD_MESSAGES, CHAT_MESSAGE_SEND, CHAT_MESSAGE_SENT, CHAT_SET_CHANNEL, USER_CHANGED} from "../../shared/constants/actions";
+} from "@/client/utils/chat";
+import {
+  CHAT_INIT,
+  CHAT_GUEST_INIT,
+  CHAT_LOAD_MESSAGES,
+  CHAT_MESSAGE_SEND,
+  CHAT_MESSAGE_SENT,
+  CHAT_SET_CHANNEL,
+  USER_CHANGED,
+  USER_SHOW_REGISTER_WORKFLOW,
+} from "@/shared/constants/actions";
 
 function * sendChatMessage(action) {
   try {
@@ -26,6 +36,14 @@ function * sendChatMessage(action) {
       return null;
     }
 
+    if (!state.user.data) {
+      yield put({
+        type: USER_SHOW_REGISTER_WORKFLOW,
+        payload: true,
+      });
+      return;
+    }
+
     const sentMessage = yield sendMessage(cleanMsg, currentChannel);
 
     yield put({
@@ -33,13 +51,29 @@ function * sendChatMessage(action) {
       payload: sentMessage,
     });
   } catch (e) {
-    console.log("sendChatMessage error:", e);
+    log.error("sendChatMessage error:", e);
   }
 }
 
 function * initChat(action) {
   const {wallet, nickName} = action.payload;
-  const [sb, user] = yield chatInit(wallet, nickName);
+  let user = yield select(state => state.user);
+  let sb;
+
+  log.info(wallet, user);
+  if (!wallet || !user) {
+    log.info("Initializing chat for guest user.");
+    [sb, user] = yield chatInit("guestuser", "Guest");
+    yield put({
+      type: CHAT_INIT,
+      payload: {sb, user},
+    });
+    return;
+  }
+
+  log.info(`Initializing chat for user: ${nickName}.`);
+  [sb, user] = yield chatInit(wallet, nickName);
+
   yield put({
     type: CHAT_INIT,
     payload: {sb, user},
@@ -77,4 +111,5 @@ function * initChat(action) {
 export default function * chatSaga() {
   yield takeEvery(CHAT_MESSAGE_SEND, sendChatMessage);
   yield takeEvery(USER_CHANGED, initChat);
+  yield takeEvery(CHAT_GUEST_INIT, initChat);
 }

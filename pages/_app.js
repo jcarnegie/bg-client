@@ -12,6 +12,7 @@ import MetaMask from "@/components/common/metamask";
 
 import GlobalStyles from "@/pages/globalstyles";
 import style from "@/shared/constants/style";
+import {APP_INIT} from "@/shared/constants/actions";
 
 
 if (process.env.NODE_ENV === "production") {
@@ -34,6 +35,10 @@ class BGApp extends App {
     const locals = ctx.isServer ? ctx.res.locals : {};
 
     return {pageProps, metaMaskProps, gaListenerProps, locals};
+  }
+
+  componentDidMount() {
+    this.props.store.dispatch({type: APP_INIT});
   }
 
   render() {

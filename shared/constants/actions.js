@@ -1,3 +1,5 @@
+export const APP_INIT = "APP_INIT";
+
 export const MESSAGE_ADD = "MESSAGE_ADD";
 export const MESSAGE_ADD_ALL = "MESSAGE_ADD_ALL";
 export const MESSAGE_REMOVE = "MESSAGE_REMOVE";
@@ -13,12 +15,14 @@ export const USER_CHANGED = "USER_CHANGED";
 export const USER_ERROR = "USER_ERROR";
 export const USER_RESET = "USER_RESET";
 export const USER_SHOW_REGISTER_WORKFLOW = "USER_SHOW_REGISTER_WORKFLOW";
+export const SIGN_OUT_USER = "SIGN_OUT_USER";
 
 export const CREATE_USER = "CREATE_USER";
 export const UPDATE_USER = "UPDATE_USER";
 
 export const ACCOUNT_CHANGED = "ACCOUNT_CHANGED";
 export const ACCOUNT_ERROR = "ACCOUNT_ERROR";
+export const ACCOUNT_RESET = "ACCOUNT_RESET";
 
 export const NEW_BLOCK = "NEW_BLOCK";
 
@@ -50,6 +54,7 @@ export const RATE_ERROR = "RATE_ERROR";
 export const RATE_LOADING = "RATE_LOADING";
 
 export const CHAT_INIT = "CHAT_INIT";
+export const CHAT_GUEST_INIT = "CHAT_GUEST_INIT";
 export const CHAT_LOAD_MESSAGES = "CHAT_LOAD_MESSAGES";
 export const CHAT_MESSAGE_RECEIVED = "CHAT_MESSAGE_RECEIVED";
 export const CHAT_MESSAGE_SEND = "CHAT_MESSAGE_SEND";
