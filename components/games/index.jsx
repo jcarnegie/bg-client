@@ -2,12 +2,18 @@ import React, {Component} from "react";
 import {Grid, Button, Col, Image, Row} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 import Link from "next/link";
+import Router from "next/router";
 import ReactGA from "react-ga";
+
+import {Mobile, Desktop} from "@/components/responsive";
+import GameIcon from "@/components/gameicon";
+import BGIcon from "@/components/bgicon";
 
 const BANNER_SWITCH_INTERVAL = 10e3;
 const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
 
 // TODO use store, re-factor styles and rebuild UI
+// TODO button component with styles, or global button styles
 
 const GAMES = {
   "etheronline": {
@@ -77,14 +83,14 @@ export default class GameList extends Component {
     return (
       <div className={`banner ${this.state.showingGame.name}`}>
         <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-left">
-          <Image src="/static/images/buttons/arrow_large_left.png" />
+          <Image src="/static/images/icons/arrow_large_left.png" />
         </div>
         <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-right">
-          <Image src="/static/images/buttons/arrow_large_left.png" />
+          <Image src="/static/images/icons/arrow_large_left.png" />
         </div>
         <Link href={{pathname: "/game", query: {slug}}} as={`/game/${slug}`}>
           <Button onClick={::this.onBannerClick}>
-            <Image src="/static/images/buttons/play/black.png" />
+            <Image src="/static/images/icons/play_black.png" />
             <FormattedMessage id="pages.games.banner.play" />
           </Button>
         </Link>
@@ -141,7 +147,7 @@ export default class GameList extends Component {
   airdropOver() {
     return (
       <Col md={12} className="giveaway">
-        <Image src="/static/images/ether_logo.png" />
+        <Image src="/static/images/banners/ether.online/icon.png" />
         <div className="caption">
           <FormattedMessage id="pages.games.airdrop.giveaway-over" />
         </div>
@@ -156,15 +162,95 @@ export default class GameList extends Component {
 
   airdrop() {
     return (
-      <Col md={6} className="giveaway">
-        <Image src="/static/images/ether_logo.png" />
-        <div className="caption">
-          <FormattedMessage id="pages.games.airdrop.giveaway" />
+      <div className="airdrop">
+        <style jsx>{`
+          .airdrop {
+            background-image: url("/static/images/backgrounds/hexBlue.png");
+            background-size: contain;
+            background-color: rgb(30, 124, 187);
+            color: #314B88;
+            border-bottom: 1px solid #c7c6f2;
+            height: 200px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .airdrop-center {
+            flex-grow: 2;
+            text-align: center;
+          }
+          .airdrop-title,
+          .airdrop-subtitle {
+            display: block;
+            text-align: center;
+            text-transform: uppercase;
+            margin: 0;
+          }
+          .airdrop-title {
+            font-size: 40px;
+            font-weight: 600;
+            background: -webkit-linear-gradient(rgb(254,241,161), rgb(254,196,54));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+          .airdrop-subtitle {
+            font-size: 36px;
+            color: rgb(255,255,255);
+            text-shadow: 0 0 2px black;
+            letter-spacing: 2px;
+          }
+          .airdrop-button {
+            color: #130029;
+            background: linear-gradient(to right,#b1c8e8 0%,#fbfcff 100%);
+            font-size: 14px;
+            font-weight: 700;
+            padding: 10px 20px;
+            margin: 12px 0 0 0;
+            border: 0;
+            border-radius: 2px;
+            text-transform: uppercase;
+          }
+          .airdrop-button:hover {
+            background: linear-gradient(to right,#7189b6 0%,#dcdee8 100%);
+            color: #130029;
+          }
+          .airdrop-title-mobile {
+            font-size: 24px;
+          }
+          .airdrop-subtitle-mobile {
+            font-size: 20px;
+          }
+          .bitguild-logo-wrapper {
+            width: 75px;
+          }
+          :global(.airdrop-flex) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+          }
+        `}</style>
+        <GameIcon game={{slug: "ether.online"}} className="airdrop-flex" />
+        <div className="airdrop-center">
+          <Mobile>
+            <h2 className="airdrop-title airdrop-title-mobile">Ether Online</h2>
+            <h3 className="airdrop-subtitle airdrop-subtitle-mobile">Pet Giveaway</h3>
+          </Mobile>
+          <Desktop>
+            <h2 className="airdrop-title">Ether Online</h2>
+            <h3 className="airdrop-subtitle">Pet Giveaway</h3>
+          </Desktop>
+          <div>
+            <button className="airdrop-button" onClick={() => Router.push("/airdrop")}>
+              <FormattedMessage id="pages.games.airdrop.learn-more"></FormattedMessage>
+            </button>
+          </div>
         </div>
-        <Button href="/airdrop" primary>
-          <FormattedMessage id="pages.games.airdrop.learn-more" />
-        </Button>
-      </Col>
+        <div className="airdrop-flex bitguild-logo-wrapper">
+          <BGIcon src="/static/images/icons/bitguild_logo@1x.png" className="bitguild-logo airdrop-flex" width="50px" />
+        </div>
+      </div>
     );
   }
 
@@ -215,10 +301,10 @@ export default class GameList extends Component {
             position: relative;
           }
           .games .banner.etheronline {
-            background-image: url("/static/images/landing.png");
+            background-image: url("/static/images/games/ether.online/banner.png");
           }
           .games .banner.magicacademy {
-            background-image: url("/static/images/magic_banner.png");
+            background-image: url("/static/images/games/magicacademy/banner.png");
           }
           .games .banner .btn {
             color: #130029;
@@ -247,37 +333,6 @@ export default class GameList extends Component {
             height: 16px;
             margin-top: -5px;
             margin-right: 5px;
-          }
-          .airdrop {
-            background-color: #F1F5FF;
-            color: #314B88;
-            text-align: center;
-            padding: 15px 0 25px 0;
-            border-bottom: 1px solid #c7c6f2;
-          }
-          .games .airdrop .btn {
-            margin: 0 auto;
-          }
-          .games .airdrop .countdown {
-            margin-top: 30px;
-          }
-          .games .airdrop .countdown .caption {
-            text-transform: uppercase;
-            font-size: 12px;
-          }
-          .games .airdrop .countdown .time {
-            max-width: 500px;
-            margin: 0 auto;
-          }
-          .games .airdrop .countdown .time .value {
-            font-weight: 400;
-            font-size: 65px;
-            line-height: 65px;
-          }
-          .games .airdrop .countdown .time .units {
-            font-weight: 400;
-            font-size: 11px;
-            text-transform: uppercase;
           }
           .giveaway img {
             width: 66px;
@@ -354,15 +409,16 @@ export default class GameList extends Component {
             {this.banner()}
           </Col>
         </Row>
-        {/* <Row className="airdrop"> */}
-          {/* {this.countdown()} */}
-          {/* {this.countdownIsOver() ? this.airdropOver() : this.airdrop()} */}
-        {/* </Row> */}
+        <Row>
+          <Col>
+            {this.airdrop()}
+          </Col>
+        </Row>
         <Row className="announce">
-          {this.comingSoon("/static/images/axie_banner.png")}
-          {this.comingSoon("/static/images/eth_town.png")}
-          {this.comingSoon("/static/images/mythereum_banner.png")}
-          {this.comingSoon("/static/images/in-development.png", "pages.games.announce.in-development")}
+          {this.comingSoon("/static/images/games/axie/banner.png")}
+          {this.comingSoon("/static/images/games/eth_town/banner.png")}
+          {this.comingSoon("/static/images/games/mythereum/banner.png")}
+          {this.comingSoon("/static/images/games/bitizens/banner.png", "pages.games.announce.in-development")}
         </Row>
         <Row className="explore">
           <Col>

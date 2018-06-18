@@ -78,7 +78,7 @@ export default class Message extends Component {
     }
 
     return (
-      <Image src="/static/images/avatar.png" width={diameter} height={diameter} />
+      <Image src="/static/images/icons/avatar.png" width={diameter} height={diameter} />
     );
   }
 

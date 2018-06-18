@@ -178,7 +178,7 @@ export default class Inventory extends Component {
 					<h2>
 						<FormattedMessage id="pages.inventory.empty" />
 					</h2>
-					<Image src="/static/images/empty-box.png" />
+					<Image src="/static/images/misc/empty-box.png" />
 					<p>
 						<FormattedHTMLMessage id="pages.inventory.faq" />
 					</p>

@@ -208,12 +208,27 @@
       }
     },
     "airdrop": {
-      "title": "<strong>Evento encerrado!</strong>",
-      "p1": "Obrigado a todos que participaram do evento Ether Online na BitGuild!",
-      "p2": "Um parabéns especial para os vencedores do grande prêmio! Se você ainda não o fez, verifique seu inventário no jogo agora. Se você ganhou, você verá 51 baús novinhos esperando por você para abrir, revelando sua recompensa incrível!",
-      "p3": "Se você não ganhou, desculpe! Mas não se preocupe, você terá muitas chances de receber itens gratuitos com BitGuild.com no futuro! Fique atento ao nosso <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a> e <a href='https://medium.com/the-notice-board' target='_blank' rel='noopener noreferrer'>Blog oficial</a> para nunca perder nada.",
-      "p4": "Enquanto isso, recomendamos que você experimente nosso mais recente jogo ______ ou simplesmente dê uma olhada no que está disponível em BitGuild por você mesmo!",
-      "p5": "Vejo você online!"
+      "title": "Olá, colegas de guilda,",
+      "p1": "Bem-vindos à <strong> última chance de obter um mascote no Ether Online <strong> sem precisar de troca no mercado!",
+      "p2": "Temos alguns mascotes para presentear. Eles são diferentes porque <strong> aumentam os atributos do seu personagem do Ether Online em %<strong>— o único tipo de item no jogo a fazer isso! Nem é preciso dizer: o jogador que tiver um desses mascotes raros estará em enorme vantagem.",
+      "p3": "Para participar de qualquer um dos eventos a seguir, você precisa registrar sua conta MetaMask em www.bitguild.com e <strong>ter, no mínimo, 1000 PLAT<strong> na carteira.",
+      "p4": "Agora, para descobrir como colocar as mãos em um desses amiguinhos animais, continue lendo!",
+      "p5": "<strong>Urso de Guerra:<strong> concurso da comunidade do Discord! Entre no Salão da Guilda e encontre seus colegas de guilda, interaja com a equipe e fique por dentro das novidades da BitGuild!",
+      "l1": "<strong>Entre no servidor oficial da BitGuild no Discord e chegue ao nível 3+<strong>. Ganhe experiência e suba de nível participando de conversas com a comunidade! Seja construtivo e não faça spam.**",
+      "l2": "<strong>Preencha este formulário<strong> para confirmar sua participação na promoção quando você atender aos critérios.",
+      "l3": "Um vencedor de sorte ganhará o raro <strong>Urso de Guerra<strong>, e <strong>outras 10 pessoas ganharão 20 Baús de Itens cada uma!<strong>",
+      "l4": "O vencedor será selecionado aleatoriamente dentre os usuários que atenderem aos critérios. Mandaremos um e-mail, então <strong>fique de olho na sua caixa de entrada por volta de 28 de junho de 2018!*<strong>",
+      "p6": "<strong> Águia Real:<strong> concurso de arte dos fãs! Abra suas asas criativas criando arte de fã! Ela deve ter a forma de uma imagem estática, como um papel de parede ou gif animado.",
+      "l5": "Convidamos você a nos enviar seu material! Queremos ver do que nossa comunidade é capaz frente a um desafio de criatividade!",
+      "l6": "As imagens devem ter <strong>temas da BitGuild ou do Ether Online<strong> e ser inofensivas. Fora isso, é com você. Esforço e ousadia valem pontos extras.",
+      "l7": "Quando terminar sua obra-prima, <strong>preencha este formulário<strong> para nos mandar seu trabalho e confirmar sua participação!",
+      "l8": "Em 2 de julho de 2018, a BitGuild selecionará os finalistas e vocês terão a chance de votar em seus favoritos no servidor oficial da BitGuild no Discord! O vencedor se tornará o orgulhoso dono da <strong>Águia Real<strong>, e <strong>os 5 melhores colocados depois dele ganharão 50 Baús de Itens cada!<strong>",
+      "l9": "Os vencedores serão contatados por e-mail. Fique de olho na sua caixa de entrada!*",
+      "p7": "<strong>Tigre Indomável:<strong> BitGuild na web! Ajude-nos na divulgação e no crescimento da guilda compartilhando nosso conteúdo em várias plataformas!",
+      "l10": "Clique aqui e <strong>siga as instruções para ter a chance de ganhar o Tigre Indomável<strong>. Quanto mais tarefas você concluir, maiores suas chances de ganhar - <strong>além disso, 50 participantes aleatórios receberão 5 baús de itens cada um!<strong>",
+      "l11": "Olhe o seu e-mail em 25 de junho de 2018 para ver se ganhou!",
+      "p8": "*Se um usuário não responder à nossa mensagem em 24 horas, a BitGuild se reserva o direito de selecionar um novo vencedor aleatório.",
+      "p9": "contribuição que seja spam, de pouco esforço, ofensiva ou duplicada. Seja um bom competidor!"
     }
   },
   "chat": {

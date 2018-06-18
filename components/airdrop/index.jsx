@@ -3,7 +3,6 @@ import {Image} from "react-bootstrap";
 import {FormattedHTMLMessage} from "react-intl";
 
 import Article from "@/components/article";
-import {Mobile, Desktop} from "@/components/responsive";
 
 
 export default class Airdrop extends Component {
@@ -45,14 +44,60 @@ export default class Airdrop extends Component {
               width: 90%;
               max-width: 440px;
             }
+
+            ol, ul {
+              margin-bottom: 30px;
+            }
           `}</style>
+
           <h2><FormattedHTMLMessage id="pages.airdrop.title" /></h2>
-          <p><strong><FormattedHTMLMessage id="pages.airdrop.p1" /></strong></p>
+
+          <p><FormattedHTMLMessage id="pages.airdrop.p1" /></p>
           <p><FormattedHTMLMessage id="pages.airdrop.p2" /></p>
           <p><FormattedHTMLMessage id="pages.airdrop.p3" /></p>
-          <p><strong><FormattedHTMLMessage id="pages.airdrop.p4" /></strong></p>
-          <p><strong><FormattedHTMLMessage id="pages.airdrop.p5" /></strong></p>
-          <Image src="/static/images/airdrop.png" className="airdrop-image" />
+          <p><FormattedHTMLMessage id="pages.airdrop.p4" /></p>
+          <p><FormattedHTMLMessage id="pages.airdrop.p5" /></p>
+
+          <ol>
+            <li>
+              <a className="e-widget no-button generic-loader" href="https://gleam.io/Qv4W7/bitguild-giveaway-ether-online-warbear" rel="nofollow noopener noreferrer">
+                <FormattedHTMLMessage id="pages.airdrop.l1" />
+              </a>
+            </li>
+            <li><FormattedHTMLMessage id="pages.airdrop.l2" /></li>
+            <li><FormattedHTMLMessage id="pages.airdrop.l3" /></li>
+            <li><FormattedHTMLMessage id="pages.airdrop.l4" /></li>
+          </ol>
+
+          <p><FormattedHTMLMessage id="pages.airdrop.p6" /></p>
+
+          <ol>
+            <li><FormattedHTMLMessage id="pages.airdrop.l5" /></li>
+            <li><FormattedHTMLMessage id="pages.airdrop.l6" /></li>
+            <li>
+            <a className="e-widget no-button generic-loader" href="https://gleam.io/Ksqof/bitguild-giveaway-ether-online-royal-eagle" rel="nofollow noopener noreferrer">
+              <FormattedHTMLMessage id="pages.airdrop.l7" />
+            </a>
+            </li>
+            <li><FormattedHTMLMessage id="pages.airdrop.l8" /></li>
+            <li><FormattedHTMLMessage id="pages.airdrop.l9" /></li>
+          </ol>
+
+          <p><FormattedHTMLMessage id="pages.airdrop.p7" /></p>
+
+          <ol>
+            <li>
+              <a className="e-widget no-button generic-loader" href="https://gleam.io/VsjzO/bitguild-giveaway-ether-online-raging-tiger" rel="nofollow noopener noreferrer">
+                <FormattedHTMLMessage id="pages.airdrop.l10" />
+              </a>
+            </li>
+            <li><FormattedHTMLMessage id="pages.airdrop.l11" /></li>
+          </ol>
+
+          <p><FormattedHTMLMessage id="pages.airdrop.p8" /></p>
+          <p><FormattedHTMLMessage id="pages.airdrop.p9" /></p>
+
+          <Image src="/static/images/misc/pet-giveaway.png" className="airdrop-image" />
         </div>
       </Article>
     );

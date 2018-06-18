@@ -209,12 +209,27 @@
       }
     },
     "airdrop": {
-      "title": "<strong>大派送完结啦！</strong>",
-      "p1": "我们想要特别的感谢所有参与Ether Online在BitGuild上的大派送活动的用户！",
-      "p2": "首先，恭喜所有获得超级大奖的赢家们！如果你幸运赢得大奖，你会看到最多51个亮锃锃的宝箱等你开启，里面会有属于你的奖品哦！",
-      "p3": "如果你没有赢得超级大奖，你仍然有机会得到一个宝箱。别灰心，未来你仍有机会在BitGuild.com上获得各种免费物品。关注我们的<a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>，<a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>，<a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a>，<a href='https://medium.com/the-notice-board' target='_blank' rel='noopener noreferrer'>和我们的官方博客</a>，千万别错过！",
-      "p4": "还有，请查看我们最新的游戏, Magic Academy，或者直接前去BitGuild看看吧！",
-      "p5": "别走开，下次见！"
+      "title": "“各位公会伙伴，大家好！”",
+      "p1": "“欢迎大家来抢夺<strong>最后机会<strong>，不必在市场上进行交易即可获得 Ether Online 中的一个宠物！”",
+      "p2": "“我们有一些宠物可以放弃。！ 这些宠物<strong>可使您的 Ether Online 角色属性值提高一定百分比<strong>，在这方面而言，它们是独一无二的—是该游戏中唯一一种具有此功能的物品！ 不用说，拥有其中一只稀有宠物的玩家将会获得巨大优势。”",
+      "p3": "“要参与以下任何活动，首先必须在 www.bitguild.com 上注册您的 MetaMask 帐户，并且您的钱包中<strong>至少应有 1000 PLAT<strong>。”",
+      "p4": "“现在，要了解如何获得其中一个可爱的动物朋友，请继续阅读！”",
+      "p5": "“<strong>战熊：<strong>社区 Discord 竞赛！ 跳入公会大厅并与您的公会伙伴会面、与团队互动，以及了解 BitGuild 的所有最新新闻！”",
+      "l1": "“<strong>加入官方 BitGuild Discord 服务器，并达到 3 级和以上水平<strong>。 通过参与社区对话可以获得经验和实现升级！ 请发表富有建设性的言论，不要发表无用的垃圾信息。**”",
+      "l2": "“当您满足条件后，<strong>请填写此表<strong>，以确认您参加赠送环节。”",
+      "l3": "“我们的幸运获胜者将赢得玩家求之不得的<strong>战熊<strong>，<strong>另外 10 人每人将赢得 20 个物品箱！<strong>”",
+      "l4": "“获胜者将从满足条件的用户中随机选择。 我们将发送电子邮件给您，因此<strong>请在 2018 年 6 月 28 日前后留意您的收件箱！*<strong>”",
+      "p6": "“<strong>皇家之鹰：<strong>粉丝艺术作品竞赛！ 通过创作某种粉丝艺术作品，张开您的创意之翼！ 此类艺术作品应该采用静态图片的形式，如壁纸，或动画 .gif 文件。”",
+      "l5": "“我们邀请您将自己的作品内容提交给我们！ 我们想看看，在面对创意挑战时，我们社区可以做些什么！”",
+      "l6": "“图片应以 <strong>BitGuild 或 Ether Online 为主题<strong>，并且没有恶意。 除此之外，都由您自己决定。 您的努力和‘不落俗套的思考’将获得额外积分。”",
+      "l7": "“在您完成自己的作品后，<strong>请填写此表<strong>，以将您的作品发送给我们，从而确认您参加！”",
+      "l8": "“BitGuild 将在 2018 年 7 月 02 日选择决赛选手，而您将有机会在官方 BitGuild Discord 服务器上为您最喜爱的作品投票！ 获胜者将自豪地成为<strong>皇家之鹰<strong>的新主人，<strong>另外 5 名选手每人将赢得 50 个物品箱！<strong>”",
+      "l9": "“我们将通过电子邮件与获胜者联系。 请留意您的收件箱！*”",
+      "p7": "“<strong>愤怒之虎：<strong>网络上的 BitGuild！ 通过在各种平台上分享我们的内容，可以帮助我们传播消息、扩大公会。！”",
+      "l10": "“请在 2018 年 6 月 25 日查看您的电子邮件，以了解您是否获胜！”",
+      "l11": "“请在 2018 年 6 月 25 日查看您的电子邮件，以了解您是否获胜！”",
+      "p8": "“*如果用户未在 24 小时内回复我们的邮件，BitGuild 将保留随机选择新获胜者的权利。”",
+      "p9": "“稿件将被视为垃圾信息、不够努力、冒犯性或重复内容。 祝大家玩得开心！”"
     }
   },
   "chat": {

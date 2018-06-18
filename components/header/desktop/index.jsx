@@ -66,7 +66,7 @@ export default class Header extends Component {
           }
         `}</style>
         <Link href="/">
-          <img src="/static/images/logo-small.png" className="logo-img no-select" />
+          <img src="/static/images/icons/bitguild_logo@1x.png" className="logo-img no-select" />
         </Link>
         <span className="logo-text">
           <Link href="/">

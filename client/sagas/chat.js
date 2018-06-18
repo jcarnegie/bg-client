@@ -60,7 +60,6 @@ function * initChat(action) {
   let user = yield select(state => state.user);
   let sb;
 
-  log.info(wallet, user);
   if (!wallet || !user) {
     log.info("Initializing chat for guest user.");
     [sb, user] = yield chatInit("guestuser", "Guest");

@@ -209,12 +209,27 @@
       }
     },
     "airdrop": {
-      "title": "<strong>Giveaway est fini!</strong>",
-      "p1": "Merci à tous ceux qui ont participé à l'événement Ether Online BitGuild giveaway!",
-      "p2": "Félicitations spéciales aux gagnants du grand prix! Si vous ne l'avez pas encore fait, vérifiez votre inventaire dans le jeu maintenant. Si vous avez gagné, vous verrez 51 coffres brillants qui n'attendent que vous pour ouvrir, révélant votre incroyable butin!",
-      "p3": "Si vous n'avez pas gagné, désolé! Mais ne vous inquiétez pas, vous aurez beaucoup de chances d'obtenir des trucs cool sur BitGuild.com à l'avenir! Restez à l'écoute de notre <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a> et <a href='https://medium.com/the-notice-board' target='_blank' rel='noopener noreferrer'>Blog officiel</a> pour ne jamais manquer un battement.",
-      "p4": "En attendant, nous vous encourageons à essayer notre dernier titre jouable ______, ou tout simplement à regarder ce qui est disponible sur BitGuild!",
-      "p5": "À bientôt en ligne!"
+      "title": "Salutations, camarades de guilde,",
+      "p1": "Bienvenue dans la <strong> dernière occasion d'obtenir un animal de compagnie dans Ether Online <strong> autrement qu'en l'échangeant sur le marché !",
+      "p2": "Nous avons des animaux à donner. Ces animaux de compagnie sont uniques car ils <strong> augmentent les stats de votre personnage dans Ether Online d'un % fixe<strong> : le seul type d'objet dans le jeu à faire ça ! Inutile de préciser que les joueurs avec l'un de ces animaux de compagnie rares ont un sérieux avantage.",
+      "p3": "Pour participer à l'un des événements ci-dessous, vous devez d'abord créer votre compte MetaMask sur www.bitguild.com, et <strong>avoir un minimum de 1 000 PLAT<strong> dans votre portefeuille.",
+      "p4": "Maintenant, pour savoir comment mettre la patte sur l'un de ces animaux familiers tout mignons, lisez la suite !",
+      "p5": "<strong>Ours de guerre :<strong> Concours de la communauté Discord ! Rendez-vous vite dans le hall de la guilde et rencontrez vos camarades de guilde, interagissez avec l'équipe et suivez les dernières nouvelles de BitGuild !",
+      "l1": "<strong>Rejoignez le serveur officiel de BitGuild Discord et atteignez le niveau 3+<strong>. Gagnez en expérience et montez en niveau en participant aux conversations de la communauté ! Soyez constructif et n'envoyez pas de spam.**",
+      "l2": "<strong>Remplissez ce formulaire<strong> pour confirmer votre participation au concours une fois que vous répondez aux critères.",
+      "l3": "Le plus chanceux remportera l'insaisissable <strong>Ours de guerre<strong> et <strong>10 joueurs supplémentaires gagneront 20 coffres d'objets chacun !<strong>",
+      "l4": "Le gagnant sera choisi au hasard parmi les utilisateurs qui répondent aux critères. Vous serez averti(e) par e-mail, alors <strong>gardez un œil sur votre messagerie autour du 28 juin 2018 !*<strong>",
+      "p6": "<strong>Aigle royal :<strong> Concours de fan art ! Étendez vos ailes créatives en créant du fan art ! Il peut prendre la forme d'une image statique telle qu'un fond d'écran ou un .gif animé.",
+      "l5": "Nous vous invitons à nous envoyer votre contenu ! Nous voulons voir ce que notre communauté peut faire lorsqu'elle est confrontée à un défi créatif !",
+      "l6": "Les images ne doivent pas être offensantes et doivent comporter le thème de <strong>BitGuild ou d'Ether Online<strong>. À part ça, c'est à vous de décider. Des points supplémentaires pour l'effort et pour « faire parler son imagination en matière de bloc ».",
+      "l7": "Une fois votre chef-d'œuvre terminé, <strong>remplissez ce formulaire<strong> pour nous envoyer votre travail et confirmer votre participation !",
+      "l8": "Le 2 juillet 2018, BitGuild sélectionnera les finalistes et vous aurez tous la chance de voter sur le serveur Discord de BitGuild officiel ! Le gagnant deviendra le fier propriétaire de l'<strong>Aigle royal<strong> et <strong>5 finalistes remporteront chacun 50 coffres d'objets !<strong>",
+      "l9": "Les gagnants seront contactés par e-mail. Gardez un œil sur votre messagerie !*",
+      "p7": "<strong>Tigre enragé :<strong> BitGuild sur le Web ! Aidez-nous à passer le mot et à développer la guilde en partageant notre contenu sur différentes plateformes !",
+      "l10":"Cliquez ici et <strong>suivez les instructions pour avoir la chance de gagner le Tigre enragé<strong>. Plus vous complétez de tâches, plus vos chances de gagner sont élevées : <strong>en plus, 50 participants choisis au hasard recevront chacun 5 coffres d'objets !<strong>" ,
+      "l11":"Vérifiez votre e-mail le 25 juin 2018 pour voir si vous êtes un des heureux vainqueurs !" ,
+      "p8": "*Si un utilisateur ne répond pas à notre message dans les 24 heures, BitGuild se réserve le droit de sélectionner un nouveau gagnant au hasard.",
+      "p9": "contribution à provoquer des spams, effort insuffisant, offensant, ou contenu double. Soyez sympa !"
     }
   },
   "chat": {

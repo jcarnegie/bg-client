@@ -213,12 +213,27 @@
       }
     },
     "airdrop": {
-      "title": "Giveaway is over!",
-      "p1": "Thank you to everyone who participated in the Ether Online BitGuild giveaway event!",
-      "p2": "Within 72 hours, the item chest for all users who met the event criterias, as well as the grand prize, will be sent to your in-game inventory. If you won, see up to 51 shiny item chests just waiting for you to open, revealing your awesome loot!",
-      "p3": "If you didn’t win, sorry! But don’t worry, you’ll have plenty of chances to get cool free stuff on BitGuild.com in the future! Stay tuned to our <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a>, and <a href='https://medium.com/the-notice-board' target='_blank' rel='noopener noreferrer'>official Blog</a> to never miss a beat.",
-      "p4": "In the meantime, we encourage you to try our latest playable title, Magic Academy, or simply go have a look at what’s available on BitGuild for yourself!",
-      "p5": "See you online!"
+      "title": "Hail Guildmates,",
+      "p1": "Welcome to the <strong> final opportunity to obtain a pet in Ether Online <strong> outside of trading for it on the marketplace!",
+      "p2": "We’ve got some pets to give away. These pets are unique in that they <strong> increase your Ether Online character stats by a flat %<strong>—the only type of item in the game to do so! Needless to say, players with one of these rare pets are at a serious advantage.",
+      "p3": "To participate in any of the below events, you must first register your MetaMask account on www.bitguild.com, and <strong>have a minimum of 1000 PLAT<strong> in your wallet.",
+      "p4": "Now, to find out how to get your mitts on one of these cute animal friends, read on!",
+      "p5": "<strong>Warbear:<strong> Community Discord Contest! Jump into the Guild Hall and meet your fellow Guildmates, interact with the team, and keep up with all the latest news from BitGuild!",
+      "l1": "<strong>Join the official BitGuild Discord Server, and reach level 3+<strong>. Gain experience and level up by participating in conversations with the community! Please be constructive and don’t spam.**",
+      "l2": "<strong>Fill this form<strong> to confirm your entry into the giveaway once you meet the criteria.",
+      "l3": "One lucky winner will win the elusive <strong>Warbear<strong>, and <strong>10 additional people will win 20 Item Chests each!<strong>",
+      "l4": "Winner will be selected at random from users meeting the criteria. We will email you, so <strong>keep an eye on your inbox around June 28th, 2018!*<strong>",
+      "p6": "<strong> Royal Eagle:<strong> Fan art contest! Spread your creative wings by creating some fan art! This should take the form of a static image such as a wallpaper, or an animated .gif.",
+      "l5": "We invite you to submit your content to us! We want to see what our community can do when posed with a creative challenge!",
+      "l6": "Images should be <strong>BitGuild or Ether Online themed<strong>, and inoffensive. Beyond that, it’s up to you. Extra points for effort, and “thinking outside the block”.",
+      "l7": "Once you’ve completed your masterpiece, <strong>fill out this form<strong> to send us your work to confirm your entry!",
+      "l8": "On July 2nd 2018, BitGuild will select the finalists, and you’ll all get a chance to vote for your favorite on the official BitGuild Discord Server! The winner will become the proud new owner of the <strong>Royal Eagle<strong>, and <strong>5 runners up stand to win 50 Item Chests each!<strong>",
+      "l9": "Winners will be contacted via email. Keep your eyes on your inbox!*",
+      "p7": "<strong>Raging Tiger:<strong> BitGuild on the web! Help us spread the word and grow the guild by sharing our content on various platforms!",
+      "l10": "Click here, and <strong>follow the instructions for your chance to win the Raging Tiger<strong>. The more tasks you complete, the higher your chance to win - <strong>additionally, 50 random participants will receive 5 item chests each!<strong>",
+      "l11": "Check your email on June 25th, 2018, to see if you’ve won!",
+      "p8": "*If a user does not reply to our message within 24 hours, BitGuild reserves the right to select a new winner at random.",
+      "p9": "contribution to be spam, low effort, offensive, or duplicate content. Play nice!"
     }
   },
   "chat": {

@@ -93,11 +93,11 @@ export default class Balance extends Component {
             height: 25px;
             display: inline-block;
             vertical-align: middle;
-            background-image: url("/static/images/buttons/balance/add.png");
+            background-image: url("/static/images/icons/add.png");
             background-size: 25px 25px;
           }
           .plus :hover {
-            background-image: url("/static/images/buttons/balance/add_clicked.png");
+            background-image: url("/static/images/icons/add_clicked.png");
             background-size: cover;
           }
           .plus :focus {
