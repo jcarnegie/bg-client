@@ -107,6 +107,10 @@ class MetaMask extends Component {
     clearInterval(this.state.interval);
   }
 
+  hideRegistrationWorkflowModals() {
+    return this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: false});
+  }
+
   render() {
     const {network, account, pathname, router, user} = this.props;
     const whitelist = [
@@ -122,7 +126,7 @@ class MetaMask extends Component {
     }
 
     if (user.showRegisterWorkflow && !MetaMask.isInstalled()) {
-      return <MetaMaskInstall show />;
+      return <MetaMaskInstall show onHide={::this.hideRegistrationWorkflowModals} />;
     }
 
     const onSupportedNetwork = network.data && network.data.id && Object.keys(networkConfig).includes(network.data.id);
@@ -137,9 +141,9 @@ class MetaMask extends Component {
 
     return (
       <>
-        <MetaMaskLogin show={showMetaMaskLogin} />
-        <MetaMaskNetwork show={showNetwork} />
-        <Register show={showRegister} onHide={() => this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: false})} />
+        <MetaMaskLogin show={showMetaMaskLogin} onHide={::this.hideRegistrationWorkflowModals} />
+        <MetaMaskNetwork show={showNetwork} onHide={::this.hideRegistrationWorkflowModals} />
+        <Register show={showRegister} onHide={::this.hideRegistrationWorkflowModals} />
       </>
     );
   }

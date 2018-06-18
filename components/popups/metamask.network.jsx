@@ -8,13 +8,14 @@ import BGModal from "@/components/modal";
 export default class MetaMaskNetworkPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
+    onHide: PropTypes.func,
   };
 
   render() {
-    const {show} = this.props;
+    const {show, onHide} = this.props;
 
     return (
-      <BGModal show={show} className="metamask-network">
+      <BGModal show={show} className="metamask-network" onHide={onHide}>
         <Modal.Body>
           <div>
             <h2><FormattedMessage id="modals.metamask-network.title" /></h2>

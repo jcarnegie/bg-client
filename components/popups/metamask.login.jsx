@@ -9,13 +9,14 @@ import BGModal from "@/components/modal";
 export default class MetaMaskLoginPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
+    onHide: PropTypes.func,
   };
 
   render() {
-    const {show} = this.props;
+    const {show, onHide} = this.props;
 
     return (
-      <BGModal show={show} className="metamask-login">
+      <BGModal show={show} className="metamask-login" onHide={onHide}>
         <Modal.Body>
           <div>
             <h2><FormattedMessage id="modals.metamask-login.title" /></h2>

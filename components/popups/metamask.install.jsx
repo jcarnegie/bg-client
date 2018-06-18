@@ -8,13 +8,14 @@ import BGModal from "@/components/modal";
 export default class MetaMaskInstallPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
+    onHide: PropTypes.func,
   };
 
   render() {
-    const {show} = this.props;
+    const {show, onHide} = this.props;
 
     return (
-      <BGModal show={show} className="metamask-install">
+      <BGModal show={show} className="metamask-install" onHide={onHide}>
         <Modal.Body>
           <div>
             <h2><FormattedMessage id="modals.metamask-install.title" /></h2>
