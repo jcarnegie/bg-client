@@ -10,10 +10,12 @@ export default function Article({title = null, children = null}) {
           margin-bottom: 70px;
         }
 
-        .bg-article h3 {
+        .bg-article h3,
+        .bg-article h3 span,
+        .bg-article h3 span strong {
           font-weight: 500;
           font-size: 28px;
-          margin-top: 10px;
+          margin-top: 40px;
           margin-bottom: 40px;
         }
         .bg-article p,
@@ -28,6 +30,10 @@ export default function Article({title = null, children = null}) {
           margin: 60px auto 0 auto;
           margin-bottom: 40px;
           display: block;
+        }
+        .bg-article .article-inline-image {
+          margin: 0;
+          vertical-align: middle;
         }
         .bg-article ul {
           list-style: none;

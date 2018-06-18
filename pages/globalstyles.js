@@ -27,6 +27,7 @@ function GlobalStyles({style}) {
         }
         a {
           color: #314B88;
+          cursor: pointer;
         }
         a:hover {
           color: #536EAD;
