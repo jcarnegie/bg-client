@@ -5,6 +5,7 @@ import {dissoc, filter, isEmpty, map, merge, path, pickAll, prop, propEq} from "
 
 import {client} from "@/client/utils/apollo";
 import {
+  APP_INIT,
   ACCOUNT_CHANGED,
   ACCOUNT_RESET,
   BALANCE_ETH_CHANGED,
@@ -186,6 +187,7 @@ function * signOutUser(action) {
 }
 
 export default function * userSaga() {
+  yield takeEvery(APP_INIT, fetchUser);
   yield takeEvery(ACCOUNT_CHANGED, fetchUser);
   yield takeEvery(CREATE_USER, createUser);
   yield takeEvery(UPDATE_USER, updateUser);
