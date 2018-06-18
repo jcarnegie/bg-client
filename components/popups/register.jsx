@@ -96,9 +96,13 @@ export default class RegisterPopup extends Component {
     return isValid;
   }
 
+  static toHex(text) {
+    return "0x" + Buffer.from(text, "utf8").toString("hex");
+  }
+
   sign() {
     const {dispatch, intl, formData} = this.props;
-    const message = window.web3.toHex(localization.en.messages["modals.register.text"]);
+    const message = RegisterPopup.toHex(intl.formatMessage({id: "modals.register.text"}));
 
     window.web3.currentProvider.sendAsync({
       method: "personal_sign",
