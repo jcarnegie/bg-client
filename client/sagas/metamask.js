@@ -106,6 +106,7 @@ function * getBalancePLAT() {
 
 function * getNetwork() {
   try {
+    if (typeof window.web3 === "undefined" || !window.web3) return;
     yield put({
       type: NETWORK_LOADING,
     });
