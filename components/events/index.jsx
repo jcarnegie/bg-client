@@ -171,7 +171,7 @@ export default class Events extends Component {
             <Col xs={12} sm={9}>
               <ol>
                 <li>
-                  <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer">
+                  <a href="https://discordapp.com/invite/ZTAENSN" target="_blank" rel="noopener noreferrer">
                     <FormattedHTMLMessage id="pages.events.l1" />
                   </a>
                 </li>
