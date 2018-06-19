@@ -116,7 +116,7 @@ class MetaMask extends Component {
     const whitelist = [
       "/",
       "/faq",
-      "/airdrop",
+      "/events",
     ];
 
     const path = pathname || router.pathname;
