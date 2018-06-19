@@ -20,9 +20,10 @@ import {
   RATE_ERROR,
   RATE_LOADING,
   RATE_REQUEST,
-  USER_CHANGED,
 } from "@/shared/constants/actions";
 
+
+// TODO - consolidate shared balance fetching logic
 
 function * getRate() {
   try {
@@ -50,15 +51,14 @@ function * getRate() {
 }
 
 function * getBalanceETH() {
-  const user = yield select(state => state.user);
-  if (!user.isLoading && user.success) {
+  const account = yield select(state => state.account);
+  if (!account.isLoading && account.success) {
     try {
       const network = yield select(state => state.network);
-      if (Object.keys(networkConfig).includes(network.data.id)) {
-        yield put({
-          type: BALANCE_ETH_LOADING,
-        });
-        const balance = yield bluebird.promisify(window.web3.eth.getBalance)(user.data.wallet);
+      const supportedNetwork = network.data && Object.keys(networkConfig).includes(network.data.id);
+      yield put({type: BALANCE_ETH_LOADING});
+      if (supportedNetwork) {
+        const balance = yield bluebird.promisify(window.web3.eth.getBalance)(account.wallet);
         yield put({
           type: BALANCE_ETH_CHANGED,
           payload: window.web3.fromWei(balance, "ether").toNumber(),
@@ -77,16 +77,15 @@ function * getBalanceETH() {
 }
 
 function * getBalancePLAT() {
-  const user = yield select(state => state.user);
-  if (!user.isLoading && user.success) {
+  const account = yield select(state => state.account);
+  if (!account.isLoading && account.success) {
     try {
       const network = yield select(state => state.network);
-      if (Object.keys(networkConfig).includes(network.data.id)) {
-        yield put({
-          type: BALANCE_PLAT_LOADING,
-        });
+      const supportedNetwork = network.data && Object.keys(networkConfig).includes(network.data.id);
+      yield put({type: BALANCE_PLAT_LOADING});
+      if (supportedNetwork) {
         const contract = window.web3.eth.contract(tokenABI).at(networkConfig[network.data.id].token);
-        const balance = yield bluebird.promisify(contract.balanceOf)(user.data.wallet);
+        const balance = yield bluebird.promisify(contract.balanceOf)(account.wallet);
         yield put({
           type: BALANCE_PLAT_CHANGED,
           payload: window.web3.fromWei(balance, "ether").toNumber(),
@@ -132,10 +131,10 @@ function * getNetwork() {
 export default function * metaMaskSaga() {
   yield takeEvery(APP_INIT, getNetwork);
   yield takeEvery(ACCOUNT_CHANGED, getNetwork);
+  yield takeEvery(ACCOUNT_CHANGED, getBalancePLAT);
+  yield takeEvery(ACCOUNT_CHANGED, getBalanceETH);
   yield takeEvery(NEW_BLOCK, getBalanceETH);
   yield takeEvery(NEW_BLOCK, getBalancePLAT);
-  yield takeEvery(USER_CHANGED, getBalancePLAT);
-  yield takeEvery(USER_CHANGED, getBalanceETH);
   yield takeEvery(RATE_REQUEST, getRate);
 }
 
