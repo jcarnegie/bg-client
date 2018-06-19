@@ -192,7 +192,7 @@
       "banner": {
         "play": "play"
       },
-      "airdrop": {
+      "events": {
         "countdown": "Airdrop in",
         "days": "Days",
         "hours": "Hours",
@@ -200,7 +200,8 @@
         "seconds": "Seconds",
         "giveaway": "Ether Online Free Item Giveaway",
         "giveaway-over": "Ether Online Free Item Giveaway Winners!",
-        "learn-more": "Learn more"
+        "learn-more": "Learn more",
+        "pets-giveaway": "Pets Giveaway"
       },
       "announce": {
         "coming-soon": "Coming soon",
@@ -212,7 +213,7 @@
         "discord": "DISCORD"
       }
     },
-    "airdrop": {
+    "events": {
       "title": "Hail Guildmates,",
       "p1": "Welcome to the <strong> final opportunity to obtain a pet in Ether Online <strong> outside of trading for it on the marketplace!",
       "p2": "We’ve got some pets to give away. These pets are unique in that they <strong> increase your Ether Online character stats by a flat %<strong>—the only type of item in the game to do so! Needless to say, players with one of these rare pets are at a serious advantage.",
@@ -233,7 +234,7 @@
       "l10": "Click here, and <strong>follow the instructions for your chance to win the Raging Tiger<strong>. The more tasks you complete, the higher your chance to win - <strong>additionally, 50 random participants will receive 5 item chests each!<strong>",
       "l11": "Check your email on June 25th, 2018, to see if you’ve won!",
       "p8": "*If a user does not reply to our message within 24 hours, BitGuild reserves the right to select a new winner at random.",
-      "p9": "contribution to be spam, low effort, offensive, or duplicate content. Play nice!"
+      "p9": "Contribution should not be spam, low effort, offensive, or duplicate content. Play nice!"
     }
   },
   "chat": {

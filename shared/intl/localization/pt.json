@@ -191,7 +191,7 @@
         "coming-soon": "Em breve",
         "in-development": "Em desenvolvimento"
       },
-      "airdrop": {
+      "events": {
         "countdown": "Airdrop em",
         "days": "Dias",
         "hours": "Horas",
@@ -199,7 +199,8 @@
         "seconds": "Segundos",
         "giveaway": "Ether Online - Distribuição de Itens Grátis",
         "giveaway-over": "Ether Online - Vencedores do Distribuição de Itens Grátis",
-        "learn-more": "Detalhes"
+        "learn-more": "Detalhes",
+        "pets-giveaway": "Giveaway de Mascotes"
       },
       "explore": {
         "questions": "Perguntas?",
@@ -207,7 +208,7 @@
         "discord": "DISCORD"
       }
     },
-    "airdrop": {
+    "events": {
       "title": "Olá, colegas de guilda,",
       "p1": "Bem-vindos à <strong> última chance de obter um mascote no Ether Online <strong> sem precisar de troca no mercado!",
       "p2": "Temos alguns mascotes para presentear. Eles são diferentes porque <strong> aumentam os atributos do seu personagem do Ether Online em %<strong>— o único tipo de item no jogo a fazer isso! Nem é preciso dizer: o jogador que tiver um desses mascotes raros estará em enorme vantagem.",

@@ -9,7 +9,6 @@
       "pt": "Português",
       "es": "Español",
       "ru": "Русский"
-
     },
     "menu": {
       "inventory": "Mis Cosas",
@@ -188,7 +187,7 @@
       "banner": {
         "play": "Jugar"
       },
-      "airdrop": {
+      "events": {
         "countdown": "Airdrop en",
         "days": "Dias",
         "hours": "Horas",
@@ -196,7 +195,8 @@
         "seconds": "Segundos",
         "giveaway": "Ether Online - Regalo de Artículos Gratuitos",
         "giveaway-over": "Ether Online - Ganadores de los Regalo de Artículos Gratuitos",
-        "learn-more": "Aprende más"
+        "learn-more": "Aprende más",
+        "pets-giveaway": "Regalo de Mascotas"
       },
       "announce": {
         "coming-soon": "Próximamente",
@@ -208,7 +208,7 @@
         "discord": "DISCORD"
       }
     },
-    "airdrop": {
+    "events": {
       "title": "Hola, compañeros de Guild",
       "p1": "¡Bienvenidos a <strong>la oportunidad final de ganar una mascota en Ether Online <strong>fuera de la comercialización del mercado!",
       "p2": "¡Tenemos algunas mascotas para regalar. Estas mascotas son únicas en el sentido de que <strong> aumentan las estadísticas de tus personajes de Ether Online un %<strong> fijo, ¡el único tipo de elemento en el juego que puede hacerlo! De más está decir que los jugadores que tengan una de estas raras mascotas tienen una ventaja enorme.",

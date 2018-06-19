@@ -188,7 +188,7 @@
       "banner": {
         "play": "JOUER"
       },
-      "airdrop": {
+      "events": {
         "countdown": "Airdrop dans",
         "days": "Journées",
         "hours": "Heures",
@@ -196,7 +196,8 @@
         "seconds": "Secondes",
         "giveaway": "Ether Online - Distribution d’Objets Gratuits",
         "giveaway-over": "Gagnants de la remise d'items Ether Online!",
-        "learn-more": "Learn more"
+        "learn-more": "Learn more",
+        "pets-giveaway": "Giveaway de Mascotes"
       },
       "announce": {
         "coming-soon": "Bientôt disponible",
@@ -208,7 +209,7 @@
         "discord": "DISCORD"
       }
     },
-    "airdrop": {
+    "events": {
       "title": "Salutations, camarades de guilde,",
       "p1": "Bienvenue dans la <strong> dernière occasion d'obtenir un animal de compagnie dans Ether Online <strong> autrement qu'en l'échangeant sur le marché !",
       "p2": "Nous avons des animaux à donner. Ces animaux de compagnie sont uniques car ils <strong> augmentent les stats de votre personnage dans Ether Online d'un % fixe<strong> : le seul type d'objet dans le jeu à faire ça ! Inutile de préciser que les joueurs avec l'un de ces animaux de compagnie rares ont un sérieux avantage.",

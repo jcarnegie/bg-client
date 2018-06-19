@@ -1,15 +1,15 @@
 import {DesktopContent, MobileContent, DesktopLayout, MobileLayout} from "@/components/layouts";
-import Airdrop from "@/components/airdrop";
+import Events from "@/components/events";
 import Chat from "@/components/chat";
 
 
 const AirdropPage = props => (
   <>
     <MobileLayout
-      main={<MobileContent><Airdrop {...props} /></MobileContent>}
+      main={<MobileContent><Events {...props} /></MobileContent>}
     />
     <DesktopLayout
-      main={<DesktopContent><Airdrop {...props} /></DesktopContent>}
+      main={<DesktopContent><Events {...props} /></DesktopContent>}
       aside={<Chat {...props} />}
     />
   </>

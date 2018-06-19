@@ -188,7 +188,7 @@
       "banner": {
         "play": "开始游戏"
       },
-      "airdrop": {
+      "events": {
         "countdown": "宝箱空投倒计时",
         "giveaway-over": "宝箱空投倒计时 - 获奖者",
         "giveaway": "Ether Online宝箱大赠送！",
@@ -196,7 +196,8 @@
         "days": "天",
         "hours": "小时",
         "minutes": "分钟",
-        "seconds": "秒"
+        "seconds": "秒",
+        "pets-giveaway": "宠物赠品"
       },
       "announce": {
         "coming-soon": "敬请期待",
@@ -208,7 +209,7 @@
         "discord": "DISCORD"
       }
     },
-    "airdrop": {
+    "events": {
       "title": "“各位公会伙伴，大家好！”",
       "p1": "“欢迎大家来抢夺<strong>最后机会<strong>，不必在市场上进行交易即可获得 Ether Online 中的一个宠物！”",
       "p2": "“我们有一些宠物可以放弃。！ 这些宠物<strong>可使您的 Ether Online 角色属性值提高一定百分比<strong>，在这方面而言，它们是独一无二的—是该游戏中唯一一种具有此功能的物品！ 不用说，拥有其中一只稀有宠物的玩家将会获得巨大优势。”",

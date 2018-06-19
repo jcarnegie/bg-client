@@ -129,14 +129,14 @@ export default class GameList extends Component {
     return (
       <Col md={6} className="countdown">
         <div className="caption">
-          <FormattedMessage id="pages.games.airdrop.countdown" />
+          <FormattedMessage id="pages.games.events.countdown" />
           <FormattedMessage id="components.colon" />
         </div>
         <Row className="time">
           {Object.keys(countdown).map(key =>
             <Col sm={3} key={key}>
               <div className="value">{countdown[key]}</div>
-              <div className="units"><FormattedMessage id={`pages.games.airdrop.${key}`} /></div>
+              <div className="units"><FormattedMessage id={`pages.games.events.${key}`} /></div>
             </Col>
           )}
         </Row>
@@ -144,30 +144,29 @@ export default class GameList extends Component {
     );
   }
 
-  airdropOver() {
+  eventsOver() {
     return (
       <Col md={12} className="giveaway">
         <Image src="/static/images/banners/ether.online/icon.png" />
         <div className="caption">
-          <FormattedMessage id="pages.games.airdrop.giveaway-over" />
+          <FormattedMessage id="pages.games.events.giveaway-over" />
         </div>
-        <Link href="/airdrop">
+        <Link href="/events">
           <Button bsStyle="primary">
-            <FormattedMessage id="pages.games.airdrop.learn-more" />
+            <FormattedMessage id="pages.games.events.learn-more" />
           </Button>
         </Link>
       </Col>
     );
   }
 
-  airdrop() {
+  events() {
     return (
-      <div className="airdrop">
+      <div className="events">
         <style jsx>{`
-          .airdrop {
-            background-image: url("/static/images/backgrounds/hexBlue.png");
+          .events {
             background-size: contain;
-            background-color: rgb(30, 124, 187);
+            background-color: #F1F5FF;
             color: #314B88;
             border-bottom: 1px solid #c7c6f2;
             height: 200px;
@@ -176,31 +175,29 @@ export default class GameList extends Component {
             align-items: center;
             justify-content: center;
           }
-          .airdrop-center {
+          .events-center {
             flex-grow: 2;
             text-align: center;
           }
-          .airdrop-title,
-          .airdrop-subtitle {
+          .events-title,
+          .events-subtitle {
             display: block;
             text-align: center;
             text-transform: uppercase;
             margin: 0;
           }
-          .airdrop-title {
+          .events-title {
             font-size: 40px;
             font-weight: 600;
-            background: -webkit-linear-gradient(rgb(254,241,161), rgb(254,196,54));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: rgb(247,200,65);
+            text-shadow: 1px 1px 1px #314B88;
           }
-          .airdrop-subtitle {
+          .events-subtitle {
             font-size: 36px;
-            color: rgb(255,255,255);
-            text-shadow: 0 0 2px black;
-            letter-spacing: 2px;
+            color: #314B88;
+            text-shadow: 1px 1px 1px #999;
           }
-          .airdrop-button {
+          .events-button {
             color: #130029;
             background: linear-gradient(to right,#b1c8e8 0%,#fbfcff 100%);
             font-size: 14px;
@@ -211,44 +208,48 @@ export default class GameList extends Component {
             border-radius: 2px;
             text-transform: uppercase;
           }
-          .airdrop-button:hover {
+          .events-button:hover {
             background: linear-gradient(to right,#7189b6 0%,#dcdee8 100%);
             color: #130029;
           }
-          .airdrop-title-mobile {
+          .events-title-mobile {
             font-size: 24px;
           }
-          .airdrop-subtitle-mobile {
+          .events-subtitle-mobile {
             font-size: 20px;
           }
           .bitguild-logo-wrapper {
             width: 75px;
           }
-          :global(.airdrop-flex) {
+          :global(.events-flex) {
             display: flex;
             align-items: center;
             justify-content: center;
             flex-grow: 1;
           }
         `}</style>
-        <GameIcon game={{slug: "ether.online"}} className="airdrop-flex" />
-        <div className="airdrop-center">
+        <GameIcon game={{slug: "ether.online"}} width="100px" className="events-flex" />
+        <div className="events-center">
           <Mobile>
-            <h2 className="airdrop-title airdrop-title-mobile">Ether Online</h2>
-            <h3 className="airdrop-subtitle airdrop-subtitle-mobile">Pet Giveaway</h3>
+            <h2 className="events-title events-title-mobile">Ether Online</h2>
+            <h3 className="events-subtitle events-subtitle-mobile">
+              <FormattedMessage id="pages.games.events.pets-giveaway"></FormattedMessage>
+            </h3>
           </Mobile>
           <Desktop>
-            <h2 className="airdrop-title">Ether Online</h2>
-            <h3 className="airdrop-subtitle">Pet Giveaway</h3>
+            <h2 className="events-title">Ether Online</h2>
+            <h3 className="events-subtitle">
+              <FormattedMessage id="pages.games.events.pets-giveaway"></FormattedMessage>
+            </h3>
           </Desktop>
           <div>
-            <button className="airdrop-button" onClick={() => Router.push("/airdrop")}>
-              <FormattedMessage id="pages.games.airdrop.learn-more"></FormattedMessage>
+            <button className="events-button" onClick={() => Router.push("/events")}>
+              <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
             </button>
           </div>
         </div>
-        <div className="airdrop-flex bitguild-logo-wrapper">
-          <BGIcon src="/static/images/icons/bitguild_logo@1x.png" className="bitguild-logo airdrop-flex" width="50px" />
+        <div className="events-flex bitguild-logo-wrapper">
+          <BGIcon src="/static/images/icons/bitguild_logo@1x.png" className="bitguild-logo events-flex" width="80px" />
         </div>
       </div>
     );
@@ -411,7 +412,7 @@ export default class GameList extends Component {
         </Row>
         <Row>
           <Col>
-            {this.airdrop()}
+            {this.events()}
           </Col>
         </Row>
         <Row className="announce">

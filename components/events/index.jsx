@@ -9,7 +9,7 @@ import {Mobile, Desktop} from "@/components/responsive";
 import style from "@/shared/constants/style";
 
 
-export default class Airdrop extends Component {
+export default class Events extends Component {
   state = {
     popupUrl: "",
   }
@@ -17,7 +17,7 @@ export default class Airdrop extends Component {
   desktopPopup() {
     const {popupUrl} = this.state;
     return popupUrl ? (
-      <BGModal className="airdrop-popup" show={Boolean(popupUrl)} onHide={() => this.setState({popupUrl: ""})}>
+      <BGModal className="events-popup" show={Boolean(popupUrl)} onHide={() => this.setState({popupUrl: ""})}>
         <style jsx>{`
           :global(.modal-dialog),
           :global(.modal-content) {
@@ -30,7 +30,7 @@ export default class Airdrop extends Component {
           :global(.modal-content) {
             height: calc(100vh);
           }
-          :global(.airdrop-popup iframe) {
+          :global(.events-popup iframe) {
             width: 600px;
             max-width: calc(100%);
             background: white;
@@ -38,23 +38,23 @@ export default class Airdrop extends Component {
             border-radius: 6px;
             z-index: 1090;
           }
-          :global(.airdrop-popup iframe),
+          :global(.events-popup iframe),
           :global(.modal-content) {
             height: calc(100vh - 82px);
           }
-          :global(.airdrop-popup-close) {
+          :global(.events-popup-close) {
             position: absolute;
             right: 10px;
             top: 10px;
             margin: 0;
             cursor: pointer;
           }
-          :global(.airdrop-popup .modal-dialog),
-          :global(.airdrop-popup .modal-dialog .modal-content) {
+          :global(.events-popup .modal-dialog),
+          :global(.events-popup .modal-dialog .modal-content) {
             height: (100vh - 62px - 20px);
           }
         `}</style>
-        <img src="/static/images/icons/close.png" className="airdrop-popup-close" onClick={() => this.setState({popupUrl: ""})} />
+        <img src="/static/images/icons/close.png" className="events-popup-close" onClick={() => this.setState({popupUrl: ""})} />
         <iframe src={popupUrl} />
       </BGModal>
     ) : null;
@@ -63,7 +63,7 @@ export default class Airdrop extends Component {
   mobilePopup() {
     const {popupUrl} = this.state;
     return popupUrl ? (
-      <BGModal className="airdrop-popup" show={Boolean(popupUrl)} onHide={() => this.setState({popupUrl: ""})}>
+      <BGModal className="events-popup" show={Boolean(popupUrl)} onHide={() => this.setState({popupUrl: ""})}>
         <style jsx>{`
           :global(.modal-dialog),
           :global(.modal-content) {
@@ -72,11 +72,11 @@ export default class Airdrop extends Component {
             left: 0%;
             right: 0%;
           }
-          :global(.airdrop-popup iframe),
+          :global(.events-popup iframe),
           :global(.modal-content) {
             height: calc(100vh - 82px);
           }
-          :global(.airdrop-popup iframe) {
+          :global(.events-popup iframe) {
             height: calc(100vh - 82px);
             width: 600px;
             max-width: calc(100%);
@@ -85,19 +85,19 @@ export default class Airdrop extends Component {
             border-radius: 6px;
             z-index: 1090;
           }
-          :global(.airdrop-popup-close) {
+          :global(.events-popup-close) {
             position: absolute;
             right: 10px;
             top: 10px;
             margin: 0;
             cursor: pointer;
           }
-          :global(.airdrop-popup .modal-dialog),
-          :global(.airdrop-popup .modal-dialog .modal-content) {
+          :global(.events-popup .modal-dialog),
+          :global(.events-popup .modal-dialog .modal-content) {
             height: (100vh - 62px - 20px);
           }
         `}</style>
-        <img src="/static/images/icons/close.png" className="airdrop-popup-close" onClick={() => this.setState({popupUrl: ""})} />
+        <img src="/static/images/icons/close.png" className="events-popup-close" onClick={() => this.setState({popupUrl: ""})} />
         <iframe src={popupUrl} />
       </BGModal>
     ) : null;
@@ -106,9 +106,9 @@ export default class Airdrop extends Component {
   render() {
     return (
       <Article>
-        <div className="airdrop">
+        <div className="events">
           <style jsx global>{`
-            .airdrop .btn {
+            .events .btn {
               font-size: 14px;
               background-color: #314B88;
               color: #ffffff;
@@ -120,16 +120,16 @@ export default class Airdrop extends Component {
               margin-bottom: 50px;
               display: block;
             }
-            .airdrop .btn:hover,
-            .airdrop .btn:focus,
-            .airdrop .btn:active,
-            .airdrop .btn:focus:active {
+            .events .btn:hover,
+            .events .btn:focus,
+            .events .btn:active,
+            .events .btn:focus:active {
               background-color: #536EAD;
               color: #ffffff;
               outline: 0;
               box-shadow: none;
             }
-            .airdrop .btn img {
+            .events .btn img {
               margin: 0;
               width: 11px;
               height: 13px;
@@ -137,7 +137,7 @@ export default class Airdrop extends Component {
               margin-top: -5px;
               margin-right: 5px;
             }
-            .airdrop-image {
+            .events-image {
               width: 90%;
             }
 
@@ -151,16 +151,16 @@ export default class Airdrop extends Component {
           <Desktop>
             {this.desktopPopup()}
           </Desktop>
-          <h2><FormattedHTMLMessage id="pages.airdrop.title" /></h2>
+          <h2><FormattedHTMLMessage id="pages.events.title" /></h2>
 
-          <p><FormattedHTMLMessage id="pages.airdrop.p1" /></p>
-          <p><FormattedHTMLMessage id="pages.airdrop.p2" /></p>
+          <p><FormattedHTMLMessage id="pages.events.p1" /></p>
+          <p><FormattedHTMLMessage id="pages.events.p2" /></p>
 
-          <Image src="/static/images/misc/pet-giveaway.png" className="airdrop-image" />
+          <Image src="/static/images/misc/pet-giveaway.png" className="events-image" />
 
-          <p><FormattedHTMLMessage id="pages.airdrop.p3" /></p>
-          <p><FormattedHTMLMessage id="pages.airdrop.p4" /></p>
-          <h3><FormattedHTMLMessage id="pages.airdrop.p5" /></h3>
+          <p><FormattedHTMLMessage id="pages.events.p3" /></p>
+          <p><FormattedHTMLMessage id="pages.events.p4" /></p>
+          <h3><FormattedHTMLMessage id="pages.events.p5" /></h3>
 
           <Row>
             <Col xs={12} sm={3}>
@@ -171,20 +171,20 @@ export default class Airdrop extends Component {
             <Col xs={12} sm={9}>
               <ol>
                 <li>
-                  <FormattedHTMLMessage id="pages.airdrop.l1" />
+                  <FormattedHTMLMessage id="pages.events.l1" />
                 </li>
                 <li>
                   <a onClick={() => this.setState({popupUrl: "https://gleam.io/Ksqof/bitguild-giveaway-ether-online-warbear"})}>
-                    <FormattedHTMLMessage id="pages.airdrop.l2" />
+                    <FormattedHTMLMessage id="pages.events.l2" />
                   </a>
                 </li>
-                <li><FormattedHTMLMessage id="pages.airdrop.l3" /></li>
-                <li><FormattedHTMLMessage id="pages.airdrop.l4" /></li>
+                <li><FormattedHTMLMessage id="pages.events.l3" /></li>
+                <li><FormattedHTMLMessage id="pages.events.l4" /></li>
               </ol>
             </Col>
           </Row>
 
-          <h3><FormattedHTMLMessage id="pages.airdrop.p6" /></h3>
+          <h3><FormattedHTMLMessage id="pages.events.p6" /></h3>
 
           <Row>
             <Col xs={12} sm={3}>
@@ -194,20 +194,20 @@ export default class Airdrop extends Component {
             </Col>
             <Col xs={12} sm={9}>
               <ol>
-                <li><FormattedHTMLMessage id="pages.airdrop.l5" /></li>
-                <li><FormattedHTMLMessage id="pages.airdrop.l6" /></li>
+                <li><FormattedHTMLMessage id="pages.events.l5" /></li>
+                <li><FormattedHTMLMessage id="pages.events.l6" /></li>
                 <li>
                   <a onClick={() => this.setState({popupUrl: "https://gleam.io/Ksqof/bitguild-giveaway-ether-online-royal-eagle"})}>
-                    <FormattedHTMLMessage id="pages.airdrop.l7" />
+                    <FormattedHTMLMessage id="pages.events.l7" />
                   </a>
                 </li>
-                <li><FormattedHTMLMessage id="pages.airdrop.l8" /></li>
-                <li><FormattedHTMLMessage id="pages.airdrop.l9" /></li>
+                <li><FormattedHTMLMessage id="pages.events.l8" /></li>
+                <li><FormattedHTMLMessage id="pages.events.l9" /></li>
               </ol>
             </Col>
           </Row>
 
-          <h3><FormattedHTMLMessage id="pages.airdrop.p7" /></h3>
+          <h3><FormattedHTMLMessage id="pages.events.p7" /></h3>
 
           <Row>
             <Col xs={12} sm={3} className="inline-image-container">
@@ -219,18 +219,18 @@ export default class Airdrop extends Component {
               <ol>
                 <li>
                   <a onClick={() => this.setState({popupUrl: "https://gleam.io/VsjzO/bitguild-giveaway-ether-online-raging-tiger"})}>
-                    <FormattedHTMLMessage id="pages.airdrop.l10" />
+                    <FormattedHTMLMessage id="pages.events.l10" />
                   </a>
                 </li>
-                <li><FormattedHTMLMessage id="pages.airdrop.l11" /></li>
+                <li><FormattedHTMLMessage id="pages.events.l11" /></li>
               </ol>
             </Col>
           </Row>
 
           <br />
 
-          <p><FormattedHTMLMessage id="pages.airdrop.p8" /></p>
-          <p><FormattedHTMLMessage id="pages.airdrop.p9" /></p>
+          <p><FormattedHTMLMessage id="pages.events.p8" /></p>
+          <p>* <FormattedHTMLMessage id="pages.events.p9" /></p>
         </div>
       </Article>
     );
