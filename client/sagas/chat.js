@@ -50,6 +50,13 @@ function * sendChatMessage(action) {
       type: CHAT_MESSAGE_SENT,
       payload: sentMessage,
     });
+
+    let analytics = yield select(state => state.analytics);
+    analytics.ga.event({
+      category: "Site Interaction",
+      action: "Chat",
+      label: "Send Message",
+    });
   } catch (e) {
     log.error("sendChatMessage error:", e);
   }

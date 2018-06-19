@@ -20,6 +20,7 @@ function precisionRound(number, precision) {
 @withFormHelper
 @connect(
   state => ({
+    analytics: state.analytics,
     gas: state.gas,
     rate: state.rate,
     user: state.user,
@@ -28,6 +29,7 @@ function precisionRound(number, precision) {
 )
 export default class ConvertPopup extends Component {
   static propTypes = {
+    analytics: PropTypes.object,
     show: PropTypes.bool,
     rate: PropTypes.object,
     dispatch: PropTypes.func,
@@ -87,11 +89,16 @@ export default class ConvertPopup extends Component {
       },
       error => {
         if (error) {
-          dispatch({
+          return dispatch({
             type: MESSAGE_ADD,
             payload: error,
           });
         }
+        this.props.analytics.ga.event({
+          category: "Site Interaction",
+          action: "Purchase",
+          label: "Buy-Plat",
+        });
       }
     );
   }

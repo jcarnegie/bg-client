@@ -58,7 +58,7 @@ function GlobalStyles({style}) {
           opacity: 1;
         }
         .modal .modal-content .modal-header button span:first-child {
-          background: url("/static/images/icons/close/close.png");
+          background: url("/static/images/icons/close.png");
           width: 16px;
           height: 16px;
           display: block;
@@ -66,7 +66,7 @@ function GlobalStyles({style}) {
           overflow: hidden;
         }
         .modal .modal-content .modal-header button span:first-child:hover {
-          background: url("/static/images/icons/close/close_clicked.png");
+          background: url("/static/images/icons/close_clicked.png");
         }
         .modal .modal-content .modal-body {
           padding: 50px 25px;

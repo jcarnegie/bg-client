@@ -1,5 +1,7 @@
 export const APP_INIT = "APP_INIT";
 
+export const GA_CREATE = "GA_CREATE";
+
 export const MESSAGE_ADD = "MESSAGE_ADD";
 export const MESSAGE_ADD_ALL = "MESSAGE_ADD_ALL";
 export const MESSAGE_REMOVE = "MESSAGE_REMOVE";

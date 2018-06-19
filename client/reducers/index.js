@@ -3,6 +3,7 @@ import {routerReducer as routing} from "react-router-redux";
 import {intlReducer as intl} from "react-intl-redux";
 
 import account from "@/client/reducers/account";
+import analytics from "@/client/reducers/analytics";
 import balanceETH from "@/client/reducers/balanceETH";
 import balancePLAT from "@/client/reducers/balancePLAT";
 import chat from "@/client/reducers/chat";
@@ -20,6 +21,7 @@ import validations from "@/client/reducers/validations";
 
 
 export default combineReducers({
+  analytics,
   routing,
   account,
   balanceETH,

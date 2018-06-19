@@ -1,9 +1,10 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {Grid, Button, Col, Image, Row} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
+import {connect} from "react-redux";
 import Link from "next/link";
 import Router from "next/router";
-import ReactGA from "react-ga";
 
 import {Mobile, Desktop} from "@/components/responsive";
 import GameIcon from "@/components/gameicon";
@@ -26,6 +27,11 @@ const GAMES = {
   },
 };
 
+@connect(
+  state => ({
+    analytics: state.analytics,
+  })
+)
 export default class GameList extends Component {
   state = {
     interval: null,
@@ -33,6 +39,10 @@ export default class GameList extends Component {
     countdown: null,
     showingGame: GAMES.magicacademy,
   };
+
+  static propTypes = {
+    analytics: PropTypes.object,
+  }
 
   componentDidMount() {
     this.setState({
@@ -79,7 +89,6 @@ export default class GameList extends Component {
   }
 
   banner() {
-    const {slug} = this.state.showingGame;
     return (
       <div className={`banner ${this.state.showingGame.name}`}>
         <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-left">
@@ -88,22 +97,29 @@ export default class GameList extends Component {
         <div onClick={::this.switchBanner} className="carousel-nav-button carousel-nav-button-right">
           <Image src="/static/images/icons/arrow_large_left.png" />
         </div>
-        <Link href={{pathname: "/game", query: {slug}}} as={`/game/${slug}`}>
-          <Button onClick={::this.onBannerClick}>
-            <Image src="/static/images/icons/play_black.png" />
-            <FormattedMessage id="pages.games.banner.play" />
-          </Button>
-        </Link>
+        <Button onClick={::this.onBannerClick}>
+          <Image src="/static/images/icons/play_black.png" />
+          <FormattedMessage id="pages.games.banner.play" />
+        </Button>
       </div>
     );
   }
 
   onBannerClick() {
-    ReactGA.event({
+    const {slug} = this.state.showingGame;
+
+    this.props.analytics.ga.event({
       category: "Site Interaction",
       action: "Play",
       label: this.state.showingGame.name,
     });
+
+    Router.push({
+        pathname: "/game",
+        query: {slug},
+      },
+      `/game/${slug}`
+    );
   }
 
   comingSoon(url = "", messageId = "pages.games.announce.coming-soon") {
@@ -430,7 +446,7 @@ export default class GameList extends Component {
               </a>
             </Link>
             <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer" onClick={() => {
-              ReactGA.event({
+              this.props.analytics.ga.event({
                 category: "Site Interaction",
                 action: "Page Visit",
                 label: "Discord",

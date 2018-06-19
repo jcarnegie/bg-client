@@ -4,7 +4,6 @@ import cx from "classnames";
 import {Button, Form, Modal} from "react-bootstrap";
 import BGModal from "@/components/modal";
 import {FormattedMessage, injectIntl, intlShape} from "react-intl";
-import ReactGA from "react-ga";
 import {connect} from "react-redux";
 
 import withFormHelper from "@/components/inputs/withFormHelper";
@@ -23,6 +22,7 @@ import InputGroupValidation from "@/components/inputs/input.group.validation";
 @connect(
   state => ({
     account: state.account,
+    analytics: state.analytics,
     messages: state.messages,
   })
 )
@@ -33,6 +33,7 @@ export default class RegisterPopup extends Component {
 
   static propTypes = {
     account: PropTypes.object,
+    analytics: PropTypes.object,
     formData: PropTypes.object,
     dispatch: PropTypes.func,
     setState: PropTypes.func,
@@ -128,7 +129,7 @@ export default class RegisterPopup extends Component {
             payload: err || result.error,
           });
 
-          ReactGA.event({
+          this.props.analytics.ga.event({
             category: "Site Interaction",
             action: "Sign-up",
             label: "Create account",

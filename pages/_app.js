@@ -5,14 +5,12 @@ import withRedux from "next-redux-wrapper";
 import withReduxSaga from "next-redux-saga";
 import * as log from "loglevel";
 
+import BGReactGA from "@/client/utils/react-ga";
 import configureStore from "@/client/utils/store";
-
-import GAListener from "@/components/common/galistener";
 import MetaMask from "@/components/common/metamask";
-
 import GlobalStyles from "@/pages/globalstyles";
 import style from "@/shared/constants/style";
-import {APP_INIT} from "@/shared/constants/actions";
+import {APP_INIT, GA_CREATE} from "@/shared/constants/actions";
 
 
 if (process.env.NODE_ENV === "production") {
@@ -23,22 +21,26 @@ if (process.env.NODE_ENV === "production") {
 
 class BGApp extends App {
   static async getInitialProps({Component, router, ctx}) {
-    let pageProps = {};
+    const {isServer} = ctx;
+    const state = ctx.store.getState();
 
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+    if (!isServer) {
+      state.analytics.ga.pageview(ctx.pathname);
     }
 
-    const gaListenerProps = GAListener.getInitialProps(ctx);
+    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     const metaMaskProps = MetaMask.WrappedComponent.getInitialProps(ctx);
+    const locals = isServer ? ctx.res.locals : {};
 
-    const locals = ctx.isServer ? ctx.res.locals : {};
-
-    return {pageProps, metaMaskProps, gaListenerProps, locals};
+    return {pageProps, metaMaskProps, locals};
   }
 
   componentDidMount() {
     this.props.store.dispatch({type: APP_INIT});
+    this.props.store.dispatch({
+      type: GA_CREATE,
+      payload: new BGReactGA(process.env.GOOGLE_ANALYTICS_TRACKING_ID),
+    });
   }
 
   render() {
@@ -46,7 +48,6 @@ class BGApp extends App {
       Component,
       pageProps,
       metaMaskProps,
-      gaListenerProps,
       store,
       locals,
     } = this.props;
@@ -57,7 +58,6 @@ class BGApp extends App {
         <Provider store={store}>
           <>
             <MetaMask {...metaMaskProps} />
-            <GAListener {...gaListenerProps} />
             <Component {...pageProps} {...locals} />
           </>
         </Provider>
