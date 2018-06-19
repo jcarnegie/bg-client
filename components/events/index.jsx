@@ -171,7 +171,9 @@ export default class Events extends Component {
             <Col xs={12} sm={9}>
               <ol>
                 <li>
-                  <FormattedHTMLMessage id="pages.events.l1" />
+                  <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer">
+                    <FormattedHTMLMessage id="pages.events.l1" />
+                  </a>
                 </li>
                 <li>
                   <a onClick={() => this.setState({popupUrl: "https://gleam.io/Qv4W7/bitguild-giveaway-ether-online-warbear"})}>
