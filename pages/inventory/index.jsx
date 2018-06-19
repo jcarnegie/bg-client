@@ -1,7 +1,7 @@
 import {DesktopContent, MobileContent, DesktopLayout, MobileLayout} from "@/components/layouts";
 import Inventory from "@/components/inventory";
 import Chat from "@/components/chat";
-import {userLoginRouteGuard} from "@/shared/utils";
+import {userLoginRouteGuard, ethNetworkRouteGuard} from "@/shared/utils";
 
 
 const InventoryPage = props => (
@@ -18,6 +18,7 @@ const InventoryPage = props => (
 
 InventoryPage.getInitialProps = ctx => {
   userLoginRouteGuard(ctx);
+  ethNetworkRouteGuard(ctx);
   return {};
 };
 

@@ -1,7 +1,7 @@
 import {DesktopLayout, MobileLayout} from "@/components/layouts";
 import Game from "@/components/game";
 import Chat from "@/components/chat";
-import {userLoginRouteGuard} from "@/shared/utils";
+import {userLoginRouteGuard, ethNetworkRouteGuard} from "@/shared/utils";
 
 const GamePage = props => (
   <>
@@ -17,6 +17,7 @@ const GamePage = props => (
 
 GamePage.getInitialProps = ctx => {
   userLoginRouteGuard(ctx);
+  ethNetworkRouteGuard(ctx);
   return Game.getInitialProps(ctx);
 };
 
