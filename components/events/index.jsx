@@ -164,7 +164,7 @@ export default class Events extends Component {
 
           <Row>
             <Col xs={12} sm={3}>
-              <a onClick={() => this.setState({popupUrl: "https://gleam.io/Ksqof/bitguild-giveaway-ether-online-warbear"})}>
+              <a onClick={() => this.setState({popupUrl: "https://gleam.io/Qv4W7/bitguild-giveaway-ether-online-warbear"})}>
                 <Image src="/static/images/misc/pet-giveaway-warbear.png" className="article-inline-image" />
               </a>
             </Col>
@@ -174,7 +174,7 @@ export default class Events extends Component {
                   <FormattedHTMLMessage id="pages.events.l1" />
                 </li>
                 <li>
-                  <a onClick={() => this.setState({popupUrl: "https://gleam.io/Ksqof/bitguild-giveaway-ether-online-warbear"})}>
+                  <a onClick={() => this.setState({popupUrl: "https://gleam.io/Qv4W7/bitguild-giveaway-ether-online-warbear"})}>
                     <FormattedHTMLMessage id="pages.events.l2" />
                   </a>
                 </li>
