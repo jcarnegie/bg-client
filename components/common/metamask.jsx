@@ -80,7 +80,7 @@ class MetaMask extends Component {
           }
 
           /* Sign out user if accounts do not match, or if stored account is signed out in web3 */
-          if (!web3AccountSignedIn && accountInStoreDoesNotMatchWeb3Account && this.props.account.wallet) {
+          if ((!web3AccountSignedIn && this.props.account.wallet) || (web3EthWallet && accountInStoreDoesNotMatchWeb3Account)) {
             log.info("User will be removed from store because the web3 account does not match the stored value.");
             dispatch({type: SIGN_OUT_USER});
           }
