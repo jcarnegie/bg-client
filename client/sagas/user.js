@@ -184,6 +184,14 @@ function * signOutUser(action) {
   yield put({
     type: ACCOUNT_RESET,
   });
+  yield put({
+    type: BALANCE_ETH_CHANGED,
+    payload: 0,
+  });
+  yield put({
+    type: BALANCE_PLAT_CHANGED,
+    payload: 0,
+  });
 }
 
 export default function * userSaga() {
