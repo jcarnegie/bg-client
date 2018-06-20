@@ -37,7 +37,6 @@
     "intl": "1.2.5",
     "intl-locales-supported": "1.0.0",
     "isomorphic-fetch": "2.2.1",
-    "lodash": "4.17.10",
     "loglevel": "1.6.1",
     "morgan": "1.9.0",
     "next": "6.0.3",
@@ -118,7 +117,7 @@
     "lint": "node_modules/.bin/eslint server/* client/* --ext .jsx --quiet --fix",
     "dev": "source ./.env && node server.js",
     "build": "source ./.env.production && next build",
-    "analyze-bundle": "BUNDLE_ANALYZE=browser yarn build",
+    "analyze-bundle": "NODE_ENV=production BUNDLE_ANALYZE=browser yarn build",
     "start": "source ./.env.production && node server.js"
   }
 }

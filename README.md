@@ -8,8 +8,6 @@ TODO
 - Chat-specific style rewrites
 - Docker-compose integrates with development GraphQL API
 - Update redux-logger for node -- or silence
-- Bundle size updates:
-- - Remove lodash
 
 
 ## Dependencies

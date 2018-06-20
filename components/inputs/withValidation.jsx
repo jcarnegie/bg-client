@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {omit} from "lodash";
-import {VALIDATION_REMOVE} from "../../shared/constants/actions";
+import {omit} from "ramda";
+import {VALIDATION_REMOVE} from "@/shared/constants/actions";
 import {injectIntl, intlShape} from "react-intl";
 
 
@@ -10,7 +10,7 @@ export default function withValidation(Input) {
   @injectIntl
   @connect(
     state => ({
-      validations: state.validations
+      validations: state.validations,
     })
   )
   class InputWithValidation extends Component {
@@ -20,12 +20,12 @@ export default function withValidation(Input) {
       dispatch: PropTypes.func,
       removeValidation: PropTypes.func,
       name: PropTypes.string,
-      intl: intlShape
+      intl: intlShape,
     };
 
     static defaultProps = {
       validations: [],
-      onChange: Function.prototype
+      onChange: Function.prototype,
     };
 
     componentWillUnmount() {
@@ -34,7 +34,7 @@ export default function withValidation(Input) {
       if (validation) {
         dispatch({
           type: VALIDATION_REMOVE,
-          payload: validation
+          payload: validation,
         });
       }
     }
@@ -45,7 +45,7 @@ export default function withValidation(Input) {
       if (validation) {
         dispatch({
           type: VALIDATION_REMOVE,
-          payload: validation
+          payload: validation,
         });
       }
       onChange(e);
@@ -58,7 +58,7 @@ export default function withValidation(Input) {
 
     render() {
       const {name, intl} = this.props;
-      const props = omit(this.props, ["validations", "dispatch", "intl"]);
+      const props = omit(["validations", "dispatch", "intl"], this.props);
       return (
         <Input
           {...props}
@@ -68,19 +68,19 @@ export default function withValidation(Input) {
             e.target.parentNode.parentNode.classList.add("has-error");
             if (e.target.validity.valueMissing) {
               e.target.setCustomValidity(intl.formatMessage({
-                id: `fields.${name}.required`
+                id: `fields.${name}.required`,
               }));
             } else if (e.target.validity.typeMismatch) {
               e.target.setCustomValidity(intl.formatMessage({
-                id: `fields.${name}.invalid`
+                id: `fields.${name}.invalid`,
               }));
             } else if (e.target.validity.tooShort) {
               e.target.setCustomValidity(intl.formatMessage({
-                id: `fields.${name}.minlength`
+                id: `fields.${name}.minlength`,
               }));
             } else if (e.target.validity.tooLong) {
               e.target.setCustomValidity(intl.formatMessage({
-                id: `fields.${name}.maxlength`
+                id: `fields.${name}.maxlength`,
               }));
             }
           }}

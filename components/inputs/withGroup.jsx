@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {omit} from "lodash";
+import {omit} from "ramda";
 import {Col, ControlLabel, FormGroup, Glyphicon, HelpBlock} from "react-bootstrap";
 import {FormattedMessage} from "react-intl";
 
@@ -12,14 +12,14 @@ export default function withGroup(Input) {
       required: PropTypes.bool,
       validation: PropTypes.shape({
         name: PropTypes.string,
-        reason: PropTypes.string
+        reason: PropTypes.string,
       }),
-      children: PropTypes.node
+      children: PropTypes.node,
     };
 
     render() {
       const {required, validation} = this.props;
-      const props = omit(this.props, ["validation"]);
+      const props = omit(["validation"], this.props);
       return (
         <FormGroup controlId={this.props.name} validationState={validation ? "error" : null}>
           <Col componentClass={ControlLabel}>

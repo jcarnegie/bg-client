@@ -1,7 +1,7 @@
 import {Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {isEqual} from "lodash";
+import {equals} from "ramda";
 
 
 @connect(
@@ -20,7 +20,7 @@ export default class Init extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (!nextProps.user.isLoading && nextProps.user.success && !isEqual(nextProps.user.data, prevState.user)) {
+    if (!nextProps.user.isLoading && nextProps.user.success && !equals(nextProps.user.data, prevState.user)) {
       Object.keys(prevState.sources).forEach(origin => {
         prevState.sources[origin].postMessage({
           type: "user",
