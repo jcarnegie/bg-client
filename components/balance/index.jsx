@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
+import ScaleLoader from "react-spinners/dist/spinners/ScaleLoader";
+import MdAddCircle from "react-icons/lib/md/add-circle";
 
 import Convert from "@/components/popups/convert";
-import {Mobile, Desktop} from "@/components/responsive";
 
 import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
 
@@ -61,25 +62,51 @@ export default class Balance extends Component {
     });
   }
 
-  render() {
-    const {balanceETH, balancePLAT, show} = this.state;
+  textLoading() {
+    return <ScaleLoader height={10} width={2} color="white" />;
+  }
+
+  plus() {
+    return (
+      <span>
+        <style jsx>{`
+          .plus {
+            display: inline-block;
+            vertical-align: middle;
+            color: rgba(255,255,255, 1);
+          }
+          .plus :hover {
+            color: rgba(255,255,255, .8);
+          }
+          .plus :focus {
+            outline: 0;
+          }
+        `}</style>
+        <a href="#" className="plus" onClick={::this.onClick}>
+          <MdAddCircle height="30" width="30" />
+        </a>
+      </span>
+    );
+  }
+
+  balances() {
+    const {balanceETH, balancePLAT} = this.state;
 
     if (!Number.isFinite(balanceETH.data) || !Number.isFinite(balancePLAT.data)) {
       return null;
     }
-
     return (
-      <div className="balance">
+      <span className="balance-text">
         <style jsx>{`
-          .balance {
-            display: flex;
-            align-items: center;
-            color: white;
-            font-size: 13px;
-            font-weight: 100;
-          }
           .balance-text {
             margin:  0 0 0 8px;
+          }
+          .balance-text > * {
+            display: block;
+            line-height: 13px;
+          }
+          :global(.balance-text > *) {
+            display: flex;
           }
           .balance-value {
             text-transform: uppercase;
@@ -87,57 +114,34 @@ export default class Balance extends Component {
             text-align: right;
             float: left;
             clear: both;
-          }
-          .plus {
-            width: 25px;
-            height: 25px;
-            display: inline-block;
-            vertical-align: middle;
-            background-image: url("/static/images/icons/add.png");
-            background-size: 25px 25px;
-          }
-          .plus :hover {
-            background-image: url("/static/images/icons/add_clicked.png");
-            background-size: cover;
-          }
-          .plus :focus {
-            outline: 0;
-          }
-          
-          .balance .balance-mobile {
-            display: flex;
-            align-items: center;
-            padding: 20px 27px;
-            font-size: 14px;
-            font-weight: 100;
-          }
-          .balance .balance-mobile .balance-text {
-            display: inline-block;
             line-height: 14px;
-            padding: 0 0 0 8px;
-            margin: 0;
-          }
-          .balance .balance-mobile .plus {
-            margin: 0;
           }
         `}</style>
-        <Convert show={show} onHide={::this.onHide} />
-        <Desktop>
-          <a href="#" className="plus" onClick={::this.onClick} />
-          <span className="balance-text">
-            <span className="balance-value">{balanceETH.data.toFixed(2)} ETH</span>
-            <span className="balance-value">{balancePLAT.data.toFixed(0)} PLAT</span>
-          </span>
-        </Desktop>
-        <Mobile>
-          <div className="balance-mobile">
-            <a href="#" className="plus" onClick={::this.onClick} />
-            <span className="balance-text">
-              <span className="balance-value">{balanceETH.data.toFixed(2)} ETH</span>
-              <span className="balance-value">{balancePLAT.data.toFixed(0)} PLAT</span>
-            </span>
-          </div>
-        </Mobile>
+        <div>
+          {this.props.balanceETH.isLoading ? this.textLoading() : <span className="balance-value">{balanceETH.data.toFixed(2)} ETH</span>}
+        </div>
+        <div>
+          {this.props.balancePLAT.isLoading ? this.textLoading() : <span className="balance-value">{balancePLAT.data.toFixed(0)} PLAT</span>}
+        </div>
+      </span>
+    );
+  }
+
+  render() {
+    return (
+      <div className="balance">
+        <style jsx>{`
+          :global(.balance) {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 13px;
+            font-weight: 100;
+          }
+        `}</style>
+        <Convert show={this.state.show} onHide={::this.onHide} />
+        {::this.plus()}
+        {::this.balances()}
       </div>
     );
   }

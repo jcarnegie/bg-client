@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Button, Form, Glyphicon, Modal} from "react-bootstrap";
+import {Button, Form, Glyphicon, Modal, Grid, Row, Col} from "react-bootstrap";
 import {connect} from "react-redux";
 import {FormattedMessage} from "react-intl";
 
@@ -120,66 +120,92 @@ export default class ConvertPopup extends Component {
 
     return (
       <BGModal show={show} className="convert" onHide={onHide}>
-        <style jsx global>{`
-          .convert h2 {
+        <style jsx>{`
+          .convert-title {
             font-size: 20px !important;
+            margin: 0 0 30px 0;
+
           }
-          .convert .modal-header {
+          :global(.convert .modal-header) {
             border: 0;
             position: absolute;
             z-index: 1;
             right: 0;
           }
-          .convert .glyphicon.glyphicon-transfer {
+          :global(.convert .glyphicon.glyphicon-transfer) {
             background-color: #C0BFD3;
             display: inline-block;
-            margin: 0 10px;
             height: 30px;
             width: 30px;
             line-height: 30px;
             color: #ffffff;
             border-radius: 50%;
             vertical-align: text-top;
+            padding: 0;
           }
-          .convert .form-control[type=number] {
-            width: 145px;
+          :global(.convert-submit) {
+            display: block;
+            margin: 0 auto;
+            margin-top: 20px;
+            text-transform: uppercase;
           }
-
+          :global(.form-control) {
+            width: 100% !important;
+            min-width: 100% !important;
+            padding: 10px;
+            width: 100% !important;
+          }
+          :global(.no-padding) {
+            padding: 0;
+          }
+          :global(.flex-col) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
         `}</style>
         <Modal.Header closeButton />
         <Modal.Body>
-          <Form inline noValidate onSubmit={::this.onSubmit}>
-            <h2>1 ETH = {rate.data} PLAT</h2>
-            <br />
-            <InputGroup
-              type="number"
-              step={step}
-              min={step}
-              name="eth"
-              onKeyDown={::this.onKeyDown}
-              value={precisionRound(formData.eth, 6)}
-              onChange={::this.onChangeETH}
-              required
-            />
-
-            <Glyphicon glyph="transfer" />
-
-            <InputGroup
-              type="number"
-              min={rate.data * step}
-              step={rate.data * step}
-              name="plat"
-              value={precisionRound(formData.plat, 6)}
-              onChange={::this.onChangePLAT}
-            />
-
-            <br />
-            <br />
-            <br />
-
-            <Button type="submit" className="btn-block text-uppercase">
-              <FormattedMessage id="buttons.convert" />
-            </Button>
+          <Form noValidate onSubmit={::this.onSubmit}>
+          <Grid fluid>
+              <Row>
+                <h2 className="convert-title">1 ETH = {rate.data} PLAT</h2>
+              </Row>
+              <Row style={{display: "flex"}}>
+                <Col sm={5} className="no-padding">
+                  <InputGroup
+                    type="number"
+                    step={step}
+                    min={step}
+                    name="eth"
+                    onKeyDown={::this.onKeyDown}
+                    value={precisionRound(formData.eth, 6)}
+                    onChange={::this.onChangeETH}
+                    required
+                  />
+                </Col>
+                <Col sm={2} className="flex-col">
+                  <Glyphicon glyph="transfer" />
+                </Col>
+                <Col sm={5} className="no-padding">
+                  <InputGroup
+                    type="number"
+                    min={rate.data * step}
+                    step={rate.data * step}
+                    name="plat"
+                    value={precisionRound(formData.plat, 6)}
+                    onChange={::this.onChangePLAT}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Button type="submit" className="btn-block convert-submit">
+                    <FormattedMessage id="buttons.convert" />
+                  </Button>
+                </Col>
+              </Row>
+              </Grid>
           </Form>
         </Modal.Body>
       </BGModal>

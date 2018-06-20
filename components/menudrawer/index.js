@@ -35,12 +35,15 @@ class MenuDrawer extends Component {
             padding: 0;
             transition: all 0.2s ease;
             z-index: 1030; /* Bootstrap modal is 1040, 1050 respectively */
-        }
+          }
           .links a, .links .navigation-link {
             display: block;
             width: 100%;
             text-decoration: none;
             color: white;
+          }
+          .balance-mobile {
+            padding: 20px 27px;
           }
         `}</style>
 
@@ -64,7 +67,10 @@ class MenuDrawer extends Component {
           </ActiveLink>
         </div>
 
-        <Balance />
+        <div className="balance-mobile">
+          <Balance />
+        </div>
+
         <Language />
 
       </div>
