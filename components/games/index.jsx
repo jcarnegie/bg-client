@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Grid, Button, Col, Image, Row} from "react-bootstrap";
-import {FormattedMessage} from "react-intl";
+import {FormattedMessage, injectIntl} from "react-intl";
 import {connect} from "react-redux";
 import Link from "next/link";
 import Router from "next/router";
@@ -27,6 +27,7 @@ const GAMES = {
   },
 };
 
+@injectIntl
 @connect(
   state => ({
     analytics: state.analytics,
