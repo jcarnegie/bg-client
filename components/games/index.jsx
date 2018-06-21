@@ -319,10 +319,10 @@ export default class GameList extends Component {
             position: relative;
           }
           .games .banner.etheronline {
-            background-image: url("/static/images/games/ether.online/banner.png");
+            background-image: url("/static/images/games/ether.online/banner.jpg");
           }
           .games .banner.magicacademy {
-            background-image: url("/static/images/games/magicacademy/banner.png");
+            background-image: url("/static/images/games/magicacademy/banner.jpg");
           }
           .games .banner .btn {
             color: #130029;
@@ -433,10 +433,10 @@ export default class GameList extends Component {
           </Col>
         </Row>
         <Row className="announce">
-          {this.comingSoon("/static/images/games/axie/banner.png")}
-          {this.comingSoon("/static/images/games/eth_town/banner.png")}
-          {this.comingSoon("/static/images/games/mythereum/banner.png")}
-          {this.comingSoon("/static/images/games/bitizens/banner.png", "pages.games.announce.in-development")}
+          {this.comingSoon("/static/images/games/axie/thumbnail.jpg")}
+          {this.comingSoon("/static/images/games/eth_town/thumbnail.jpg")}
+          {this.comingSoon("/static/images/games/mythereum/thumbnail.jpg")}
+          {this.comingSoon("/static/images/games/bitizens/thumbnail.jpg", "pages.games.announce.in-development")}
         </Row>
         <Row className="explore">
           <Col>
