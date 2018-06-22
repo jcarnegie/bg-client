@@ -1,4 +1,11 @@
 {
+  "global": {
+    "about": "About",
+    "description": "Description",
+    "faq": "FAQ",
+    "remaining": "remaining",
+    "rules": "Rules"
+  },
   "components": {
     "switchLanguage": "Switch Language",
     "language": {
@@ -235,6 +242,133 @@
       "l11": "Check your email on June 25th, 2018, to see if you’ve won!",
       "p8": "*If a user does not reply to our message within 24 hours, BitGuild reserves the right to select a new winner at random.",
       "p9": "Contribution should not be spam, low effort, offensive, or duplicate content. Play nice!"
+    },
+    "presale": {
+      "bitizens": {
+        "title": "Bitizens Pioneer Presale",
+        "subtitle": "Welcome Bitizens!",
+        "presale-stats-title": "IGO Stats",
+        "items-bought": "Items bought",
+        "items-left": "left",
+        "total-buyers": "Total buyers",
+        "stretch-goals-unlocked": "Stretch goals unlocked",
+        "stretch-goals-locked": "locked",
+        "bonus-reward-1": "Bonus Reward 1",
+        "bonus-reward-1-description": "If we sell 30% of our items, all who participated will get a very special custom Dril’rBot skin!",
+        "bonus-reward-2": "Bonus Reward 2",
+        "bonus-reward-2-description": "If we reach 70% of total sales everyone who participated will get the mini rocket accessory!",
+        "presale-text": {
+          "p1": "Get your mitts on the exclusive items below by participating in our pre-sale event. This will be the <strong>ONLY</strong> chance at securing these items for yourself - Don’t miss out as quantities are limited!",
+          "p2": "Secure your piece of cryptogaming history, and establish yourself as a Bitizens Pioneer today!",
+          "p3": "We’ve set up some unique stretch goals as well - reaching them will unlock unique items for all pre-sale participants - an extra special reward for helping us make the Bitizen vision a reality.",
+          "p4": "<strong>First Stretch Goal:</strong>",
+          "p5": "Once 30% of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot paint job!",
+          "p6": "That’s right, this adorable little mining companion is now an ERC721 token - meaning it can be customized! First up on the list of possible ways players can customize their personal Dril’ rBot are paint jobs, and the one featured here is going to be pretty special (Once the pre-sale is over, that’s it, you can’t get it anymore!)",
+          "p7": "<strong>Second Stretch Goal:</strong>",
+          "p8": "Selling 70% of all Bitizens pre-sale items will unlock something extra special for all participants - Your very own miniature rocket!",
+          "p9": "The Mini-Rocket is an Accessory item-type, meaning it can be equipped to your character and offer either special visual effects on your Bitizen, or a stat boost, or both! Much like the above paint-job customization, this Mini Rocket is not going to be available once the Bitizens pre-sale is over!"
+        },
+        "about-text": "<ol><li>Lorem ipsum dolor amet art party shabby chic man bun, XOXO mixtape tousled live-edge offal roof party vegan glossier banh mi letterpress organic la croix. +1</li><li>Lorem ipsum dolor amet art party shabby chic man bun, XOXO mixtape tousled live-edge offal roof party vegan glossier banh mi letterpress organic la croix. +1</li><li>Lorem ipsum dolor amet art party shabby chic man bun, XOXO mixtape tousled live-edge offal roof party vegan glossier banh mi letterpress organic la croix. +1</li><li>Lorem ipsum dolor amet art party shabby chic man bun, XOXO mixtape tousled live-edge offal roof party vegan glossier banh mi letterpress organic la croix. +1</li><li>Lorem ipsum dolor amet art party shabby chic man bun, XOXO mixtape tousled live-edge offal roof party vegan glossier banh mi letterpress organic la croix. +1</li></ol>",
+        "faq-text": {
+          "p1": "<strong>Your invitation to come and make the world a better place.</strong>",
+          "p2": "<strong>Welcome to Bitropolis - the ultimate destination for a new crypto world!</strong>",
+          "p3": "Visit this sprawling cityscape and enjoy everything it has to offer, from the sunny digital skies to the depths of the bitmines. Everyone is welcome, all you have to do is sign up - Your digital cognition will then be loaded into your new destination in a matter of mere clicks!",
+          "p4": "<strong>What is this place?</strong>",
+          "p5": "Oh it’s no big deal, it’s just the single most magnificent digital civilization this side of the blockchain (probably even the other side too… but we don’t go there.) It’s a sprawling, unending urban jungle in which your wildest dreams can come true - provided you wanna hit the big time in the world of crypto! Experience unlimited possibilities as you set forth on your journey to this new interconnected virtual utopia.",
+          "p6": "<strong>Who am I here?</strong>",
+          "p7": "Anyone you like! You, and anyone else making a stop in Beautiful Bitropolis is an honorary Bitizen! In this realm, you can customize your pretty polygonal face, and let everyone know what you’re all about by accessorizing to your heart’s content.",
+          "p8": "<strong>Well that’s nice… but why should I stay?!</strong>",
+          "p9": "Prosperity of course! Once you see it for yourself, you’ll be an instant believer - Bitropolis is just THE place to be! It’s a world rich with opportunity for all, and here, everyone is on equal grounds from the get-go. Refusing Bitropolis residency is like using your bitcoins to buy a pizza in 2010 - not very smart!",
+          "p10": "<strong>Okay, show me how!</strong>",
+          "p11": "Every single Bitizen is granted a standard issue, slightly used, Dril’rBot Rx-24. With this trusty little excavator at your side, you can delve into the veritable cornucopia of treasure that are the Bitropolis Mines. Drill to your heart’s content, because anything you find can be exchanged for sweet rewards at the foundry!",
+          "p12": "<strong>Cool! ...now what?</strong>",
+          "p13": "Bask in the glory, flaunt your swag by adorning yourself in rare and unique threads, and then do it all again! There’s no end to what you can find down there, and any and all items acquired in Bitropolis are yours to keep, use, trade, or even sell for PLAT! Who knows what you might find… It could be just what you needed to complete your collection… or your neighbour’s collection (provided you’re willing to sell it to them... Did someone say profits? KA-CHING!)",
+          "p14": "<strong>Sounds amazing! How do I get there?</strong>",
+          "p15": "You can book your one-way ticket (let’s face it, you won’t need the return ticket) to the virtual world of Bitropolis right now by clicking here. There’s no such thing as an economy seat - For Bitizens, it’s first class all the way baby!"
+        },
+        "sets": {
+          "pioneer-of-the-wilds": {
+            "name": "Pioneer of the Wilds",
+            "description": "Always ready to seek new adventures, the explorer’s outfit will let people know you’re at the forefront of cryptogaming, and got here “before it was cool”!",
+            "item1": {
+              "name": "Deep Sea Helmet"
+            },
+            "item2": {
+              "name": "Diving Top"
+            },
+            "item3": {
+              "name": "Diving Pants"
+            },
+            "item4": {
+              "name": "Weighted Boots"
+            }
+          },
+          "pioneer-of-the-seas": {
+            "name": "Pioneer of the Seas",
+            "description": "Go deeper than most could only dream of, and discover the untold secrets of an unexplored world.",
+            "item1": {
+              "name": "Deep Sea Helmet"
+            },
+            "item2": {
+              "name": "Diving Top"
+            },
+            "item3": {
+              "name": "Diving Pants"
+            },
+            "item4": {
+              "name": "Weighted Boots"
+            }
+          },
+          "pioneer-of-the-skies": {
+            "name": "Pioneer of the Skies",
+            "description": "Fly above the radar in this stoic Flightsuit. You’ll turn some heads with pure envy if your Bitizen is spotted in this get-up - for sure!",
+            "item1": {
+              "name": "Deep Sea Helmet"
+            },
+            "item2": {
+              "name": "Diving Top"
+            },
+            "item3": {
+              "name": "Diving Pants"
+            },
+            "item4": {
+              "name": "Weighted Boots"
+            }
+          },
+          "cyberspace-pioneer": {
+            "name": "Cyberspace Pioneer",
+            "description": "Go deeper than most could only dream of, and discover the untold secrets of an unexplored world.",
+            "item1": {
+              "name": "Deep Sea Helmet"
+            },
+            "item2": {
+              "name": "Diving Top"
+            },
+            "item3": {
+              "name": "Diving Pants"
+            },
+            "item4": {
+              "name": "Weighted Boots"
+            }
+          },
+          "pioneers-compass": {
+            "name": "Pioneer's Compass",
+            "description": "Lock yourself in as one of only 5 Bitizen Cyber Warriors. You are one with the chain, and the chain is one with you.",
+            "item1": {
+              "name": "Deep Sea Helmet"
+            },
+            "item2": {
+              "name": "Diving Top"
+            },
+            "item3": {
+              "name": "Diving Pants"
+            },
+            "item4": {
+              "name": "Weighted Boots"
+            }
+          }
+        }
+      }
     }
   },
   "chat": {

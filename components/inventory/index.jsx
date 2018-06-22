@@ -269,47 +269,11 @@ export default class Inventory extends Component {
 		);
 	}
 
-	tabsStyle() {
-		return (
-			<style jsx global>{`
-				.nav-tabs li a {
-					color: #130029;
-					font-size: 14px;
-					font-weight: 400;
-					line-height: 16px;
-					background-color: transparent !important; /* Bootstrap override */
-				}
-				.nav-tabs li a:hover,
-				.nav-tabs li a:focus {
-					background: none;
-					border: 1px solid transparent;
-					outline: 0;
-				}
-				.nav-tabs li.active a {
-					color: #130029;
-					font-size: 16px;
-					font-weight: 600;
-				}
-				.nav-tabs li.active a,
-				.nav-tabs li.active a:hover,
-				.nav-tabs li.active a:focus {
-					color: #130029;
-					border: 0;
-					border-bottom: 2px solid #130029;
-				}
-				.tab-content {
-					padding-top: 20px;
-				}
-				`}</style>
-		);
-	}
-
 	render() {
 		return (
 			<div className="inventory">
 				{this.indexStyle()}
 				{this.flexStyle()}
-				{this.tabsStyle()}
 				{this.renderInventory()}
 			</div>
 		);

@@ -1,5 +1,11 @@
 // TODO - consolidate global styles for text
-export default function Article({title = null, children = null}) {
+import PropTypes from "prop-types";
+
+
+function Article({
+  title = null,
+  children = null,
+}) {
   return (
     <div className="bg-article">
       <style jsx global>{`
@@ -58,9 +64,22 @@ export default function Article({title = null, children = null}) {
         .bg-article dl dd {
           font-weight: 300;
           margin-bottom: 20px;
-        }    
+        }
+        .bg-article .row {
+          margin-bottom: 60px;
+        }
+        .bg-article .nav-tabs li {
+          margin: 0;
+        }
       `}</style>
       {children}
     </div>
   );
 }
+
+Article.propTypes = {
+  children: PropTypes.array,
+  title: PropTypes.any,
+};
+
+export default Article;

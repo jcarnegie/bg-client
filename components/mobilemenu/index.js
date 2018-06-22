@@ -134,17 +134,20 @@ class MobileMenu extends Component {
           }
           :global(.settings-button) {
             display: ${user.data ? "none" : "flex"} !important; /* module overrides */
-            color: ${style.colors.secondary};
+            color: white;
             border: 0;
-            background: #B0C3EE !important; /* module overrides */
+            background: rgba(87, 181, 127, .9) !important; /* module overrides */
             padding: 0 30px !important; /* module overrides */
             text-transform: uppercase;
             font-weight: 500;
             align-items: center;
             justify-content: center;
+            font-weight: 100;
+            font-size: 14px;
+            letter-spacing: 1px;
           }
           :global(.settings-button:hover) {
-            background: #9BB2E7 !important;
+            background: rgba(87, 181, 127, 1) !important;
           }
         `}</style>
         <ChatToggle />

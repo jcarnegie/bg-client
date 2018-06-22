@@ -28,6 +28,7 @@ console.log("process.env.RINKEBY_TOKEN_CONTRACT_ADDR: ", process.env.RINKEBY_TOK
 console.log("process.env.RINKEBY_TOPUP_CONTRACT_ADDR: ", process.env.RINKEBY_TOPUP_CONTRACT_ADDR);
 console.log("process.env.RINKEBY_ORACLE_CONTRACT_ADDR: ", process.env.RINKEBY_ORACLE_CONTRACT_ADDR);
 console.log("process.env.SENDBIRD_APP_ID: ", process.env.SENDBIRD_APP_ID);
+console.log("process.env.FEATURE_PRESALE: ", process.env.FEATURE_PRESALE);
 
 
 next.prepare().then(() => {
@@ -63,6 +64,11 @@ next.prepare().then(() => {
   app.get("/game/:slug", (req, res) => {
     const params = route("/game/:slug")(parse(req.url).pathname);
     return next.render(req, res, "/game", {slug: params.slug});
+  });
+
+  app.get("/presale/:slug", (req, res) => {
+    const params = route("/presale/:slug")(parse(req.url).pathname);
+    return next.render(req, res, "/presale", {slug: params.slug});
   });
 
   app.get("*", (req, res) => {

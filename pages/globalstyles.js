@@ -19,12 +19,19 @@ function GlobalStyles({style}) {
       <style global jsx>{`
         body {
           font-family: "futura-pt", futura, "Myriad Pro", "Proxima Nova", sans-serif;
+          font-size: 14px;
           color: ${style.colors.text};
           background: ${style.colors.background};
         }
-        h2 {
-          font-size: 24px;
+        
+        h1 {
+          font-size: 2.6em;
         }
+
+        h2 {
+          font-size: 1.7em;
+        }
+
         a {
           color: #314B88;
           cursor: pointer;
@@ -107,6 +114,36 @@ function GlobalStyles({style}) {
           color: #d0021b;
         }
       `}</style>
+      <style jsx global>{`
+        .nav-tabs li a {
+          color: #130029;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 16px;
+          background-color: transparent !important; /* Bootstrap override */
+        }
+        .nav-tabs li a:hover,
+        .nav-tabs li a:focus {
+          background: none;
+          border: 1px solid transparent;
+          outline: 0;
+        }
+        .nav-tabs li.active a {
+          color: #130029;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .nav-tabs li.active a,
+        .nav-tabs li.active a:hover,
+        .nav-tabs li.active a:focus {
+          color: #130029;
+          border: 0;
+          border-bottom: 2px solid #130029;
+        }
+        .tab-content {
+          padding-top: 20px;
+        }
+        `}</style>
       {/* TODO - Move local styles */}
       <style jsx global>{`
         form {

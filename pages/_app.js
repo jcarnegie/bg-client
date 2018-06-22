@@ -53,7 +53,7 @@ class BGApp extends App {
     } = this.props;
 
     return (
-      <Container warnings={false}>
+      <Container>
         <GlobalStyles style={style} />
         <Provider store={store}>
           <>

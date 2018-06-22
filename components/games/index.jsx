@@ -177,6 +177,27 @@ export default class GameList extends Component {
     );
   }
 
+  presale(slug) {
+    return process.env.FEATURE_PRESALE === "true" ? (
+      <div onClick={() => Router.push({pathname: "/presale", query: {slug}}, `/presale/${slug}`)} className="promotional-banner presale-banner">
+        <style jsx>{`
+          .promotional-banner.presale-banner {
+            background-size: contain;
+            background-color: #F1F5FF;
+            color: #314B88;
+            border-bottom: 1px solid #c7c6f2;
+            height: 200px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        `}</style>
+        <h2><FormattedMessage id={`pages.presale.${slug}.title`} /></h2>
+      </div>
+    ) : null;
+  }
+
   events() {
     return (
       <div className="events">
@@ -425,6 +446,11 @@ export default class GameList extends Component {
         <Row>
           <Col>
             {this.banner()}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {this.presale("bitizens")}
           </Col>
         </Row>
         <Row>

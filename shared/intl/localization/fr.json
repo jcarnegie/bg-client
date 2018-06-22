@@ -231,6 +231,9 @@
       "l11":"Vérifiez votre e-mail le 25 juin 2018 pour voir si vous êtes un des heureux vainqueurs !" ,
       "p8": "*Si un utilisateur ne répond pas à notre message dans les 24 heures, BitGuild se réserve le droit de sélectionner un nouveau gagnant au hasard.",
       "p9": "contribution à provoquer des spams, effort insuffisant, offensant, ou contenu double. Soyez sympa !"
+    },
+    "presale": {
+      "title": "Bitizens Presale"
     }
   },
   "chat": {

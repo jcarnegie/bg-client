@@ -3,7 +3,7 @@ import Events from "@/components/events";
 import Chat from "@/components/chat";
 
 
-const AirdropPage = props => (
+const EventsPage = props => (
   <>
     <MobileLayout
       main={<MobileContent><Events {...props} /></MobileContent>}
@@ -15,4 +15,4 @@ const AirdropPage = props => (
   </>
 );
 
-export default AirdropPage;
+export default EventsPage;

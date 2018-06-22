@@ -30,3 +30,8 @@ export function ethNetworkRouteGuard({store, res}) {
   }
 }
 
+export function featureRouteGuard({res}, featureOn) {
+  if (!featureOn) {
+    returnToPath("/", res);
+  }
+}

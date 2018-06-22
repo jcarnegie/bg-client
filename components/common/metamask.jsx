@@ -113,15 +113,19 @@ class MetaMask extends Component {
 
   render() {
     const {network, account, pathname, router, user} = this.props;
-    const whitelist = [
-      "/",
-      "/faq",
-      "/events",
+
+    const guestRoutes = [
+      "",
+      "faq",
+      "events",
+      "presale",
     ];
 
+    /* Regex is insensitive, matches startswith. Ex: presale/bitizens is public. */
+    const matchExp = new RegExp(`^(${guestRoutes.reduce((a, b) => (a + `|\\/${b}`))})`, "i");
     const path = pathname || router.pathname;
 
-    if (!path || (whitelist.includes(path) && !user.showRegisterWorkflow)) {
+    if (!path || (path.match(matchExp) && !user.showRegisterWorkflow)) {
       return null;
     }
 

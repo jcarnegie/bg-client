@@ -230,6 +230,11 @@
       "l11": "¡Revisa tu correo electrónico el 25 de junio de 2018 para ver si has ganado!",
       "p8": "*Si un usuario no responde nuestro mensaje dentro de las 24 horas, BitGuild se reserva el derecho de seleccionar otro ganador al azar.",
       "p9": "la participación enviada se considera mensaje basura, demuestra poco esfuerzo, es ofensiva o tiene contenido duplicado. ¡Juega bonito!"
+    },
+    "presale": {
+      "bitizens": {
+        "title": "Bitizens Presale"
+      }
     }
   },
   "chat": {

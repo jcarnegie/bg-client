@@ -109,16 +109,18 @@ export default class Header extends Component {
           }
           .settings .settings-button {
             display: ${user.data ? "none" : "initial"};
-            color: ${style.colors.secondary};
+            color: white;
             margin: 0 -15px 0 0;
             border: 0;
-            background-color: #B0C3EE;
+            background-color: rgba(87, 181, 127, .9);
             padding: 0 30px;
             text-transform: uppercase;
-            font-weight: 500;
+            font-weight: 100;
+            font-size: 14px;
+            letter-spacing: 1px;
           }
           .settings .settings-button:hover {
-            background-color: #9BB2E7;
+            background-color: rgba(87, 181, 127, 1);
           }
         `}</style>
         <div className={cx({"spaced-right": !!user.data})}>
