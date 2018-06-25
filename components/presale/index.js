@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import {Image, Row, Col, Tab, Tabs, ProgressBar} from "react-bootstrap";
 import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 
-// import Article from "@/components/article";
 // import BGModal from "@/components/modal";
 import {Mobile, Desktop} from "@/components/responsive";
 
@@ -12,124 +11,34 @@ import style from "@/shared/constants/style";
 
 const sets = [
   {
-    id: "pioneer-of-the-wilds",
+    id: "pioneer_of_the_wilds",
     name: "Pioneer of the Wilds",
     total: 100,
     price: 60000,
-    items: [
-      {
-        name: "Deep Sea Helmet",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Diving Top",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Diving Pants",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Weighted Boots",
-        img: "http://via.placeholder.com/60x40",
-      },
-    ],
   },
   {
-    id: "pioneer-of-the-skies",
+    id: "pioneer_of_the_skies",
     name: "Pioneer of the Skies",
     total: 25,
     price: 180000,
-    items: [
-      {
-        name: "Deep Sea Helmet",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Diving Top",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Diving Pants",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Weighted Boots",
-        img: "http://via.placeholder.com/60x40",
-      },
-    ],
   },
   {
-    id: "pioneer-of-the-seas",
+    id: "pioneer_of_the_seas",
     name: "Pioneer of the Seas",
     total: 10,
     price: 480000,
-    items: [
-      {
-        name: "Deep Sea Helmet",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Diving Top",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Diving Pants",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Weighted Boots",
-        img: "http://via.placeholder.com/60x40",
-      },
-    ],
   },
   {
-    id: "cyberspace-pioneer",
+    id: "pioneer_of_the_cyberscape",
     name: "Cyberspace Pioneer",
     total: 1,
     price: 3000000,
-    items: [
-      {
-        name: "Deep Sea Helmet",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Diving Top",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Diving Pants",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Weighted Boots",
-        img: "http://via.placeholder.com/60x40",
-      },
-    ],
   },
   {
-    id: "pioneers-compass",
+    id: "pioneer_compass",
     name: "Pioneers Compass",
     total: 3,
     price: 720000,
-    items: [
-      {
-        name: "Deep Sea Helmet",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Diving Top",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Diving Pants",
-        img: "http://via.placeholder.com/60x40",
-      },
-      {
-        name: "Weighted Boots",
-        img: "http://via.placeholder.com/60x40",
-      },
-    ],
   },
 ];
 
@@ -152,6 +61,7 @@ class Presale extends Component {
   }
 
   purchaseBlock(set) {
+    const itemIndices = [1, 2, 3, 4];
     return (
       <div className="presale-purchase-block" key={set.id} onClick={() => ::this.purchase(set)}>
         <style jsx>{`
@@ -210,27 +120,28 @@ class Presale extends Component {
             padding: 0 10px;
           }
           .details {
-            font-size: 0.8em;
+            font-size: 0.9em;
             padding: 0 0 0 10%;
             list-style-type: none;
             display: flex;
             flex-wrap: wrap;
           }
           .presale-item-remaining {
-            margin: 0 0 20px 0;
+            margin: 0 0 10px 0;
           }
           .details li {
             width: 50%;
+            margin-bottom: 3px;
           }
         `}</style>
         <div className="presale-item-grid">
-          {set.items.map((v, k) => <img key={k} src={v.img} />)}
+          {itemIndices.map((v, k) => <img key={k} src={`/static/images/games/${this.props.slug}/presale/${set.id}/items/${v}.png`} />)}
         </div>
         <div className="presale-item-details">
           <h5>{set.name}</h5>
           <p className="presale-item-remaining">40 / {set.total} <FormattedMessage id="global.remaining" /></p>
           <ul className="details">
-             {set.items.map((v, k) => <li key={k}>{v.name}</li>)}
+             {itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>)}
           </ul>
         </div>
         <button>BUY for {set.price} PLAT</button>
@@ -252,7 +163,7 @@ class Presale extends Component {
               <h3>{set.name}</h3>
             </Col>
             <Col lg={4}>
-              <Image responsive src="http://via.placeholder.com/300x300" className="purchase-set-banner" />
+              <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/thumbnail.jpg`} className="purchase-set-banner" />
             </Col>
             <Col lg={8}>
               <p><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.description`} /></p>
@@ -356,7 +267,7 @@ class Presale extends Component {
           </Row>
           <Row>
             <Col xs={12} sm={7} className="presale-banner-primary">
-              <Image responsive src="http://via.placeholder.com/1000x400" />
+              <Image responsive src="/static/images/games/bitizens/presale/header.jpg" />
             </Col>
             <Col xs={12} sm={5}>
               <p className="presale-stat">72 / 138</p>
@@ -376,12 +287,12 @@ class Presale extends Component {
             <Col xs={4} xsOffset={4}>
               <div className="progress-disclaimer">
                 <Row>
-                  <Col lg={3} md={12}>
+                  <Col lg={4} md={12}>
                     <div className="progress-popover">
-                      <Image responsive src="http://via.placeholder.com/100x100" />
+                      <Image responsive src="/static/images/games/bitizens/presale/pioneer_drillr/thumbnail.png" />
                     </div>
                   </Col>
-                  <Col lg={9} md={12}>
+                  <Col lg={8} md={12}>
                     <span className="progress-disclaimer-text">
                       <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-1`} /></strong></p>
                       <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-1-description`} /></p>
@@ -393,12 +304,12 @@ class Presale extends Component {
             <Col xs={4}>
               <div className="progress-disclaimer">
                 <Row>
-                  <Col lg={3} md={12}>
+                  <Col lg={4} md={12}>
                     <div className="progress-popover">
                       <Image responsive src="http://via.placeholder.com/100x100" />
                     </div>
                   </Col>
-                  <Col lg={9} md={12}>
+                  <Col lg={8} md={12}>
                     <span className="progress-disclaimer-text">
                       <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-2`} /></strong></p>
                       <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-2-description`} /></p>
@@ -412,18 +323,27 @@ class Presale extends Component {
             <Col xs={12} className="presale-info">
               <Tabs id="presale-tabs" defaultActiveKey={1}>
                 <Tab eventKey={1} title={<FormattedMessage id="global.description" />}>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.presale-text.p1`} /></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.presale-text.p2`} /></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.presale-text.p3`} /></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.presale-text.p4`} /></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.presale-text.p5`} /></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.presale-text.p6`} /></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.presale-text.p7`} /></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.presale-text.p8`} /></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.presale-text.p9`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p1`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p2`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p3`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p4`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p5`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p6`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p7`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p8`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p9`} /></p>
                 </Tab>
                 <Tab eventKey={2} title={<FormattedMessage id="global.rules" />}>
-                  <FormattedHTMLMessage id={`pages.presale.${this.props.slug}.about-text`} />
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p1`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p2`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p3`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p4`} /></p>
+                  <ol>
+                    <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l1`} /></li>
+                    <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l2`} /></li>
+                    <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l3`} /></li>
+                    <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l4`} /></li>
+                  </ol>
                 </Tab>
                 <Tab eventKey={3} title={<FormattedMessage id="global.faq" />}>
                   <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.faq-text.p1`} /></p>
