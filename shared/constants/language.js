@@ -9,3 +9,13 @@ export const enabledLanguages = [
   "es",
   "ru",
 ];
+
+export const enabledLanguagesNativeText = [
+  "English",
+  "中文",
+  "Português",
+  "日本語",
+  "Français",
+  "Español",
+  "Ру́сский",
+];

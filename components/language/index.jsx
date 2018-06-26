@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {updateIntl} from "react-intl-redux";
 import {injectIntl, intlShape} from "react-intl";
 import {Image, MenuItem, DropdownButton} from "react-bootstrap";
-import {enabledLanguages} from "@/shared/constants/language";
+import {enabledLanguages, enabledLanguagesNativeText} from "@/shared/constants/language";
 import {localization} from "@/shared/intl/setup";
 import {UPDATE_USER} from "@/shared/constants/actions";
 import {Mobile, Desktop} from "@/components/responsive";
@@ -33,6 +33,23 @@ export default class Language extends Component {
       }
     });
     document.documentElement.setAttribute("lang", language);
+  }
+
+  renderLanguageMenuItems(){
+    let dropDownLanguages = []
+
+    for (let i = 0; i < enabledLanguagesNativeText.length; i++){
+      dropDownLanguages.push(
+        <MenuItem
+          key={enabledLanguagesNativeText[i]}
+          eventKey={ enabledLanguagesNativeText[i]}
+          onSelect={() => {this.onSelect(enabledLanguages[i])}}
+        >
+          {<div className="native-language"> {enabledLanguagesNativeText[i]} </div>}
+        </MenuItem>
+      )
+    }
+    return dropDownLanguages
   }
 
   render() {
@@ -93,7 +110,7 @@ export default class Language extends Component {
 
             .lang-dropdown .dropdown .dropdown-menu li a:focus,
             .lang-dropdown .dropdown .dropdown-menu li a:hover {
-              background: rgb(49,75,136) !important;
+              background: #F7F7F7 !important;
             }
            
             .lang-menu img,
@@ -103,7 +120,7 @@ export default class Language extends Component {
 
             .lang-dropdown .dropdown .dropdown-menu {
               min-width: 0;
-              background-color: rgb(188, 196, 222);
+              background-color: #FFFFFF;
             }
 
             .lang-dropdown > div > ul > li:nth-child(1) > a > img
@@ -112,6 +129,11 @@ export default class Language extends Component {
               line-height: 0;
               list-style-type: none;
               padding: 10px 15px;
+            }
+
+            .current-lang{
+              color: white;
+              padding-left: 12px;
             }
           `}</style>
         </Desktop>
@@ -153,16 +175,27 @@ export default class Language extends Component {
             .lang-dropdown .dropdown .dropdown-menu li a:hover {
               background: rgba(255, 255, 255, 0.15) !important;
             }
+
+            .current-lang{
+              color: white;
+              padding-left: 22px;
+            }
+
+            .native-language{
+              color: white;
+            }
           `}</style>
         </Mobile>
-        <DropdownButton title={<Image src={`/static/images/language/${language}.png`} />} className="lang-menu" id="lang-menu">
-          {enabledLanguages.map(language =>
-            (
-              <MenuItem key={language} eventKey={language} onSelect={::this.onSelect}>
-                <Image src={`/static/images/language/${language}.png`} />
-              </MenuItem>
-            )
-          )}
+        <DropdownButton 
+          title={
+            <span>
+              <Image src={`/static/images/language/globe.svg`} />
+              <span className="current-lang">{language.toUpperCase()} </span>
+            </span>
+          }            
+          className="lang-menu" id="lang-menu">
+        
+          {this.renderLanguageMenuItems()}
         </DropdownButton>
       </div>
     );
