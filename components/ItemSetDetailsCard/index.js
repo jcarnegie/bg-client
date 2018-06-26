@@ -69,20 +69,20 @@ class ItemSetDetailsCard extends React.PureComponent {
             border-radius: 0;
           }
           :global(.item-set-details-card-item-grid img:nth-child(even)) {
-            margin-left: 2.5%;
-            margin-right: 7.5%;
+            margin-left: 1.25%;
+            margin-right: 8.75%;
           }
           :global(.item-set-details-card-item-grid img:nth-child(odd)) {
-            margin-right: 2.5%;
-            margin-left: 7.5%;
+            margin-right: 1.25%;
+            margin-left: 8.75%;
           }
           .item-set-details-card-item-details {
             background: white;
-            padding: 0 10px;
+            padding: 0 0 0 10%;
           }
           .details {
             font-size: 0.9em;
-            padding: 0 0 0 10%;
+            padding: 0;
             list-style-type: none;
             display: flex;
             flex-wrap: wrap;

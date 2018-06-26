@@ -67,11 +67,13 @@ class Presale extends Component {
 
   setSection(set) {
     const itemIndices = [1, 2, 3, 4];
+    const remainingForSet = 40; // TODO - get remaining for set
     return (
       <Row key={set.id}>
         <style jsx>{`
-          :global(.presale-purchase-set-banner) {
+          :global(.presale-purchase-set-image) {
             margin-bottom: 5px;
+            border: 1px solid lightgray;
           }
         `}</style>
         <Col xs={6} sm={7}>
@@ -80,7 +82,7 @@ class Presale extends Component {
               <h3>{set.name}</h3>
             </Col>
             <Col lg={4}>
-              <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/thumbnail.jpg`} className="presale-purchase-set-banner" />
+              <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/thumbnail.jpg`} className="presale-purchase-set-image" />
             </Col>
             <Col lg={8}>
               <p><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.description`} /></p>
@@ -92,7 +94,7 @@ class Presale extends Component {
             key={set.id}
             onClick={() => ::this.purchase(set)}
             title={set.name}
-            subtitle={<>40 / {set.total} <FormattedMessage id="global.remaining" /></>}
+            subtitle={<>{remainingForSet} / {set.total} <FormattedMessage id="global.remaining" /></>}
             itemImages={itemIndices.map((v, k) => <img key={k} src={`/static/images/games/${this.props.slug}/presale/${set.id}/items/${v}.png`} />)}
             setDetails={itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>)}
             buttonText={`BUY for ${set.price} PLAT`}
@@ -102,77 +104,80 @@ class Presale extends Component {
     );
   }
 
-  presaleIntro() {
+  presaleTitles() {
     return (
-      <>
-        <Row>
-          <style jsx>{`
-            .presale {
-              padding-top: 25px;
-            }
-            .presale-stat {
-              margin: 0;
-              line-height: 1em;
-              font-weight: 500;
-            }
-            .presale-aside {
-              background-color: green;
-            }
-            .title.with-subtitle {
-              margin: 0 0 14px 0;
-            }
-            .subtitle {
-              margin: 0;
-            }
-            .title-section {
-              display: flex;
-            }
-            .titles {
-              height: 100px;
-              display: inline-block;
-              margin-left: 5%;
-            }
-            .title-image {
-              display: inline-block;
-            }
-            .presale-label {
-              margin: 0 0 10px 0;
-            }
-            .presale-stat {
-              margin: 20px 0 0 0;
-            }
-          `}</style>
-          <Col md={12}>
-            <div className="title-section">
-              <div className="title-image">
-                <Mobile>
-                  <Image src="http://via.placeholder.com/70x70" />
-                </Mobile>
-                <Desktop>
-                  <Image src="http://via.placeholder.com/100x100" />
-                </Desktop>
-              </div>
-              <div className="titles">
-                <h1 className="title with-subtitle"><FormattedMessage id={`pages.presale.${this.props.slug}.title`} /></h1>
-                <h2 className="subtitle"><FormattedMessage id={`pages.presale.${this.props.slug}.subtitle`} /></h2>
-              </div>
+      <Row>
+        <style jsx>{`
+          .title-section {
+            display: flex;
+          }
+          .titles {
+            height: 100px;
+            display: inline-block;
+            margin-left: 5%;
+          }
+          .title.with-subtitle {
+            margin: 0 0 14px 0;
+          }
+          .subtitle {
+            margin: 0;
+          }
+          .presale-stat {
+            line-height: 1.8em !important;
+            font-size: 1.8em !important;
+            font-weight: 500;
+            margin: 20px 0 0 0;
+          }
+          .presale-label {
+            margin: 0 0 10px 0;
+          }
+          .title-image {
+            display: inline-block;
+          }
+        `}</style>
+        <Col md={12}>
+          <div className="title-section">
+            <div className="title-image">
+              <Mobile>
+                <Image src="http://via.placeholder.com/70x70" />
+              </Mobile>
+              <Desktop>
+                <Image src="http://via.placeholder.com/100x100" />
+              </Desktop>
             </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} sm={7} className="presale-banner-primary">
-            <Image responsive src="/static/images/games/bitizens/presale/header.jpg" />
-          </Col>
-          <Col xs={12} sm={5}>
-            <p className="presale-stat">72 / 138</p>
-            <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.items-bought`} /></p>
-            <p className="presale-stat">138</p>
-            <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.total-buyers`} /></p>
-            <p className="presale-stat">2 / 3</p>
-            <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.stretch-goals-unlocked`} /></p>
-          </Col>
-        </Row>
-      </>
+            <div className="titles">
+              <h1 className="title with-subtitle"><FormattedMessage id={`pages.presale.${this.props.slug}.title`} /></h1>
+              <h2 className="subtitle"><FormattedMessage id={`pages.presale.${this.props.slug}.subtitle`} /></h2>
+            </div>
+          </div>
+        </Col>
+      </Row>
+    );
+  }
+
+  presaleBanner() {
+    return (
+      <Row>
+        <style jsx>{`
+          .presale-stat {
+            margin: 20px 0 0 0;
+          }
+          .presale-label {
+            margin: 0 0 10px 0;
+          }
+        `}</style>
+        <Col xs={12} sm={7} className="presale-banner-primary">
+          <Image responsive src="/static/images/games/bitizens/presale/header.jpg" />
+        </Col>
+        <Col xs={12} sm={5}>
+          <h3 className="presale-stat">72 / 138</h3>
+          <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.items-bought`} /></p>
+          <h3 className="presale-stat">138</h3>
+          <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.total-buyers`} /></p>
+          <h3 className="presale-stat">2 / 3</h3>
+          <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.stretch-goals-unlocked`} /></p>
+        </Col>
+      </Row>
     );
   }
 
@@ -293,7 +298,8 @@ class Presale extends Component {
             padding: 0;
           }
         `}</style>
-          {::this.presaleIntro()}
+          {::this.presaleTitles()}
+          {::this.presaleBanner()}
           {::this.presaleProgress(progress)}
           {::this.presaleInfo()}
           {SETS.map(set => ::this.setSection(set))}

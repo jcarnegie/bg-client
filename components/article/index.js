@@ -12,8 +12,8 @@ function Article({
         .bg-article h2 {
           font-weight: 700;
           font-size: 38px;
-          margin-top: 40px;
-          margin-bottom: 70px;
+          margin: 0 0 40px 0;
+          margin-bottom: ;
         }
 
         .bg-article h3,
@@ -21,7 +21,6 @@ function Article({
         .bg-article h3 span strong {
           font-weight: 500;
           font-size: 28px;
-          margin-top: 40px;
           margin-bottom: 40px;
         }
         .bg-article p,
