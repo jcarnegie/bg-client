@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import Link from "next/link";
 import Router from "next/router";
 
+import {featureOn} from "@/shared/utils";
 import {Mobile, Desktop} from "@/components/responsive";
 import GameIcon from "@/components/gameicon";
 import BGIcon from "@/components/bgicon";
@@ -178,7 +179,7 @@ export default class GameList extends Component {
   }
 
   presale(slug) {
-    return process.env.FEATURE_PRESALE === "true" ? (
+    return featureOn("bitizens_presale") ? (
       <div onClick={() => Router.push({pathname: "/presale", query: {slug}}, `/presale/${slug}`)} className="promotional-banner presale-banner">
         <style jsx>{`
           .promotional-banner.presale-banner {

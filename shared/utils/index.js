@@ -1,7 +1,10 @@
 import Router from "next/router";
+import {contains, propOr} from "ramda";
 import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
+import features from "@/shared/constants/features.json";
 import networkConfig from "@/client/utils/network";
 
+const env = process.env.NODE_ENV || "development";
 
 export function returnToPath(path, res) {
   if (res) {
@@ -35,3 +38,5 @@ export function featureRouteGuard({res}, featureOn) {
     returnToPath("/", res);
   }
 }
+
+export const featureOn = feature => contains(env, propOr([], feature, features));
