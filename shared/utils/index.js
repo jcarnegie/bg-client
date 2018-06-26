@@ -4,7 +4,7 @@ import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
 import features from "@/shared/constants/features.json";
 import networkConfig from "@/client/utils/network";
 
-const env = process.env.NODE_ENV || "development";
+const env = process.env.DEPLOYED_ENV || "local";
 
 export function returnToPath(path, res) {
   if (res) {

@@ -18,7 +18,6 @@ const responsive = require("./server/routes/responsive");
 
 const route = pathMatch();
 
-const features = require("./shared/constants/features.json");
 
 console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 console.log("process.env.PORT: ", process.env.PORT);
@@ -32,9 +31,6 @@ console.log("process.env.RINKEBY_TOPUP_CONTRACT_ADDR: ", process.env.RINKEBY_TOP
 console.log("process.env.RINKEBY_ORACLE_CONTRACT_ADDR: ", process.env.RINKEBY_ORACLE_CONTRACT_ADDR);
 console.log("process.env.SENDBIRD_APP_ID: ", process.env.SENDBIRD_APP_ID);
 
-Object.entries(features).forEach(entry => {
-  console.log(`Feature "${entry[0]}": ${entry[1].includes(process.env.NODE_ENV) ? "on" : "off"}`);
-});
 
 next.prepare().then(() => {
   const app = express();
