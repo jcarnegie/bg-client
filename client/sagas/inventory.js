@@ -18,6 +18,7 @@ import {
   MESSAGE_ADD,
   NEW_BLOCK,
   USER_CHANGED,
+  GIFT_ADD_SUCCESS,
 } from "../../shared/constants/actions";
 import {readFromQueryString} from "../utils/location";
 import {client} from "../utils/apollo";
@@ -117,4 +118,5 @@ export default function * inventorySaga() {
   yield takeEvery(USER_CHANGED, getGames);
   yield takeEvery(INVENTORY_ITEMS_REQUEST, getGames);
   yield takeEvery(NEW_BLOCK, checkGifts);
+  yield takeEvery(GIFT_ADD_SUCCESS, getItems);
 }
