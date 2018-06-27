@@ -7,9 +7,7 @@ import networkConfig from "@/client/utils/network";
 const env = process.env.DEPLOYED_ENV || "local";
 
 export function returnToPath(path, res) {
-  if (res) {
-    res.redirect(path);
-  } else {
+  if (!res) {
     Router.push(path);
   }
 }
