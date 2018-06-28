@@ -166,7 +166,9 @@ class Presale extends Component {
             title={set.name}
             subtitle={<>{remainingForSet} / {set.total} <FormattedMessage id="global.remaining" /></>}
             itemImage={<Image responsive src={`/static/images/games/${this.props.slug}/presale/${set.id}/thumbnail.jpg`} />}
-            setDetails={itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>)}
+            setDetails={
+              set.tokenId !== 999 ? itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>) : null
+            }
             buttonText={`BUY for ${set.price} PLAT`}
           />
         </Col>
