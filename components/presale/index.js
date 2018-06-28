@@ -151,16 +151,12 @@ class Presale extends Component {
             <Col xs={12}>
               <h3>{set.name}</h3>
             </Col>
-            <Row>
-              <Col lg={10}>
-                <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/banner.jpg`} className="presale-purchase-set-image" />
-              </Col>
-            </Row>
-            <Row>
-              <Col lg={10}>
-                <p><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.description`} /></p>
-              </Col>
-            </Row>
+            <Col xs={12}>
+              <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/banner.jpg`} className="presale-purchase-set-image" />
+            </Col>
+            <Col xs={12}>
+              <p><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.description`} /></p>
+            </Col>
           </Row>
         </Col>
         <Col xs={6} sm={5}>
@@ -191,6 +187,7 @@ class Presale extends Component {
             height: 100px;
             display: inline-block;
             margin-left: 5%;
+            font-size: 0.9em;
           }
           .title.with-subtitle {
             margin: 0 0 14px 0;
@@ -215,10 +212,10 @@ class Presale extends Component {
           <div className="title-section">
             <div className="title-image">
               <Mobile>
-                <Image src={`/static/images/games/${this.props.slug}/icon.png`} height={70} width={90} />
+                <Image src={`/static/images/games/${this.props.slug}/icon.jpg`} height={70} width={90} />
               </Mobile>
               <Desktop>
-                <Image src={`/static/images/games/${this.props.slug}/icon.png`} height={100} width={129} />
+                <Image src={`/static/images/games/${this.props.slug}/icon.jpg`} height={100} width={129} />
               </Desktop>
             </div>
             <div className="titles">
@@ -232,32 +229,18 @@ class Presale extends Component {
   }
 
   presaleBanner() {
-    const {mobile} = this.props.layout.type;
     // TODO - Get sold items count
     const progress = Math.floor((84 / TOTAL_ITEMS_COUNT) * 100); /* Percentage items sold */
 
     return (
       <Row className="presale-banner-row">
         <style jsx>{`
-          :global(.presale-banner-row) {
-            // box-shadow: ${style.boxShadow.default};
-          }
-          :global(.presale-banner-row > div:nth-child(1)) {
-            padding: ${mobile ? "initial" : "0"};
-          }
-          :global(.presale-banner-row > div:nth-child(2)) {
-
-          }
           .presale-stats-wrapper {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
           }
-          .presale-stat {
-            // margin: 20px 0 0 0;
-          }
           .presale-label {
-            // margin: 0 0 10px 0;
             font-size: .8em;
           }
         `}</style>
@@ -332,11 +315,11 @@ class Presale extends Component {
           <Col md={12}>
             <div className="bonus-rewards">
               <div className="bonus-reward bonus-reward-activated">
-                <Image responsive src={`/static/images/games/${this.props.slug}/icon.png`} />
+                <Image responsive src={`/static/images/games/${this.props.slug}/icon.jpg`} />
                 <span>Dril'r Bot Pioneer-I</span>
               </div>
               <div className="bonus-reward bonus-reward-disabled">
-                <Image responsive src={`/static/images/games/${this.props.slug}/icon.png`} />
+                <Image responsive src={`/static/images/games/${this.props.slug}/icon.jpg`} />
                 <span>Pioneer's Rocket</span>
               </div>
             </div>
