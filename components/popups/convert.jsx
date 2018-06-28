@@ -114,7 +114,6 @@ export default class ConvertPopup extends Component {
     const {rate, show, onHide, formData} = this.props;
 
     if (!rate.data) {
-      log.info("Will not render Convert because rate info is not avaliable.");
       return null;
     }
 
