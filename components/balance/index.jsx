@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import * as log from "loglevel";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import ScaleLoader from "react-spinners/dist/spinners/ScaleLoader";
@@ -11,6 +12,7 @@ import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
 
 @connect(
   state => ({
+    rate: state.rate,
     user: state.user,
     balanceETH: state.balanceETH,
     balancePLAT: state.balancePLAT,
@@ -19,6 +21,7 @@ import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
 export default class Balance extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
+    rate: PropTypes.object,
     user: PropTypes.object,
     balanceETH: PropTypes.object,
     balancePLAT: PropTypes.object,
@@ -51,6 +54,12 @@ export default class Balance extends Component {
     if (!this.props.user.data) {
       return this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: true});
     }
+
+    if (!this.props.rate.data) {
+      log.info("No rate info is avaliable, so convert workflow will be prevented.");
+      return null;
+    }
+
     this.setState({
       show: true,
     });
@@ -81,8 +90,13 @@ export default class Balance extends Component {
           .plus :focus {
             outline: 0;
           }
+
+          .plus[disabled] {
+            color: rgba(200,200,200, 1);
+            cursor:  not-allowed;
+          }
         `}</style>
-        <a href="#" className="plus" onClick={::this.onClick}>
+        <a href="#" className="plus" onClick={::this.onClick} disabled={!Boolean(this.props.rate.data)}>
           <MdAddCircle height="30" width="30" />
         </a>
       </span>

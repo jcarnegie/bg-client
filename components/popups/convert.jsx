@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import * as log from "loglevel";
 import PropTypes from "prop-types";
 import {Button, Form, Glyphicon, Modal, Grid, Row, Col} from "react-bootstrap";
 import {connect} from "react-redux";
@@ -113,6 +114,7 @@ export default class ConvertPopup extends Component {
     const {rate, show, onHide, formData} = this.props;
 
     if (!rate.data) {
+      log.info("Will not render Convert because rate info is not avaliable.");
       return null;
     }
 

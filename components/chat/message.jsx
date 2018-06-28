@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import xssFilters from "xss-filters";
 import React, {Component} from "react";
-import {path, merge} from "ramda";
+import {path} from "ramda";
 import {Image} from "react-bootstrap";
 
 
@@ -42,20 +42,6 @@ const reWebUrl = new RegExp(
   "$", "ig"
 );
 
-const formatTime = date => {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let period = "am";
-
-  if (hours > 12) {
-    period = "pm";
-    hours -= 12;
-  }
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
-  return `${hours}:${minutes}${period}`;
-};
 
 export default class Message extends Component {
   static propTypes = {
@@ -91,15 +77,6 @@ export default class Message extends Component {
 
     const isMyMessage = path(["sender", "userId"], message) === path(["data", "wallet"], user);
 
-    let backgroundColor = "#FFF";
-    let textColor = "#393939";
-    let headerColor = "#9FB1CD";
-
-    if (isMyMessage) {
-      backgroundColor = "#DEECFB";
-      textColor = "#191F24";
-    }
-
     return (
       <div className="message">
         <style jsx global>{`
@@ -121,7 +98,7 @@ export default class Message extends Component {
           .chat .message .message-box.my {
             background-color: #5789FF;
           }
-          .chat .message .message-box .my .body{
+          :global(.chat .message .message-box.my .body) {
             font-size: 13px;
             margin-top: 5px;
             color: #FFFF;  
@@ -138,7 +115,7 @@ export default class Message extends Component {
             margin-top: 5px;
             display: block;
           }
-          .chat .message .message-box .body .contents {
+          :global(.chat .message .message-box .body .contents) {
             overflow-wrap: break-word;
           }
           .chat .message .avatarLeft {
@@ -153,7 +130,7 @@ export default class Message extends Component {
             margin: 0 10px;
             width: 34px;
           }
-          .nickname{
+          .nickname {
             background-color: #F2F3F8;
           }
         `}</style>
