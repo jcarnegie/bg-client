@@ -51,7 +51,7 @@ const SETS = [
   },
   {
     id: "pioneer_compass",
-    tokenId: 0,
+    tokenId: 20,
     total: 3,
     price: 720000,
   },
@@ -81,7 +81,7 @@ class Presale extends Component {
     qtyOf17: null,
     qtyOf18: null,
     qtyOf19: null,
-    qtyOf0: null,
+    qtyOf20: null,
   }
 
   static getInitialProps({err, req, res, query, store, isServer}) {
@@ -205,7 +205,7 @@ class Presale extends Component {
             subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}</>}
             itemImage={<Image responsive src={`/static/images/games/${this.props.slug}/presale/${set.id}/thumbnail.jpg`} />}
             setDetails={
-              set.tokenId !== 0 ? itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>) : null
+              set.tokenId !== 20 ? itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>) : null
             }
             buttonText={`BUY for ${set.price} PLAT`}
           />
@@ -274,7 +274,7 @@ class Presale extends Component {
       qtyOf17,
       qtyOf18,
       qtyOf19,
-      qtyOf0,
+      qtyOf20,
     } = this.state;
 
     const totalSold = TOTAL_ITEMS_COUNT - (
@@ -282,7 +282,7 @@ class Presale extends Component {
       (qtyOf17 || 0) +
       (qtyOf18 || 0) +
       (qtyOf19 || 0) +
-      (qtyOf0 || 0)
+      (qtyOf20 || 0)
     );
 
     const totalBuyers = totalSold;
@@ -302,7 +302,7 @@ class Presale extends Component {
       qtyOf17 === null ||
       qtyOf18 === null ||
       qtyOf19 === null ||
-      qtyOf0 === null
+      qtyOf20 === null
     );
 
     return (
