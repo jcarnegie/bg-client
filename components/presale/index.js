@@ -24,14 +24,14 @@ const BITIZENS_GAME_ID = 3;
 const SETS = [
   {
     id: "pioneer_of_the_wilds",
-    tokenId: 16,
+    tokenId: 17,
     name: "Pioneer of the Wilds",
     total: 100,
     price: 60000,
   },
   {
     id: "pioneer_of_the_skies",
-    tokenId: 17,
+    tokenId: 16,
     name: "Pioneer of the Skies",
     total: 25,
     price: 180000,

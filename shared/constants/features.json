@@ -1,4 +1,4 @@
 {
-  "landing_v2": ["dev"],
+  "landing_v2": ["local", "dev"],
   "bitizens_presale": ["local", "dev", "staging"]
 }
