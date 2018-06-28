@@ -1,10 +1,10 @@
 {
   "global": {
     "about": "About",
-    "description": "Description",
+    "description": "Pre-Sale",
     "faq": "FAQ",
     "remaining": "remaining",
-    "rules": "Rules"
+    "rules": "About Bitizens"
   },
   "components": {
     "switchLanguage": "Switch Language",
@@ -245,28 +245,23 @@
     },
     "presale": {
       "bitizens": {
-        "title": "Bitizens Pioneer Presale",
-        "subtitle": "Welcome Bitizens!",
+        "title": "Bitizens Pioneer Pre-Sale",
+        "subtitle": " Show your support, and get unique in-game items in return!",
         "presale-stats-title": "IGO Stats",
-        "items-bought": "Items bought",
+        "items-bought": "Items sold",
         "items-left": "left",
         "total-buyers": "Total buyers",
-        "stretch-goals-unlocked": "Stretch goals unlocked",
+        "stretch-goals-unlocked": "Bonus rewards unlocked",
         "stretch-goals-locked": "locked",
         "bonus-reward-1": "Bonus Reward 1",
-        "bonus-reward-1-description": "If we sell 30% of our items, all who participated will get a very special custom Dril’rBot skin!",
+        "bonus-reward-1-description": "Once <strong>30%</strong> of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot Pioneer-I paint job!",
         "bonus-reward-2": "Bonus Reward 2",
-        "bonus-reward-2-description": "If we reach 70% of total sales everyone who participated will get the mini rocket accessory!",
+        "bonus-reward-2-description": "Selling <strong>70%</strong> of all Bitizens pre-sale items will unlock something extra special for all participants - Your very own miniature rocket!",
         "description-text": {
-          "p1": "Get your mitts on the exclusive items below by participating in our pre-sale event. This will be the <strong>ONLY</strong> chance at securing these items for yourself - Don’t miss out as quantities are limited!",
-          "p2": "Secure your piece of cryptogaming history, and establish yourself as a Bitizens Pioneer today!",
-          "p3": "We’ve set up some unique stretch goals as well - reaching them will unlock unique items for all pre-sale participants - an extra special reward for helping us make the Bitizen vision a reality.",
-          "p4": "<strong>First Stretch Goal:</strong>",
-          "p5": "Once 30% of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot paint job!",
-          "p6": "That’s right, this adorable little mining companion is now an ERC721 token - meaning it can be customized! First up on the list of possible ways players can customize their personal Dril’ rBot are paint jobs, and the one featured here is going to be pretty special (Once the pre-sale is over, that’s it, you can’t get it anymore!)",
-          "p7": "<strong>Second Stretch Goal:</strong>",
-          "p8": "Selling 70% of all Bitizens pre-sale items will unlock something extra special for all participants - Your very own miniature rocket!",
-          "p9": "The Mini-Rocket is an Accessory item-type, meaning it can be equipped to your character and offer either special visual effects on your Bitizen, or a stat boost, or both! Much like the above paint-job customization, this Mini Rocket is not going to be available once the Bitizens pre-sale is over!"
+          "p1": "Get your mitts on the exclusive items below by participating in our pre-sale event. This will be the <strong>ONLY</strong> chance at securing these items for yourself - <strong>Don’t miss out as quantities are limited!</strong> ",
+          "p2": "Taking part in the Bitizens pre-sale will not only help us produce a quality game that caters to players first and foremost, offering deep, meaningful, and engaging blockchain gaming experiences - It will also help show off your status as a Pioneer of both Bitizens and the BitGuild Portal. ",
+          "p3": "Once the game launches, these special, limited run items can't be acquired by traditional in-game means; <strong>You'd have to trade for them</strong>",
+          "p4": "Check out the Pioneer sets available and secure your piece of cryptogaming history, and establish yourself as a Bitizens Pioneer today!"
         },
         "rules-text": {
           "p1": "Taking part in the Bitizens pre-sale will not only help us produce a quality game that caters to players first and foremost, offering deep, meaningful, and engaging blockchain gaming experiences - It will also help show off your status as a Pioneer of both Bitizens and the BitGuild Portal. Once the game launches, these special, limited run items can't be acquired by traditional in-game means; <strong>You'd have to trade for them!</strong>",
