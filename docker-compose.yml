@@ -26,6 +26,7 @@ services:
             PG_USER: postgres
             PG_PASS: password
             PG_DB: postgres
+            WS_GETH_SERVER: ws://docker.for.mac.localhost:8546
         depends_on:
             - postgres
     web:
