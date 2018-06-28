@@ -26,6 +26,7 @@ export default class Item extends Component {
       name: PropTypes.string,
       image: PropTypes.string,
       attrs: PropTypes.object,
+      presale: PropTypes.bool,
     }),
     game: PropTypes.shape({
       nft: PropTypes.object,
@@ -96,6 +97,18 @@ export default class Item extends Component {
             </Badge>
           )}
       </div>
+    );
+  }
+
+  renderPresaleButton() {
+    return (
+      <Button style={{
+        color: "gold",
+        backgroundColor: "rgb(49,75,136)",
+        width: "100%",
+        focus: 0,
+        cursor: "default",
+      }}>PRESALE</Button>
     );
   }
 
@@ -225,7 +238,7 @@ export default class Item extends Component {
         <Thumbnail src={item.image}>
           <h4>{item.name}</h4>
           {this.renderStats()}
-          {this.renderButtons()}
+          {item.presale ? this.renderPresaleButton() : this.renderButtons()}
           {this.renderAttributes()}
         </Thumbnail>
       </Col>
