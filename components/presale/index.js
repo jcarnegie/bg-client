@@ -151,12 +151,16 @@ class Presale extends Component {
             <Col xs={12}>
               <h3>{set.name}</h3>
             </Col>
-            <Col lg={4}>
-              <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/thumbnail.jpg`} className="presale-purchase-set-image" />
-            </Col>
-            <Col lg={8}>
-              <p><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.description`} /></p>
-            </Col>
+            < Row >
+              <Col lg={10}>
+                <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/thumbnail.jpg`} className="presale-purchase-set-image" />
+              </Col>
+            </ Row >
+            < Row >
+              <Col lg={10}>
+                <p><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.description`} /></p>
+              </Col>
+            </ Row >
           </Row>
         </Col>
         <Col xs={6} sm={5}>
@@ -361,7 +365,7 @@ class Presale extends Component {
       <div className="presale">
         <style jsx global>{`
           .presale .row {
-            margin-bottom: 40px;
+            margin-bottom: 20px;
           }
           .presale .popover {
             padding: 0;
