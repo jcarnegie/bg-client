@@ -7,6 +7,7 @@ import style from "@/shared/constants/style";
 class ItemSetDetailsCard extends React.PureComponent {
   static propTypes = {
     onClick: PropTypes.func,
+    disabled: PropTypes.bool,
     title: PropTypes.any,
     subtitle: PropTypes.any,
     itemImages: PropTypes.any,
@@ -16,6 +17,7 @@ class ItemSetDetailsCard extends React.PureComponent {
   }
   static defaultProps = {
     onClick: () => {},
+    disabled: null,
     title: null,
     subtitle: null,
     itemImages: null,
@@ -26,7 +28,11 @@ class ItemSetDetailsCard extends React.PureComponent {
 
   render() {
     return (
-      <div className="item-set-details-card" onClick={this.props.onClick}>
+      <div className={`item-set-details-card ${this.props.disabled === true ? "disabled" : ""}`} onClick={() => {
+        if (!this.props.disabled) {
+          this.props.onClick();
+        }
+      }}>
         <style jsx>{`
           :global(.item-set-details-card img) {
             border-top-right-radius: 5px;
@@ -41,6 +47,11 @@ class ItemSetDetailsCard extends React.PureComponent {
             cursor: pointer;
             font-size: 0.8em;
             margin-top: 50px;
+          }
+          .item-set-details-card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: ${style.boxShadow.default} !important;
           }
           .item-set-details-card:hover {
             box-shadow: ${style.boxShadow.hover};

@@ -200,6 +200,7 @@ class Presale extends Component {
         <Col xs={6} sm={5}>
           <ItemSetDetailsCard
             key={set.id}
+            disabled={remainingForSet === 0}
             onClick={() => ::this.purchase(set)}
             title={set.name}
             subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}</>}

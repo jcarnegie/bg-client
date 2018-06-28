@@ -34,6 +34,10 @@ export const boxShadow = {
   hover: "0 2px 4px rgba(0,0,0,0.18), 0 1px 8px rgba(0,0,0,0.24)",
 };
 
+export const textShadow = {
+  default: "1px 1px 1px #314B88"
+};
+
 export const transition = {
   default: "all 0.3s cubic-bezier(.25,.8,.25,1)",
   medium: "all 0.7s cubic-bezier(.25,.8,.25,1)",
@@ -62,4 +66,5 @@ export default {
   header,
   mobile,
   transition,
+  textShadow,
 };

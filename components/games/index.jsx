@@ -9,7 +9,10 @@ import Router from "next/router";
 import {featureOn} from "@/shared/utils";
 import {Mobile, Desktop} from "@/components/responsive";
 import GameIcon from "@/components/gameicon";
+import BGButton from "@/components/bgbutton";
 import BGIcon from "@/components/bgicon";
+
+import style from "@/shared/constants/style";
 
 const BANNER_SWITCH_INTERVAL = 10e3;
 const COUNT_DOWN_DATE = new Date("2018-05-21T22:15:00.000Z").getTime();
@@ -183,18 +186,34 @@ export default class GameList extends Component {
       <div onClick={() => Router.push({pathname: "/presale", query: {slug}}, `/presale/${slug}`)} className="promotional-banner presale-banner">
         <style jsx>{`
           .promotional-banner.presale-banner {
-            background-size: contain;
-            background-color: #F1F5FF;
-            color: #314B88;
+            background-color: rgba(109, 151, 233, 1);
+            color: ${style.colors.logos};
             border-bottom: 1px solid #c7c6f2;
             height: 200px;
             width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            text-align: center;
+            text-shadow: ${style.textShadow.default};
+            cursor: pointer;
+          }
+          .promotional-banner.presale-banner * {
+            text-align: center;
+          }
+          h1 {
+            text-transform: uppercase;
+            text-align: center;
           }
         `}</style>
-        <h2><FormattedMessage id={`pages.presale.${slug}.title`} /></h2>
+        <Row>
+          <BGIcon src="/static/images/icons/bitguild_logo@1x.png" width="25px" style={{marginTop: "20px"}} />
+        </Row>
+        <Row>
+          <h1><FormattedMessage id={`pages.presale.${slug}.title`} /></h1>
+        </Row>
+        <Row>
+          <BGButton className="events-button">
+            <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
+          </BGButton>
+        </Row>
       </div>
     ) : null;
   }
@@ -213,6 +232,7 @@ export default class GameList extends Component {
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
           }
           .events-center {
             flex-grow: 2;
@@ -264,7 +284,7 @@ export default class GameList extends Component {
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-grow: 1;
+            width: 25% !important;
           }
         `}</style>
         <GameIcon game={{slug: "ether.online"}} width="100px" className="events-flex" />
@@ -282,9 +302,9 @@ export default class GameList extends Component {
             </h3>
           </Desktop>
           <div>
-            <button className="events-button" onClick={() => Router.push("/events")}>
-              <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
-            </button>
+          <BGButton className="events-button" onClick={() => Router.push("/events")}>
+            <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
+          </BGButton>
           </div>
         </div>
         <div className="events-flex bitguild-logo-wrapper">
