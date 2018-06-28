@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import * as log from "loglevel";
 import cx from "classnames";
+import gql from "graphql-tag";
 import PropTypes from "prop-types";
 import {Image, Row, Col, Tab, Tabs, ProgressBar} from "react-bootstrap";
 import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
@@ -16,7 +17,10 @@ import ItemSetDetailsCard from "@/components/ItemSetDetailsCard";
 
 import style from "@/shared/constants/style";
 
+import {client as api} from "@/client/utils/apollo";
+
 const TOTAL_ITEMS_COUNT = 278;
+const BITIZENS_GAME_ID = 3;
 
 // TODO - move id => key, and tokenId => id
 const SETS = [
@@ -63,6 +67,7 @@ const SETS = [
   state => ({
     balancePLAT: state.balancePLAT,
     network: state.network,
+    user: state.user,
   }),
 )
 class Presale extends Component {
@@ -70,6 +75,7 @@ class Presale extends Component {
     slug: PropTypes.string,
     balancePLAT: PropTypes.object,
     network: PropTypes.object,
+    user: PropTypes.object,
   }
 
   static getInitialProps({err, req, res, query, store, isServer}) {
@@ -77,6 +83,30 @@ class Presale extends Component {
       log.error(err);
     }
     return {...query};
+  }
+
+  async logPurchase(tx, set) {
+    const {user} = this.props;
+    const mutation = gql`
+      mutation createPresaleTicket($payload:CreatePresaleTicketPayload!) {
+        createPresaleTicket(payload:$payload) {
+          id setId wallet transactionHash state
+          user { id }
+          game { id }
+        }
+      }
+    `;
+    const variables = {
+      payload: {
+        setId: set.tokenId,
+        wallet: user.data.wallet,
+        transactionHash: tx,
+        GameId: BITIZENS_GAME_ID,
+        UserId: user.data.id,
+      }
+    };
+    const ticket = await api.mutate({mutation, variables});
+    log.info("Purchase ticket:", ticket);
   }
 
   purchase(set) {
@@ -100,6 +130,7 @@ class Presale extends Component {
         log.error(err);
       } else {
         log.info("Transaction hash: ", tx);
+        this.logPurchase(tx, set);
       }
     });
   }
