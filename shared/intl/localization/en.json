@@ -272,10 +272,17 @@
           "p2": "If you’d like to learn more about Bitizens and BitGuild, we encourage you to find us the <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Official Bitizens Community on Discord</a>. There, you’ll find the development team as well as other fans to chat with!",
           "p3": "You can also follow BitGuild on <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a>, and <a href='https://medium.com/@BitGuild' target='_blank' rel='noopener noreferrer'>Medium</a> to stay up to date with the development process, all the latest news, contest, giveaways, and more!",
           "p4": "Join us as we bring our love for online games to the blockchain with Bitizens!",
+          "p5": "<strong>Limitations:</strong>",
           "l1": "You cannot purchase the same set more than once.",
-          "l2": "Multiple purchases will only qualify you for one stretch reward of each tier.",
-          "l3": "Sets and Rewards will be distributed along with the Bitizen’s Inventory release, scheduled for late July.",
-          "l4": "These items will not be available ever again after the IGO is complete, except should a user choose to post their Pioneer set on the Marketplace."
+          "l2": "Multiple purchases will only qualify you for one bonus reward of each tier.",
+          "l3": "These items will not be available after the pre-sale is complete.",
+          "l4": "Pioneer items will be allowed for sale on our Marketplace.",
+          "l5": "All pre-sale items are available for purchase using PLAT only.",
+          "l6": "All pre-sale transactions are final.",
+          "p6": "<strong>Distribution:</strong>",
+          "l7": "Pioneer sets, items, and Bonus Rewards will be available to claim at the time of the Bitizen’s Wardrobe release, scheduled for late July.",
+          "l8": "You must claim your items on the account used to purchase the items.",
+          "l9": "Gas fees may apply at the time of in-game item redemption."
         },
         "faq-text": {
           "p1": "<strong>Your invitation to come and make the world a better place.</strong>",
@@ -361,18 +368,18 @@
           },
           "pioneer_compass": {
             "name": "Pioneer's Compass",
-            "description": "TODO",
+            "description": "This ancient compass always shows the way, but no one know where to exactly. Some say it points to the long-lost heart of Bitropolis, others say it points to your innermost desires - Either way, it increases your chance to find something nice while mining!",
             "item1": {
-              "name": "TODO"
+              "name": ""
             },
             "item2": {
-              "name": "TODO"
+              "name": ""
             },
             "item3": {
-              "name": "TODO"
+              "name": ""
             },
             "item4": {
-              "name": "TODO"
+              "name": ""
             }
           }
         }

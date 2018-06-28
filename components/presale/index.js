@@ -349,11 +349,20 @@ class Presale extends Component {
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p2`} /></p>
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p3`} /></p>
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p4`} /></p>
+              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p5`} /></p>
               <ol>
                 <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l1`} /></li>
                 <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l2`} /></li>
                 <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l3`} /></li>
                 <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l4`} /></li>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l5`} /></li>
+              </ol>
+              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p6`} /></p>
+              <ol>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l6`} /></li>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l7`} /></li>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l8`} /></li>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l9`} /></li>
               </ol>
             </Tab>
             <Tab eventKey={3} title={<FormattedMessage id="global.faq" />}>
