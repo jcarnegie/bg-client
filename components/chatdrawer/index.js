@@ -13,8 +13,8 @@ class ChatDrawer extends Component {
       <div className="chat-drawer">
         <style jsx>{`
           .chat-drawer {
-            min-width: ${this.props.show ? "75%" : "0"};
-            max-width: ${this.props.show ? "85%" : "0"};
+            min-width: ${this.props.show ? "100%" : "0"};
+            max-width: ${this.props.show ? "100%" : "0"};
             visibility: ${this.props.show ? "visible" : "hidden"};
             position: fixed;
             top: ${style.header.height};

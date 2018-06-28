@@ -100,24 +100,29 @@ export default class Chat extends Component {
             }
             .chat form .form-group .form-control[type=text] {
               border: none;
-              border-bottom: solid 1px #D1D1D1;
               flex: 1;
               outline: none;
               margin: 10px 10px 15px 10px;
-              border-radius: 0;
+              border-radius: 10px;
               box-shadow: none;
               padding: 0;
+              padding-left: 10px;
               height: auto;
-              background-color: #fff;
+              background-color: #F4F7FB;
+
             }
             .chat form .form-group .btn {
-              background-color: #4D4D83;
+              background-color: #FFF;
               border-radius: 3px;
               color: #F9F9FB;
               flex-grow: 1;
               padding: 15px 10px;
               text-transform: uppercase;
               max-width: 60px;
+            }
+            .send-button{
+              height: 30px;
+              width: 30px;
             }
           `}</style>
           <div className="top">
@@ -128,9 +133,9 @@ export default class Chat extends Component {
           </StayScrolled>
           <Form onSubmit={::this.handleSubmit}>
             <FormGroup>
-              <FormControl onChange={::this.handleMessageChange} type="text" value={this.state.newMessage} />
+              <FormControl onChange={::this.handleMessageChange} type="text" value={this.state.newMessage} placeholder='Type Something' />
               <Button type="submit">
-                <FormattedMessage id="chat.send" />
+                <img className="send-button" src="../static/images/icons/send-button.svg"/>
               </Button>
             </FormGroup>
           </Form>
