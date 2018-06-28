@@ -196,6 +196,10 @@
       }
     },
     "games": {
+      "about": {
+        "tagline": "Find the greatest blockchain gaming experiences, all in one place.",
+        "body": "BitGuild's mission is to redefine the standard for how players interact with their games by facilitating true item ownership—You're free to buy, sell, or trade game assets at your leisure! The days of digital locks on your cards and swords are over!"
+      },
       "banner": {
         "play": "play"
       },

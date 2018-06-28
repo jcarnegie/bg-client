@@ -11,7 +11,7 @@ import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 
 import Loader from "@/components/common/loader";
 import {calcMaxItemsStats, isValidItemCategory} from "@/client/utils/item";
-import {INVENTORY_GAMES_REQUEST, INVENTORY_ITEMS_REQUEST} from "@/shared/constants/actions";
+import {GAMES_REQUEST, INVENTORY_ITEMS_REQUEST} from "@/shared/constants/actions";
 
 import Item from "./item";
 
@@ -44,7 +44,7 @@ export default class Inventory extends Component {
 		const {dispatch} = this.props;
 
 		dispatch({
-			type: INVENTORY_GAMES_REQUEST,
+			type: GAMES_REQUEST,
 			payload: this.props.user,
 		});
 		dispatch({

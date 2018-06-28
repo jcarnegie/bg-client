@@ -12,7 +12,7 @@ import {
   BALANCE_PLAT_CHANGED,
   CREATE_USER,
   CHAT_GUEST_INIT,
-  INVENTORY_GAMES_ERROR,
+  GAMES_ERROR,
   INVENTORY_ITEMS_ERROR,
   MESSAGE_ADD,
   MESSAGE_ADD_ALL,
@@ -47,7 +47,7 @@ function * fetchUser() {
         type: INVENTORY_ITEMS_ERROR,
       });
       yield put({
-        type: INVENTORY_GAMES_ERROR,
+        type: GAMES_ERROR,
       });
       yield put({
         type: CHAT_GUEST_INIT,

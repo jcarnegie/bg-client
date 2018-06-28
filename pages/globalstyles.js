@@ -32,6 +32,22 @@ function GlobalStyles({style}) {
           font-size: 1.7em;
         }
 
+        h3 {
+          font-size: 1.5em;
+        }
+
+        h4 {
+          font-size: 1.4em;
+        }
+
+        h5 {
+          font-size: 1.3em;
+        }
+
+        h6 {
+          font-size: 1.2em;
+        }
+
         a {
           color: #314B88;
           cursor: pointer;

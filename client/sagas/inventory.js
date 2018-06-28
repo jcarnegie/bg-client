@@ -7,10 +7,7 @@ import {
   GIFT_REMOVE_ERROR,
   GIFT_REMOVE_LOADING,
   GIFT_REMOVE_SUCCESS,
-  INVENTORY_GAMES_CHANGED,
-  INVENTORY_GAMES_ERROR,
-  INVENTORY_GAMES_LOADING,
-  INVENTORY_GAMES_REQUEST,
+  GAMES_REQUEST,
   INVENTORY_ITEMS_CHANGED,
   INVENTORY_ITEMS_ERROR,
   INVENTORY_ITEMS_LOADING,
@@ -19,15 +16,16 @@ import {
   NEW_BLOCK,
   USER_CHANGED,
   GIFT_ADD_SUCCESS,
-} from "../../shared/constants/actions";
-import {readFromQueryString} from "../utils/location";
-import {client} from "../utils/apollo";
+} from "@/shared/constants/actions";
+import {readFromQueryString} from "@/client/utils/location";
+import {client} from "@/client/utils/apollo";
+import {fetchGames} from "@/client/actions/game";
 
 function * getItems() {
   try {
     const {user} = yield select();
     yield put({
-      type: INVENTORY_ITEMS_LOADING
+      type: INVENTORY_ITEMS_LOADING,
     });
     const testItems = (readFromQueryString("testItems") === "true")
       ? "?testItems=true"
@@ -62,29 +60,6 @@ function * getItems() {
   }
 }
 
-function * getGames() {
-  try {
-    yield put({
-      type: INVENTORY_GAMES_LOADING
-    });
-    const query = gql`{ listGames { id name slug url api nft } }`;
-    const result = yield call(::client.query, {query});
-    const games = path(["data", "listGames"], result);
-    yield put({
-      type: INVENTORY_GAMES_CHANGED,
-      payload: games,
-    });
-  } catch (error) {
-    yield put({
-      type: INVENTORY_GAMES_ERROR
-    });
-    yield put({
-      type: MESSAGE_ADD,
-      payload: error
-    });
-  }
-}
-
 function * checkGifts() {
   try {
     const gifts = yield select(state => state.gifts);
@@ -114,9 +89,8 @@ function * checkGifts() {
 export default function * inventorySaga() {
   yield takeEvery(USER_CHANGED, getItems);
   yield takeEvery(INTL_UPDATE, getItems);
-  yield takeEvery(INVENTORY_GAMES_REQUEST, getItems);
-  yield takeEvery(USER_CHANGED, getGames);
-  yield takeEvery(INVENTORY_ITEMS_REQUEST, getGames);
+  yield takeEvery(GAMES_REQUEST, getItems);
+  yield takeEvery(INVENTORY_ITEMS_REQUEST, fetchGames);
   yield takeEvery(NEW_BLOCK, checkGifts);
   yield takeEvery(GIFT_ADD_SUCCESS, getItems);
 }

@@ -1,3 +1,5 @@
-import GamesPage from "./games";
+import {featureOn} from "@/shared/utils";
 
-export default GamesPage;
+const LandingPage = featureOn("landing_v2") ? require("./landing").default : require("./games").default;
+
+export default LandingPage;

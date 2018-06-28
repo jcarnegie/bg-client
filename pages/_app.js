@@ -7,6 +7,8 @@ import * as log from "loglevel";
 
 import BGReactGA from "@/client/utils/react-ga";
 import configureStore from "@/client/utils/store";
+
+import ResizeListener from "@/components/resizelistener";
 import MetaMask from "@/components/common/metamask";
 import GlobalStyles from "@/pages/globalstyles";
 import style from "@/shared/constants/style";
@@ -24,7 +26,7 @@ class BGApp extends App {
     const {isServer} = ctx;
     const state = ctx.store.getState();
 
-    if (!isServer) {
+    if (!isServer && state.analytics.ga.pageview) {
       state.analytics.ga.pageview(ctx.pathname);
     }
 
@@ -57,6 +59,7 @@ class BGApp extends App {
         <GlobalStyles style={style} />
         <Provider store={store}>
           <>
+            <ResizeListener />
             <MetaMask {...metaMaskProps} />
             <Component {...pageProps} {...locals} />
           </>

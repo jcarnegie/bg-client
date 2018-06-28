@@ -77,7 +77,7 @@ function Article({
 }
 
 Article.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.any,
   title: PropTypes.any,
 };
 

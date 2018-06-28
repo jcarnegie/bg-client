@@ -20,11 +20,13 @@ export const aside = {
 };
 
 export const mobile = {
+  minWidth: 0,
   maxWidth: 991,
 };
 
 export const desktop = {
   minWidth: 992,
+  maxWidth: Infinity,
 };
 
 export const boxShadow = {
@@ -32,14 +34,32 @@ export const boxShadow = {
   hover: "0 2px 4px rgba(0,0,0,0.18), 0 1px 8px rgba(0,0,0,0.24)",
 };
 
-// export const transition = "all 0.3s cubic-bezier(.25,.8,.25,1)";
+export const transition = {
+  default: "all 0.3s cubic-bezier(.25,.8,.25,1)",
+  medium: "all 0.7s cubic-bezier(.25,.8,.25,1)",
+  slow: "all 1.0s cubic-bezier(.25,.8,.25,1)",
+};
+
+export const breakpoints = {
+  mobile: {
+    minWidth: mobile.minWidth,
+    maxWidth: mobile.maxWidth,
+  },
+  desktop: {
+    minWidth: desktop.minWidth,
+    maxWidth: desktop.maxWidth,
+  },
+};
+
 
 export default {
   aside,
+  breakpoints,
   boxShadow,
-  colors,
-  header,
   chat,
-  mobile,
+  colors,
   desktop,
+  header,
+  mobile,
+  transition,
 };
