@@ -56,8 +56,7 @@ export default class Balance extends Component {
     }
 
     if (!this.props.rate.data) {
-      log.info("No rate info is avaliable, so convert workflow will be prevented.");
-      return null;
+      log.info("No rate info is avaliable, so convert workflow may not work properly.");
     }
 
     this.setState({
