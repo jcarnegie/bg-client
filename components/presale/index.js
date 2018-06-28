@@ -23,7 +23,6 @@ import {client as api} from "@/client/utils/apollo";
 const TOTAL_ITEMS_COUNT = 139;
 const BITIZENS_GAME_ID = 3;
 
-// TODO - move id => key, and tokenId => id
 const SETS = [
   {
     id: "pioneer_of_the_wilds",
@@ -391,13 +390,13 @@ class Presale extends Component {
           </Col>
           <Col md={12}>
             <div className="bonus-rewards">
-              <div className="bonus-reward bonus-reward-activated">
+              <div className={`bonus-reward ${progress > 30 ? "bonus-reward-activated" : "bonus-reward-disabled"}`}>
                 <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_drillrbot.png`} />
                 <div className="bonus-reward-title">
                   <span><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-1-title`} /></span>
                 </div>
               </div>
-              <div className="bonus-reward bonus-reward-disabled">
+              <div className={`bonus-reward ${progress > 70 ? "bonus-reward-activated" : "bonus-reward-disabled"}`}>
                 <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_rocket.png`} />
                 <div className="bonus-reward-title">
                   <span><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-2-title`} /></span>
