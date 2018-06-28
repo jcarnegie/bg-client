@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import * as log from "loglevel";
-import cx from "classnames";
 import gql from "graphql-tag";
 import PropTypes from "prop-types";
 import {Image, Row, Col, Tab, Tabs, ProgressBar} from "react-bootstrap";
@@ -8,7 +7,6 @@ import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 import {connect} from "react-redux";
 
 import tokenABI from "@/shared/contracts/token";
-// import oracleABI from "@/shared/contracts/oracle";
 import networkConfig from "@/client/utils/network";
 
 // import BGModal from "@/components/modal";
@@ -68,6 +66,7 @@ const SETS = [
     balancePLAT: state.balancePLAT,
     network: state.network,
     user: state.user,
+    layout: state.layout,
   }),
 )
 class Presale extends Component {
@@ -76,6 +75,7 @@ class Presale extends Component {
     balancePLAT: PropTypes.object,
     network: PropTypes.object,
     user: PropTypes.object,
+    layout: PropTypes.object,
   }
 
   static getInitialProps({err, req, res, query, store, isServer}) {
@@ -103,7 +103,7 @@ class Presale extends Component {
         transactionHash: tx,
         GameId: BITIZENS_GAME_ID,
         UserId: user.data.id,
-      }
+      },
     };
     const ticket = await api.mutate({mutation, variables});
     log.info("Purchase ticket:", ticket);
@@ -151,16 +151,16 @@ class Presale extends Component {
             <Col xs={12}>
               <h3>{set.name}</h3>
             </Col>
-            < Row >
+            <Row>
               <Col lg={10}>
-                <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/thumbnail.jpg`} className="presale-purchase-set-image" />
+                <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/banner.jpg`} className="presale-purchase-set-image" />
               </Col>
-            </ Row >
-            < Row >
+            </Row>
+            <Row>
               <Col lg={10}>
                 <p><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.description`} /></p>
               </Col>
-            </ Row >
+            </Row>
           </Row>
         </Col>
         <Col xs={6} sm={5}>
@@ -169,7 +169,7 @@ class Presale extends Component {
             onClick={() => ::this.purchase(set)}
             title={set.name}
             subtitle={<>{remainingForSet} / {set.total} <FormattedMessage id="global.remaining" /></>}
-            itemImages={itemIndices.map((v, k) => <img key={k} src={`/static/images/games/${this.props.slug}/presale/${set.id}/items/${v}.png`} />)}
+            itemImage={<Image responsive src={`/static/images/games/${this.props.slug}/presale/${set.id}/thumbnail.jpg`} />}
             setDetails={itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>)}
             buttonText={`BUY for ${set.price} PLAT`}
           />
@@ -179,11 +179,13 @@ class Presale extends Component {
   }
 
   presaleTitles() {
+    const {mobile} = this.props.layout.type;
     return (
       <Row>
         <style jsx>{`
           .title-section {
             display: flex;
+            margin-bottom: ${mobile ? "0" : "20px"};
           }
           .titles {
             height: 100px;
@@ -213,10 +215,10 @@ class Presale extends Component {
           <div className="title-section">
             <div className="title-image">
               <Mobile>
-                <Image src="http://via.placeholder.com/70x70" />
+                <Image src={`/static/images/games/${this.props.slug}/icon.png`} height={70} width={90} />
               </Mobile>
               <Desktop>
-                <Image src="http://via.placeholder.com/100x100" />
+                <Image src={`/static/images/games/${this.props.slug}/icon.png`} height={100} width={129} />
               </Desktop>
             </div>
             <div className="titles">
@@ -230,80 +232,121 @@ class Presale extends Component {
   }
 
   presaleBanner() {
+    const {mobile} = this.props.layout.type;
+    // TODO - Get sold items count
+    const progress = Math.floor((84 / TOTAL_ITEMS_COUNT) * 100); /* Percentage items sold */
+
     return (
-      <Row>
+      <Row className="presale-banner-row">
         <style jsx>{`
+          :global(.presale-banner-row) {
+            // box-shadow: ${style.boxShadow.default};
+          }
+          :global(.presale-banner-row > div:nth-child(1)) {
+            padding: ${mobile ? "initial" : "0"};
+          }
+          :global(.presale-banner-row > div:nth-child(2)) {
+
+          }
+          .presale-stats-wrapper {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+          }
           .presale-stat {
-            margin: 20px 0 0 0;
+            // margin: 20px 0 0 0;
           }
           .presale-label {
-            margin: 0 0 10px 0;
+            // margin: 0 0 10px 0;
+            font-size: .8em;
           }
         `}</style>
         <Col xs={12} sm={7} className="presale-banner-primary">
-          <Image responsive src="/static/images/games/bitizens/presale/header.jpg" />
+          <Image responsive src={`/static/images/games/${this.props.slug}/presale/header.jpg`} />
         </Col>
         <Col xs={12} sm={5}>
-          <h3 className="presale-stat">72 / 138</h3>
-          <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.items-bought`} /></p>
-          <h3 className="presale-stat">138</h3>
-          <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.total-buyers`} /></p>
-          <h3 className="presale-stat">2 / 3</h3>
-          <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.stretch-goals-unlocked`} /></p>
+          <div className="presale-stats-wrapper">
+            <div>
+              <h5 className="presale-stat">72 / 138</h5>
+              <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.items-bought`} /></p>
+            </div>
+            <div>
+              <h5 className="presale-stat">138</h5>
+              <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.total-buyers`} /></p>
+            </div>
+            <div>
+              <h5 className="presale-stat">2 / 3</h5>
+              <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.stretch-goals-unlocked`} /></p>
+            </div>
+          </div>
+          {::this.presaleProgress(progress)}
         </Col>
       </Row>
     );
   }
 
   presaleProgress(progress) {
-    const progressDisclaimer = (num, imgSrc, active, xsOffset = 0) => {
-      return (
-        <Col xs={4} xsOffset={xsOffset}>
+    return (
+      <div className="presale-progress">
+        <Row>
           <style jsx>{`
-            .progress-disclaimer {
+            :global(.presale-progress) {
+              font-size: .8em;
+            }
+            :global(.presale-progress .row) {
+              margin-bottom: 0;
+            }
+            :global(.presale-progress-bar .progress) {
+              height: 4px;
+              margin: 0 0 13px 0;
+            }
+            .bonus-rewards {
+              width: 100%;
+              margin-bottom: 5px;
               display: flex;
-              font-size: .7em;
-              opacity: .4;
             }
-            .progress-disclaimer.active {
-              opacity: 1;
+            .bonus-reward {
+              width: 50%;
+              height: 100px;
+              display: inline-block;
+              position: relative;
+              border: 1px solid lightgray;
+              vertical-align: top;
             }
-            .progress-popover {
+            :global(.presale-progress .bonus-reward img) {
+              max-height: calc(100% - 10px);
+              margin: 5px;
+              width: 25%;
               display: inline-block;
             }
-            :global(.progress-disclaimer .progress-popover img) {
-              box-shadow: ${style.boxShadow.default};
-              margin-bottom: 10px;
+            .bonus-reward-disabled {
+              opacity: .4;
+              background-color: gray;
             }
           `}</style>
-          <div className={cx({active}, "progress-disclaimer")}>
-            <Row>
-              <Col lg={4} md={12}>
-                <div className="progress-popover">
-                  <Image responsive src={imgSrc} />
-                </div>
-              </Col>
-              <Col lg={8} md={12}>
-                <span className="progress-disclaimer-text">
-                  <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-${num}`} /></strong></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-${num}-description`} /></p>
-                </span>
-              </Col>
-            </Row>
-          </div>
-        </Col>
-      );
-    };
-    return (
-      <Row>
-        <Col md={12}>
-          <div className="presale-progress">
-            <ProgressBar key={1} now={progress} />
-          </div>
-        </Col>
-        {progressDisclaimer(1, "/static/images/games/bitizens/presale/pioneer_drillr/icon.png", progress >= 30, 4)}
-        {progressDisclaimer(2, "http://via.placeholder.com/100x100", progress >= 60)}
-      </Row>
+          <Col md={12}>
+            <div className="presale-progress-bar">
+              <ProgressBar key={1} now={progress} />
+            </div>
+          </Col>
+          <Col md={12}>
+            <div className="bonus-rewards">
+              <div className="bonus-reward bonus-reward-activated">
+                <Image responsive src={`/static/images/games/${this.props.slug}/icon.png`} />
+                <span>Dril'r Bot Pioneer-I</span>
+              </div>
+              <div className="bonus-reward bonus-reward-disabled">
+                <Image responsive src={`/static/images/games/${this.props.slug}/icon.png`} />
+                <span>Pioneer's Rocket</span>
+              </div>
+            </div>
+          </Col>
+          <Col md={12}>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-1-description`} /></p>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-2-description`} /></p>
+          </Col>
+        </Row>
+      </div>
     );
   }
 
@@ -317,11 +360,6 @@ class Presale extends Component {
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p2`} /></p>
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p3`} /></p>
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p4`} /></p>
-              {/* <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p5`} /></p>
-              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p6`} /></p>
-              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p7`} /></p>
-              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p8`} /></p>
-              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p9`} /></p> */}
             </Tab>
             <Tab eventKey={2} title={<FormattedMessage id="global.rules" />}>
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p1`} /></p>
@@ -359,8 +397,6 @@ class Presale extends Component {
   }
 
   render() {
-    // TODO - Get sold items count
-    const progress = Math.floor((84 / TOTAL_ITEMS_COUNT) * 100); /* Percentage items sold */
     return (
       <div className="presale">
         <style jsx global>{`
@@ -373,7 +409,6 @@ class Presale extends Component {
         `}</style>
           {::this.presaleTitles()}
           {::this.presaleBanner()}
-          {::this.presaleProgress(progress)}
           {::this.presaleInfo()}
           {SETS.map(set => ::this.setSection(set))}
       </div>

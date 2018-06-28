@@ -10,6 +10,7 @@ class ItemSetDetailsCard extends React.PureComponent {
     title: PropTypes.any,
     subtitle: PropTypes.any,
     itemImages: PropTypes.any,
+    itemImage: PropTypes.any,
     setDetails: PropTypes.any,
     buttonText: PropTypes.any,
   }
@@ -18,6 +19,7 @@ class ItemSetDetailsCard extends React.PureComponent {
     title: null,
     subtitle: null,
     itemImages: null,
+    itemImage: null,
     setDetails: null,
     buttonText: null,
   }
@@ -62,6 +64,7 @@ class ItemSetDetailsCard extends React.PureComponent {
             display: flex;
             flex-wrap: wrap;
             padding: 1% 5px 3.5% 5px;
+            display: ${this.props.itemImages ? "initial" : "none"};
           }
           :global(.item-set-details-card-item-grid img) {
             margin: 2.5% 5% 0 5%;
@@ -76,6 +79,11 @@ class ItemSetDetailsCard extends React.PureComponent {
           :global(.item-set-details-card-item-grid img:nth-child(odd)) {
             margin-right: 1.25%;
             margin-left: 8.75%;
+          }
+          /* Override grid image layout */
+          :global(.item-set-details-card-item-image img) {
+            margin: 10px auto;
+            max-width: calc(100% - 10px);
           }
           .item-set-details-card-item-details {
             background: white;
@@ -97,7 +105,12 @@ class ItemSetDetailsCard extends React.PureComponent {
           }
         `}</style>
         <div className="item-set-details-card-item-grid">
+          {/* For a grid of images */}
           {this.props.itemImages}
+        </div>
+        <div className="item-set-details-card-item-image">
+          {/* For a single image */}
+          {this.props.itemImage}
         </div>
         <div className="item-set-details-card-item-details">
           <h5>{this.props.title}</h5>
