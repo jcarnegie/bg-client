@@ -293,16 +293,20 @@ class Presale extends Component {
             .bonus-reward {
               width: 50%;
               height: 100px;
-              display: inline-block;
+              display: flex;
               position: relative;
               border: 1px solid lightgray;
               vertical-align: top;
             }
+            .bonus-reward-title {
+              display: inline;
+              height: 100%;
+              padding: 10px 0 0 0;
+            }
             :global(.presale-progress .bonus-reward img) {
-              max-height: calc(100% - 10px);
-              margin: 5px;
-              width: 25%;
-              display: inline-block;
+              height: calc(100% - 20px);
+              margin: 10px 0;
+              display: inline;
             }
             .bonus-reward-disabled {
               opacity: .4;
@@ -317,12 +321,16 @@ class Presale extends Component {
           <Col md={12}>
             <div className="bonus-rewards">
               <div className="bonus-reward bonus-reward-activated">
-                <Image responsive src={`/static/images/games/${this.props.slug}/icon.jpg`} />
-                <span>Dril'r Bot Pioneer-I</span>
+                <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_drillrbot.png`} />
+                <div className="bonus-reward-title">
+                  <span><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-1-title`} /></span>
+                </div>
               </div>
               <div className="bonus-reward bonus-reward-disabled">
-                <Image responsive src={`/static/images/games/${this.props.slug}/icon.jpg`} />
-                <span>Pioneer's Rocket</span>
+                <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_rocket.png`} />
+                <div className="bonus-reward-title">
+                  <span><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-2-title`} /></span>
+                </div>
               </div>
             </div>
           </Col>
