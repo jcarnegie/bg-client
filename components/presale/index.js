@@ -7,6 +7,9 @@ import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 import {connect} from "react-redux";
 
 import tokenABI from "@/shared/contracts/token";
+import bitizensIGOABI from "@/shared/contracts/bitizensIGOABI";
+
+import ScaleLoader from "react-spinners/dist/spinners/ScaleLoader";
 import networkConfig from "@/client/utils/network";
 
 // import BGModal from "@/components/modal";
@@ -17,7 +20,7 @@ import style from "@/shared/constants/style";
 
 import {client as api} from "@/client/utils/apollo";
 
-const TOTAL_ITEMS_COUNT = 278;
+const TOTAL_ITEMS_COUNT = 139;
 const BITIZENS_GAME_ID = 3;
 
 // TODO - move id => key, and tokenId => id
@@ -25,35 +28,30 @@ const SETS = [
   {
     id: "pioneer_of_the_wilds",
     tokenId: 17,
-    name: "Pioneer of the Wilds",
     total: 100,
     price: 60000,
   },
   {
     id: "pioneer_of_the_skies",
     tokenId: 16,
-    name: "Pioneer of the Skies",
     total: 25,
     price: 180000,
   },
   {
     id: "pioneer_of_the_seas",
     tokenId: 18,
-    name: "Pioneer of the Seas",
     total: 10,
     price: 480000,
   },
   {
     id: "pioneer_of_the_cyberscape",
     tokenId: 19,
-    name: "Cyberspace Pioneer",
     total: 1,
     price: 3000000,
   },
   {
     id: "pioneer_compass",
-    tokenId: 999,
-    name: "Pioneers Compass",
+    tokenId: 0,
     total: 3,
     price: 720000,
   },
@@ -76,6 +74,14 @@ class Presale extends Component {
     network: PropTypes.object,
     user: PropTypes.object,
     layout: PropTypes.object,
+  }
+
+  state = {
+    qtyOf16: null,
+    qtyOf17: null,
+    qtyOf18: null,
+    qtyOf19: null,
+    qtyOf0: null,
   }
 
   static getInitialProps({err, req, res, query, store, isServer}) {
@@ -109,6 +115,38 @@ class Presale extends Component {
     log.info("Purchase ticket:", ticket);
   }
 
+  componentDidMount() {
+    ::this.getQtyOfItemsRemaining();
+    this.setState({
+      interval: setInterval(::this.getQtyOfItemsRemaining, 5000),
+    });
+  }
+
+  textLoading() {
+    return <ScaleLoader height={10} width={2} color="black" style={{display: "inline"}} />;
+  }
+
+  getQtyOfItemsRemaining() {
+    SETS.map(set => ::this.getQtyOfItemRemaining(set.tokenId));
+  }
+
+  getQtyOfItemRemaining(setId) {
+    // const BitGuildToken = window.web3.eth.contract(tokenABI).at(networkConfig[this.props.network.data.id].token);
+    if (!this.props.network.data || !this.props.network.data.id) return;
+    const IGOContract = window.web3.eth.contract(bitizensIGOABI).at(networkConfig[this.props.network.data.id].bitizensIGO);
+
+
+    // Trigger approval for transaction
+    IGOContract.getQty(setId, (err, qty) => {
+      if (err) {
+        log.error(err);
+      } else {
+        log.info(`Retrieved quantity for set: ${setId}: `, qty.c[0]);
+        this.setState({[`qtyOf${setId}`]: qty.c[0]});
+      }
+    });
+  }
+
   purchase(set) {
     log.info("User purchase flow for set: ", set);
     const {balancePLAT} = this.props;
@@ -137,7 +175,7 @@ class Presale extends Component {
 
   setSection(set) {
     const itemIndices = [1, 2, 3, 4];
-    const remainingForSet = 40; // TODO - get remaining for set
+    const remainingForSet = this.state[`qtyOf${set.tokenId}`];
     return (
       <Row key={set.id}>
         <style jsx>{`
@@ -164,10 +202,10 @@ class Presale extends Component {
             key={set.id}
             onClick={() => ::this.purchase(set)}
             title={set.name}
-            subtitle={<>{remainingForSet} / {set.total} <FormattedMessage id="global.remaining" /></>}
+            subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}</>}
             itemImage={<Image responsive src={`/static/images/games/${this.props.slug}/presale/${set.id}/thumbnail.jpg`} />}
             setDetails={
-              set.tokenId !== 999 ? itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>) : null
+              set.tokenId !== 0 ? itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>) : null
             }
             buttonText={`BUY for ${set.price} PLAT`}
           />
@@ -231,8 +269,41 @@ class Presale extends Component {
   }
 
   presaleBanner() {
-    // TODO - Get sold items count
-    const progress = Math.floor((84 / TOTAL_ITEMS_COUNT) * 100); /* Percentage items sold */
+    const {
+      qtyOf16,
+      qtyOf17,
+      qtyOf18,
+      qtyOf19,
+      qtyOf0,
+    } = this.state;
+
+    const totalSold = TOTAL_ITEMS_COUNT - (
+      (qtyOf16 || 0) +
+      (qtyOf17 || 0) +
+      (qtyOf18 || 0) +
+      (qtyOf19 || 0) +
+      (qtyOf0 || 0)
+    );
+
+    const totalBuyers = totalSold;
+
+    const progress = totalSold / TOTAL_ITEMS_COUNT; /* Raw items sold progress */
+    const progressPercentage = progress * 100; /* Percentage items sold */
+
+    let steps = 0;
+    if (progress >= 0.3 && progress < 0.7) {
+      steps = 1;
+    } else if (progress >= 0.7) {
+      steps = 2;
+    }
+
+    const loading = (
+      qtyOf16 === null ||
+      qtyOf17 === null ||
+      qtyOf18 === null ||
+      qtyOf19 === null ||
+      qtyOf0 === null
+    );
 
     return (
       <Row className="presale-banner-row">
@@ -252,19 +323,19 @@ class Presale extends Component {
         <Col xs={12} sm={5}>
           <div className="presale-stats-wrapper">
             <div>
-              <h5 className="presale-stat">72 / 138</h5>
-              <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.items-bought`} /></p>
+              <h5 className="presale-stat">{loading ? ::this.textLoading() : `${totalSold} / ${TOTAL_ITEMS_COUNT}`}</h5>
+              <div className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.items-bought`} /></div>
             </div>
             <div>
-              <h5 className="presale-stat">138</h5>
-              <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.total-buyers`} /></p>
+              <h5 className="presale-stat">{loading ? ::this.textLoading() : totalBuyers}</h5>
+              <div className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.total-buyers`} /></div>
             </div>
             <div>
-              <h5 className="presale-stat">2 / 3</h5>
-              <p className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.stretch-goals-unlocked`} /></p>
+              <h5 className="presale-stat">{loading ? ::this.textLoading() : `${steps} / 2`}</h5>
+              <div className="presale-label"><FormattedMessage id={`pages.presale.${this.props.slug}.stretch-goals-unlocked`} /></div>
             </div>
           </div>
-          {::this.presaleProgress(progress)}
+          {::this.presaleProgress(progressPercentage)}
         </Col>
       </Row>
     );
