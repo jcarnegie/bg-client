@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import {Image, Row, Col, Tab, Tabs, ProgressBar} from "react-bootstrap";
 import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 import {connect} from "react-redux";
+import MDCheck from "react-icons/lib/md/check";
 
 import tokenABI from "@/shared/contracts/token";
 import bitizensIGOABI from "@/shared/contracts/bitizensIGOABI";
@@ -276,13 +277,21 @@ class Presale extends Component {
       qtyOf20,
     } = this.state;
 
-    const totalSold = TOTAL_ITEMS_COUNT - (
+    const loading = (
+      qtyOf16 === null ||
+      qtyOf17 === null ||
+      qtyOf18 === null ||
+      qtyOf19 === null ||
+      qtyOf20 === null
+    );
+
+    const totalSold = loading ? 0 : (TOTAL_ITEMS_COUNT - (
       (qtyOf16 || 0) +
       (qtyOf17 || 0) +
       (qtyOf18 || 0) +
       (qtyOf19 || 0) +
       (qtyOf20 || 0)
-    );
+    ));
 
     const totalBuyers = totalSold;
 
@@ -295,14 +304,6 @@ class Presale extends Component {
     } else if (progress >= 0.7) {
       steps = 2;
     }
-
-    const loading = (
-      qtyOf16 === null ||
-      qtyOf17 === null ||
-      qtyOf18 === null ||
-      qtyOf19 === null ||
-      qtyOf20 === null
-    );
 
     return (
       <Row className="presale-banner-row">
@@ -337,6 +338,12 @@ class Presale extends Component {
           {::this.presaleProgress(progressPercentage)}
         </Col>
       </Row>
+    );
+  }
+
+  unlocked() {
+    return (
+      <div style={{marginTop: "10px"}}>Unlocked! <MDCheck height={20} width={20} color="green" style={{transform: "translateY(-5px)"}} /></div>
     );
   }
 
@@ -394,12 +401,14 @@ class Presale extends Component {
                 <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_drillrbot.png`} />
                 <div className="bonus-reward-title">
                   <span><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-1-title`} /></span>
+                  {progress > 30 ? ::this.unlocked() : null}
                 </div>
               </div>
               <div className={`bonus-reward ${progress > 70 ? "bonus-reward-activated" : "bonus-reward-disabled"}`}>
                 <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_rocket.png`} />
                 <div className="bonus-reward-title">
                   <span><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-2-title`} /></span>
+                  {progress > 70 ? ::this.unlocked() : null}
                 </div>
               </div>
             </div>
