@@ -18,7 +18,7 @@ module.exports = withBundleAnalyzer({
 				"process.env.MAINNET_ORACLE_CONTRACT_ADDR": JSON.stringify(process.env.MAINNET_ORACLE_CONTRACT_ADDR),
 				"process.env.RINKEBY_TOKEN_CONTRACT_ADDR": JSON.stringify(process.env.RINKEBY_TOKEN_CONTRACT_ADDR),
 				"process.env.RINKEBY_TOPUP_CONTRACT_ADDR": JSON.stringify(process.env.RINKEBY_TOPUP_CONTRACT_ADDR),
-				"process.env.RINKEBY_ORACLE_CONTRACT_ADDR": JSON.stringify(process.env.RINKEBY_ORACLE_CONTRACT_ADDR),
+				"process.env.RINKEBY_BITIZENS_IGO_CONTRACT_ADDR": JSON.stringify(process.env.RINKEBY_BITIZENS_IGO_CONTRACT_ADDR),
         "process.env.SENDBIRD_APP_ID": JSON.stringify(process.env.SENDBIRD_APP_ID),
 			})
 		);

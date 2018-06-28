@@ -3,10 +3,12 @@ export default {
     token: process.env.MAINNET_TOKEN_CONTRACT_ADDR,
     topup: process.env.MAINNET_TOPUP_CONTRACT_ADDR,
     oracle: process.env.MAINNET_ORACLE_CONTRACT_ADDR,
+    bitizensIGO: process.env.MAINNET_BITIZENS_IGO_CONTRACT_ADDR,
   },
   "4": {
     token: process.env.RINKEBY_TOKEN_CONTRACT_ADDR,
     topup: process.env.RINKEBY_TOPUP_CONTRACT_ADDR,
     oracle: process.env.RINKEBY_ORACLE_CONTRACT_ADDR,
+    bitizensIGO: process.env.RINKEBY_BITIZENS_IGO_CONTRACT_ADDR,
   },
 };

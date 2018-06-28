@@ -4,6 +4,11 @@ import cx from "classnames";
 import PropTypes from "prop-types";
 import {Image, Row, Col, Tab, Tabs, ProgressBar} from "react-bootstrap";
 import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
+import {connect} from "react-redux";
+
+import tokenABI from "@/shared/contracts/token";
+// import oracleABI from "@/shared/contracts/oracle";
+import networkConfig from "@/client/utils/network";
 
 // import BGModal from "@/components/modal";
 import {Mobile, Desktop} from "@/components/responsive";
@@ -13,33 +18,39 @@ import style from "@/shared/constants/style";
 
 const TOTAL_ITEMS_COUNT = 278;
 
+// TODO - move id => key, and tokenId => id
 const SETS = [
   {
     id: "pioneer_of_the_wilds",
+    tokenId: 16,
     name: "Pioneer of the Wilds",
     total: 100,
     price: 60000,
   },
   {
     id: "pioneer_of_the_skies",
+    tokenId: 17,
     name: "Pioneer of the Skies",
     total: 25,
     price: 180000,
   },
   {
     id: "pioneer_of_the_seas",
+    tokenId: 18,
     name: "Pioneer of the Seas",
     total: 10,
     price: 480000,
   },
   {
     id: "pioneer_of_the_cyberscape",
+    tokenId: 19,
     name: "Cyberspace Pioneer",
     total: 1,
     price: 3000000,
   },
   {
     id: "pioneer_compass",
+    tokenId: 999,
     name: "Pioneers Compass",
     total: 3,
     price: 720000,
@@ -48,9 +59,17 @@ const SETS = [
 
 
 @injectIntl
+@connect(
+  state => ({
+    balancePLAT: state.balancePLAT,
+    network: state.network,
+  }),
+)
 class Presale extends Component {
   static propTypes = {
     slug: PropTypes.string,
+    balancePLAT: PropTypes.object,
+    network: PropTypes.object,
   }
 
   static getInitialProps({err, req, res, query, store, isServer}) {
@@ -61,8 +80,28 @@ class Presale extends Component {
   }
 
   purchase(set) {
-    // TODO - complete purchase logic
-    console.log('purchase set: ', set);
+    log.info("User purchase flow for set: ", set);
+    const {balancePLAT} = this.props;
+    // Configure contract for BitGuildToken
+    const BitGuildToken = window.web3.eth.contract(tokenABI).at(networkConfig[this.props.network.data.id].token);
+    const PLAT_DISCOUNT = 50;
+    const priceForUser = (set.price - PLAT_DISCOUNT);
+    const priceForUserBigNumber = priceForUser * 1e18;
+
+    // Get Plat Balance and confirm user has enough...
+    if (balancePLAT && balancePLAT.data < priceForUser) {
+      log.error("User has insufficient PLAT balance.");
+      return;
+    }
+
+    // Trigger approval for transaction
+    BitGuildToken.approveAndCall(networkConfig[this.props.network.data.id].bitizensIGO, priceForUserBigNumber, set.tokenId, (err, tx) => {
+      if (err) {
+        log.error(err);
+      } else {
+        log.info("Transaction hash: ", tx);
+      }
+    });
   }
 
   setSection(set) {
@@ -285,7 +324,6 @@ class Presale extends Component {
   }
 
   render() {
-    console.log(this.props);
     // TODO - Get sold items count
     const progress = Math.floor((84 / TOTAL_ITEMS_COUNT) * 100); /* Percentage items sold */
     return (
