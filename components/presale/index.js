@@ -21,7 +21,7 @@ import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
 
 import {client as api} from "@/client/utils/apollo";
 
-
+const PLAT_DISCOUNT = 50;
 const TOTAL_ITEMS_COUNT = 139;
 const BITIZENS_GAME_ID = 3;
 
@@ -108,6 +108,7 @@ class Presale extends Component {
     const variables = {
       payload: {
         setId: set.tokenId,
+        price: set.price - PLAT_DISCOUNT,
         wallet: user.data.wallet,
         transactionHash: tx,
         GameId: BITIZENS_GAME_ID,
@@ -153,7 +154,6 @@ class Presale extends Component {
     const {balancePLAT} = this.props;
     // Configure contract for BitGuildToken
     const BitGuildToken = window.web3.eth.contract(tokenABI).at(networkConfig[this.props.network.data.id].token);
-    const PLAT_DISCOUNT = 50;
     const priceForUser = (set.price - PLAT_DISCOUNT);
     const priceForUserBigNumber = priceForUser * 1e18;
 
