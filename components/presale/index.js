@@ -509,10 +509,45 @@ class Presale extends Component {
             padding: 0;
           }
         `}</style>
-          {::this.presaleTitles()}
-          {::this.presaleBanner()}
-          {::this.presaleInfo()}
-          {SETS.map(set => ::this.setSection(set))}
+
+        {::this.presaleTitles()}
+        {::this.presaleBanner()}
+        {::this.presaleInfo()}
+
+        {SETS.map(set => ::this.setSection(set))}
+
+        <br />
+
+        <Row>
+          <Col xs={12}>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.dividing-text`} /></p>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} sm={2}>
+            <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_drillrbot.png`} />
+          </Col>
+          <Col xs={12} sm={10}>
+            <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-title`} /></strong></p>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-text-1`} /></p>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-text-2`} /></p>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} sm={2}>
+            <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_rocket.png`} />
+          </Col>
+          <Col xs={12} sm={10}>
+            <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-title`} /></strong></p>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-text-1`} /></p>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-text-2`} /></p>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12}>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.final-text`} /></p>
+          </Col>
+        </Row>
       </div>
     );
   }
