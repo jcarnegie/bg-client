@@ -4,17 +4,24 @@ import {
   USER_ERROR,
   USER_RESET,
   USER_LOADING,
+  PRESALE_TRANSACTIONS_CHANGED,
 } from "@/shared/constants/actions";
+
 
 const user = {
   isLoading: false,
   success: false,
   data: null,
   showRegisterWorkflow: false,
+  presaleTransactions: null,
 };
 
 export default function userReducer(state = user, action) {
   switch (action.type) {
+    case PRESALE_TRANSACTIONS_CHANGED:
+      return Object.assign({}, state, {
+        presaleTransactions: action.payload.presaleTransactions,
+      });
     case USER_LOADING:
       return Object.assign({}, state, {
         data: null,

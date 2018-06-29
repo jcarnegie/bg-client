@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import * as log from "loglevel";
 import {call, put, select, takeEvery} from "redux-saga/effects";
 import {updateIntl} from "react-intl-redux";
 import {dissoc, filter, isEmpty, map, merge, path, pickAll, prop, propEq} from "ramda";
@@ -11,7 +12,7 @@ import {
   BALANCE_ETH_CHANGED,
   BALANCE_PLAT_CHANGED,
   CREATE_USER,
-  CHAT_GUEST_INIT,
+  PRESALE_TRANSACTIONS_CHANGED,
   GAMES_ERROR,
   INVENTORY_ITEMS_ERROR,
   MESSAGE_ADD,
@@ -25,6 +26,34 @@ import {
   VALIDATION_ADD_ALL,
 } from "@/shared/constants/actions";
 import {localization} from "@/shared/intl/setup";
+
+
+function * listUserPresaleTickets() {
+  const query = gql`
+    query listUserPresaleTickets($wallet: String!, $userId: ID!) {
+      listUserPresaleTickets(wallet: $wallet, userId: $userId) {
+        id wallet setId
+      }
+    }
+  `;
+
+  const account = yield select(state => state.account);
+  const user = yield select(state => state.user);
+
+  if (!account.wallet || !user.data) return;
+
+  const variables = {wallet: account.wallet, userId: user.data.id};
+  const tx = yield client.query({query, variables});
+
+  try {
+    yield put({
+      type: PRESALE_TRANSACTIONS_CHANGED,
+      payload: {presaleTransactions: tx.data.listUserPresaleTickets},
+    });
+  } catch (e) {
+    log.error(e);
+  }
+}
 
 
 function * fetchUser() {
@@ -195,4 +224,5 @@ export default function * userSaga() {
   yield takeEvery(CREATE_USER, createUser);
   yield takeEvery(UPDATE_USER, updateUser);
   yield takeEvery(SIGN_OUT_USER, signOutUser);
+  yield takeEvery(USER_CHANGED, listUserPresaleTickets);
 }

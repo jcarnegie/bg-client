@@ -13,13 +13,14 @@ import bitizensIGOABI from "@/shared/contracts/bitizensIGOABI";
 import ScaleLoader from "react-spinners/dist/spinners/ScaleLoader";
 import networkConfig from "@/client/utils/network";
 
-// import BGModal from "@/components/modal";
 import {Mobile, Desktop} from "@/components/responsive";
 import ItemSetDetailsCard from "@/components/ItemSetDetailsCard";
 
 import style from "@/shared/constants/style";
+import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
 
 import {client as api} from "@/client/utils/apollo";
+
 
 const TOTAL_ITEMS_COUNT = 139;
 const BITIZENS_GAME_ID = 3;
@@ -74,6 +75,8 @@ class Presale extends Component {
     network: PropTypes.object,
     user: PropTypes.object,
     layout: PropTypes.object,
+    items: PropTypes.object,
+    dispatch: PropTypes.func,
   }
 
   state = {
@@ -154,9 +157,24 @@ class Presale extends Component {
     const priceForUser = (set.price - PLAT_DISCOUNT);
     const priceForUserBigNumber = priceForUser * 1e18;
 
+    if (!this.props.network.data) {
+      log.error("Network has not loaded.");
+      return;
+    }
+
+    if (!this.props.user.data) {
+      this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: true});
+      return;
+    }
+
     // Get Plat Balance and confirm user has enough...
     if (balancePLAT && balancePLAT.data < priceForUser) {
       log.error("User has insufficient PLAT balance.");
+      return;
+    }
+
+    if (::this.userHasAlreadyPurchasedItem(set.tokenId)) {
+      log.error("User has already purchased this item.");
       return;
     }
 
@@ -169,6 +187,10 @@ class Presale extends Component {
         this.logPurchase(tx, set);
       }
     });
+  }
+
+  userHasAlreadyPurchasedItem(setId) {
+    return Boolean(this.props.user.presaleTransactions && this.props.user.presaleTransactions.find(txObj => txObj.setId === setId));
   }
 
   setSection(set) {
@@ -198,7 +220,7 @@ class Presale extends Component {
         <Col xs={6} sm={5}>
           <ItemSetDetailsCard
             key={set.id}
-            disabled={remainingForSet === 0}
+            disabled={(remainingForSet === 0 || ::this.userHasAlreadyPurchasedItem(set.tokenId))}
             onClick={() => ::this.purchase(set)}
             title={set.name}
             subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}</>}
