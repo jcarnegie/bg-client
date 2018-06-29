@@ -125,7 +125,7 @@ class ItemSetDetailsCard extends React.PureComponent {
         </div>
         <div className="item-set-details-card-item-details">
           <h5>{this.props.title}</h5>
-          <p className="item-set-details-card-subtitle">{this.props.subtitle}</p>
+          <div className="item-set-details-card-subtitle">{this.props.subtitle}</div>
           <ul className="details">
             {this.props.setDetails}
           </ul>

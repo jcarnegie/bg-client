@@ -131,7 +131,6 @@ class Presale extends Component {
   }
 
   getQtyOfItemRemaining(setId) {
-    // const BitGuildToken = window.web3.eth.contract(tokenABI).at(networkConfig[this.props.network.data.id].token);
     if (!this.props.network.data || !this.props.network.data.id) return;
     const IGOContract = window.web3.eth.contract(bitizensIGOABI).at(networkConfig[this.props.network.data.id].bitizensIGO);
 
@@ -141,7 +140,6 @@ class Presale extends Component {
       if (err) {
         log.error(err);
       } else {
-        log.info(`Retrieved quantity for set: ${setId}: `, qty.c[0]);
         this.setState({[`qtyOf${setId}`]: qty.c[0]});
       }
     });
