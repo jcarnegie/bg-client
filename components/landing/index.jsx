@@ -150,7 +150,7 @@ class GameList extends Component {
           <h1><FormattedMessage id={`pages.presale.${slug}.title`} /></h1>
         </Row>
         <Row>
-          <BGButton className="events-button">
+          <BGButton>
             <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
           </BGButton>
         </Row>
@@ -209,6 +209,9 @@ class GameList extends Component {
             align-items: center;
             justify-content: center;
             flex-grow: 1;
+          }
+          :global(.events .events-button) {
+            margin-top: 10px;
           }
         `}</style>
         <GameIcon game={{slug: "ether.online"}} width="75px" className="events-flex" />

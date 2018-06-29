@@ -210,7 +210,7 @@ export default class GameList extends Component {
           <h1><FormattedMessage id={`pages.presale.${slug}.title`} /></h1>
         </Row>
         <Row>
-          <BGButton className="events-button">
+          <BGButton>
             <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
           </BGButton>
         </Row>
@@ -286,6 +286,9 @@ export default class GameList extends Component {
             justify-content: center;
             width: 25% !important;
           }
+          :global(.events .events-button) {
+            margin-top: 10px;
+          }
         `}</style>
         <GameIcon game={{slug: "ether.online"}} width="100px" className="events-flex" />
         <div className="events-center">
@@ -302,9 +305,9 @@ export default class GameList extends Component {
             </h3>
           </Desktop>
           <div>
-          <BGButton className="events-button" onClick={() => Router.push("/events")}>
-            <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
-          </BGButton>
+            <BGButton className="events-button" onClick={() => Router.push("/events")}>
+              <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
+            </BGButton>
           </div>
         </div>
         <div className="events-flex bitguild-logo-wrapper">

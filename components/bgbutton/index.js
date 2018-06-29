@@ -27,7 +27,7 @@ class BGButton extends PureComponent {
             font-size: 14px;
             font-weight: 100;
             padding: 10px 20px;
-            margin: 12px 0 0 0;
+            margin: 0;
             border: 0;
             border-radius: 2px;
             text-transform: uppercase;
