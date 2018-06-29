@@ -36,6 +36,9 @@ function * fetchUser() {
 
     if (!account.wallet) {
       yield put({
+        type: USER_ERROR,
+      });
+      yield put({
         type: BALANCE_ETH_CHANGED,
         payload: 0,
       });
@@ -48,10 +51,6 @@ function * fetchUser() {
       });
       yield put({
         type: GAMES_ERROR,
-      });
-      yield put({
-        type: CHAT_GUEST_INIT,
-        payload: {wallet: "0xanonymous", nickName: "Guest"},
       });
       return;
     }
@@ -74,10 +73,6 @@ function * fetchUser() {
       });
       yield put(updateIntl(localization[user.language]));
     } else {
-      yield put({
-        type: CHAT_GUEST_INIT,
-        payload: {wallet: account.wallet, nickName: "Guest"},
-      });
       yield put({
         type: USER_ERROR,
       });

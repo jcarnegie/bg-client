@@ -16,7 +16,7 @@ import {channels as chatChannels,
 } from "@/client/utils/chat";
 import {
   CHAT_INIT,
-  CHAT_GUEST_INIT,
+  USER_ERROR,
   CHAT_LOAD_MESSAGES,
   CHAT_MESSAGE_SEND,
   CHAT_MESSAGE_SENT,
@@ -63,7 +63,14 @@ function * sendChatMessage(action) {
 }
 
 function * initChat(action) {
-  const {wallet, nickName} = action.payload;
+  let wallet = "0x0anonymous";
+  let nickName = "Guest";
+
+  if (action.payload) {
+    wallet = action.payload.wallet;
+    nickName = action.payload.nickName;
+  }
+
   let user = yield select(state => state.user);
   let sb;
 
@@ -117,5 +124,5 @@ function * initChat(action) {
 export default function * chatSaga() {
   yield takeEvery(CHAT_MESSAGE_SEND, sendChatMessage);
   yield takeEvery(USER_CHANGED, initChat);
-  yield takeEvery(CHAT_GUEST_INIT, initChat);
+  yield takeEvery(USER_ERROR, initChat);
 }
