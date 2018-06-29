@@ -17,7 +17,10 @@ import {Mobile, Desktop} from "@/components/responsive";
 import ItemSetDetailsCard from "@/components/ItemSetDetailsCard";
 
 import style from "@/shared/constants/style";
-import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
+import {
+  USER_SHOW_REGISTER_WORKFLOW,
+  SHOW_CONVERT_MODAL,
+} from "@/shared/constants/actions";
 
 import {client as api} from "@/client/utils/apollo";
 
@@ -130,6 +133,26 @@ class Presale extends Component {
     return <ScaleLoader height={10} width={2} color="black" style={{display: "inline"}} />;
   }
 
+  web3IsLoading() {
+    const {
+      qtyOf16,
+      qtyOf17,
+      qtyOf18,
+      qtyOf19,
+      qtyOf20,
+    } = this.state;
+
+    const loading = (
+      qtyOf16 === null ||
+      qtyOf17 === null ||
+      qtyOf18 === null ||
+      qtyOf19 === null ||
+      qtyOf20 === null
+    );
+
+    return loading;
+  }
+
   getQtyOfItemsRemaining() {
     SETS.map(set => ::this.getQtyOfItemRemaining(set.tokenId));
   }
@@ -170,6 +193,7 @@ class Presale extends Component {
     // Get Plat Balance and confirm user has enough...
     if (balancePLAT && balancePLAT.data < priceForUser) {
       log.error("User has insufficient PLAT balance.");
+      this.props.dispatch({type: SHOW_CONVERT_MODAL, payload: true});
       return;
     }
 
@@ -220,7 +244,7 @@ class Presale extends Component {
         <Col xs={6} sm={5}>
           <ItemSetDetailsCard
             key={set.id}
-            disabled={(remainingForSet === 0 || ::this.userHasAlreadyPurchasedItem(set.tokenId))}
+            disabled={(remainingForSet === 0 || ::this.userHasAlreadyPurchasedItem(set.tokenId) || ::this.web3IsLoading())}
             onClick={() => ::this.purchase(set)}
             title={set.name}
             subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}</>}
@@ -298,13 +322,7 @@ class Presale extends Component {
       qtyOf20,
     } = this.state;
 
-    const loading = (
-      qtyOf16 === null ||
-      qtyOf17 === null ||
-      qtyOf18 === null ||
-      qtyOf19 === null ||
-      qtyOf20 === null
-    );
+    const loading = ::this.web3IsLoading();
 
     const totalSold = loading ? 0 : (TOTAL_ITEMS_COUNT - (
       (qtyOf16 || 0) +

@@ -1,4 +1,8 @@
-import {BALANCE_PLAT_CHANGED, BALANCE_PLAT_ERROR, BALANCE_PLAT_LOADING} from "../../shared/constants/actions";
+import {
+  BALANCE_PLAT_CHANGED,
+  BALANCE_PLAT_ERROR,
+  BALANCE_PLAT_LOADING,
+} from "@/shared/constants/actions";
 
 const balance = {
   isLoading: false,
