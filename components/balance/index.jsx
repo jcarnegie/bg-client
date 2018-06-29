@@ -7,13 +7,14 @@ import MdAddCircle from "react-icons/lib/md/add-circle";
 
 import Convert from "@/components/popups/convert";
 
-import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
+import {USER_SHOW_REGISTER_WORKFLOW, SHOW_CONVERT_MODAL} from "@/shared/constants/actions";
 
 
 @connect(
   state => ({
     rate: state.rate,
     user: state.user,
+    layout: state.layout,
     balanceETH: state.balanceETH,
     balancePLAT: state.balancePLAT,
   })
@@ -21,6 +22,7 @@ import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
 export default class Balance extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
+    layout: PropTypes.object,
     rate: PropTypes.object,
     user: PropTypes.object,
     balanceETH: PropTypes.object,
@@ -65,6 +67,7 @@ export default class Balance extends Component {
   }
 
   onHide() {
+    this.props.dispatch({type: SHOW_CONVERT_MODAL, payload: false});
     this.setState({
       show: false,
     });
@@ -152,7 +155,7 @@ export default class Balance extends Component {
             font-weight: 100;
           }
         `}</style>
-        <Convert show={this.state.show} onHide={::this.onHide} />
+        <Convert show={this.state.show || this.props.layout.showConvertModal} onHide={::this.onHide} />
         {::this.plus()}
         {::this.balances()}
       </div>

@@ -1,4 +1,8 @@
-import {MENU_SHOW, APP_RESIZE} from "@/shared/constants/actions";
+import {
+  MENU_SHOW,
+  APP_RESIZE,
+  SHOW_CONVERT_MODAL,
+} from "@/shared/constants/actions";
 import {breakpoints} from "@/shared/constants/style";
 
 
@@ -10,10 +14,15 @@ const layout = {
     mobile: true,
     desktop: false,
   },
+  showConvertModal: false,
 };
 
 export default function itemsReducer(state = layout, action) {
   switch (action.type) {
+    case SHOW_CONVERT_MODAL:
+      return Object.assign({}, state, {
+        showConvertModal: action.payload,
+      });
     case APP_RESIZE:
       const {innerWidth} = action.payload;
       const {innerHeight} = action.payload;
