@@ -46,7 +46,7 @@ class ItemSetDetailsCard extends React.PureComponent {
             max-width: 300px;
             cursor: pointer;
             font-size: 0.8em;
-            margin-top: 50px;
+            margin-top: 20px;
           }
           .item-set-details-card.disabled {
             opacity: 0.6;
