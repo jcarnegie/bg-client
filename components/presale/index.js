@@ -175,20 +175,23 @@ class Presale extends Component {
   purchase(set) {
     log.info("User purchase flow for set: ", set);
     const {balancePLAT} = this.props;
-    // Configure contract for BitGuildToken
-    const BitGuildToken = window.web3.eth.contract(tokenABI).at(networkConfig[this.props.network.data.id].token);
-    const priceForUser = (set.price - PLAT_DISCOUNT);
-    const priceForUserBigNumber = priceForUser * 1e18;
 
     if (!this.props.network.data) {
       log.error("Network has not loaded.");
+      this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: true});
       return;
     }
 
     if (!this.props.user.data) {
+      log.info("User must be logged in to purchase item.");
       this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: true});
       return;
     }
+
+    // Configure contract for BitGuildToken
+    const BitGuildToken = window.web3.eth.contract(tokenABI).at(networkConfig[this.props.network.data.id].token);
+    const priceForUser = (set.price - PLAT_DISCOUNT);
+    const priceForUserBigNumber = priceForUser * 1e18;
 
     // Get Plat Balance and confirm user has enough...
     if (balancePLAT && balancePLAT.data < priceForUser) {
@@ -244,7 +247,7 @@ class Presale extends Component {
         <Col xs={6} sm={5}>
           <ItemSetDetailsCard
             key={set.id}
-            disabled={(remainingForSet === 0 || ::this.userHasAlreadyPurchasedItem(set.tokenId) || ::this.web3IsLoading())}
+            disabled={(remainingForSet === 0 || ::this.userHasAlreadyPurchasedItem(set.tokenId))}
             onClick={() => ::this.purchase(set)}
             title={set.name}
             subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}</>}
