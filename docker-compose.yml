@@ -39,6 +39,7 @@ services:
             - "5000:5000"
         environment:
             - NODE_ENV=development
+            - DEPLOYED_ENV=local
             - PORT=5000
             - RENDERING=server
             - GOOGLE_ANALYTICS_TRACKING_ID=UA-114789298-2
