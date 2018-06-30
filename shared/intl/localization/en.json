@@ -2,9 +2,9 @@
   "global": {
     "about": "About",
     "description": "Pre-Sale",
-    "faq": "FAQ",
+    "faq": "About Bitizens",
     "remaining": "remaining",
-    "rules": "About Bitizens"
+    "rules": "Rules"
   },
   "components": {
     "switchLanguage": "Switch Language",
@@ -249,7 +249,7 @@
     },
     "presale": {
       "bitizens": {
-        "title": "Bitizens Pioneer Pre-Sale",
+        "title": "Bitizens Pioneers Pre-Sale",
         "subtitle": " Show your support, and get unique in-game items in return!",
         "presale-stats-title": "IGO Stats",
         "items-bought": "Items sold",
@@ -262,35 +262,18 @@
         "bonus-reward-2-title": "Pioneer's Rocket",
         "bonus-reward-2-description": "Selling <strong>70%</strong> of all Bitizens pre-sale items will unlock something extra special for all participants - Your very own miniature rocket!",
         "dividing-text": "We’ve set up some unique stretch goals as well (see above for details!). Reaching them will unlock unique items for all pre-sale participants - an extra special reward for helping us make the Bitizen vision a reality.",
-        "drillrbot-title": "Dril’r Bot Paint Job: Pioneer-I",
-        "drillrbot-text-1": "Once 30% of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot paint job!",
+        "drillrbot-title": "Bonus Reward 1",
+        "drillrbot-text-1": "Once 30% of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot Pioneer-I paint job!",
         "drillrbot-text-2": "That’s right, this adorable little mining companion is now an ERC721 token - meaning it can be customized! First up on the list of possible ways players can customize their personal Dril’ rBot are paint jobs, and the one featured here is going to be pretty special (Once the pre-sale is over, that’s it, you can’t get it anymore!).",
-        "rocket-title": "Pioneer's Mini-Rocket",
+        "rocket-title": "Bonus Reward 2",
         "rocket-text-1": "Selling 70% of all Bitizens pre-sale items will unlock something extra special for all participants - Your very own miniature rocket!",
-        "rocket-text-2": "The Mini-Rocket is an Accessory item-type, meaning it can be equipped to your character and offer either special visual effects on your Bitizen, or a stat boost, or both! Much like the above paint-job customization, this Mini Rocket is not going to be available once the Bitizens pre-sale is over!",
+        "rocket-text-2": "The Mini-Rocket is an Accessory item-type, meaning it can be equipped to your character and offer either special visual effects on your Bitizen, or a stat boost, or both! Much like the first bonus item, this Mini Rocket is not going to be available once the Bitizens pre-sale is over!",
         "final-text": "Join us as we bring our love for online games to the blockchain with Bitizens!",
         "description-text": {
           "p1": "Get your mitts on the exclusive items below by participating in our pre-sale event. This will be the <strong>ONLY</strong> chance at securing these items for yourself - <strong>Don’t miss out as quantities are limited!</strong> ",
           "p2": "Taking part in the Bitizens pre-sale will not only help us produce a quality game that caters to players first and foremost, offering deep, meaningful, and engaging blockchain gaming experiences - It will also help show off your status as a Pioneer of both Bitizens and the BitGuild Portal.",
           "p3": "Once the game launches, these special, limited run items can't be acquired by traditional in-game means; You'd have to trade for them!",
           "p4": "Check out the Pioneer sets available and secure your piece of cryptogaming history, and establish yourself as a Bitizens Pioneer today!"
-        },
-        "rules-text": {
-          "p1": "Taking part in the Bitizens pre-sale will not only help us produce a quality game that caters to players first and foremost, offering deep, meaningful, and engaging blockchain gaming experiences - It will also help show off your status as a Pioneer of both Bitizens and the BitGuild Portal. Once the game launches, these special, limited run items can't be acquired by traditional in-game means; <strong>You'd have to trade for them!</strong>",
-          "p2": "If you’d like to learn more about Bitizens and BitGuild, we encourage you to find us the <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Official Bitizens Community on Discord</a>. There, you’ll find the development team as well as other fans to chat with!",
-          "p3": "You can also follow BitGuild on <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a>, and <a href='https://medium.com/@BitGuild' target='_blank' rel='noopener noreferrer'>Medium</a> to stay up to date with the development process, all the latest news, contest, giveaways, and more!",
-          "p4": "Join us as we bring our love for online games to the blockchain with Bitizens!",
-          "p5": "<strong>Limitations:</strong>",
-          "l1": "You cannot purchase the same set more than once.",
-          "l2": "Multiple purchases will only qualify you for one bonus reward of each tier.",
-          "l3": "These items will not be available after the pre-sale is complete.",
-          "l4": "Pioneer items will be allowed for sale on our Marketplace.",
-          "l5": "All pre-sale items are available for purchase using PLAT only.",
-          "l6": "All pre-sale transactions are final.",
-          "p6": "<strong>Distribution:</strong>",
-          "l7": "Pioneer sets, items, and Bonus Rewards will be available to claim at the time of the Bitizen’s Wardrobe release, scheduled for late July.",
-          "l8": "You must claim your items on the account used to purchase the items.",
-          "l9": "Gas fees may apply at the time of in-game item redemption."
         },
         "faq-text": {
           "p1": "<strong>Your invitation to come and make the world a better place.</strong>",
@@ -308,6 +291,19 @@
           "p13": "Bask in the glory, flaunt your swag by adorning yourself in rare and unique threads, and then <strong>do it all again!</strong> There’s no end to what you can find down there, and any and <strong>all items acquired in Bitropolis are yours to keep, use, trade, or even sell for PLAT!</strong> Who knows what you might find… It could be just what you needed to complete your collection… or your neighbour’s collection (provided you’re willing to sell it to them... Did someone say profits? KA-CHING!)",
           "p14": "<strong>Sounds amazing! How do I get there?</strong>",
           "p15": "You can book your one-way ticket (let’s face it, you won’t need the return ticket) to the virtual world of Bitropolis right now. There’s no such thing as an economy seat - For Bitizens, it’s first class all the way baby!"
+        },
+        "rules-text": {
+          "p1": "<strong>Limitations:</strong>",
+          "l1": "You cannot purchase the same set more than once.",
+          "l2": "Multiple purchases will only qualify you for one bonus reward of each tier.",
+          "l3": "These items will not be available after the pre-sale is complete.",
+          "l4": "Pioneer items will be allowed for sale on our Marketplace.",
+          "l5": "All pre-sale items are available for purchase using PLAT only.",
+          "l6": "All pre-sale transactions are final.",
+          "p2": "<strong>Distribution:</strong>",
+          "l7": "Pioneer sets, items, and Bonus Rewards will be available to claim at the time of the Bitizen’s Wardrobe release, scheduled for late July.",
+          "l8": "You must claim your items on the account used to purchase the items.",
+          "l9": "Gas fees may apply at the time of in-game item redemption."
         },
         "sets": {
           "pioneer_of_the_wilds": {

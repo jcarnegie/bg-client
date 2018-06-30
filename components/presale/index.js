@@ -34,30 +34,35 @@ const SETS = [
     tokenId: 17,
     total: 100,
     price: 60000,
+    name: "Pioneer of the Wilds",
   },
   {
     id: "pioneer_of_the_skies",
     tokenId: 16,
     total: 25,
     price: 180000,
+    name: "Pioneer of the Skies",
   },
   {
     id: "pioneer_of_the_seas",
     tokenId: 18,
     total: 10,
     price: 480000,
+    name: "Pioneer of the Seas",
   },
   {
     id: "pioneer_of_the_cyberscape",
     tokenId: 19,
     total: 1,
     price: 3000000,
+    name: "Cyberspace Pioneer",
   },
   {
     id: "pioneer_compass",
     tokenId: 20,
     total: 3,
     price: 720000,
+    name: "Pioneer's Compass",
   },
 ];
 
@@ -475,28 +480,7 @@ class Presale extends Component {
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p3`} /></p>
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.description-text.p4`} /></p>
             </Tab>
-            <Tab eventKey={2} title={<FormattedMessage id="global.rules" />}>
-              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p1`} /></p>
-              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p2`} /></p>
-              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p3`} /></p>
-              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p4`} /></p>
-              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p5`} /></p>
-              <ol>
-                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l1`} /></li>
-                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l2`} /></li>
-                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l3`} /></li>
-                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l4`} /></li>
-                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l5`} /></li>
-              </ol>
-              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p6`} /></p>
-              <ol>
-                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l6`} /></li>
-                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l7`} /></li>
-                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l8`} /></li>
-                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l9`} /></li>
-              </ol>
-            </Tab>
-            <Tab eventKey={3} title={<FormattedMessage id="global.faq" />}>
+            <Tab eventKey={2} title={<FormattedMessage id="global.faq" />}>
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.faq-text.p1`} /></p>
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.faq-text.p2`} /></p>
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.faq-text.p3`} /></p>
@@ -512,6 +496,23 @@ class Presale extends Component {
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.faq-text.p13`} /></p>
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.faq-text.p14`} /></p>
               <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.faq-text.p15`} /></p>
+            </Tab>
+            <Tab eventKey={3} title={<FormattedMessage id="global.rules" />}>
+              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p1`} /></p>
+              <ol>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l1`} /></li>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l2`} /></li>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l3`} /></li>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l4`} /></li>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l5`} /></li>
+                  <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l6`} /></li>
+              </ol>
+              <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.p2`} /></p>
+              <ol>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l7`} /></li>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l8`} /></li>
+                <li><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rules-text.l9`} /></li>
+              </ol>
             </Tab>
           </Tabs>
         </Col>
