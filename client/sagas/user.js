@@ -219,7 +219,6 @@ function * signOutUser(action) {
 }
 
 export default function * userSaga() {
-  yield takeEvery(APP_INIT, fetchUser);
   yield takeEvery(ACCOUNT_CHANGED, fetchUser);
   yield takeEvery(CREATE_USER, createUser);
   yield takeEvery(UPDATE_USER, updateUser);

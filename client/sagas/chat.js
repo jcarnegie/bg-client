@@ -1,8 +1,9 @@
-import {put, select, takeEvery} from "redux-saga/effects";
+import {put, select, takeEvery, takeLatest, call} from "redux-saga/effects";
 import xssFilters from "xss-filters";
 import * as log from "loglevel";
 import {
   isEmpty,
+  pathOr,
 } from "ramda";
 
 import {channels as chatChannels,
@@ -63,66 +64,67 @@ function * sendChatMessage(action) {
 }
 
 function * initChat(action) {
-  let wallet = "0x0anonymous";
-  let nickName = "Guest";
-
-  if (action.payload) {
-    wallet = action.payload.wallet;
-    nickName = action.payload.nickName;
-  }
-
-  let user = yield select(state => state.user);
   let sb;
 
-  if (!wallet || !user) {
-    log.info("Initializing chat for guest user.");
-    [sb, user] = yield chatInit("guestuser", "Guest");
+  try {
+    let user = yield select(state => state.user);
+
+    if (user.isLoading) {
+      log.info("Chat will wait for user API call to resolve.");
+      return;
+    }
+
+    let chat = yield select(state => state.chat);
+    let account = yield select(state => state.account);
+    const wallet = pathOr("0x0anonymous", ["wallet"], account);
+    const nickName = pathOr("Guest", ["data", "nickName"], user);
+
+    log.info(`Disconnecting chat for user: ${nickName}, wallet: ${wallet}.`);
+    yield chat.sb && chat.sb.disconnect();
+
+    log.info(`Initializing chat for user: ${nickName}, wallet: ${wallet}.`);
+    [sb, user] = yield call(chatInit, wallet, nickName);
+
     yield put({
       type: CHAT_INIT,
       payload: {sb, user},
     });
-    return;
+
+    const channels = yield chatChannels(sb);
+    const locale = yield select(state => state.intl.locale);
+    const channelName = channelNameForLocale(locale);
+    const channelOperators = [
+      "0xc40cD464ad0895571bB396071A4FaA81935353A5", // Jeff
+      "0xa9Af3D88E5167cA6E9413CBB9b946EC95FE469ee", // Shain
+    ];
+
+    let channel;
+
+    if (!findChannelByName(channelName, channels)) {
+      channel = yield createChannelWithName(channelName, channelOperators);
+      channels.push(channel);
+    }
+
+    channel = yield setChannelByName(channelName, channels);
+
+    yield put({
+      type: CHAT_SET_CHANNEL,
+      payload: channel,
+    });
+
+    const messages = yield chatMessages(channel);
+    yield put({
+      type: CHAT_LOAD_MESSAGES,
+      payload: messages,
+    });
+  } catch (err) {
+    log.error(err);
   }
-
-  log.info(`Initializing chat for user: ${nickName}.`);
-  [sb, user] = yield chatInit(wallet, nickName);
-
-  yield put({
-    type: CHAT_INIT,
-    payload: {sb, user},
-  });
-
-  const channels = yield chatChannels(sb);
-  const locale = yield select(state => state.intl.locale);
-  const channelName = channelNameForLocale(locale);
-  const channelOperators = [
-    "0xc40cD464ad0895571bB396071A4FaA81935353A5", // Jeff
-    "0xa9Af3D88E5167cA6E9413CBB9b946EC95FE469ee", // Shain
-  ];
-
-  let channel;
-
-  if (!findChannelByName(channelName, channels)) {
-    channel = yield createChannelWithName(channelName, channelOperators);
-    channels.push(channel);
-  }
-
-  channel = yield setChannelByName(channelName, channels);
-
-  yield put({
-    type: CHAT_SET_CHANNEL,
-    payload: channel,
-  });
-
-  const messages = yield chatMessages(channel);
-  yield put({
-    type: CHAT_LOAD_MESSAGES,
-    payload: messages,
-  });
 }
 
 export default function * chatSaga() {
   yield takeEvery(CHAT_MESSAGE_SEND, sendChatMessage);
-  yield takeEvery(USER_CHANGED, initChat);
-  yield takeEvery(USER_ERROR, initChat);
+  yield takeEvery("APP_INIT", initChat);
+  yield takeLatest(USER_CHANGED, initChat);
+  yield takeLatest(USER_ERROR, initChat);
 }
