@@ -80,6 +80,15 @@ export default class Header extends Component {
         >
           <span className="navigation-link"><FormattedMessage id="components.menu.inventory" /></span>
         </ActiveLink>
+        <ActiveLink
+          href="/marketplace"
+          activeStyle={{ boxShadow: "inset 0px -4px 0px 0px #ffd57d" }}
+          style={{ 
+           textDecoration: "none",
+           marginLeft: "20px" }}
+        >
+          <span className="navigation-link"><FormattedMessage id="components.menu.marketplace" /></span>
+        </ActiveLink>
       </div>
     );
   }
