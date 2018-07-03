@@ -218,105 +218,6 @@ export default class GameList extends Component {
     ) : null;
   }
 
-  events() {
-    return (
-      <div className="events">
-        <style jsx>{`
-          .events {
-            background-size: contain;
-            background-color: #F1F5FF;
-            color: #314B88;
-            border-bottom: 1px solid #c7c6f2;
-            height: 200px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-          }
-          .events-center {
-            flex-grow: 2;
-            text-align: center;
-          }
-          .events-title,
-          .events-subtitle {
-            display: block;
-            text-align: center;
-            text-transform: uppercase;
-            margin: 0;
-          }
-          .events-title {
-            font-size: 40px;
-            font-weight: 600;
-            color: rgb(247,200,65);
-            text-shadow: 1px 1px 1px #314B88;
-          }
-          .events-subtitle {
-            font-size: 36px;
-            color: #314B88;
-            text-shadow: 1px 1px 1px #999;
-          }
-          .events-button {
-            color: #130029;
-            background: linear-gradient(to right,#b1c8e8 0%,#fbfcff 100%);
-            font-size: 14px;
-            font-weight: 700;
-            padding: 10px 20px;
-            margin: 12px 0 0 0;
-            border: 0;
-            border-radius: 2px;
-            text-transform: uppercase;
-          }
-          .events-button:hover {
-            background: linear-gradient(to right,#7189b6 0%,#dcdee8 100%);
-            color: #130029;
-          }
-          .events-title-mobile {
-            font-size: 24px;
-          }
-          .events-subtitle-mobile {
-            font-size: 20px;
-          }
-          .bitguild-logo-wrapper {
-            width: 75px;
-          }
-          :global(.events-flex) {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 25% !important;
-          }
-          :global(.events .events-button) {
-            margin-top: 10px;
-          }
-        `}</style>
-        <GameIcon game={{slug: "ether.online"}} width="100px" className="events-flex" />
-        <div className="events-center">
-          <Mobile>
-            <h2 className="events-title events-title-mobile">Ether Online</h2>
-            <h3 className="events-subtitle events-subtitle-mobile">
-              <FormattedMessage id="pages.games.events.pets-giveaway"></FormattedMessage>
-            </h3>
-          </Mobile>
-          <Desktop>
-            <h2 className="events-title">Ether Online</h2>
-            <h3 className="events-subtitle">
-              <FormattedMessage id="pages.games.events.pets-giveaway"></FormattedMessage>
-            </h3>
-          </Desktop>
-          <div>
-            <BGButton className="events-button" onClick={() => Router.push("/events")}>
-              <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
-            </BGButton>
-          </div>
-        </div>
-        <div className="events-flex bitguild-logo-wrapper">
-          <BGIcon src="/static/images/icons/bitguild_logo@1x.png" className="bitguild-logo events-flex" width="80px" />
-        </div>
-      </div>
-    );
-  }
-
   render() {
     return (
       <Grid fluid className="games">
@@ -475,11 +376,6 @@ export default class GameList extends Component {
         <Row>
           <Col>
             {this.presale("bitizens")}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            {this.events()}
           </Col>
         </Row>
         <Row className="announce">
