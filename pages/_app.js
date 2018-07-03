@@ -12,7 +12,7 @@ import ResizeListener from "@/components/resizelistener";
 import MetaMask from "@/components/common/metamask";
 import GlobalStyles from "@/pages/globalstyles";
 import style from "@/shared/constants/style";
-import {APP_INIT, GA_CREATE} from "@/shared/constants/actions";
+import {APP_INIT, CHAT_INIT, GA_CREATE} from "@/shared/constants/actions";
 
 
 if (process.env.NODE_ENV === "production") {
@@ -39,6 +39,7 @@ class BGApp extends App {
 
   componentDidMount() {
     this.props.store.dispatch({type: APP_INIT});
+    this.props.store.dispatch({type: CHAT_INIT});
     this.props.store.dispatch({
       type: GA_CREATE,
       payload: new BGReactGA(process.env.GOOGLE_ANALYTICS_TRACKING_ID),

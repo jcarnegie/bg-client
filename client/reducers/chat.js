@@ -1,6 +1,6 @@
 import {append} from "ramda";
 import {
-  CHAT_INIT,
+  SENDBIRD_INIT,
   CHAT_LOAD_MESSAGES,
   CHAT_MESSAGE_RECEIVED,
   CHAT_MESSAGE_SENT,
@@ -19,7 +19,7 @@ const chat = {
 
 export default function chatReducer(state = chat, action) {
   switch (action.type) {
-    case CHAT_INIT:
+    case SENDBIRD_INIT:
       return {
         ...state,
         sb: action.payload.sb,

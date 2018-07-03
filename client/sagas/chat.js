@@ -1,4 +1,5 @@
-import {put, select, takeEvery, takeLatest, call} from "redux-saga/effects";
+import {put, select, takeEvery, takeLatest} from "redux-saga/effects";
+import {delay} from "redux-saga";
 import xssFilters from "xss-filters";
 import * as log from "loglevel";
 import {
@@ -7,24 +8,27 @@ import {
 } from "ramda";
 
 import {channels as chatChannels,
-  init as chatInit,
   messages as chatMessages,
   sendMessage,
   channelNameForLocale,
   createChannelWithName,
+  chatInit,
   findChannelByName,
   setChannelByName,
 } from "@/client/utils/chat";
+
 import {
+  SENDBIRD_INIT,
   CHAT_INIT,
-  USER_ERROR,
   CHAT_LOAD_MESSAGES,
   CHAT_MESSAGE_SEND,
   CHAT_MESSAGE_SENT,
   CHAT_SET_CHANNEL,
-  USER_CHANGED,
   USER_SHOW_REGISTER_WORKFLOW,
 } from "@/shared/constants/actions";
+
+const CHAT_THROTTLE = 1000;
+
 
 function * sendChatMessage(action) {
   try {
@@ -64,30 +68,20 @@ function * sendChatMessage(action) {
 }
 
 function * initChat(action) {
-  let sb;
-
+  yield delay(CHAT_THROTTLE);
   try {
+    let sb;
+    let sbUser;
     let user = yield select(state => state.user);
-
-    if (user.isLoading) {
-      log.info("Chat will wait for user API call to resolve.");
-      return;
-    }
-
-    let chat = yield select(state => state.chat);
     let account = yield select(state => state.account);
     const wallet = pathOr("0x0anonymous", ["wallet"], account);
     const nickName = pathOr("Guest", ["data", "nickName"], user);
 
-    log.info(`Disconnecting chat for user: ${nickName}, wallet: ${wallet}.`);
-    yield chat.sb && chat.sb.disconnect();
-
-    log.info(`Initializing chat for user: ${nickName}, wallet: ${wallet}.`);
-    [sb, user] = yield call(chatInit, wallet, nickName);
+    [sb, sbUser] = yield chatInit(wallet, nickName);
 
     yield put({
-      type: CHAT_INIT,
-      payload: {sb, user},
+      type: SENDBIRD_INIT,
+      payload: {sb, user: sbUser},
     });
 
     const channels = yield chatChannels(sb);
@@ -124,7 +118,5 @@ function * initChat(action) {
 
 export default function * chatSaga() {
   yield takeEvery(CHAT_MESSAGE_SEND, sendChatMessage);
-  yield takeEvery("APP_INIT", initChat);
-  yield takeLatest(USER_CHANGED, initChat);
-  yield takeLatest(USER_ERROR, initChat);
+  yield takeLatest(CHAT_INIT, initChat);
 }

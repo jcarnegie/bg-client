@@ -6,12 +6,12 @@ import {dissoc, filter, isEmpty, map, merge, path, pickAll, prop, propEq} from "
 
 import {client} from "@/client/utils/apollo";
 import {
-  APP_INIT,
   ACCOUNT_CHANGED,
   ACCOUNT_RESET,
   BALANCE_ETH_CHANGED,
   BALANCE_PLAT_CHANGED,
   CREATE_USER,
+  CHAT_INIT,
   PRESALE_TRANSACTIONS_CHANGED,
   GAMES_ERROR,
   INVENTORY_ITEMS_ERROR,
@@ -122,6 +122,8 @@ function * fetchUser() {
       type: MESSAGE_ADD,
       payload: error,
     });
+  } finally {
+    yield put({type: CHAT_INIT});
   }
 }
 

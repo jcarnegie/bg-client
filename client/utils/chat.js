@@ -1,6 +1,6 @@
 import Promise from "bluebird";
+import * as log from "loglevel";
 import SendBird from "sendbird";
-import {defaultLanguage} from "@/shared/constants/language";
 import {
   find,
   head,
@@ -12,6 +12,7 @@ import {
   split,
   toUpper,
 } from "ramda";
+import {defaultLanguage} from "@/shared/constants/language";
 
 
 /**
@@ -33,12 +34,15 @@ export const firstNameLastInitial = name => {
 
 export const chatNickName = nickname => firstNameLastInitial(nickname);
 
-export const init = async(wallet, nickname) => {
+export async function chatInit(wallet, nickName) {
+  log.info(`Initializing SendBird for user: ${nickName}, wallet: ${wallet}.`);
   let sb = new SendBird({appId: process.env.SENDBIRD_APP_ID});
-  let user = await sbp(cb => sb.connect(wallet, cb));
-  user = await sbp(cb => sb.updateCurrentUserInfo(chatNickName(nickname), null, cb));
-  return [sb, user];
-};
+  log.info(`Connecting chat for user: ${nickName}, wallet: ${wallet}.`);
+  let sbUser = await sbp(cb => sb.connect(wallet, cb));
+  log.info(`Updating user: ${nickName}, wallet: ${wallet}.`);
+  sbUser = await sbp(cb => sb.updateCurrentUserInfo(chatNickName(nickName), null, cb));
+  return [sb, sbUser];
+}
 
 export const channels = async sb => {
   const query = sb.OpenChannel.createOpenChannelListQuery();

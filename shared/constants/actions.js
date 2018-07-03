@@ -54,6 +54,7 @@ export const RATE_CHANGED = "RATE_CHANGED";
 export const RATE_ERROR = "RATE_ERROR";
 export const RATE_LOADING = "RATE_LOADING";
 
+export const SENDBIRD_INIT = "SENDBIRD_INIT";
 export const CHAT_INIT = "CHAT_INIT";
 export const CHAT_LOAD_MESSAGES = "CHAT_LOAD_MESSAGES";
 export const CHAT_MESSAGE_RECEIVED = "CHAT_MESSAGE_RECEIVED";
