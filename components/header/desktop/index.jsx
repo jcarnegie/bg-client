@@ -12,6 +12,7 @@ import ActiveLink from "@/components/activelink";
 import Language from "@/components/language";
 import Balance from "@/components/balance";
 import User from "@/components/user";
+import FeatureFlag from "@/components/featureflag";
 
 
 @injectIntl
@@ -80,15 +81,17 @@ export default class Header extends Component {
         >
           <span className="navigation-link"><FormattedMessage id="components.menu.inventory" /></span>
         </ActiveLink>
-        <ActiveLink
-          href="/marketplace"
-          activeStyle={{ boxShadow: "inset 0px -4px 0px 0px #ffd57d" }}
-          style={{ 
-           textDecoration: "none",
-           marginLeft: "20px" }}
-        >
-          <span className="navigation-link"><FormattedMessage id="components.menu.marketplace" /></span>
-        </ActiveLink>
+        <FeatureFlag flag="marketplace">
+          <ActiveLink
+            href="/marketplace"
+            activeStyle={{ boxShadow: "inset 0px -4px 0px 0px #ffd57d" }}
+            style={{ 
+            textDecoration: "none",
+            marginLeft: "20px" }}
+          >
+            <span className="navigation-link"><FormattedMessage id="components.menu.marketplace" /></span>
+          </ActiveLink>
+        </FeatureFlag>
       </div>
     );
   }
