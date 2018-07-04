@@ -5,14 +5,13 @@ import withRedux from "next-redux-wrapper";
 import withReduxSaga from "next-redux-saga";
 import * as log from "loglevel";
 
-import BGReactGA from "@/client/utils/react-ga";
 import configureStore from "@/client/utils/store";
 
 import ResizeListener from "@/components/resizelistener";
-import MetaMask from "@/components/common/metamask";
+import Web3Modals from "@/components/popups/Web3Modals";
 import GlobalStyles from "@/pages/globalstyles";
 import style from "@/shared/constants/style";
-import {APP_INIT, CHAT_INIT, GA_CREATE} from "@/shared/constants/actions";
+import {APP_INIT} from "@/shared/constants/actions";
 
 
 if (process.env.NODE_ENV === "production") {
@@ -31,26 +30,21 @@ class BGApp extends App {
     }
 
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
-    const metaMaskProps = MetaMask.WrappedComponent.getInitialProps(ctx);
+    const web3ModalsProps = Web3Modals.WrappedComponent.getInitialProps(ctx);
     const locals = isServer ? ctx.res.locals : {};
 
-    return {pageProps, metaMaskProps, locals};
+    return {pageProps, web3ModalsProps, locals};
   }
 
   componentDidMount() {
     this.props.store.dispatch({type: APP_INIT});
-    this.props.store.dispatch({type: CHAT_INIT});
-    this.props.store.dispatch({
-      type: GA_CREATE,
-      payload: new BGReactGA(process.env.GOOGLE_ANALYTICS_TRACKING_ID),
-    });
   }
 
   render() {
     const {
       Component,
       pageProps,
-      metaMaskProps,
+      web3ModalsProps,
       store,
       locals,
     } = this.props;
@@ -61,7 +55,7 @@ class BGApp extends App {
         <Provider store={store}>
           <>
             <ResizeListener />
-            <MetaMask {...metaMaskProps} />
+            <Web3Modals {...web3ModalsProps} />
             <Component {...pageProps} {...locals} />
           </>
         </Provider>

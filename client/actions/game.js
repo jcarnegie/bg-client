@@ -53,7 +53,7 @@ export function * fetchGame(action) {
 }
 
 
-export function * fetchGames() {
+export function * getGames() {
   try {
     yield put({
       type: GAMES_LOADING,

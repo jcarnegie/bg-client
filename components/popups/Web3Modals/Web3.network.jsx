@@ -6,7 +6,7 @@ import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
 import BGModal from "@/components/modal";
 
 
-export default class MetaMaskLoginPopup extends Component {
+export default class Web3NetworkPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
     onHide: PropTypes.func,
@@ -16,14 +16,14 @@ export default class MetaMaskLoginPopup extends Component {
     const {show, onHide} = this.props;
 
     return (
-      <BGModal show={show} className="metamask-login" onHide={onHide}>
+      <BGModal show={show} className="metamask-network" onHide={onHide}>
         <Modal.Body>
           <div>
-            <h2><FormattedMessage id="modals.metamask-login.title" /></h2>
+            <h2><FormattedMessage id="modals.metamask-network.title" /></h2>
             <br />
-            <p><FormattedMessage id="modals.metamask-login.p1" /></p>
+            <p><FormattedMessage id="modals.metamask-network.p1" /></p>
             <p className="note">
-              <FormattedHTMLMessage id="modals.metamask-login.faq" />
+              <FormattedHTMLMessage id="modals.metamask-network.faq" />
             </p>
           </div>
         </Modal.Body>

@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import * as log from "loglevel";
 import PropTypes from "prop-types";
 import {Button, Form, Glyphicon, Modal, Grid, Row, Col} from "react-bootstrap";
 import {connect} from "react-redux";
@@ -7,9 +6,12 @@ import {FormattedMessage} from "react-intl";
 
 import BGModal from "@/components/modal";
 import withFormHelper from "@/components/inputs/withFormHelper";
-import topupABI from "@/shared/contracts/topup";
+
+import {
+  getTopupContract,
+} from "@/shared/utils/network";
+
 import {MESSAGE_ADD} from "@/shared/constants/actions";
-import networkConfig from "@/client/utils/network";
 import InputGroup from "@/components/inputs/input.group";
 
 
@@ -81,8 +83,7 @@ export default class ConvertPopup extends Component {
   onSubmit(e) {
     e.preventDefault();
     const {network, user, gas, dispatch, formData} = this.props;
-    const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.data.id].topup);
-    contract.buyTokens({
+    getTopupContract(network).buyTokens({
         value: window.web3.toWei(precisionRound(formData.eth, 6), "ether"),
         from: user.data.wallet,
         gas: window.web3.toHex(15e4),

@@ -1,4 +1,10 @@
-import {ACCOUNT_CHANGED, ACCOUNT_ERROR, ACCOUNT_RESET} from "@/shared/constants/actions";
+import * as log from "loglevel";
+import {
+  ACCOUNT_ERROR,
+  ACCOUNT_RESET,
+  ACCOUNT_LOGGED_IN,
+  ACCOUNT_LOGGED_OUT,
+} from "@/shared/constants/actions";
 
 const account = {
   success: false,
@@ -7,9 +13,17 @@ const account = {
 
 export default function accountReducer(state = account, action) {
   switch (action.type) {
-    case ACCOUNT_CHANGED:
+    case ACCOUNT_LOGGED_IN:
+      const {wallet} = action.payload;
+      log.info(`Account is logged in with wallet: ${wallet}`);
       return Object.assign({}, state, {
-        wallet: action.payload.wallet,
+        wallet,
+        success: true,
+      });
+    case ACCOUNT_LOGGED_OUT:
+      log.info("Account is logged out.");
+      return Object.assign({}, state, {
+        wallet: null,
         success: true,
       });
     case ACCOUNT_ERROR:
@@ -18,7 +32,9 @@ export default function accountReducer(state = account, action) {
         success: false,
       });
     case ACCOUNT_RESET:
-      return Object.assign({}, account);
+      return Object.assign({}, account, {
+        success: true, /* Must be true, because bootstrapping logic relies on its state, and state is still success */
+      });
     default:
       return state;
   }

@@ -9,19 +9,19 @@ const rate = {
 export default function rateReducer(state = rate, action) {
   switch (action.type) {
     case RATE_LOADING:
-      return Object.assign({}, rate, {
+      return Object.assign({}, state, {
         data: null,
         isLoading: true,
         success: false,
       });
     case RATE_CHANGED:
-      return Object.assign({}, rate, {
+      return Object.assign({}, state, {
         data: action.payload,
         isLoading: false,
         success: true,
       });
     case RATE_ERROR:
-      return Object.assign({}, rate, {
+      return Object.assign({}, state, {
         data: null,
         isLoading: false,
         success: false,

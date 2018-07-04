@@ -1,7 +1,12 @@
-import {put, select, takeEvery, takeLatest} from "redux-saga/effects";
-import {delay} from "redux-saga";
+import {
+  put,
+  select,
+  takeEvery,
+} from "redux-saga/effects";
+
 import xssFilters from "xss-filters";
 import * as log from "loglevel";
+
 import {
   isEmpty,
   pathOr,
@@ -18,16 +23,15 @@ import {channels as chatChannels,
 } from "@/client/utils/chat";
 
 import {
-  SENDBIRD_INIT,
-  CHAT_INIT,
+  ACCOUNT_LOGGED_OUT,
   CHAT_LOAD_MESSAGES,
   CHAT_MESSAGE_SEND,
   CHAT_MESSAGE_SENT,
   CHAT_SET_CHANNEL,
+  SENDBIRD_INIT,
+  USER_CHANGED,
   USER_SHOW_REGISTER_WORKFLOW,
 } from "@/shared/constants/actions";
-
-const CHAT_THROTTLE = 1000;
 
 
 function * sendChatMessage(action) {
@@ -68,7 +72,6 @@ function * sendChatMessage(action) {
 }
 
 function * initChat(action) {
-  yield delay(CHAT_THROTTLE);
   try {
     let sb;
     let sbUser;
@@ -118,5 +121,6 @@ function * initChat(action) {
 
 export default function * chatSaga() {
   yield takeEvery(CHAT_MESSAGE_SEND, sendChatMessage);
-  yield takeLatest(CHAT_INIT, initChat);
+  yield takeEvery(USER_CHANGED, initChat);
+  yield takeEvery(ACCOUNT_LOGGED_OUT, initChat);
 }

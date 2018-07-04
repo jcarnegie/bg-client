@@ -17,20 +17,11 @@ class ResizeListener extends Component {
 
   resize() {
     if (!window) return;
-
-    this.props.dispatch({
-      type: APP_RESIZE,
-      payload: {
-        innerWidth: window.innerWidth,
-        innerHeight: window.innerHeight,
-      },
-    });
+    this.props.dispatch({type: APP_RESIZE});
   }
 
   componentDidMount() {
     window.addEventListener("resize", this.resize);
-    /* Fire once on mount */
-    this.resize();
   }
 
   componentWillUnmount() {

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import BGModal from "@/components/modal";
 
-export default class MetaMaskInstallPopup extends Component {
+export default class Web3InstallPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
     onHide: PropTypes.func,

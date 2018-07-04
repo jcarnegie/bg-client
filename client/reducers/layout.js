@@ -24,8 +24,8 @@ export default function itemsReducer(state = layout, action) {
         showConvertModal: action.payload,
       });
     case APP_RESIZE:
-      const {innerWidth} = action.payload;
-      const {innerHeight} = action.payload;
+      const {innerWidth} = window;
+      const {innerHeight} = window;
       let mobile = false;
       let desktop = false;
 

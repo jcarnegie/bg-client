@@ -1,5 +1,5 @@
 import {takeEvery} from "redux-saga/effects";
-import {fetchGame, fetchGames} from "@/client/actions/game";
+import {fetchGame, getGames} from "@/client/actions/game";
 import {
   GAME_REQUEST,
   GAMES_REQUEST,
@@ -7,5 +7,5 @@ import {
 
 export default function * gameSaga() {
   yield takeEvery(GAME_REQUEST, fetchGame);
-  yield takeEvery(GAMES_REQUEST, fetchGames);
+  yield takeEvery(GAMES_REQUEST, getGames);
 }

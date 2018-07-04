@@ -6,18 +6,15 @@ import {dissoc, filter, isEmpty, map, merge, path, pickAll, prop, propEq} from "
 
 import {client} from "@/client/utils/apollo";
 import {
-  ACCOUNT_CHANGED,
+  ACCOUNT_LOGGED_IN,
+  ACCOUNT_LOGGED_OUT,
   ACCOUNT_RESET,
-  BALANCE_ETH_CHANGED,
-  BALANCE_PLAT_CHANGED,
   CREATE_USER,
-  CHAT_INIT,
   PRESALE_TRANSACTIONS_CHANGED,
-  GAMES_ERROR,
-  INVENTORY_ITEMS_ERROR,
-  MESSAGE_ADD,
+  BALANCE_ETH_RESET,
+  BALANCE_PLAT_RESET,
   MESSAGE_ADD_ALL,
-  SIGN_OUT_USER,
+  ACCOUNT_SIGN_OUT,
   UPDATE_USER,
   USER_CHANGED,
   USER_ERROR,
@@ -58,32 +55,9 @@ function * listUserPresaleTickets() {
 
 function * fetchUser() {
   try {
-    yield put({
-      type: USER_LOADING,
-    });
+    yield put({type: USER_LOADING});
+
     const account = yield select(state => state.account);
-
-    if (!account.wallet) {
-      yield put({
-        type: USER_ERROR,
-      });
-      yield put({
-        type: BALANCE_ETH_CHANGED,
-        payload: 0,
-      });
-      yield put({
-        type: BALANCE_PLAT_CHANGED,
-        payload: 0,
-      });
-      yield put({
-        type: INVENTORY_ITEMS_ERROR,
-      });
-      yield put({
-        type: GAMES_ERROR,
-      });
-      return;
-    }
-
     const query = gql`
       query viewUserByWallet($wallet: String!) {
         viewUserByWallet(wallet: $wallet) {
@@ -95,6 +69,7 @@ function * fetchUser() {
     const variables = {wallet: account.wallet};
     const result = yield client.query({query, variables});
     const user = path(["data", "viewUserByWallet"], result);
+
     if (user) {
       yield put({
         type: USER_CHANGED,
@@ -102,36 +77,17 @@ function * fetchUser() {
       });
       yield put(updateIntl(localization[user.language]));
     } else {
-      yield put({
-        type: USER_ERROR,
-      });
-      yield put({
-        type: BALANCE_ETH_CHANGED,
-        payload: 0,
-      });
-      yield put({
-        type: BALANCE_PLAT_CHANGED,
-        payload: 0,
-      });
+      throw ("User object returned was falsy: ", user);
     }
   } catch (error) {
-    yield put({
-      type: USER_ERROR,
-    });
-    yield put({
-      type: MESSAGE_ADD,
-      payload: error,
-    });
-  } finally {
-    yield put({type: CHAT_INIT});
+    yield put({type: USER_ERROR});
   }
 }
 
 function * createUser(action) {
   try {
-    yield put({
-      type: USER_LOADING,
-    });
+    yield put({type: USER_LOADING});
+
     const mutation = gql`
       mutation createUser($payload: UserCreatePayload!) {
         createUser(payload: $payload) {
@@ -150,11 +106,11 @@ function * createUser(action) {
       payload: user.data.createUser,
     });
   } catch (error) {
-    yield put({
-      type: USER_ERROR,
-    });
+    yield put({type: USER_ERROR});
+
     const dupErrors = filter(propEq("name", "UniqueConstraintError"), error.graphQLErrors);
     const dups = map(prop("data"), dupErrors);
+
     if (!isEmpty(dups)) {
       yield put({
         type: VALIDATION_ADD_ALL,
@@ -203,27 +159,18 @@ function * updateUser(action) {
   }
 }
 
-function * signOutUser(action) {
-  yield put({
-    type: USER_RESET,
-  });
-  yield put({
-    type: ACCOUNT_RESET,
-  });
-  yield put({
-    type: BALANCE_ETH_CHANGED,
-    payload: 0,
-  });
-  yield put({
-    type: BALANCE_PLAT_CHANGED,
-    payload: 0,
-  });
+function * signOutAccount(action) {
+  yield put({type: USER_RESET});
+  yield put({type: ACCOUNT_RESET});
+  yield put({type: BALANCE_ETH_RESET});
+  yield put({type: BALANCE_PLAT_RESET});
 }
 
 export default function * userSaga() {
-  yield takeEvery(ACCOUNT_CHANGED, fetchUser);
+  yield takeEvery(ACCOUNT_LOGGED_IN, fetchUser);
   yield takeEvery(CREATE_USER, createUser);
   yield takeEvery(UPDATE_USER, updateUser);
-  yield takeEvery(SIGN_OUT_USER, signOutUser);
+  yield takeEvery(ACCOUNT_SIGN_OUT, signOutAccount);
+  yield takeEvery(ACCOUNT_LOGGED_OUT, signOutAccount);
   yield takeEvery(USER_CHANGED, listUserPresaleTickets);
 }

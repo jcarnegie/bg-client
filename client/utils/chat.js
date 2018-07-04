@@ -35,11 +35,9 @@ export const firstNameLastInitial = name => {
 export const chatNickName = nickname => firstNameLastInitial(nickname);
 
 export async function chatInit(wallet, nickName) {
-  log.info(`Initializing SendBird for user: ${nickName}, wallet: ${wallet}.`);
+  log.info(`Initializing chat for user: ${nickName}, wallet: ${wallet}.`);
   let sb = new SendBird({appId: process.env.SENDBIRD_APP_ID});
-  log.info(`Connecting chat for user: ${nickName}, wallet: ${wallet}.`);
   let sbUser = await sbp(cb => sb.connect(wallet, cb));
-  log.info(`Updating user: ${nickName}, wallet: ${wallet}.`);
   sbUser = await sbp(cb => sb.updateCurrentUserInfo(chatNickName(nickName), null, cb));
   return [sb, sbUser];
 }

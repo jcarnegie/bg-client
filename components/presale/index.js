@@ -7,11 +7,12 @@ import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 import {connect} from "react-redux";
 import MDCheck from "react-icons/lib/md/check";
 
-import tokenABI from "@/shared/contracts/token";
-import bitizensIGOABI from "@/shared/contracts/bitizensIGOABI";
-
 import ScaleLoader from "react-spinners/dist/spinners/ScaleLoader";
-import networkConfig from "@/client/utils/network";
+import {
+  getTokenContract,
+  getBitizensIGOContract,
+  getBitizensIGOContractAddress,
+} from "@/shared/utils/network";
 
 import {Mobile, Desktop} from "@/components/responsive";
 import ItemSetDetailsCard from "@/components/ItemSetDetailsCard";
@@ -164,8 +165,7 @@ class Presale extends Component {
 
   getQtyOfItemRemaining(setId) {
     if (!this.props.network.data || !this.props.network.data.id) return;
-    const IGOContract = window.web3.eth.contract(bitizensIGOABI).at(networkConfig[this.props.network.data.id].bitizensIGO);
-
+    const IGOContract = getBitizensIGOContract(this.props.network);
 
     // Trigger approval for transaction
     IGOContract.getQty(setId, (err, qty) => {
@@ -193,8 +193,6 @@ class Presale extends Component {
       return;
     }
 
-    // Configure contract for BitGuildToken
-    const BitGuildToken = window.web3.eth.contract(tokenABI).at(networkConfig[this.props.network.data.id].token);
     const priceForUser = (set.price - PLAT_DISCOUNT);
     const priceForUserBigNumber = priceForUser * 1e18;
 
@@ -211,7 +209,7 @@ class Presale extends Component {
     }
 
     // Trigger approval for transaction
-    BitGuildToken.approveAndCall(networkConfig[this.props.network.data.id].bitizensIGO, priceForUserBigNumber, set.tokenId, (err, tx) => {
+    getTokenContract(this.props.network).approveAndCall(getBitizensIGOContractAddress(this.props.network), priceForUserBigNumber, set.tokenId, (err, tx) => {
       if (err) {
         log.error(err);
       } else {

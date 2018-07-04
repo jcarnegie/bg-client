@@ -13,13 +13,13 @@ import {
   INVENTORY_ITEMS_LOADING,
   INVENTORY_ITEMS_REQUEST,
   MESSAGE_ADD,
-  NEW_BLOCK,
+  NETWORK_NEW_BLOCK,
   USER_CHANGED,
   GIFT_ADD_SUCCESS,
 } from "@/shared/constants/actions";
 import {readFromQueryString} from "@/client/utils/location";
 import {client} from "@/client/utils/apollo";
-import {fetchGames} from "@/client/actions/game";
+import {getGames} from "@/client/actions/game";
 
 function * getItems() {
   try {
@@ -90,7 +90,7 @@ export default function * inventorySaga() {
   yield takeEvery(USER_CHANGED, getItems);
   yield takeEvery(INTL_UPDATE, getItems);
   yield takeEvery(GAMES_REQUEST, getItems);
-  yield takeEvery(INVENTORY_ITEMS_REQUEST, fetchGames);
-  yield takeEvery(NEW_BLOCK, checkGifts);
+  yield takeEvery(INVENTORY_ITEMS_REQUEST, getGames);
+  yield takeEvery(NETWORK_NEW_BLOCK, checkGifts);
   yield takeEvery(GIFT_ADD_SUCCESS, getItems);
 }
