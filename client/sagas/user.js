@@ -55,6 +55,7 @@ function * listUserPresaleTickets() {
   }
 }
 
+
 function * fetchUser() {
   try {
     yield put({
@@ -82,6 +83,7 @@ function * fetchUser() {
       });
       return;
     }
+
     const query = gql`
       query viewUserByWallet($wallet: String!) {
         viewUserByWallet(wallet: $wallet) {
@@ -89,6 +91,7 @@ function * fetchUser() {
         }
       }
     `;
+
     const variables = {wallet: account.wallet};
     const result = yield client.query({query, variables});
     const user = path(["data", "viewUserByWallet"], result);

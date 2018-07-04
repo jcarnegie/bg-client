@@ -57,4 +57,3 @@ services:
         depends_on:
             - postgres
             - api
-            - gql
