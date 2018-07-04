@@ -1,5 +1,10 @@
 .DS_Store
 .idea
+package-lock.json
 node_modules
 build
 tmp
+.next/
+*.log
+tmp
+bundle-analyzer

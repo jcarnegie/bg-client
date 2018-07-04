@@ -9,7 +9,6 @@
       "pt": "Português",
       "es": "Español",
       "ru": "Русский"
-
     },
     "menu": {
       "inventory": "Mis Cosas",
@@ -188,7 +187,7 @@
       "banner": {
         "play": "Jugar"
       },
-      "airdrop": {
+      "events": {
         "countdown": "Airdrop en",
         "days": "Dias",
         "hours": "Horas",
@@ -196,7 +195,8 @@
         "seconds": "Segundos",
         "giveaway": "Ether Online - Regalo de Artículos Gratuitos",
         "giveaway-over": "Ether Online - Ganadores de los Regalo de Artículos Gratuitos",
-        "learn-more": "Aprende más"
+        "learn-more": "Aprende más",
+        "pets-giveaway": "Regalo de Mascotas"
       },
       "announce": {
         "coming-soon": "Próximamente",
@@ -208,13 +208,33 @@
         "discord": "DISCORD"
       }
     },
-    "airdrop": {
-      "title": "<strong> ¡El sorteo terminó!</strong>",
-      "p1": "¡Gracias a todos los que participaron en el evento de regalo Ether Online BitGuild!",
-      "p2": "¡Una felicitación especial para los ganadores del gran premio! Si aún no lo has hecho, revisa tu inventario en el juego ahora. ¡Si ganaste, verás 51 cofres de objetos brillantes esperando a que abras, revelando tu increíble loot!",
-      "p3": "Si no ganaste, ¡lo sentimos!. Pero no se preocupe, ¡tendrá muchas oportunidades de obtener material gratis en BitGuild.com en el futuro! Manténgase en sintonía con nuestro <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a> y el <a href='https://medium.com/the-notice-board'>Blog oficial</a> para no perderse nunca el ritmo.",
-      "p4": "Mientras tanto, te animamos a probar nuestro último título jugable ______, ¡o simplemente mira a lo que está disponible en BitGuild para ti!",
-      "p5": "¡Nos vemos en línea!"
+    "events": {
+      "title": "Hola, compañeros de Guild",
+      "p1": "¡Bienvenidos a <strong>la oportunidad final de ganar una mascota en Ether Online <strong>fuera de la comercialización del mercado!",
+      "p2": "¡Tenemos algunas mascotas para regalar. Estas mascotas son únicas en el sentido de que <strong> aumentan las estadísticas de tus personajes de Ether Online un %<strong> fijo, ¡el único tipo de elemento en el juego que puede hacerlo! De más está decir que los jugadores que tengan una de estas raras mascotas tienen una ventaja enorme.",
+      "p3": "Para participar en cualquiera de los eventos a continuación, primero debes registrar tu cuenta MetaMask en www.bitguild.com y tener un <strong> mínimo de 1000 PLAT<strong> en tu billetera.",
+      "p4": "¡Ahora, para descubrir cómo tener la suerte de ganarte uno de estos lindos amigos animales, sigue leyendo!",
+      "p5": "<strong>Warbear:<strong> ¡Concurso en la comunidad Discord! ¡Entra en el Guild Hall y conoce a tus compañeros de Guild, interactúa con el equipo y mantente al día con las últimas noticias de BitGuild!",
+      "l1": "<strong> Únete al servidor oficial Discord de BitGuild y llega al nivel 3+<strong>. ¡Gana experiencia y sube de nivel participando en conversaciones con la comunidad! Te pedimos que hagas comentarios constructivos y no envíes mensajes basura.**",
+      "l2": "<strong>Completa este formulario <strong>para confirmar tu participación en el sorteo una vez que cumplas con los criterios.",
+      "l3": "¡El afortunado ganador recibirá al esquivo <strong>Warbear<strong> y <strong>otras 10 personas ganarán 20 cofres de elementos cada una!<strong>",
+      "l4": "El ganador será seleccionado al azar entre los usuarios que cumplan con los criterios. ¡Te enviaremos un correo electrónico, así que <strong> presta atención a tu bandeja de entrada alrededor del 28 de junio de 2018!*<strong>",
+      "p6": "<strong> Royal Eagle:<strong> ¡Concurso artístico para los fanáticos! ¡Extiende tus alas de artista creando una obra de arte sobre el juego! La obra puede tomar la forma de una imagen estática, por ejemplo, un fondo de pantalla, o un .gif animado.",
+      "l5": "¡Te invitamos a enviarnos tu contenido! Queremos ver lo que puede hacer nuestra comunidad cuando se plantea un desafío creativo.",
+      "l6": "Las imágenes deben estar <strong>relacionadas con temas de BitGuild o <strong>Ether Online y no ser ofensivas. Teniendo en cuenta eso, puedes hacer lo que quieras. Te damos puntos extra por el esfuerzo y la originalidad.",
+      "l7": "Una vez que hayas terminado tu <strong>obra de arte, completa <strong>este formulario para enviarnos tu obra y confirmar tu participación.",
+      "l8": "El 2 de julio de 2018, BitGuild seleccionará a los finalistas, ¡y todos tendrán la oportunidad de votar por su preferido en el Servidor oficial Discord de BitGuild! ¡El ganador podrá decir con orgullo que es el nuevo propietario del <strong>Royal Eagle <strong>y <strong>5 subcampeones podrán ganar 50 cofres de elementos cada uno!<strong>",
+      "l9": "Los ganadores serán notificados por correo electrónico. ¡No te olvides de revisar tu bandeja de entrada!*",
+      "p7": "<strong>Raging Tiger:<strong> ¡BitGuild en la Web! ¡Ayúdanos a correr la voz y expandir la alianza compartiendo nuestro contenido en diferentes plataformas!",
+      "l10": "Haz clic aquí y <strong> sigue las instrucciones para poder ganar el Raging Tiger.<strong> Cuantas más tareas hagas, más probabilidades tendrás de ganar; <strong> ¡además, 50 participantes elegidos al azar recibirán 5 cofres de elementos cada uno!<strong>",
+      "l11": "¡Revisa tu correo electrónico el 25 de junio de 2018 para ver si has ganado!",
+      "p8": "*Si un usuario no responde nuestro mensaje dentro de las 24 horas, BitGuild se reserva el derecho de seleccionar otro ganador al azar.",
+      "p9": "la participación enviada se considera mensaje basura, demuestra poco esfuerzo, es ofensiva o tiene contenido duplicado. ¡Juega bonito!"
+    },
+    "presale": {
+      "bitizens": {
+        "title": "Bitizens Presale"
+      }
     }
   },
   "chat": {

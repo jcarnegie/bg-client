@@ -7,5 +7,15 @@ export const enabledLanguages = [
   "ja",
   "fr",
   "es",
-  "ru"
+  "ru",
+];
+
+export const enabledLanguagesNativeText = [
+  "English",
+  "中文",
+  "Português",
+  "日本語",
+  "Français",
+  "Español",
+  "Ру́сский",
 ];

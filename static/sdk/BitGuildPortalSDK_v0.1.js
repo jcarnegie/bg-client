@@ -28,7 +28,7 @@
 
   function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-  var prefix = "https://bitguild.com/api/";
+  var prefix = "https://www.bitguild.com/api/";
 
   var _default = new (
     /*#__PURE__*/
@@ -142,34 +142,28 @@
         key: "getUsersByAddress",
         value: function getUsersByAddress() {
           var address = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-          return fetch("".concat(prefix, "users?").concat(address.map(function (address) {
-            return "address=".concat(address);
-          }).join("&")), {
-            method: "GET",
+          var query = "{ usersByWallet(wallets:".concat(JSON.stringify(address), ") { id wallet nickName language } }");
+          return fetch(prefix, {
+            method: "POST",
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json; charset=utf-8"
-            }
+            },
+            body: JSON.stringify({
+              query: query
+            })
           }).then(function (response) {
             return response.json().then(function (json) {
+              if (!response.ok) {
+                return Promise.reject(json.errors);
+              }
+
               return {
-                json: json,
-                response: response
+                list: json.data.usersByWallet.reduce(function (memo, item) {
+                  return _extends({}, memo, _defineProperty({}, item.wallet, item));
+                }, {})
               };
             });
-          }).then(function (_ref4) {
-            var json = _ref4.json,
-              response = _ref4.response;
-
-            if (!response.ok) {
-              return Promise.reject(json.errors);
-            }
-
-            return json.list;
-          }).then(function (list) {
-            return list.reduce(function (memo, item) {
-              return _extends({}, memo, _defineProperty({}, item.wallet, item));
-            }, {});
           });
         }
       }]);

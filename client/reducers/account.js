@@ -1,9 +1,8 @@
-import {ACCOUNT_CHANGED, ACCOUNT_ERROR} from "../../shared/constants/actions";
+import {ACCOUNT_CHANGED, ACCOUNT_ERROR, ACCOUNT_RESET} from "@/shared/constants/actions";
 
 const account = {
-  isLoading: true, // TODO should be false, but popup is showing in the beginning
   success: false,
-  wallet: null
+  wallet: null,
 };
 
 export default function accountReducer(state = account, action) {
@@ -11,15 +10,15 @@ export default function accountReducer(state = account, action) {
     case ACCOUNT_CHANGED:
       return Object.assign({}, state, {
         wallet: action.payload.wallet,
-        isLoading: false,
-        success: true
+        success: true,
       });
     case ACCOUNT_ERROR:
       return Object.assign({}, state, {
         wallet: null,
-        isLoading: false,
-        success: false
+        success: false,
       });
+    case ACCOUNT_RESET:
+      return Object.assign({}, account);
     default:
       return state;
   }

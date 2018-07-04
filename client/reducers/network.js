@@ -3,7 +3,7 @@ import {NETWORK_CHANGED, NETWORK_ERROR, NETWORK_LOADING} from "../../shared/cons
 const network = {
   isLoading: false,
   success: false,
-  data: null
+  data: null,
 };
 
 export default function rateReducer(state = network, action) {
@@ -12,19 +12,19 @@ export default function rateReducer(state = network, action) {
       return Object.assign({}, network, {
         data: null,
         isLoading: true,
-        success: false
+        success: false,
       });
     case NETWORK_CHANGED:
       return Object.assign({}, network, {
         data: action.payload,
         isLoading: false,
-        success: true
+        success: true,
       });
     case NETWORK_ERROR:
       return Object.assign({}, network, {
         data: null,
         isLoading: false,
-        success: false
+        success: false,
       });
     default:
       return state;

@@ -1,6 +1,6 @@
 import Promise from "bluebird";
+import * as log from "loglevel";
 import SendBird from "sendbird";
-import {defaultLanguage} from "../../shared/constants/language";
 import {
   find,
   head,
@@ -10,11 +10,10 @@ import {
   propEq,
   reverse,
   split,
-  toUpper
+  toUpper,
 } from "ramda";
+import {defaultLanguage} from "@/shared/constants/language";
 
-export let _sb = null;
-export let _user = null;
 
 /**
  * Simple utility function to promisify SendBird calls
@@ -35,27 +34,30 @@ export const firstNameLastInitial = name => {
 
 export const chatNickName = nickname => firstNameLastInitial(nickname);
 
-export const init = async(wallet, nickname) => {
-  _sb = new SendBird({appId: "BB1E0777-B8CE-44DF-BA37-63EBA2E858F1"});
-  _user = await sbp(cb => _sb.connect(wallet, cb));
-  _user = await sbp(cb => _sb.updateCurrentUserInfo(chatNickName(nickname), null, cb));
-  return [_sb, _user];
-};
+export async function chatInit(wallet, nickName) {
+  log.info(`Initializing SendBird for user: ${nickName}, wallet: ${wallet}.`);
+  let sb = new SendBird({appId: process.env.SENDBIRD_APP_ID});
+  log.info(`Connecting chat for user: ${nickName}, wallet: ${wallet}.`);
+  let sbUser = await sbp(cb => sb.connect(wallet, cb));
+  log.info(`Updating user: ${nickName}, wallet: ${wallet}.`);
+  sbUser = await sbp(cb => sb.updateCurrentUserInfo(chatNickName(nickName), null, cb));
+  return [sb, sbUser];
+}
 
-export const channels = async(sb = _sb) => {
+export const channels = async sb => {
   const query = sb.OpenChannel.createOpenChannelListQuery();
   return sbp(cb => query.next(cb));
 };
 
-export const findChannelByName = (name, channels, sb = _sb) => {
+export const findChannelByName = (name, channels, sb) => {
   return find(propEq("name", name), channels);
 };
 
-export const getChannelByName = async(name, channel, sb = _sb) => {
+export const getChannelByName = async(name, channel, sb) => {
   return sbp(cb => sb.OpenChannel.getChannel(channel.url, cb));
 };
 
-export const createChannelWithName = async(name, operators = null, sb = _sb) => {
+export const createChannelWithName = async(name, operators = null, sb) => {
   return sbp(cb => sb.OpenChannel.createChannel(name, null, null, operators, null, cb));
 };
 

@@ -7,74 +7,55 @@ import {
   GIFT_REMOVE_ERROR,
   GIFT_REMOVE_LOADING,
   GIFT_REMOVE_SUCCESS,
-  INVENTORY_GAMES_CHANGED,
-  INVENTORY_GAMES_ERROR,
-  INVENTORY_GAMES_LOADING,
-  INVENTORY_GAMES_REQUEST,
+  GAMES_REQUEST,
   INVENTORY_ITEMS_CHANGED,
   INVENTORY_ITEMS_ERROR,
   INVENTORY_ITEMS_LOADING,
   INVENTORY_ITEMS_REQUEST,
   MESSAGE_ADD,
   NEW_BLOCK,
-  USER_CHANGED
-} from "../../shared/constants/actions";
-import {readFromQueryString} from "../utils/location";
-import {client} from "../utils/apollo";
-import callAPI from "../utils/api";
+  USER_CHANGED,
+  GIFT_ADD_SUCCESS,
+} from "@/shared/constants/actions";
+import {readFromQueryString} from "@/client/utils/location";
+import {client} from "@/client/utils/apollo";
+import {fetchGames} from "@/client/actions/game";
 
-function * getItems(action) {
+function * getItems() {
   try {
     const {user} = yield select();
     yield put({
-      type: INVENTORY_ITEMS_LOADING
+      type: INVENTORY_ITEMS_LOADING,
     });
     const testItems = (readFromQueryString("testItems") === "true")
       ? "?testItems=true"
       : "";
+
+    if (!user.data) return;
+
     const {language, wallet} = user.data;
-    const itemsUrl = `/items/${wallet}/${language}${testItems}`;
-    const items = yield call(callAPI, itemsUrl, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json; charset=utf-8"
+    const query = gql`
+      query listItems($wallet: String!, $userId: ID!, $language: String!, $testItems: Boolean) {
+        listItems(wallet: $wallet, userId: $userId, language: $language, testItems: $testItems) {
+          id presale lan tokenId image name description attrs categories game { id }
+        }
       }
-    });
+    `;
+    const variables = {wallet, language, userId: user.data.id, testItems};
+    const result = yield call(::client.query, {query, variables, fetchPolicy: "no-cache"});
+    const items = path(["data", "listItems"], result);
+
     yield put({
       type: INVENTORY_ITEMS_CHANGED,
-      payload: items.list
+      payload: items,
     });
   } catch (error) {
     yield put({
-      type: INVENTORY_ITEMS_ERROR
+      type: INVENTORY_ITEMS_ERROR,
     });
     yield put({
       type: MESSAGE_ADD,
-      payload: error
-    });
-  }
-}
-
-function * getGames(action) {
-  try {
-    yield put({
-      type: INVENTORY_GAMES_LOADING
-    });
-    const query = gql`{ listGames { id slug url api nft } }`;
-    const result = yield call(::client.query, {query});
-    const games = path(["data", "listGames"], result);
-    yield put({
-      type: INVENTORY_GAMES_CHANGED,
-      payload: games
-    });
-  } catch (error) {
-    yield put({
-      type: INVENTORY_GAMES_ERROR
-    });
-    yield put({
-      type: MESSAGE_ADD,
-      payload: error
+      payload: error,
     });
   }
 }
@@ -82,11 +63,8 @@ function * getGames(action) {
 function * checkGifts() {
   try {
     const gifts = yield select(state => state.gifts);
-
-    gifts.data = gifts.data || []; // TODO - following unsafe operations, ex: map
-
     yield put({
-      type: GIFT_REMOVE_LOADING
+      type: GIFT_REMOVE_LOADING,
     });
     const result = yield Promise.all(gifts.data.map(gift =>
       // will return null while transaction is in process
@@ -95,15 +73,15 @@ function * checkGifts() {
     const hashes = result.filter(tx => tx).map(tx => tx.transactionHash);
     yield put({
       type: GIFT_REMOVE_SUCCESS,
-      payload: hashes // doesn't matter if tx succeed or failed
+      payload: hashes, // doesn't matter if tx succeed or failed
     });
   } catch (error) {
     yield put({
-      type: GIFT_REMOVE_ERROR
+      type: GIFT_REMOVE_ERROR,
     });
     yield put({
       type: MESSAGE_ADD,
-      payload: error
+      payload: error,
     });
   }
 }
@@ -111,8 +89,8 @@ function * checkGifts() {
 export default function * inventorySaga() {
   yield takeEvery(USER_CHANGED, getItems);
   yield takeEvery(INTL_UPDATE, getItems);
-  yield takeEvery(INVENTORY_GAMES_REQUEST, getItems);
-  yield takeEvery(USER_CHANGED, getGames);
-  yield takeEvery(INVENTORY_ITEMS_REQUEST, getGames);
+  yield takeEvery(GAMES_REQUEST, getItems);
+  yield takeEvery(INVENTORY_ITEMS_REQUEST, fetchGames);
   yield takeEvery(NEW_BLOCK, checkGifts);
+  yield takeEvery(GIFT_ADD_SUCCESS, getItems);
 }

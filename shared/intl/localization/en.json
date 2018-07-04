@@ -1,4 +1,11 @@
 {
+  "global": {
+    "about": "About",
+    "description": "Pre-Sale",
+    "faq": "About Bitizens",
+    "remaining": "remaining",
+    "rules": "Rules"
+  },
   "components": {
     "switchLanguage": "Switch Language",
     "language": {
@@ -12,6 +19,7 @@
     },
     "menu": {
       "inventory": "My Items",
+      "marketplace": "Marketplace",
       "exchange": "Exchange",
       "community": "Community"
     },
@@ -117,7 +125,7 @@
       "metamask": {
         "title": "Metamask",
         "q1": "What is Metamask?",
-        "a1": "It’s a browser plug-in that connects your digital ethereum wallet to the Portal.",
+        "a1": "It’s a browser plug-in that connects your digital ethereum wallet to the Portal. For a step-to-step tutorial on how to set up a Metamask account, please check this <a href='https://medium.com/the-notice-board/a-cryptogamers-comprehensive-guide-to-metamask-4d448cb1337c' target='_blank' rel='noopener noreferrer'>helpful guide.</a>",
         "q2": "Do I really need to use metamask?",
         "a2": "For now, the only supported way of using the BitGuild Portal involves MetaMask. We are open to integrating functionality for other Ethereum-enabled browser wallets in the future.",
         "q3": "I can’t see my PLAT in my wallet! Where is it?",
@@ -189,10 +197,14 @@
       }
     },
     "games": {
+      "about": {
+        "tagline": "Find the greatest blockchain gaming experiences, all in one place.",
+        "body": "BitGuild's mission is to redefine the standard for how players interact with their games by facilitating true item ownership—You're free to buy, sell, or trade game assets at your leisure! The days of digital locks on your cards and swords are over!"
+      },
       "banner": {
         "play": "play"
       },
-      "airdrop": {
+      "events": {
         "countdown": "Airdrop in",
         "days": "Days",
         "hours": "Hours",
@@ -200,7 +212,8 @@
         "seconds": "Seconds",
         "giveaway": "Ether Online Free Item Giveaway",
         "giveaway-over": "Ether Online Free Item Giveaway Winners!",
-        "learn-more": "Learn more"
+        "learn-more": "Learn more",
+        "pets-giveaway": "Pets Giveaway"
       },
       "announce": {
         "coming-soon": "Coming soon",
@@ -212,13 +225,158 @@
         "discord": "DISCORD"
       }
     },
-    "airdrop": {
-      "title": "Giveaway is over!",
-      "p1": "Thank you to everyone who participated in the Ether Online BitGuild giveaway event!",
-      "p2": "Within 72 hours, the item chest for all users who met the event criterias, as well as the grand prize, will be sent to your in-game inventory. If you won, see up to 51 shiny item chests just waiting for you to open, revealing your awesome loot!",
-      "p3": "If you didn’t win, sorry! But don’t worry, you’ll have plenty of chances to get cool free stuff on BitGuild.com in the future! Stay tuned to our <a href='https://twitter.com/BitGuildPLAT' target='_blank' rel='noopener noreferrer'>Twitter</a>, <a href='https://discordapp.com/invite/pPC2frB' target='_blank' rel='noopener noreferrer'>Discord</a>, <a href='https://www.facebook.com/bitguildplat/' target='_blank' rel='noopener noreferrer'>Facebook</a>, and <a href='https://medium.com/the-notice-board' target='_blank' rel='noopener noreferrer'>official Blog</a> to never miss a beat.",
-      "p4": "In the meantime, we encourage you to try our latest playable title, Magic Academy, or simply go have a look at what’s available on BitGuild for yourself!",
-      "p5": "See you online!"
+    "events": {
+      "title": "Hail Guildmates,",
+      "p1": "Welcome to the <strong> final opportunity to obtain a pet in Ether Online <strong> outside of trading for it on the marketplace!",
+      "p2": "We’ve got some pets to give away. These pets are unique in that they <strong> increase your Ether Online character stats by a flat %<strong>—the only type of item in the game to do so! Needless to say, players with one of these rare pets are at a serious advantage.",
+      "p3": "To participate in any of the below events, you must first register your MetaMask account on www.bitguild.com, and <strong>have a minimum of 1000 PLAT<strong> in your wallet.",
+      "p4": "Now, to find out how to get your mitts on one of these cute animal friends, read on!",
+      "p5": "<strong>Warbear:<strong> Community Discord Contest! Jump into the Guild Hall and meet your fellow Guildmates, interact with the team, and keep up with all the latest news from BitGuild!",
+      "l1": "<strong>Join the official BitGuild Discord Server, and reach level 3+<strong>. Gain experience and level up by participating in conversations with the community! Please be constructive and don’t spam.**",
+      "l2": "<strong>Fill this form<strong> to confirm your entry into the giveaway once you meet the criteria.",
+      "l3": "One lucky winner will win the elusive <strong>Warbear<strong>, and <strong>10 additional people will win 20 Item Chests each!<strong>",
+      "l4": "Winner will be selected at random from users meeting the criteria. We will email you, so <strong>keep an eye on your inbox around June 28th, 2018!*<strong>",
+      "p6": "<strong> Royal Eagle:<strong> Fan art contest! Spread your creative wings by creating some fan art! This should take the form of a static image such as a wallpaper, or an animated .gif.",
+      "l5": "We invite you to submit your content to us! We want to see what our community can do when posed with a creative challenge!",
+      "l6": "Images should be <strong>BitGuild or Ether Online themed<strong>, and inoffensive. Beyond that, it’s up to you. Extra points for effort, and “thinking outside the block”.",
+      "l7": "Once you’ve completed your masterpiece, <strong>fill out this form<strong> to send us your work to confirm your entry!",
+      "l8": "On July 2nd 2018, BitGuild will select the finalists, and you’ll all get a chance to vote for your favorite on the official BitGuild Discord Server! The winner will become the proud new owner of the <strong>Royal Eagle<strong>, and <strong>5 runners up stand to win 50 Item Chests each!<strong>",
+      "l9": "Winners will be contacted via email. Keep your eyes on your inbox!*",
+      "p7": "<strong>Raging Tiger:<strong> BitGuild on the web! Help us spread the word and grow the guild by sharing our content on various platforms!",
+      "l10": "Click here, and <strong>follow the instructions for your chance to win the Raging Tiger<strong>. The more tasks you complete, the higher your chance to win - <strong>additionally, 50 random participants will receive 5 item chests each!<strong>",
+      "l11": "Check your email on June 25th, 2018, to see if you’ve won!",
+      "p8": "*If a user does not reply to our message within 24 hours, BitGuild reserves the right to select a new winner at random.",
+      "p9": "Contribution should not be spam, low effort, offensive, or duplicate content. Play nice!"
+    },
+    "presale": {
+      "bitizens": {
+        "title": "Bitizens Pioneers Pre-Sale",
+        "subtitle": " Show your support, and get unique in-game items in return!",
+        "presale-stats-title": "IGO Stats",
+        "items-bought": "Items sold",
+        "items-left": "left",
+        "total-buyers": "Total buyers",
+        "stretch-goals-unlocked": "Bonus rewards unlocked",
+        "stretch-goals-locked": "locked",
+        "bonus-reward-1-title": "Dril'r Bot Pioneer-I",
+        "bonus-reward-1-description": "Once <strong>30%</strong> of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot Pioneer-I paint job!",
+        "bonus-reward-2-title": "Pioneer's Rocket",
+        "bonus-reward-2-description": "Selling <strong>70%</strong> of all Bitizens pre-sale items will unlock something extra special for all participants - Your very own miniature rocket!",
+        "dividing-text": "We’ve set up some unique stretch goals as well (see above for details!). Reaching them will unlock unique items for all pre-sale participants - an extra special reward for helping us make the Bitizen vision a reality.",
+        "drillrbot-title": "Bonus Reward 1",
+        "drillrbot-text-1": "Once 30% of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot Pioneer-I paint job!",
+        "drillrbot-text-2": "That’s right, this adorable little mining companion is now an ERC721 token - meaning it can be customized! First up on the list of possible ways players can customize their personal Dril’ rBot are paint jobs, and the one featured here is going to be pretty special (Once the pre-sale is over, that’s it, you can’t get it anymore!).",
+        "rocket-title": "Bonus Reward 2",
+        "rocket-text-1": "Selling 70% of all Bitizens pre-sale items will unlock something extra special for all participants - Your very own miniature rocket!",
+        "rocket-text-2": "The Mini-Rocket is an Accessory item-type, meaning it can be equipped to your character and offer either special visual effects on your Bitizen, or a stat boost, or both! Much like the first bonus item, this Mini Rocket is not going to be available once the Bitizens pre-sale is over!",
+        "final-text": "Join us as we bring our love for online games to the blockchain with Bitizens!",
+        "description-text": {
+          "p1": "Get your mitts on the exclusive items below by participating in our pre-sale event. This will be the <strong>ONLY</strong> chance at securing these items for yourself - <strong>Don’t miss out as quantities are limited!</strong> ",
+          "p2": "Taking part in the Bitizens pre-sale will not only help us produce a quality game that caters to players first and foremost, offering deep, meaningful, and engaging blockchain gaming experiences - It will also help show off your status as a Pioneer of both Bitizens and the BitGuild Portal.",
+          "p3": "Once the game launches, these special, limited run items can't be acquired by traditional in-game means; You'd have to trade for them!",
+          "p4": "Check out the Pioneer sets available and secure your piece of cryptogaming history, and establish yourself as a Bitizens Pioneer today!"
+        },
+        "faq-text": {
+          "p1": "<strong>Your invitation to come and make the world a better place.</strong>",
+          "p2": "<strong>Welcome to Bitropolis - the ultimate destination for a new crypto world!</strong>",
+          "p3": "Visit this sprawling cityscape and enjoy everything it has to offer, from the sunny digital skies to the depths of the bitmines. Everyone is welcome, all you have to do is sign up - Your digital cognition will then be loaded into your new destination in a matter of mere clicks!",
+          "p4": "<strong>What is this place?</strong>",
+          "p5": "Oh it’s no big deal, it’s just the <strong>single most magnificent digital civilization</strong> this side of the blockchain (probably even the other side too… but we don’t go there.) <strong>It’s a sprawling, unending urban jungle in which your wildest dreams can come true</strong> - provided you wanna hit the big time in the world of crypto! Experience unlimited possibilities as you set forth on your journey to this new interconnected virtual utopia.",
+          "p6": "<strong>Who am I here?</strong>",
+          "p7": "Anyone you like! You, and anyone else making a stop in Beautiful Bitropolis is an <strong>honorary Bitizen!</strong> In this realm, you can customize your pretty polygonal face, and let everyone know what you’re all about by accessorizing to your heart’s content.",
+          "p8": "<strong>Well that’s nice… but why should I stay?!</strong>",
+          "p9": "Prosperity of course! Once you see it for yourself, you’ll be an instant believer - <strong>Bitropolis is just THE place to be!</strong> It’s a world rich with opportunity for all, and here, everyone is on equal grounds from the get-go. <strong>Refusing Bitropolis residency is like using your bitcoins to buy a pizza in 2010 - not very smart!</strong>",
+          "p10": "<strong>Okay, show me how!</strong>",
+          "p11": "Every single Bitizen is granted a standard issue, slightly used, Dril’rBot Rx-24. With this trusty little excavator at your side, <strong>you can delve into the veritable cornucopia of treasure that are the Bitropolis Mines.</strong> Drill to your heart’s content, because anything you find can be exchanged for sweet rewards at the foundry!",
+          "p12": "<strong>Cool! ...now what?</strong>",
+          "p13": "Bask in the glory, flaunt your swag by adorning yourself in rare and unique threads, and then <strong>do it all again!</strong> There’s no end to what you can find down there, and any and <strong>all items acquired in Bitropolis are yours to keep, use, trade, or even sell for PLAT!</strong> Who knows what you might find… It could be just what you needed to complete your collection… or your neighbour’s collection (provided you’re willing to sell it to them... Did someone say profits? KA-CHING!)",
+          "p14": "<strong>Sounds amazing! How do I get there?</strong>",
+          "p15": "You can book your one-way ticket (let’s face it, you won’t need the return ticket) to the virtual world of Bitropolis right now. There’s no such thing as an economy seat - For Bitizens, it’s first class all the way baby!"
+        },
+        "rules-text": {
+          "p1": "<strong>Limitations:</strong>",
+          "l1": "You cannot purchase the same set more than once.",
+          "l2": "Multiple purchases will only qualify you for one bonus reward of each tier.",
+          "l3": "These items will not be available after the pre-sale is complete.",
+          "l4": "Pioneer items will be allowed for sale on our Marketplace.",
+          "l5": "All pre-sale items are available for purchase using PLAT only.",
+          "l6": "All pre-sale transactions are final.",
+          "p2": "<strong>Distribution:</strong>",
+          "l7": "Pioneer sets, items, and Bonus Rewards will be available to claim at the time of the Bitizen’s Wardrobe release, scheduled for late July.",
+          "l8": "You must claim your items on the account used to purchase the items.",
+          "l9": "Gas fees may apply at the time of in-game item redemption."
+        },
+        "sets": {
+          "pioneer_of_the_wilds": {
+            "name": "Pioneer of the Wilds",
+            "description": "Always ready to seek new adventures, the explorer’s outfit will let people know you’re at the forefront of cryptogaming, and got here before it was cool!",
+            "item1": {
+              "name": "Pith Helmet"
+            },
+            "item2": {
+              "name": "Expedition Jacket"
+            },
+            "item3": {
+              "name": "Expedition Pants"
+            },
+            "item4": {
+              "name": "Expedition Boots"
+            }
+          },
+          "pioneer_of_the_seas": {
+            "name": "Pioneer of the Seas",
+            "description": "Go deeper than most could only dream of, and discover the untold secrets of an unexplored world.",
+            "item1": {
+              "name": "Deep Sea Helmet"
+            },
+            "item2": {
+              "name": "Diving Top"
+            },
+            "item3": {
+              "name": "Diving Pants"
+            },
+            "item4": {
+              "name": "Weighted Boots"
+            }
+          },
+          "pioneer_of_the_skies": {
+            "name": "Pioneer of the Skies",
+            "description": "Fly above the radar in this stoic Flightsuit. You’ll turn some heads with pure envy if your Bitizen is spotted in this get-up - for sure!",
+            "item1": {
+              "name": "Aviation Goggles"
+            },
+            "item2": {
+              "name": "Pilot’s Jacket"
+            },
+            "item3": {
+              "name": "Flight Pants"
+            },
+            "item4": {
+              "name": "Pilot’s Boots"
+            }
+          },
+          "pioneer_of_the_cyberscape": {
+            "name": "Cyberspace Pioneer",
+            "description": "Lock yourself in as the only Bitizen Cyber Warrior. You are one with the chain, and the chain is one with you.",
+            "item1": {
+              "name": "Cyber Helmet"
+            },
+            "item2": {
+              "name": "Cyber Chestpiece"
+            },
+            "item3": {
+              "name": "Cyber Leggings"
+            },
+            "item4": {
+              "name": "Cyber Boots"
+            }
+          },
+          "pioneer_compass": {
+            "name": "Pioneer's Compass",
+            "description": "This ancient compass always shows the way, but no one know where to exactly. Some say it points to the long-lost heart of Bitropolis, others say it points to your innermost desires - Either way, it increases your chance to find something nice while mining!"
+          }
+        }
+      }
     }
   },
   "chat": {

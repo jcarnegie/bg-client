@@ -1,0 +1,5 @@
+{
+  "landing_v2": ["dev"],
+  "bitizens_presale": ["local", "dev", "staging", "production"],
+  "marketplace": ["local", "dev"]
+}

@@ -1,4 +1,4 @@
-import {Router} from "express";
+const {Router} = require("express");
 
 const router = Router(); // eslint-disable-line new-cap
 
@@ -10,7 +10,7 @@ const headers = [
   "If-Modified-Since",
   "Origin",
   "Pragma",
-  "X-XSRF-TOKEN"
+  "X-XSRF-TOKEN",
 ];
 
 router.use((request, response, next) => {
@@ -22,4 +22,4 @@ router.use((request, response, next) => {
   next();
 });
 
-export default router;
+module.exports = router;

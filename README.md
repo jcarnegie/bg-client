@@ -1,30 +1,65 @@
 # PortalClient
 
-## Installation
+## Next Migration Fix List
 
-### Node
+TODO
+- Style jsx / eslint and editor support
+- Style updates, component rewrites.
+- Chat-specific style rewrites
+- Docker-compose integrates with development GraphQL API
+- Update redux-logger for node -- or silence
 
-1. edit config file
-```sh
-nano ecosystem.development.json
+
+## Dependencies
+
+## Setup
+
+```bash
+yarn
 ```
 
-2. run
-```sh
-npm i
+## Run
 
-# dev
-npm start
-
-# prod
-npm run build
-NODE_ENV=production npm start
+```bash
+yarn dev
 ```
 
+## Build
 
-### Nginx
+- To build
+```bash
+yarn build
+```
 
+- To start built files
+```bash
+yarn start
 ```
-sudo nano /etc/nginx/sites-available/default
-sudo nginx -s reload
+
+## Bundles
+
+- To view statistics on client output files
+- Reports build to .next/analyzer-output
+```bash
+yarn analyze-bundles
 ```
+
+## File Structure
+
+- client/
+- - actions/
+- - reducers/
+- - sagas/
+- - utils/
+- - store.js
+- components/
+- pages/
+- - \_app.js
+- - \_document.js
+- server/
+- shared/
+- - constants/
+- - contracts/
+- - intl/
+- static/
+
