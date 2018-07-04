@@ -50,10 +50,10 @@ function * getAccount() {
 }
 
 function * pollForAccountChanges() {
-  const chanel = yield call(accountPollChannel, WEB3_ACCOUNT_POLLING_INTERVAL);
+  const channel = yield call(accountPollChannel, WEB3_ACCOUNT_POLLING_INTERVAL);
   try {
     while (true) {
-      yield take(chanel);
+      yield take(channel);
       /* Account poll and account get use the same operations */
       yield put({type: ACCOUNT_GET});
     }

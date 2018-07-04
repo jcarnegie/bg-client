@@ -137,10 +137,10 @@ function networkListenChannel(interval) {
 }
 
 function * networkBeginListening() {
-  const chanel = yield call(networkListenChannel);
+  const channel = yield call(networkListenChannel);
   try {
     while (true) {
-      const payload = yield take(chanel);
+      const payload = yield take(channel);
       yield put({type: NETWORK_NEW_BLOCK, payload});
     }
   } catch (err) {
