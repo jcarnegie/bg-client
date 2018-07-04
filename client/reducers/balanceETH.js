@@ -1,4 +1,9 @@
-import {BALANCE_ETH_CHANGED, BALANCE_ETH_ERROR, BALANCE_ETH_LOADING} from "../../shared/constants/actions";
+import {
+  BALANCE_ETH_CHANGED,
+  BALANCE_ETH_ERROR,
+  BALANCE_ETH_LOADING,
+  BALANCE_ETH_RESET,
+} from "@/shared/constants/actions";
 
 const balance = {
   isLoading: false,
@@ -24,6 +29,8 @@ export default function updateBalanceETH(state = balance, action) {
         isLoading: false,
         success: false,
       });
+    case BALANCE_ETH_RESET:
+      return Object.assign({}, state, balance);
     default:
       return state;
   }

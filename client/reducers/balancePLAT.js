@@ -2,6 +2,7 @@ import {
   BALANCE_PLAT_CHANGED,
   BALANCE_PLAT_ERROR,
   BALANCE_PLAT_LOADING,
+  BALANCE_PLAT_RESET,
 } from "@/shared/constants/actions";
 
 const balance = {
@@ -28,6 +29,8 @@ export default function updateBalancePLAT(state = balance, action) {
         isLoading: false,
         success: false,
       });
+    case BALANCE_PLAT_RESET:
+      return Object.assign({}, state, balance);
     default:
       return state;
   }
