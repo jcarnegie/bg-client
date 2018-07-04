@@ -23,7 +23,7 @@ import {
   ACCOUNT_LOGGED_OUT,
   NETWORK_BEGIN_LISTENING,
   NETWORK_CHANGED,
-  NETWORK_CHECK_AVAILABILITY,
+  NETWORK_GET_AVAILABILITY,
   NETWORK_AVAILABLE,
   NETWORK_LOADING,
   NETWORK_NEW_BLOCK,
@@ -101,9 +101,11 @@ function * checkNetworkAvailability() {
 
 function * getNetwork() {
   try {
-    const networkIsAvailable = yield put({type: NETWORK_CHECK_AVAILABILITY});
+    yield put({type: NETWORK_GET_AVAILABILITY});
 
-    if (!networkIsAvailable) return;
+    const network = yield select(state => state.network);
+
+    if (!network.available) return;
 
     yield put({type: NETWORK_LOADING});
     yield put({
@@ -151,7 +153,7 @@ function * networkBeginListening() {
 
 export default function * networkSaga() {
   yield takeLatest(NETWORK_GET, getNetwork);
-  yield takeLatest(NETWORK_CHECK_AVAILABILITY, checkNetworkAvailability);
+  yield takeLatest(NETWORK_GET_AVAILABILITY, checkNetworkAvailability);
   yield takeLatest(NETWORK_GET_BALANCE_ETH, getBalanceETH);
   yield takeLatest(NETWORK_GET_BALANCE_PLAT, getBalancePLAT);
   yield takeLatest(NETWORK_CHANGED, getRate);
