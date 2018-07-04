@@ -13,7 +13,7 @@ import {
 
 
 /* Poll web3 interface for user account changes with this frequency */
-const WEB3_ACCOUNT_POLLING_INTERVAL = 1000;
+const WEB3_ACCOUNT_POLLING_INTERVAL = process.env.NODE_ENV === "development" ? 1000 : 200;
 
 
 function * getAccount() {
