@@ -1,5 +1,4 @@
 import {combineReducers} from "redux";
-import {routerReducer as routing} from "react-router-redux";
 import {intlReducer as intl} from "react-intl-redux";
 
 import account from "@/client/reducers/account";
@@ -22,7 +21,6 @@ import validations from "@/client/reducers/validations";
 
 export default combineReducers({
   analytics,
-  routing,
   account,
   balanceETH,
   balancePLAT,
