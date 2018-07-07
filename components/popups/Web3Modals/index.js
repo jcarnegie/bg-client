@@ -44,10 +44,6 @@ class Web3 extends Component {
     return props;
   }
 
-  componentWillUnmount() {
-    clearInterval(this.state.interval);
-  }
-
   hideRegistrationWorkflowModals() {
     return this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: false});
   }

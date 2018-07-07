@@ -39,7 +39,6 @@ const GAMES = {
 )
 export default class GameList extends Component {
   state = {
-    interval: null,
     bannerInterval: null,
     countdown: null,
     showingGame: GAMES.magicacademy,
@@ -54,34 +53,10 @@ export default class GameList extends Component {
       bannerInterval: setInterval(() => {
         this.switchBanner();
       }, BANNER_SWITCH_INTERVAL),
-
-      interval: setInterval(() => {
-        // Get todays date and time
-        const now = new Date().getTime();
-
-        // Find the distance between now an the count down date
-        const distance = COUNT_DOWN_DATE - now;
-
-        // Time calculations for days, hours, minutes and seconds
-        this.setState({
-          countdown: {
-            days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-            hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-            minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-            seconds: Math.floor((distance % (1000 * 60)) / 1000),
-          },
-        });
-
-        // If the count down is over, write some text
-        if (distance < 0) {
-          clearInterval(this.state.interval);
-        }
-      }, 1000),
     });
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.interval);
     clearInterval(this.state.bannerInterval);
   }
 
