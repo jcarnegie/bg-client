@@ -1,19 +1,20 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {FormattedMessage, injectIntl} from "react-intl";
-import {Grid, Col, Image, Row, Carousel} from "react-bootstrap";
+import {Grid, Col, Row, Carousel} from "react-bootstrap";
 import {connect} from "react-redux";
 import Link from "next/link";
 import Router from "next/router";
+import FaFacebookOfficial from "react-icons/lib/fa/facebook-official";
+import FaTwitterSquare from "react-icons/lib/fa/twitter-square";
+import FaInstagram from "react-icons/lib/fa/instagram";
 
-import {Mobile, Desktop} from "@/components/responsive";
-import GameIcon from "@/components/gameicon";
+import FeatureFlag from "@/components/featureflag";
 import BGButton from "@/components/bgbutton";
 import BGIcon from "@/components/bgicon";
 import BGGrid from "@/components/bggrid";
 import BGGameCard from "@/components/bggamecard";
 
-import {featureOn} from "@/shared/utils";
 import {GAMES_REQUEST} from "@/shared/constants/actions";
 import style from "@/shared/constants/style";
 
@@ -110,11 +111,26 @@ class GameList extends Component {
         `}</style>
         <Col>
           <Carousel interval={null} className="hero-carousel">
-            {games.data.map((game, idx) => (
-              <Carousel.Item key={idx} onClick={() => ::this.navigateToGame(game.slug)}>
-                <div className="carousel-image" style={{backgroundImage: `url(/static/images/games/${game.slug}/banner.jpg)`}} />
-              </Carousel.Item>
-            ))}
+            {games.data.map((game, idx) => {
+              // TODO - database flags for game states (active|presale|development)
+              // TODO - bitizens is coming soon, will need to update when launches
+              if (game.slug === "bitizens") {
+                return (
+                  <Carousel.Item key={idx}>
+                    <div
+                      className="carousel-image"
+                      style={{backgroundImage: "url(/static/images/games/bitizens/presale/header.jpg)"}}
+                      onClick={() => Router.push({pathname: "/presale", query: {slug: game.slug}}, `/presale/${game.slug}`)}
+                    />
+                  </Carousel.Item>
+                );
+              }
+              return (
+                <Carousel.Item key={idx} onClick={() => ::this.navigateToGame(game.slug)}>
+                  <div className="carousel-image" style={{backgroundImage: `url(/static/images/games/${game.slug}/banner.jpg)`}} />
+                </Carousel.Item>
+              );
+            })}
           </Carousel>
         </Col>
       </Row>
@@ -122,7 +138,7 @@ class GameList extends Component {
   }
 
   presale(slug) {
-    return featureOn("bitizens_presale") ? (
+    return (
       <div onClick={() => Router.push({pathname: "/presale", query: {slug}}, `/presale/${slug}`)} className="promotional-banner presale-banner">
         <style jsx>{`
           .promotional-banner.presale-banner {
@@ -155,103 +171,24 @@ class GameList extends Component {
           </BGButton>
         </Row>
       </div>
-    ) : null;
-  }
-
-  events() {
-    return (
-      <div className="events">
-        <style jsx>{`
-          .events {
-            background-size: contain;
-            background-color: #F1F5FF;
-            color: #314B88;
-            border-bottom: 1px solid #c7c6f2;
-            height: 200px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          .events-center {
-            flex-grow: 2;
-            text-align: center;
-          }
-          .events-title,
-          .events-subtitle {
-            display: block;
-            text-align: center;
-            text-transform: uppercase;
-            margin: 0;
-          }
-          .events-title {
-            font-size: 40px;
-            font-weight: 600;
-            color: rgb(247,200,65);
-            text-shadow: 1px 1px 1px #314B88;
-          }
-          .events-subtitle {
-            font-size: 36px;
-            color: #314B88;
-            text-shadow: 1px 1px 1px #999;
-          }
-          .events-title-mobile {
-            font-size: 24px;
-          }
-          .events-subtitle-mobile {
-            font-size: 20px;
-          }
-          .bitguild-logo-wrapper {
-            width: 75px;
-          }
-          :global(.events-flex) {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-grow: 1;
-          }
-          :global(.events .events-button) {
-            margin-top: 10px;
-          }
-        `}</style>
-        <GameIcon game={{slug: "ether.online"}} width="75px" className="events-flex" />
-        <div className="events-center">
-          <Mobile>
-            <h2 className="events-title events-title-mobile">Ether Online</h2>
-            <h3 className="events-subtitle events-subtitle-mobile">
-              <FormattedMessage id="pages.games.events.pets-giveaway"></FormattedMessage>
-            </h3>
-          </Mobile>
-          <Desktop>
-            <h2 className="events-title">Ether Online</h2>
-            <h3 className="events-subtitle">
-              <FormattedMessage id="pages.games.events.pets-giveaway"></FormattedMessage>
-            </h3>
-          </Desktop>
-          <div>
-            <BGButton className="events-button" onClick={() => Router.push("/events")}>
-              <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
-            </BGButton>
-          </div>
-        </div>
-        <div className="events-flex bitguild-logo-wrapper">
-          <BGIcon src="/static/images/icons/bitguild_logo@1x.png" className="bitguild-logo events-flex" width="75px" />
-        </div>
-      </div>
     );
   }
 
   allGames() {
     return (
-      <BGGrid title={"All Games"} titleIconSrc={"http://via.placeholder.com/100x100"}>
-        {this.props.games.active.map((game, k) => <BGGameCard key={k} game={game} />)}
+      <BGGrid
+        title={"All Games"}
+        titleIconSrc="/static/images/icons/all_games.png"
+        underlayImage="/static/images/backgrounds/people_and_interactions.png"
+        >
+      {this.props.games.active.map((game, k) => <BGGameCard key={k} game={game} />)}
       </BGGrid>
     );
   }
 
   comingSoon() {
     return (
-      <BGGrid title={"Coming Soon"} titleIconSrc={"http://via.placeholder.com/100x100"} backgroundImage={"linear-gradient(#DFECFE 50%, #DFECFE 75%, white 50%)"}>
+      <BGGrid title={"Coming Soon"} titleIconSrc="/static/images/icons/coming_soon.png" backgroundImage={"linear-gradient(#DFECFE 50%, #DFECFE 75%, white 50%)"}>
         {this.props.games.comingSoon.map((game, k) => <BGGameCard key={k} game={game} />)}
       </BGGrid>
     );
@@ -259,17 +196,18 @@ class GameList extends Component {
 
   aboutBitGuild() {
     return (
-      <BGGrid title={"About BitGuild"} titleIconSrc={"http://via.placeholder.com/100x100"} style={{background: "#A5BEE4"}}>
+      <BGGrid title={"About BitGuild"} titleIconSrc="/static/images/icons/about.png" style={{background: "#A5BEE4"}}>
         <style jsx>{`
-          .img-wrapper {
+          .social-media {
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px 0;
           }
-          :global(.img-wrapper img) {
+          :global(.social-media a) {
             margin: 0 10px;
             max-width: 30%;
+            cursor: pointer;
           }
           h3 {
             font-size: 3em;
@@ -289,10 +227,34 @@ class GameList extends Component {
               </div>
             </Col>
             <Col>
-              <div className="img-wrapper">
-                <Image src="http://via.placeholder.com/100x100" circle responsive />
-                <Image src="http://via.placeholder.com/100x100" circle responsive />
-                <Image src="http://via.placeholder.com/100x100" circle responsive />
+              <div className="social-media">
+                <a href="https://www.facebook.com/bitguildplat/" target="_blank" rel="noopener noreferrer" onClick={() => {
+                  this.props.analytics.ga.event({
+                    category: "Site Interaction",
+                    action: "Page Visit",
+                    label: "Facebook",
+                  });
+                }}>
+                  <FaFacebookOfficial width={100} height={100} color="#3B5998" />
+                </a>
+                <a href="https://twitter.com/bitguildplat" target="_blank" rel="noopener noreferrer" onClick={() => {
+                  this.props.analytics.ga.event({
+                    category: "Site Interaction",
+                    action: "Page Visit",
+                    label: "Twitter",
+                  });
+                }}>
+                  <FaTwitterSquare width={100} height={100} color="#1DA1F2" />
+                </a>
+                <a href="https://www.instagram.com/bitguild" target="_blank" rel="noopener noreferrer" onClick={() => {
+                  this.props.analytics.ga.event({
+                    category: "Site Interaction",
+                    action: "Page Visit",
+                    label: "Instagram",
+                  });
+                }}>
+                  <FaInstagram width={100} height={100} color="black" />
+                </a>
               </div>
             </Col>
           </Col>
@@ -342,10 +304,9 @@ class GameList extends Component {
 
         <Row>
           <Col>
-            {this.presale("bitizens")}
-          </Col>
-          <Col>
-            {this.events()}
+            <FeatureFlag flag="bitizens_presale">
+              {this.presale("bitizens")}
+            </FeatureFlag>
           </Col>
         </Row>
 

@@ -17,6 +17,7 @@ class BGGrid extends PureComponent {
     titleIconSrc: PropTypes.node,
     titleIconWidth: PropTypes.string,
     backgroundImage: PropTypes.string,
+    underlayImage: PropTypes.string,
     children: PropTypes.array,
   }
 
@@ -27,6 +28,7 @@ class BGGrid extends PureComponent {
     titleIconSrc: null,
     titleIconWidth: "75px",
     backgroundImage: "linear-gradient(#F0F6FE 50%, #F0F6FE 75%, white 50%)",
+    underlayImage: null,
     children: null,
   }
 
@@ -68,6 +70,7 @@ class BGGrid extends PureComponent {
             background: #F0F6FE;
             background-image: ${this.props.backgroundImage};
             width: 100%;
+            position: relative;
           }
           .bg-grid-header {
             padding: ${mobile ? "5px" : "30px 30px 15px 30px"};
@@ -83,12 +86,22 @@ class BGGrid extends PureComponent {
           }
           :global(.bg-grid-wrapper .bg-grid > *) {
             margin: ${mobile ? "10px 5px" : "20px"};
+            z-index: 2;
+          }
+          .underlay {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: calc(100% - 40px);
+            margin: 20px;
+            z-index: 1;
           }
         `}</style>
         <div className="bg-grid-header">
           {::this.titleIcon()}
           {::this.title()}
         </div>
+        {this.props.underlayImage ? <img className="underlay" src={this.props.underlayImage} /> : null}
         <div className="bg-grid">
           {this.props.children}
         </div>
