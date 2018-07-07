@@ -94,6 +94,7 @@ class Presale extends Component {
     qtyOf18: null,
     qtyOf19: null,
     qtyOf20: null,
+    counter: 0
   }
 
   static getInitialProps({err, req, res, query, store, isServer}) {
@@ -133,10 +134,21 @@ class Presale extends Component {
     this.setState({
       interval: setInterval(::this.getQtyOfItemsRemaining, 5000),
     });
+    setInterval(::this.ticker, 1000);
+  }
+
+  ticker() {
+    this.setState({
+      counter: this.state.counter + 1
+    });
   }
 
   textLoading() {
-    return <ScaleLoader height={10} width={2} color="black" style={{display: "inline"}} />;
+    if (this.state.counter < 15) {
+      return <ScaleLoader height={10} width={2} color="black" style={{display: "inline"}} />;
+    } else {
+      return <img src = "../static/images/icons/missing_data_placeholder.png"/>;
+    }
   }
 
   web3IsLoading() {
