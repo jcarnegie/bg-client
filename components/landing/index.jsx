@@ -188,7 +188,7 @@ class GameList extends Component {
         titleIconSrc="/static/images/icons/all_games.png"
         underlayImage="/static/images/backgrounds/people_and_interactions.png"
         >
-        {this.props.games.active.map((game, k) => <BGGameCard key={k} game={game} onClick={() => ::this.navigateToGame(game.slug)} />)}
+        {this.props.games.active.map((game, k) => <BGGameCard key={k} game={game} onClick={() => ::this.navigateToGame(game.slug)} playButton />)}
       </BGGrid>
     );
   }

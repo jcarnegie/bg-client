@@ -18,6 +18,7 @@ class BGGameCard extends PureComponent {
     game: PropTypes.object,
     layout: PropTypes.object,
     onClick: PropTypes.func,
+    playButton: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -26,6 +27,7 @@ class BGGameCard extends PureComponent {
     layout: {},
     children: null,
     onClick: () => {},
+    playButton: false,
   }
 
   render() {
@@ -61,11 +63,13 @@ class BGGameCard extends PureComponent {
             box-shadow: ${style.boxShadow.default};
             padding: 10px;
             cursor: pointer;
+            border: 1px solid white;
           }
           .bg-game-card:hover {
             transform: translateY(-5px);
             animation: card-hover-float 4s ease-in-out infinite;
             transition: ${style.transition.slow};
+            border: 1px solid rgb(121, 182, 250);
           }
           .bg-game-card .play-game-button {
             visibility: hidden;
@@ -73,13 +77,17 @@ class BGGameCard extends PureComponent {
             left: calc(50% - ${Math.floor(playButtonSize / 2)}px);
             top: ${mobile ? "45%" : "50%"};
             transform: translateY(-75%);
-            display: inline;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: white;
-            border-radius: 50%;
             width: ${playButtonSize}px;
             height: ${playButtonSize}px;
-            vertical-align: middle;
             line-height: ${playButtonSize}px;
+            font-size: 0.75em;
+            border-radius: 50%;
+            border: 1px solid rgb(121, 182, 250);
+
           }
           .bg-game-card:hover .play-game-button {
             visibility: visible;
@@ -97,7 +105,7 @@ class BGGameCard extends PureComponent {
           }
         `}</style>
           <img className="bg-game-card-img" src={`/static/images/games/${this.props.game.slug}/thumbnail.jpg`} alt="game thumbnail" />
-          <div className="play-game-button"><MdPlayArrow /><FormattedMessage id="global.play" /></div>
+          {this.props.playButton ? <div className="play-game-button"><MdPlayArrow /><FormattedMessage id="global.play" /></div> : null}
           <h6>{this.props.game.name}</h6>
           <p>{this.props.game.description}</p>
           {this.props.children}

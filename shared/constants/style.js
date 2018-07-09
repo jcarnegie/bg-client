@@ -35,7 +35,7 @@ export const boxShadow = {
 };
 
 export const textShadow = {
-  default: "1px 1px 1px #314B88"
+  default: "1px 1px 1px #314B88",
 };
 
 export const transition = {
