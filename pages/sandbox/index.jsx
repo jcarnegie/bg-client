@@ -15,6 +15,9 @@ const SandboxPage = props => (
   </>
 );
 
-SandboxPage.getInitialProps = ctx => Sandbox.getInitialProps(ctx);
+SandboxPage.getInitialProps = ctx => {
+  console.log("ctx.query: ", ctx.query);
+  return Sandbox.getInitialProps(ctx);
+};
 
 export default SandboxPage;

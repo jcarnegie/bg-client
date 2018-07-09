@@ -14,7 +14,8 @@ export default class SandBox extends Component {
   };
 
   static async getInitialProps({query}) {
-    return {query: query || {}};
+    console.log('getInitialProps: query: ', query);
+    return {query: (query || {})};
   }
 
   renderIframe(query) {
