@@ -69,11 +69,11 @@ next.prepare().then(() => {
 
   app.get("/presale/:slug", (req, res) => {
     const params = route("/presale/:slug")(parse(req.url).pathname);
-    
+
     const GAME_SLUGS = [
       "bitizens",
     ];
-    
+
     if (GAME_SLUGS.includes(params.slug)) {
       return next.render(req, res, "/presale", {slug: params.slug});
     } else {
