@@ -41,7 +41,7 @@ class BGGrid extends PureComponent {
             margin: 0 0 0 ${mobile ? "5%" : "2%"};
             text-transform: uppercase;
             display: inline-block;
-            font-weight: 600;
+            font-weight: 900;
           }
         `}</style>
         {this.props.title}
@@ -83,18 +83,19 @@ class BGGrid extends PureComponent {
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
-            justify-content: start;
+            justify-content: ${mobile ? "space-evenly" : "start"};
           }
           :global(.bg-grid-wrapper .bg-grid > *) {
             margin: ${mobile ? "10px 5px" : "20px"};
             z-index: 2;
           }
           .underlay {
+            display: ${mobile ? "none" : "inline"};
             position: absolute;
             right: 0;
             top: 0;
-            height: calc(100% - 40px);
-            margin: 20px;
+            height: ${mobile ? "calc(100% - 40px)" : "calc(100% - 80px)"};
+            margin: ${mobile ? "20px" : "40px"};
             z-index: 1;
           }
         `}</style>

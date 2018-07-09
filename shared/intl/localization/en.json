@@ -7,7 +7,8 @@
     "rules": "Rules",
     "all-games": "All Games",
     "about-bitguild": "About BitGuild",
-    "coming-soon": "Coming Soon"
+    "coming-soon": "Coming Soon",
+    "play": "Play"
   },
   "components": {
     "switchLanguage": "Switch Language",
