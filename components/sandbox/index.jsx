@@ -19,11 +19,9 @@ export default class SandBox extends Component {
 
   renderIframe(query) {
     console.log('query: ', query);
-    // Quick hack for Magic Academy launch
     // let url = query.url && /^https?:\/\//.test(query.url) ? query.url : BITGUILD_INFO_URL;
-    if (query && query.url) {
-      return <iframe src={query.url} />;
-    }
+    let url = query && query.url ? query.url : 'http://test.magicacademy.bitguild.io'
+    return <iframe src={url} />;
   }
 
   render() {
