@@ -21,7 +21,9 @@ export default class SandBox extends Component {
     console.log('query: ', query);
     // Quick hack for Magic Academy launch
     // let url = query.url && /^https?:\/\//.test(query.url) ? query.url : BITGUILD_INFO_URL;
-    return <iframe src={query.url} />;
+    if (query && query.url) {
+      return <iframe src={query.url} />;
+    }
   }
 
   render() {
