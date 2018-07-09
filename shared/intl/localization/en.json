@@ -4,7 +4,10 @@
     "description": "Pre-Sale",
     "faq": "About Bitizens",
     "remaining": "remaining",
-    "rules": "Rules"
+    "rules": "Rules",
+    "all-games": "All Games",
+    "about-bitguild": "About BitGuild",
+    "coming-soon": "Coming Soon"
   },
   "components": {
     "switchLanguage": "Switch Language",

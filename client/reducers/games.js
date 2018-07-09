@@ -1,4 +1,4 @@
-import {GAMES_CHANGED, GAMES_ERROR, GAMES_LOADING} from "../../shared/constants/actions";
+import {GAMES_CHANGED, GAMES_ERROR, GAMES_LOADING} from "@/shared/constants/actions";
 
 const games = {
   isLoading: false,
@@ -9,34 +9,34 @@ const games = {
     {
       name: "Ether Online",
       slug: "ether.online",
-      description: "I am a crypto game and I am very interesting to the user.",
+      description: "",
     },
     {
       name: "Magic Academy",
       slug: "magicacademy",
-      description: "I am a crypto game and I am very interesting to the user.",
+      description: "",
     },
   ],
   comingSoon: [
     {
       name: "Bitizens",
       slug: "bitizens",
-      description: "I am a crypto game and I am very interesting to the user.",
+      description: "",
     },
     {
       name: "Axie Infinity",
       slug: "axie",
-      description: "I am a crypto game and I am very interesting to the user.",
+      description: "",
     },
     {
       name: "Mythereum",
       slug: "mythereum",
-      description: "I am a crypto game and I am very interesting to the user.",
+      description: "",
     },
     {
       name: "Eth Town",
       slug: "eth_town",
-      description: "I am a crypto game and I am very interesting to the user.",
+      description: "",
     },
   ],
 };

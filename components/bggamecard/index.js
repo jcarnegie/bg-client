@@ -36,17 +36,17 @@ class BGGameCard extends PureComponent {
           .bg-game-card {
             display: flex;
             flex-direction: column;
+            align-content: space-between;
+            justify-content: start;
             background: white;
             max-width: 300px;
             min-width: 140px;
             max-height: 440px;
-            min-height: 180px;
             width: 30%;
             height: 35%;
             background: white;
             border-radius: 6px;
             box-shadow: ${style.boxShadow.default};
-            justify-content: center;
             padding: 10px;
             cursor: pointer;
           }

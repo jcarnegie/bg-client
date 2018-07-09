@@ -41,6 +41,7 @@ class BGGrid extends PureComponent {
             margin: 0 0 0 ${mobile ? "5%" : "2%"};
             text-transform: uppercase;
             display: inline-block;
+            font-weight: 600;
           }
         `}</style>
         {this.props.title}

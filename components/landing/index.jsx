@@ -7,7 +7,6 @@ import Link from "next/link";
 import Router from "next/router";
 import FaFacebookOfficial from "react-icons/lib/fa/facebook-official";
 import FaTwitterSquare from "react-icons/lib/fa/twitter-square";
-import FaInstagram from "react-icons/lib/fa/instagram";
 
 import FeatureFlag from "@/components/featureflag";
 import BGButton from "@/components/bgbutton";
@@ -24,6 +23,7 @@ import style from "@/shared/constants/style";
   state => ({
     analytics: state.analytics,
     games: state.games,
+    layout: state.layout,
   })
 )
 class GameList extends Component {
@@ -35,6 +35,7 @@ class GameList extends Component {
     }),
     dispatch: PropTypes.func,
     analytics: PropTypes.object,
+    layout: PropTypes.object,
   }
 
   static defaultProps = {
@@ -138,6 +139,7 @@ class GameList extends Component {
   }
 
   presale(slug) {
+    const {mobile} = this.props.layout.type;
     return (
       <div onClick={() => Router.push({pathname: "/presale", query: {slug}}, `/presale/${slug}`)} className="promotional-banner presale-banner">
         <style jsx>{`
@@ -147,16 +149,23 @@ class GameList extends Component {
             border-bottom: 1px solid #c7c6f2;
             height: 200px;
             width: 100%;
+            max-width: 100%;
             text-align: center;
             text-shadow: ${style.textShadow.default};
             cursor: pointer;
+            font-size: ${mobile ? "0.9em" : "initial"}
           }
           .promotional-banner.presale-banner * {
             text-align: center;
           }
+          :global(.promotional-banner .row) {
+            width: 100%;
+            margin: auto 0;
+          }
           h1 {
             text-transform: uppercase;
             text-align: center;
+            margin: initial auto;
           }
         `}</style>
         <Row>
@@ -177,26 +186,28 @@ class GameList extends Component {
   allGames() {
     return (
       <BGGrid
-        title={"All Games"}
+        title={<FormattedMessage id="global.all-games"></FormattedMessage>}
         titleIconSrc="/static/images/icons/all_games.png"
         underlayImage="/static/images/backgrounds/people_and_interactions.png"
         >
-      {this.props.games.active.map((game, k) => <BGGameCard key={k} game={game} />)}
+        {this.props.games.active.map((game, k) => <BGGameCard key={k} game={game} onClick={() => ::this.navigateToGame(game.slug)} />)}
       </BGGrid>
     );
   }
 
   comingSoon() {
     return (
-      <BGGrid title={"Coming Soon"} titleIconSrc="/static/images/icons/coming_soon.png" backgroundImage={"linear-gradient(#DFECFE 50%, #DFECFE 75%, white 50%)"}>
+      <BGGrid title={<FormattedMessage id="global.coming-soon"></FormattedMessage>} titleIconSrc="/static/images/icons/coming_soon.png" backgroundImage={"linear-gradient(#DFECFE 50%, #DFECFE 75%, white 50%)"}>
         {this.props.games.comingSoon.map((game, k) => <BGGameCard key={k} game={game} />)}
       </BGGrid>
     );
   }
 
   aboutBitGuild() {
+    const {mobile} = this.props.layout.type;
+    const iconSize = mobile ? 70 : 100;
     return (
-      <BGGrid title={"About BitGuild"} titleIconSrc="/static/images/icons/about.png" style={{background: "#A5BEE4"}}>
+      <BGGrid title={<FormattedMessage id="global.about-bitguild"></FormattedMessage>} titleIconSrc="/static/images/icons/about.png" style={{background: "#A5BEE4"}}>
         <style jsx>{`
           .social-media {
             display: flex;
@@ -210,11 +221,14 @@ class GameList extends Component {
             cursor: pointer;
           }
           h3 {
-            font-size: 3em;
+            font-size: ${mobile ? "2.5em" : "3em"};
             font-weight: 300;
           }
+          :global(.about-bitguild p) {
+            max-width: 100%;
+          }
         `}</style>
-        <Row>
+        <Row className="about-bitguild">
           <Col xs={12} sm={6}>
             <div>
               <h3><FormattedMessage id="pages.games.about.tagline"></FormattedMessage></h3>
@@ -235,7 +249,7 @@ class GameList extends Component {
                     label: "Facebook",
                   });
                 }}>
-                  <FaFacebookOfficial width={100} height={100} color="#3B5998" />
+                  <FaFacebookOfficial width={iconSize} height={iconSize} color="#3B5998" />
                 </a>
                 <a href="https://twitter.com/bitguildplat" target="_blank" rel="noopener noreferrer" onClick={() => {
                   this.props.analytics.ga.event({
@@ -244,16 +258,19 @@ class GameList extends Component {
                     label: "Twitter",
                   });
                 }}>
-                  <FaTwitterSquare width={100} height={100} color="#1DA1F2" />
+                  <FaTwitterSquare width={iconSize} height={iconSize} color="#1DA1F2" />
                 </a>
-                <a href="https://www.instagram.com/bitguild" target="_blank" rel="noopener noreferrer" onClick={() => {
+                <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer" onClick={() => {
                   this.props.analytics.ga.event({
                     category: "Site Interaction",
                     action: "Page Visit",
-                    label: "Instagram",
+                    label: "Discord",
                   });
                 }}>
-                  <FaInstagram width={100} height={100} color="black" />
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245 240" width={iconSize} height={iconSize}>
+                    <path d="M104.4 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zM140.9 103.9c-5.7 0-10.2 5-10.2 11.1s4.6 11.1 10.2 11.1c5.7 0 10.2-5 10.2-11.1s-4.5-11.1-10.2-11.1z" />
+                    <path d="M189.5 20h-134C44.2 20 35 29.2 35 40.6v135.2c0 11.4 9.2 20.6 20.5 20.6h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V40.6c0-11.4-9.2-20.6-20.5-20.6zm-38.6 130.6s-3.6-4.3-6.6-8.1c13.1-3.7 18.1-11.9 18.1-11.9-4.1 2.7-8 4.6-11.5 5.9-5 2.1-9.8 3.5-14.5 4.3-9.6 1.8-18.4 1.3-25.9-.1-5.7-1.1-10.6-2.7-14.7-4.3-2.3-.9-4.8-2-7.3-3.4-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.4-.3-1.8-1-2.8-1.7-2.8-1.7s4.8 8 17.5 11.8c-3 3.8-6.7 8.3-6.7 8.3-22.1-.7-30.5-15.2-30.5-15.2 0-32.2 14.4-58.3 14.4-58.3 14.4-10.8 28.1-10.5 28.1-10.5l1 1.2c-18 5.2-26.3 13.1-26.3 13.1s2.2-1.2 5.9-2.9c10.7-4.7 19.2-6 22.7-6.3.6-.1 1.1-.2 1.7-.2 6.1-.8 13-1 20.2-.2 9.5 1.1 19.7 3.9 30.1 9.6 0 0-7.9-7.5-24.9-12.7l1.4-1.6s13.7-.3 28.1 10.5c0 0 14.4 26.1 14.4 58.3 0 0-8.5 14.5-30.6 15.2z" />
+                  </svg>
                 </a>
               </div>
             </Col>
