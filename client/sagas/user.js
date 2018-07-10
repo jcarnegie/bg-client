@@ -26,29 +26,29 @@ import {localization} from "@/shared/intl/setup";
 
 
 function * listUserPresaleTickets() {
-  const query = gql`
-    query listUserPresaleTickets($wallet: String!, $userId: ID!) {
-      listUserPresaleTickets(wallet: $wallet, userId: $userId) {
-        id wallet setId
-      }
-    }
-  `;
-
-  const account = yield select(state => state.account);
-  const user = yield select(state => state.user);
-
-  if (!account.wallet || !user.data) return;
-
-  const variables = {wallet: account.wallet, userId: user.data.id};
-  const tx = yield client.query({query, variables});
-
   try {
+    const query = gql`
+      query listUserPresaleTickets($wallet: String!, $userId: ID!) {
+        listUserPresaleTickets(wallet: $wallet, userId: $userId) {
+          id wallet setId
+        }
+      }
+    `;
+
+    const account = yield select(state => state.account);
+    const user = yield select(state => state.user);
+
+    if (!account.wallet || !user.data) return;
+
+    const variables = {wallet: account.wallet, userId: user.data.id};
+    const tx = yield client.query({query, variables});
+
     yield put({
       type: PRESALE_TRANSACTIONS_CHANGED,
       payload: {presaleTransactions: tx.data.listUserPresaleTickets},
     });
   } catch (e) {
-    log.error(e);
+    log.error("listUserPresaleTickets error:", e);
   }
 }
 
@@ -81,6 +81,7 @@ function * fetchUser() {
     }
   } catch (error) {
     yield put({type: USER_ERROR});
+    log.error("fetchUser error:", error);
   }
 }
 
@@ -107,6 +108,7 @@ function * createUser(action) {
     });
   } catch (error) {
     yield put({type: USER_ERROR});
+    log.error("createUser error:", error);
 
     const dupErrors = filter(propEq("name", "UniqueConstraintError"), error.graphQLErrors);
     const dups = map(prop("data"), dupErrors);
@@ -143,6 +145,8 @@ function * updateUser(action) {
         payload: _user,
       });
     } catch (error) {
+      log.error("updateUser error:", error);
+
       const errors = [].concat(error);
       if ([400, 409].includes(errors[0].status)) {
         yield put({
@@ -160,11 +164,16 @@ function * updateUser(action) {
 }
 
 function * signOutAccount(action) {
-  yield put({type: USER_RESET});
-  yield put({type: ACCOUNT_RESET});
-  yield put({type: BALANCE_ETH_RESET});
-  yield put({type: BALANCE_PLAT_RESET});
+  try {
+    yield put({type: USER_RESET});
+    yield put({type: ACCOUNT_RESET});
+    yield put({type: BALANCE_ETH_RESET});
+    yield put({type: BALANCE_PLAT_RESET});
+  } catch (e) {
+    log.error("signOutUser error:", e);
+  }
 }
+
 
 export default function * userSaga() {
   yield takeEvery(ACCOUNT_LOGGED_IN, fetchUser);

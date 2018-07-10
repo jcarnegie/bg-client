@@ -1,4 +1,5 @@
 import bluebird from "bluebird";
+import * as log from "loglevel";
 import {put, select, takeEvery} from "redux-saga/effects";
 
 import {
@@ -6,7 +7,6 @@ import {
   GIFT_REMOVE_LOADING,
   GIFT_REMOVE_SUCCESS,
   INVENTORY_ITEMS_REQUEST,
-  MESSAGE_ADD,
   NETWORK_NEW_BLOCK,
 } from "@/shared/constants/actions";
 import {getGames} from "@/client/actions/game";
@@ -28,12 +28,10 @@ function * checkGifts() {
       payload: hashes, // doesn't matter if tx succeed or failed
     });
   } catch (error) {
+    log.error("checkGifts error:", error);
+
     yield put({
       type: GIFT_REMOVE_ERROR,
-    });
-    yield put({
-      type: MESSAGE_ADD,
-      payload: error,
     });
   }
 }

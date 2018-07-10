@@ -1,6 +1,7 @@
 import {call, put, takeEvery} from "redux-saga/effects";
 import {GAS_CHANGED, GAS_LOADING, NETWORK_CHANGED} from "../../shared/constants/actions";
 import fetch from "isomorphic-fetch";
+import * as log from "loglevel";
 
 
 const defaultData = {
@@ -10,8 +11,12 @@ const defaultData = {
 };
 
 function callAPI() {
-  return fetch("https://ethgasstation.info/json/ethgasAPI.json")
-    .then(response => response.json());
+  try {
+    return fetch("https://ethgasstation.info/json/ethgasAPI.json")
+      .then(response => response.json());
+  } catch (e) {
+    log.error("callAPI error:", e);
+  }
 }
 
 function * fetchGas() {
@@ -30,6 +35,8 @@ function * fetchGas() {
       payload: newData,
     });
   } catch (error) {
+    log.error("fetchGas error:", error);
+    
     yield put({
       type: GAS_CHANGED,
       payload: defaultData,
