@@ -68,7 +68,7 @@ class BGApp extends App {
             <>
               <ResizeListener />
               <Web3Modals {...web3ModalsProps} />
-              <Component {...pageProps} {...locals} />;
+              <Component {...pageProps} {...locals} />
             </>
           </Provider>
         </ApolloProvider>
