@@ -87,7 +87,7 @@ class BGGameCard extends PureComponent {
             font-size: 0.75em;
             border-radius: 50%;
             border: 1px solid rgb(121, 182, 250);
-
+            text-transform: uppercase;
           }
           .bg-game-card:hover .play-game-button {
             visibility: visible;

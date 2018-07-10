@@ -1,13 +1,14 @@
 # PortalClient
 
-## Next Migration Fix List
+## To Do
 
-TODO
+General
 - Style jsx / eslint and editor support
 - Style updates, component rewrites.
-- Chat-specific style rewrites
-- Docker-compose integrates with development GraphQL API
-- Update redux-logger for node -- or silence
+
+Landing V2
+- Get updated game banners from @Ani
+- Get updated social media icons from @Ani
 
 
 ## Dependencies
@@ -70,7 +71,6 @@ Bootstrap success flow:
 -> APP_INIT
   -> APP_RESIZE
   -> GA_CREATE
-
   -> ACCOUNT_INIT
     -> ACCOUNT_GET
       -> ACCOUNT_LOGGED_IN
@@ -78,14 +78,11 @@ Bootstrap success flow:
         -> USER_LOADING
           (success) -> USER_CHANGED
                         -> CHAT_INIT
-
           (fail) -> USER_ERROR
           (fail) -> ACCOUNT_SIGN_OUT
                         -> CHAT_INIT
-
       -> ACCOUNT_LOGGED_OUT
         -> ACCOUNT_BEGIN_POLLING
-
     -> NETWORK_GET
       -> NETWORK_AVAILABLE
       -> NETWORK_LOADING

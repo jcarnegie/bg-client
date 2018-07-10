@@ -218,7 +218,7 @@ class GameList extends Component {
             cursor: pointer;
           }
           h3 {
-            font-size: ${mobile ? "2.5em" : "3em"};
+            font-size: ${mobile ? "2.0em" : "2.2em"};
             font-weight: 300;
           }
           :global(.about-bitguild p) {
