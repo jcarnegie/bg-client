@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 import {call, put} from "redux-saga/effects";
 import {path} from "ramda";
-import {client} from "@/client/utils/apollo";
+import {client} from "@/shared/utils/apollo";
 import {
   GAME_LOADING,
   GAME_CHANGED,
@@ -21,9 +21,9 @@ export function * fetchGame(action) {
 
     const query = gql`
       query viewGameBySlug($slug: String!) {
-          viewGameBySlug(slug: $slug) {
-            id name slug url api nft
-          }
+        viewGameBySlug(slug: $slug) {
+          id name slug url api nft
+        }
       }
     `;
 

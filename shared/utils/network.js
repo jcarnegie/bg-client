@@ -35,6 +35,14 @@ export function networkIsSupported(network) {
   return Object.keys(networkAddressMap).includes(network.data.name);
 }
 
+export function web3IsInstalled() {
+  return (typeof window !== "undefined" && window.hasOwnProperty("web3"));
+}
+
+export function getWeb3Wallet() {
+  return web3IsInstalled() ? (window.web3.eth.accounts && window.web3.eth.accounts[0]) : null;
+}
+
 export function getOracleContractAddress(network) {
   return networkAddressMap[network.data.name].oracle;
 }

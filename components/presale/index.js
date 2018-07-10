@@ -23,7 +23,7 @@ import {
   SHOW_CONVERT_MODAL,
 } from "@/shared/constants/actions";
 
-import {client as api} from "@/client/utils/apollo";
+import {client as api} from "@/shared/utils/apollo";
 
 const PLAT_DISCOUNT = 50;
 const TOTAL_ITEMS_COUNT = 139;

@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import * as log from "loglevel";
 import {withRouter} from "next/router";
+import {compose} from "react-apollo";
 
 import {
   USER_SHOW_REGISTER_WORKFLOW,
@@ -12,6 +13,11 @@ import {
 import {
   networkIsSupported,
 } from "@/shared/utils/network";
+
+import {
+  viewUserByWalletQuery,
+} from "@/shared/utils/apollo";
+
 
 import Web3Install from "@/components/popups/Web3Modals/Web3.install";
 import Web3Login from "@/components/popups/Web3Modals/Web3.login";
@@ -23,17 +29,17 @@ import Register from "@/components/popups/register";
 @withRouter
 @connect(
   state => ({
-    account: state.account,
     network: state.network,
-    user: state.user,
+    reduxUser: state.user,
   })
 )
 class Web3 extends Component {
   static propTypes = {
-    account: PropTypes.object,
     router: PropTypes.object,
     network: PropTypes.object,
+    reduxUser: PropTypes.object,
     user: PropTypes.object,
+    registration: PropTypes.any,
     dispatch: PropTypes.func,
     pathname: PropTypes.string,
   };
@@ -49,7 +55,7 @@ class Web3 extends Component {
   }
 
   render() {
-    const {network, account, pathname, router, user} = this.props;
+    const {network, pathname, router, reduxUser, user} = this.props;
 
     const guestRoutes = [
       "",
@@ -62,23 +68,20 @@ class Web3 extends Component {
     const matchExp = new RegExp(`^(${guestRoutes.reduce((a, b) => (a + `|\\/${b}`))})`, "i");
     const path = pathname || router.pathname;
 
-    if (!path || (path.match(matchExp) && !user.showRegisterWorkflow)) {
+    if (!path || (path.match(matchExp) && !reduxUser.showRegisterWorkflow)) {
       return null;
     }
 
-    if (user.showRegisterWorkflow && !network.available) {
+    if (reduxUser.showRegisterWorkflow && !network.available) {
       return <Web3Install show onHide={::this.hideRegistrationWorkflowModals} />;
     }
 
     const onSupportedNetwork = networkIsSupported(network);
     const networkLoadedSuccess = !network.isLoading && network.success;
     const showNetwork = networkLoadedSuccess && !onSupportedNetwork;
-    const showWeb3Login = !account.isLoading && !account.wallet;
-    const showRegister = !showNetwork && !showWeb3Login && (
-      user.showRegisterWorkflow || (
-        networkLoadedSuccess && onSupportedNetwork && !user.isLoading && !user.success
-      )
-    );
+    const showWeb3Login = !user || (user && (!user.loading && (user.viewUserByWallet && !user.viewUserByWallet.wallet)));
+    const userIsAlreadyRegistered = user.viewUserByWallet && user.viewUserByWallet.wallet;
+    const showRegister = !showNetwork && !showWeb3Login && !userIsAlreadyRegistered && !user.loading && reduxUser.showRegisterWorkflow;
 
     log.info(`show modals: network: ${showNetwork}, login: ${showWeb3Login}, register: ${showRegister}`);
 
@@ -92,4 +95,7 @@ class Web3 extends Component {
   }
 }
 
-export default Web3;
+export default compose(
+  viewUserByWalletQuery
+)(Web3);
+

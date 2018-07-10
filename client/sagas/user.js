@@ -4,7 +4,7 @@ import {call, put, select, takeEvery} from "redux-saga/effects";
 import {updateIntl} from "react-intl-redux";
 import {dissoc, filter, isEmpty, map, merge, path, pickAll, prop, propEq} from "ramda";
 
-import {client} from "@/client/utils/apollo";
+import {client} from "@/shared/utils/apollo";
 import {
   ACCOUNT_LOGGED_IN,
   ACCOUNT_LOGGED_OUT,

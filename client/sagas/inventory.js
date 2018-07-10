@@ -1,64 +1,16 @@
 import bluebird from "bluebird";
-import gql from "graphql-tag";
-import {call, put, select, takeEvery} from "redux-saga/effects";
-import {path} from "ramda";
-import {UPDATE as INTL_UPDATE} from "react-intl-redux";
+import {put, select, takeEvery} from "redux-saga/effects";
+
 import {
   GIFT_REMOVE_ERROR,
   GIFT_REMOVE_LOADING,
   GIFT_REMOVE_SUCCESS,
-  GAMES_REQUEST,
-  INVENTORY_ITEMS_CHANGED,
-  INVENTORY_ITEMS_ERROR,
-  INVENTORY_ITEMS_LOADING,
   INVENTORY_ITEMS_REQUEST,
   MESSAGE_ADD,
   NETWORK_NEW_BLOCK,
-  USER_CHANGED,
-  GIFT_ADD_SUCCESS,
 } from "@/shared/constants/actions";
-import {readFromQueryString} from "@/client/utils/location";
-import {client} from "@/client/utils/apollo";
 import {getGames} from "@/client/actions/game";
 
-function * getItems() {
-  try {
-    const {user} = yield select();
-    yield put({
-      type: INVENTORY_ITEMS_LOADING,
-    });
-    const testItems = (readFromQueryString("testItems") === "true")
-      ? "?testItems=true"
-      : "";
-
-    if (!user.data) return;
-
-    const {language, wallet} = user.data;
-    const query = gql`
-      query listItems($wallet: String!, $userId: ID!, $language: String!, $testItems: Boolean) {
-        listItems(wallet: $wallet, userId: $userId, language: $language, testItems: $testItems) {
-          id presale lan tokenId image name description attrs categories game { id }
-        }
-      }
-    `;
-    const variables = {wallet, language, userId: user.data.id, testItems};
-    const result = yield call(::client.query, {query, variables, fetchPolicy: "no-cache"});
-    const items = path(["data", "listItems"], result);
-
-    yield put({
-      type: INVENTORY_ITEMS_CHANGED,
-      payload: items,
-    });
-  } catch (error) {
-    yield put({
-      type: INVENTORY_ITEMS_ERROR,
-    });
-    yield put({
-      type: MESSAGE_ADD,
-      payload: error,
-    });
-  }
-}
 
 function * checkGifts() {
   try {
@@ -87,10 +39,6 @@ function * checkGifts() {
 }
 
 export default function * inventorySaga() {
-  yield takeEvery(USER_CHANGED, getItems);
-  yield takeEvery(INTL_UPDATE, getItems);
-  yield takeEvery(GAMES_REQUEST, getItems);
   yield takeEvery(INVENTORY_ITEMS_REQUEST, getGames);
   yield takeEvery(NETWORK_NEW_BLOCK, checkGifts);
-  yield takeEvery(GIFT_ADD_SUCCESS, getItems);
 }

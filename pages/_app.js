@@ -3,11 +3,22 @@ import React from "react";
 import {Provider} from "react-intl-redux";
 import withRedux from "next-redux-wrapper";
 import withReduxSaga from "next-redux-saga";
+
+import {
+  ApolloProvider,
+} from "react-apollo";
+
+import {
+  client,
+} from "@/shared/utils/apollo";
+
 import * as log from "loglevel";
 
 import configureStore from "@/client/utils/store";
 
 import ResizeListener from "@/components/resizelistener";
+// import LoadingPage from "@/components/LoadingPage";
+// import ErrorPage from "@/components/ErrorPage";
 import Web3Modals from "@/components/popups/Web3Modals";
 import GlobalStyles from "@/pages/globalstyles";
 import style from "@/shared/constants/style";
@@ -52,13 +63,15 @@ class BGApp extends App {
     return (
       <Container>
         <GlobalStyles style={style} />
-        <Provider store={store}>
-          <>
-            <ResizeListener />
-            <Web3Modals {...web3ModalsProps} />
-            <Component {...pageProps} {...locals} />
-          </>
-        </Provider>
+        <ApolloProvider client={client}>
+          <Provider store={store}>
+            <>
+              <ResizeListener />
+              <Web3Modals {...web3ModalsProps} />
+              <Component {...pageProps} {...locals} />;
+            </>
+          </Provider>
+        </ApolloProvider>
       </Container>
     );
   }

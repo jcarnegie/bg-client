@@ -3,6 +3,11 @@ import {take, call, put, select, takeLatest} from "redux-saga/effects";
 import * as log from "loglevel";
 
 import {
+  client,
+  queries,
+} from "@/shared/utils/apollo";
+
+import {
   ACCOUNT_INIT,
   ACCOUNT_GET,
   ACCOUNT_LOGGED_IN,
@@ -62,6 +67,17 @@ function * getAccount() {
         payload: {
           wallet: web3EthWallet,
         },
+      });
+
+      const {data} = yield client.query({
+        query: queries.viewUserByWallet,
+        variables: {wallet: web3EthWallet},
+      });
+
+      yield client.writeQuery({
+        query: queries.viewUserByWallet,
+        variables: {wallet: web3EthWallet},
+        data,
       });
     } else if (userSignedOutBeforeLastTick || userHasNotSignedIn) {
       yield put({

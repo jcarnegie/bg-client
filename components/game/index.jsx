@@ -2,21 +2,16 @@ import * as log from "loglevel";
 import queryString from "query-string";
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {FormattedMessage} from "react-intl";
-import {connect} from "react-redux";
-import {withRouter} from "next/router";
-import {GAME_REQUEST} from "../../shared/constants/actions";
-import InitGameIframeConnection from "../common/init";
-import Loader from "../common/loader";
-import {defaultLanguage} from "../../shared/constants/language";
+import {compose} from "react-apollo";
 
+import {
+  viewGameBySlugQuery,
+  viewUserByWalletQuery,
+} from "@/shared/utils/apollo";
 
-@connect(
-  state => ({
-    game: state.game,
-    user: state.user,
-  })
-)
+import InitGameIframeConnection from "@/components/common/init";
+import {defaultLanguage} from "@/shared/constants/language";
+
 class Game extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
@@ -33,35 +28,20 @@ class Game extends Component {
     return {...query};
   };
 
-  componentDidMount() {
-    const {dispatch, game, slug} = this.props;
-
-    if (!game || !game.data || game.data.slug !== slug) {
-      dispatch({
-        type: GAME_REQUEST,
-        payload: {slug},
-      });
-    }
-  }
-
   renderGame() {
     const {game, user, query} = this.props;
 
-    if (!game) return null;
+    if (game.loading || user.loading) return "loading";
+    if (game.error || user.error) return "Error";
 
-    const gameLoadingOrNoData = game.isLoading || (!game.success && !game.data);
-    if (gameLoadingOrNoData) {
-      return <Loader />;
+    let url = "";
+
+    try {
+      url = game.viewGameBySlug.url + (game.viewGameBySlug.url.includes("?") ? "&" : "?") + queryString.stringify(query);
+    } catch (err) {
+      log.error("Unable to parse url for game.");
+      return "Error";
     }
-
-    const gameFetchFailure = !game.success || (!game.data || !game.data.url);
-    if (gameFetchFailure) {
-      return (
-        <FormattedMessage id="errors.page-not-found" />
-      );
-    }
-
-    const url = game.data.url + (game.data.url.includes("?") ? "&" : "?") + queryString.stringify(query);
     return (<iframe src={url} key={user.data ? user.data.language : defaultLanguage} className="game" />);
   }
 
@@ -83,4 +63,7 @@ class Game extends Component {
   }
 }
 
-export default withRouter(Game);
+export default compose(
+  viewGameBySlugQuery,
+  viewUserByWalletQuery
+)(Game);
