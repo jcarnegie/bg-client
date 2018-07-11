@@ -94,7 +94,7 @@ export default class Message extends Component {
             width: 100%;
           }
           .chat .message .message-box.my {
-            background-color: #83B2FF;
+            background-color: #6795FF;
           }
           .message-box.my .body {
             font-size: 13px;
