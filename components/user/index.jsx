@@ -76,7 +76,7 @@ export default class User extends Component {
         `}</style>
         <Desktop>
           <div className="user-desktop">
-          <img src="/static/images/icons/avatar.png" className="avatar" />
+          <img src="/static/images/icons/avatar_my.png" className="avatar" />
           <span className="text">
             <span className="name">{user.data.nickName}</span>
             <span className="wallet">{user.data.wallet.substring(0, 10) + "..."}</span>
@@ -85,7 +85,7 @@ export default class User extends Component {
         </Desktop>
         <Mobile>
           <div className="user-mobile">
-          <img src="/static/images/icons/avatar.png" className="avatar" />
+          <img src="/static/images/icons/avatar_my.png" className="avatar" />
           <span className="text">
             <span className="name">{user.data.nickName}</span>
             <span className="wallet">{user.data.wallet.substring(0, 10) + "..."}</span>
