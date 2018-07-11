@@ -96,7 +96,7 @@ export default class Message extends Component {
           .chat .message .message-box.my {
             background-color: #6795FF;
           }
-          .message-box.my .body {
+          .chat .message-box.my .body {
             font-size: 13px;
             margin-top: 5px;
             color: #FFF;
@@ -130,9 +130,6 @@ export default class Message extends Component {
         {isMyMessage ? (
           <>
             <div className="message-box-container">
-              <div className="header">
-                <div className="nickname">{path(["sender", "nickname"], message)}</div>
-              </div>
               <div className="message-box my">
                 <div className="body contents">{this.createMessage()}</div>
               </div>
@@ -147,6 +144,9 @@ export default class Message extends Component {
               {this.renderAvatar({diameter: 32})}
             </div>
             <div className="message-box-container">
+              <div className="header">
+                <div className="nickname">{path(["sender", "nickname"], message)}</div>
+              </div>
               <div className="message-box">
                 <div className="body contents">{this.createMessage()}</div>
               </div>

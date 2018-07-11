@@ -34,11 +34,6 @@ if (process.env.NODE_ENV === "production") {
 class BGApp extends App {
   static async getInitialProps({Component, router, ctx}) {
     const {isServer} = ctx;
-    const state = ctx.store.getState();
-
-    if (!isServer && state.analytics.ga.pageview) {
-      state.analytics.ga.pageview(ctx.pathname);
-    }
 
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     const web3ModalsProps = Web3Modals.WrappedComponent.getInitialProps(ctx);
@@ -49,6 +44,10 @@ class BGApp extends App {
 
   componentDidMount() {
     this.props.store.dispatch({type: APP_INIT});
+    const state = this.props.store.getState();
+    if (state.analytics.ga.pageview) {
+      state.analytics.ga.pageview(window.location.pathname);
+    }
   }
 
   render() {
