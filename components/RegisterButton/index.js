@@ -18,14 +18,13 @@ class RegisterButton extends Component {
   }
   render() {
     const {dispatch, user} = this.props;
-    return (
+    return user.data ? null : (
       <button className="register-button" onClick={() => dispatch({
         type: USER_SHOW_REGISTER_WORKFLOW,
         payload: !user.showRegisterWorkflow,
       })}>
         <style jsx>{`
           .register-button {
-            display: ${user.data ? "none" : "initial"};
             color: white;
             margin: 0 -15px 0 0;
             border: 0;

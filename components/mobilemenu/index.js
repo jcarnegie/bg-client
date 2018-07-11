@@ -133,9 +133,7 @@ class MobileMenu extends Component {
         `}</style>
         <ChatToggle />
         <MenuToggle />
-        <HeaderItem>
-          <RegisterButton />
-        </HeaderItem>
+        <RegisterButton />
       </div>
     );
   }
