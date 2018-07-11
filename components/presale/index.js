@@ -35,35 +35,30 @@ const SETS = [
     tokenId: 17,
     total: 100,
     price: 60000,
-    name: "Pioneer of the Wilds",
   },
   {
     id: "pioneer_of_the_skies",
     tokenId: 16,
     total: 25,
     price: 180000,
-    name: "Pioneer of the Skies",
   },
   {
     id: "pioneer_of_the_seas",
     tokenId: 18,
     total: 10,
     price: 480000,
-    name: "Pioneer of the Seas",
   },
   {
     id: "pioneer_of_the_cyberscape",
     tokenId: 19,
     total: 1,
     price: 3000000,
-    name: "Cyberspace Pioneer",
   },
   {
     id: "pioneer_compass",
     tokenId: 20,
     total: 3,
     price: 720000,
-    name: "Pioneer's Compass",
   },
 ];
 
@@ -94,7 +89,7 @@ class Presale extends Component {
     qtyOf18: null,
     qtyOf19: null,
     qtyOf20: null,
-    counter: 0
+    counter: 0,
   }
 
   static getInitialProps({err, req, res, query, store, isServer}) {
@@ -139,7 +134,7 @@ class Presale extends Component {
 
   ticker() {
     this.setState({
-      counter: this.state.counter + 1
+      counter: this.state.counter + 1,
     });
   }
 
@@ -147,7 +142,7 @@ class Presale extends Component {
     if (this.state.counter < 15) {
       return <ScaleLoader height={10} width={2} color="black" style={{display: "inline"}} />;
     } else {
-      return <img src = "../static/images/icons/missing_data_placeholder.png"/>;
+      return <img src = "../static/images/icons/missing_data_placeholder.png" />;
     }
   }
 
@@ -249,7 +244,7 @@ class Presale extends Component {
         <Col xs={6} sm={7}>
           <Row>
             <Col xs={12}>
-              <h3>{set.name}</h3>
+              <h3><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.name`} /></h3>
             </Col>
             <Col xs={12}>
               <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/banner.jpg`} className="presale-purchase-set-image" />
@@ -264,7 +259,7 @@ class Presale extends Component {
             key={set.id}
             disabled={(remainingForSet === 0 || ::this.userHasAlreadyPurchasedItem(set.tokenId))}
             onClick={() => ::this.purchase(set)}
-            title={set.name}
+            title={<FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.name`} />}
             subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}</>}
             itemImage={<Image responsive src={`/static/images/games/${this.props.slug}/presale/${set.id}/thumbnail.jpg`} />}
             setDetails={
@@ -471,8 +466,8 @@ class Presale extends Component {
             </div>
           </Col>
           <Col md={12}>
-            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-1-description`} /></p>
-            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-2-description`} /></p>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-text-1`} /></p>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-text-1`} /></p>
           </Col>
         </Row>
       </div>

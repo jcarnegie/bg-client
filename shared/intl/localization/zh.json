@@ -1,4 +1,15 @@
 {
+  "global": {
+    "about": "About",
+    "description": "Pre-Sale",
+    "faq": "About Bitizens",
+    "remaining": "剩余",
+    "rules": "Rules",
+    "all-games": "All Games",
+    "about-bitguild": "About BitGuild",
+    "coming-soon": "Coming Soon",
+    "play": "Play"
+  },
   "components": {
     "switchLanguage": "语言",
     "language": {
@@ -231,6 +242,136 @@
       "l11": "“请在 2018 年 6 月 25 日查看您的电子邮件，以了解您是否获胜！”",
       "p8": "“*如果用户未在 24 小时内回复我们的邮件，BitGuild 将保留随机选择新获胜者的权利。”",
       "p9": "“稿件将被视为垃圾信息、不够努力、冒犯性或重复内容。 祝大家玩得开心！”"
+    },
+    "presale": {
+      "bitizens": {
+        "title": "Bitizen 开拓者预售",
+        "subtitle": "欢迎 Bitizen！",
+        "presale-stats-title": "IGO Stats",
+        "items-bought": "Items sold",
+        "items-left": "left",
+        "total-buyers": "Total buyers",
+        "stretch-goals-unlocked": "Bonus rewards unlocked",
+        "stretch-goals-locked": "locked",
+        "bonus-reward-1-title": "Dril'r Bot Pioneer-I",
+        "bonus-reward-1-description": "Once <strong>30%</strong> of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot Pioneer-I paint job!",
+        "bonus-reward-2-title": "Pioneer's Rocket",
+        "bonus-reward-2-description": "Selling <strong>70%</strong> of all Bitizens pre-sale items will unlock something extra special for all participants - Your very own miniature rocket!",
+        "dividing-text": "我们还设定了一些独特的延伸目标，达到这些目标会为所有预售参与者解锁独特的物品，这是通过帮助我们实现 Bitizen 愿景而获得的额外特殊奖励。",
+        "drillrbot-title": "第一个延伸目标：",
+        "drillrbot-text-1": "当所有 Bitizen 预售物品中的 30% 销售完毕后，每位参与者都会自豪地成为独一无二的 Dril’r Bot 油漆工作的新主人！",
+        "drillrbot-text-2": "没错，这个可爱的小小挖矿伙伴现在是一个 ERC721 令牌，这意味着可以定制！ 在玩家对他们的个人 Dril’ rBot 进行的所有可能制订方式中，高居首位的就是油漆工作。这里重点介绍的一大特色将是非常特别的（一旦预售结束，就是这样，您将不能再得到它了！）",
+        "rocket-title": "第二个延伸目标：",
+        "rocket-text-1": "当所有 Bitizens 预售物品中的 70% 都已售出时，将为所有参与者解锁一些额外的特别物品 - 您自己的微型火箭！",
+        "rocket-text-2": "Mini-Rocket 是一种“配件”物品类型，意味着它可以装备到您的角色身上，并且可以为您的 Bitizen 提供特殊的视觉效果和/或精确度加成！ 与上述对油漆工作的定制一样，一旦 Bitizen 预售结束，这款 Mini-Rocket 也将不再发售！",
+        "final-text": "加入我们的行列吧，将我们对网络游戏的热爱带入区块链和 Bitizen！",
+        "description-text": {
+          "p1": "参加我们的预售活动，获得以下独家物品。 这将是您获取这些物品的唯一机会 - 数量有限，切勿错过！",
+          "p2": "参加 Bitizen 预售活动不仅可帮助我们制作出优质的游戏，率先满足玩家的需求，提供深入、有意义且引人入胜的区块链游戏体验，同时还将有助于展示您作为 Bitizen 和 BitGuild Portal 的开拓者的地位。 游戏上线后，这些特殊的限量版发行物品将不再能通过传统的游戏方式获得；您必须通过交易换取它们！",
+          "p3": "Once the game launches, these special, limited run items can't be acquired by traditional in-game means; You'd have to trade for them!",
+          "p4": "保留属于您的那份加密游戏历史记录，立即确立您作为 Bitizen 开拓者的地位！"
+        },
+        "faq-text": {
+          "p1": "<strong>Your invitation to come and make the world a better place.</strong>",
+          "p2": "<strong>Welcome to Bitropolis - the ultimate destination for a new crypto world!</strong>",
+          "p3": "Visit this sprawling cityscape and enjoy everything it has to offer, from the sunny digital skies to the depths of the bitmines. Everyone is welcome, all you have to do is sign up - Your digital cognition will then be loaded into your new destination in a matter of mere clicks!",
+          "p4": "这是什么地方？",
+          "p5": "哦，这没什么大不了的，它只是区块链的这一侧一个最壮观的数字文明（可能在另一侧也是如此……但我们去不到那里。） 这是一个广阔的、永无止境的城市丛林，在这里，您最疯狂的梦想都可以实现 - 只要您想在密码世界里大展身手！ 启程前往这个新的互联虚拟乌托邦，体验无限的可能性。",
+          "p6": "在这里我是谁？",
+          "p7": "您喜欢的任何人！ 您，以及其他任何在美丽的 Bitropolis 驻足的人都是光荣的 Bitizen！ 在这个王国，您可以自定义您美丽的多边形脸庞，填充您的内心，让每个人充分了解您的一切。",
+          "p8": "这的确不错，但我为什么要留下来？！",
+          "p9": "当然是因为这里的繁荣景象！ 一旦您亲眼看到，您就会立刻相信 - Bitropolis 真的是一个伟大的地方！ 这是一个可为所有人提供机会的世界，在这里，每个人从一开始就是平等的。 拒绝 Bitropolis 居住权就像在 2010 年使用比特币购买比萨饼 - 这绝非明智之举！",
+          "p10": "好，告诉我怎么做吧！",
+          "p11": "每一个 Bitizen 都会获得一个标配设备：一部稍微使用过的 Dril’rBot Rx-24。 一旦您拥有了这台值得信赖的小型挖掘机，您就可以深入挖掘 Bitropolis 矿井中储量极度丰富的宝藏了。 尽情地钻探您的内心世界吧，因为您发现的任何东西都可以在铸造厂兑换而得到甜蜜的回报！",
+          "p12": "太酷了！ ……那么，现在呢？",
+          "p13": "享受荣耀，用稀有独特的丝线装饰自己，炫耀您的战果，然后再大干一回吧！ 在这里，您可以找到的东西可谓无穷无尽，在 Bitropolis 获得的任何和所有物品都归您所有，您可以保留、使用、交易，甚至是出售以换取 PLAT！ 谁知道您会发现什么呢……它可能就是您完成收藏所需要的东西，也可能是您邻居喜欢的收藏（只要您愿意卖给他们……） 有人说到过利润吗？ 哗啦哗啦！）)",
+          "p14": "听起来很神奇！ 我怎么去那儿呢？",
+          "p15": "您现在就可以点击此处，预订前往 Bitropolis 虚拟世界的单程票（让我们面对这样一个事实：您不需要回程票）。 根本就没有经济舱的座位 -对 Bitizen 来说，全部都是头等舱，宝贝！"
+        },
+        "rules-text": {
+          "p1": "<strong>Limitations:</strong>",
+          "l1": "您不能多次购买同一套装。",
+          "l2": "多次购买只会让您获得每一级的一项奖金奖励。",
+          "l3": "在预售结束后，这些物品将不再发售。",
+          "l4": "开拓者物品将允许在我们的市场上销售。",
+          "l5": "所有预售物品都只能使用 PLAT 购买。",
+          "l6": "所有预售交易均无法反悔。",
+          "p2": "<strong>Distribution:</strong>",
+          "l7": "开拓者套装、物品和奖金奖励可在 Bitizen 衣橱发布时（定于 7 月底）认领。",
+          "l8": "您必须使用购买物品时使用的帐号来认领您的物品。",
+          "l9": "在兑换游戏内物品时，可以应用燃气费。"
+        },
+        "sets": {
+          "pioneer_of_the_wilds": {
+            "name": "荒野开拓者",
+            "description": "随时准备寻求新的冒险，探险家的装备将让人们知道您处于加密游戏的最前沿，酷炫潮爆！",
+            "item1": {
+              "name": "木髓头盔"
+            },
+            "item2": {
+              "name": "探险夹克"
+            },
+            "item3": {
+              "name": "探险长裤"
+            },
+            "item4": {
+              "name": "探险靴子"
+            }
+          },
+          "pioneer_of_the_seas": {
+            "name": "海洋开拓者",
+            "description": "下潜到比大多数人只在梦中企望的深度更加幽深的地方，揭开一个未被探索的世界中存在的种种未解之谜。",
+            "item1": {
+              "name": "深海头盔"
+            },
+            "item2": {
+              "name": "潜水上衣"
+            },
+            "item3": {
+              "name": "潜水裤"
+            },
+            "item4": {
+              "name": "潜水靴"
+            }
+          },
+          "pioneer_of_the_skies": {
+            "name": "天空开拓者",
+            "description": "穿上这身严密的飞行套装，飞越雷达。 您的 Bitizen 这身装扮会带来不俗的回头率，人们会纷纷投来羡慕嫉妒的目光 - 那是肯定的！",
+            "item1": {
+              "name": "航空护目镜"
+            },
+            "item2": {
+              "name": "飞行员夹克"
+            },
+            "item3": {
+              "name": "飞行裤"
+            },
+            "item4": {
+              "name": "飞行员靴子"
+            }
+          },
+          "pioneer_of_the_cyberscape": {
+            "name": "网络空间开拓者",
+            "description": "奠定自己作为仅有的 5 名 Bitizen 网络战士之一的地位。 您与网络同在，网络与您融为一体。",
+            "item1": {
+              "name": "网络头盔"
+            },
+            "item2": {
+              "name": "网络胸甲"
+            },
+            "item3": {
+              "name": "网络紧身裤"
+            },
+            "item4": {
+              "name": "网络靴子"
+            }
+          },
+          "pioneer_compass": {
+            "name": "Pioneer's Compass",
+            "description": "This ancient compass always shows the way, but no one know where to exactly. Some say it points to the long-lost heart of Bitropolis, others say it points to your innermost desires - Either way, it increases your chance to find something nice while mining!"
+          }
+        }
+      }
     }
   },
   "chat": {
