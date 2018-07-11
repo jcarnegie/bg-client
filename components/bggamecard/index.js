@@ -58,7 +58,7 @@ class BGGameCard extends PureComponent {
           }
           .bg-game-card:hover {
             background: white;
-            opacity: ${this.props.playButton ? ".70" : "1"};
+            opacity: ${this.props.playButton ? ".60" : "1"};
           }
           .bg-game-card-wrapper:hover {
             transform: translateY(-5px);
