@@ -127,7 +127,7 @@ export default class Chat extends Component {
               <FormControl onChange={::this.handleMessageChange} type="text" value={this.state.newMessage} placeholder='Write Something' />
               <Button type="submit">
                 <svg className="send-button" enableBackground="new 0 0 535.5 535.5" version="1.1" viewBox="0 0 535.5 535.5" xmlSpace="preserve" xmlns="http://www.w3.org/2000/svg">
-                  <polygon points="0 497.25 535.5 267.75 0 38.25 0 216.75 382.5 267.75 0 318.75" fill="#006DF0"/>
+                  <polygon points="0 497.25 535.5 267.75 0 38.25 0 216.75 382.5 267.75 0 318.75" fill="#006DF0" />
                 </svg>
               </Button>
             </FormGroup>

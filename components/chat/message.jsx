@@ -51,13 +51,9 @@ export default class Message extends Component {
     user: PropTypes.object,
   };
 
-  renderAvatar(myMessage, diameter = 32) {
-    if (!myMessage) {
-      return null;
-    }
-
+  renderAvatar({diameter = 32, icon = "/static/images/icons/avatar.png"}) {
     return (
-      <Image src="/static/images/icons/avatar.png" width={diameter} height={diameter} />
+      <Image src={icon} width={diameter} height={diameter} />
     );
   }
 
@@ -84,7 +80,7 @@ export default class Message extends Component {
         <style jsx global>{`
           .chat .message {
             display: flex;
-            margin-top: 20px;
+            margin: 20px 10px 0 10px;
           }
           .chat .message .message-box-container {
             flex-grow: 10;
@@ -100,7 +96,7 @@ export default class Message extends Component {
           .chat .message .message-box.my {
             background-color: #83B2FF;
           }
-          :global(.chat .message .message-box.my .body) {
+          .message-box.my .body {
             font-size: 13px;
             margin-top: 5px;
             color: #FFF;
@@ -117,34 +113,46 @@ export default class Message extends Component {
             margin-top: 5px;
             display: block;
           }
-          :global(.chat .message .message-box .body .contents) {
+          .chat .message .message-box .body .contents {
             overflow-wrap: break-word;
           }
-          .chat .message .avatarLeft {
+          .chat .message .avatar-left {
             align-self: flex-end;
             flex-grow: 1;
-            margin: 0 10px;
+            margin: 0 10px 0 0;
           }
-          .chat .message .avatarRight {
+          .chat .message .avatar-right {
             align-self: flex-end;
             flex-grow: 1;
-            margin: 0 10px;
+            margin: 0 0 0 10px;
           }
         `}</style>
-        <div className="avatarLeft">
-          {this.renderAvatar(!isMyMessage)}
-        </div>
-        <div className="message-box-container">
-          <div className="header">
-            {isMyMessage ? <div /> : <div className='nickname'>{path(["sender", "nickname"], message)}</div>}
-          </div>
-          <div className={"message-box" + (isMyMessage ? " my" : "")}>
-            <div className="body contents">{this.createMessage()}</div>
-          </div>
-        </div>
-        <div className="avatarRight">
-          {this.renderAvatar(isMyMessage, 18)}
-        </div>
+        {isMyMessage ? (
+          <>
+            <div className="message-box-container">
+              <div className="header">
+                <div className="nickname">{path(["sender", "nickname"], message)}</div>
+              </div>
+              <div className="message-box my">
+                <div className="body contents">{this.createMessage()}</div>
+              </div>
+            </div>
+            <div className="avatar-right">
+              {this.renderAvatar({diameter: 18, icon: "/static/images/icons/avatar_my.png"})}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="avatar-left">
+              {this.renderAvatar({diameter: 32})}
+            </div>
+            <div className="message-box-container">
+              <div className="message-box">
+                <div className="body contents">{this.createMessage()}</div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     );
   }
