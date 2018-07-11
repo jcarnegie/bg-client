@@ -62,7 +62,7 @@ class ItemSetDetailsCard extends React.PureComponent {
           }
           button {
             border: 0;
-            background-color: ${style.colors.secondary};
+            background-color: ${style.colors.primary};
             color: white;
             font-weight: 100;
             padding: 10px 0;

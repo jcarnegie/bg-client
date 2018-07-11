@@ -12,22 +12,24 @@ import {Image} from "react-bootstrap";
 class BGGrid extends PureComponent {
   static propTypes = {
     layout: PropTypes.object,
-    style: PropTypes.object,
     title: PropTypes.node,
     titleIconSrc: PropTypes.node,
     titleIconWidth: PropTypes.string,
+    backgroundColor: PropTypes.string,
     backgroundImage: PropTypes.string,
+    backgroundImageStats: PropTypes.object,
     underlayImage: PropTypes.string,
     children: PropTypes.array,
   }
 
   static defaultProps = {
     layout: {},
-    style: {},
     title: "",
     titleIconSrc: null,
-    titleIconWidth: "75px",
-    backgroundImage: "linear-gradient(#F0F6FE 50%, #F0F6FE 75%, white 50%)",
+    titleIconWidth: "70px",
+    backgroundColor: "#F0F6FE",
+    backgroundImage: "none",
+    backgroundImageStats: null,
     underlayImage: null,
     children: null,
   }
@@ -38,7 +40,7 @@ class BGGrid extends PureComponent {
       <h5 className="title">
         <style jsx>{`
           .title {
-            margin: 0 0 0 ${mobile ? "5%" : "2%"};
+            margin: 0 0 0 ${mobile ? "3%" : "1.5%"};
             text-transform: uppercase;
             display: inline-block;
             font-weight: 600;
@@ -57,10 +59,17 @@ class BGGrid extends PureComponent {
     return titleIconSrc ? <Image src={titleIconSrc} circle width={titleIconWidth} /> : null;
   }
 
+  backgroundImageFromStats() {
+    const {backgroundImageStats} = this.props;
+    if (!backgroundImageStats) return "none";
+    const {colors, gap} = backgroundImageStats;
+    return `linear-gradient(${colors[0]} 50%, ${colors[1]} calc(100% - ${gap}), ${colors[2]} ${gap})`;
+  }
+
   render() {
     const {mobile} = this.props.layout.type;
     return (
-      <div className="bg-grid-wrapper" style={this.props.style}>
+      <div className="bg-grid-wrapper">
         <style jsx>{`
           .bg-grid-wrapper,
           .bg-grid-header,
@@ -68,8 +77,8 @@ class BGGrid extends PureComponent {
             padding: ${mobile ? "5px" : "15px"};
           }
           .bg-grid-wrapper {
-            background: #F0F6FE;
-            background-image: ${this.props.backgroundImage};
+            background: ${this.props.backgroundColor};
+            background-image: ${this.props.backgroundImageStats ? ::this.backgroundImageFromStats() : this.props.backgroundImage};
             width: 100%;
             position: relative;
           }

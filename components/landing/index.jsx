@@ -107,6 +107,9 @@ class GameList extends Component {
             background-position: center center;
             background-repeat: no-repeat;
           }
+          :global(.hero-carousel .carousel-indicators) {
+            bottom: 0;
+          }
         `}</style>
         <Col>
           <Carousel interval={null} className="hero-carousel" defaultActiveIndex={1}>
@@ -151,7 +154,7 @@ class GameList extends Component {
             text-align: center;
             text-shadow: ${style.textShadow.default};
             cursor: pointer;
-            font-size: ${mobile ? "0.9em" : "initial"}
+            font-size: ${mobile ? ".95em" : "initial"}
           }
           .promotional-banner.presale-banner * {
             text-align: center;
@@ -165,6 +168,9 @@ class GameList extends Component {
             text-align: center;
             margin: initial auto;
           }
+          :global(.promotional-banner .button-row) {
+            padding-top: 10px;
+          }
         `}</style>
         <Row>
           <BGIcon src="/static/images/icons/bitguild_logo@1x.png" width="25px" style={{marginTop: "20px"}} />
@@ -172,7 +178,7 @@ class GameList extends Component {
         <Row>
           <h1><FormattedMessage id={`pages.presale.${slug}.title`} /></h1>
         </Row>
-        <Row>
+        <Row className="button-row">
           <BGButton>
             <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
           </BGButton>
@@ -182,20 +188,34 @@ class GameList extends Component {
   }
 
   allGames() {
+    const {mobile} = this.props.layout.type;
     return (
       <BGGrid
         title={<FormattedMessage id="global.all-games"></FormattedMessage>}
         titleIconSrc="/static/images/icons/all_games.png"
         underlayImage="/static/images/backgrounds/people_and_interactions.png"
-        >
+        backgroundImageStats={{
+          colors: ["#F0F6FE", "#F0F6FE", "white"],
+          gap: (mobile ? "60px" : "100px"),
+        }}
+      >
         {this.props.games.active.map((game, k) => <BGGameCard key={k} game={game} onClick={() => ::this.navigateToGame(game.slug)} playButton />)}
       </BGGrid>
     );
   }
 
   comingSoon() {
+    const {mobile} = this.props.layout.type;
     return (
-      <BGGrid title={<FormattedMessage id="global.coming-soon"></FormattedMessage>} titleIconSrc="/static/images/icons/coming_soon.png" backgroundImage={"linear-gradient(#DFECFE 50%, #DFECFE 75%, white 50%)"}>
+      <BGGrid
+        title={<FormattedMessage id="global.coming-soon"></FormattedMessage>}
+        titleIconSrc="/static/images/icons/coming_soon.png"
+        backgroundImage={"linear-gradient(#DFECFE 50%, #DFECFE calc(100% - 100px), white 100px)"}
+        backgroundImageStats={{
+          colors: ["#DFECFE", "#DFECFE", "white"],
+          gap: (mobile ? "60px" : "100px"),
+        }}
+      >
         {this.props.games.comingSoon.map((game, k) => <BGGameCard key={k} game={game} />)}
       </BGGrid>
     );
@@ -204,98 +224,107 @@ class GameList extends Component {
   aboutBitGuild() {
     const {mobile} = this.props.layout.type;
     return (
-      <BGGrid title={<FormattedMessage id="global.about-bitguild"></FormattedMessage>} titleIconSrc="/static/images/icons/about.png" style={{background: "#A5BEE4"}}>
+      <BGGrid
+        title={<FormattedMessage id="global.about-bitguild"></FormattedMessage>}
+        titleIconSrc="/static/images/icons/about.png"
+        backgroundColor="#B6D0F7"
+      >
         <style jsx>{`
-          .social-media {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 0;
-          }
-          :global(.social-media a) {
-            margin: 0 10px;
-            max-width: 30%;
-            cursor: pointer;
-          }
           h3 {
-            font-size: ${mobile ? "2.0em" : "2.2em"};
-            font-weight: 300;
+            font-size: ${mobile ? "2.0em" : "2.3em"};
+            font-weight: 400;
+            margin-top: 0;
           }
           :global(.about-bitguild p) {
             max-width: 100%;
           }
+          :global(.about-bitguild .about-text-left) {
+            padding: ${mobile ? 0 : "0 10px 0 40px"};
+            margin-bottom: ${mobile ? "30px" : "intiial"}
+          }
+          :global(.about-bitguild .about-text-right) {
+            padding: ${mobile ? 0 : "0 40px 0 10px"};
+          }
         `}</style>
         <Row className="about-bitguild">
           <Col xs={12} sm={6}>
-            <div>
+            <div className="about-text-left">
               <h3><FormattedMessage id="pages.games.about.tagline"></FormattedMessage></h3>
             </div>
           </Col>
           <Col xs={12} sm={6}>
             <Col>
-              <div>
+              <div className="about-text-right">
                 <p><FormattedMessage id="pages.games.about.body"></FormattedMessage></p>
               </div>
             </Col>
           </Col>
         </Row>
+        {/* Divider
         <Row style={{width: "100%", margin: "10px 20px"}}>
           <Col xs={12} sm={6} style={{borderBottom: "1px solid #3B5998"}}><div /></Col>
         </Row>
-        <Row>
-          <Col>
-            <div className="social-media">
-              <a href="https://www.facebook.com/bitguildplat/" target="_blank" rel="noopener noreferrer" onClick={() => {
-                this.props.analytics.ga.event({
-                  category: "Site Interaction",
-                  action: "Page Visit",
-                  label: "Facebook",
-                });
-              }}>
-                <Image responsive src="/static/images/icons/facebook.png" />
-              </a>
-              <a href="https://twitter.com/bitguildplat" target="_blank" rel="noopener noreferrer" onClick={() => {
-                this.props.analytics.ga.event({
-                  category: "Site Interaction",
-                  action: "Page Visit",
-                  label: "Twitter",
-                });
-              }}>
-                <Image responsive src="/static/images/icons/twitter.png" />
-              </a>
-              <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer" onClick={() => {
-                this.props.analytics.ga.event({
-                  category: "Site Interaction",
-                  action: "Page Visit",
-                  label: "Discord",
-                });
-              }}>
-                <Image responsive src="/static/images/icons/discord.png" />
-              </a>
-            </div>
-          </Col>
-        </Row>
+        */}
       </BGGrid>
     );
   }
 
   footer() {
     return (
-      <div className="explore">
+      <div className="bg-footer">
         <style jsx>{`
-          .explore {
-            padding: 20px;
+          .bg-footer {
+            display: flex;
+            flex-direction: column;
+            padding: 15px 0;
+            font-size: 0.8em;
           }
-          :global(.explore span) {
-            margin-left: 20px;
+          :global(.bg-footer-questions, .bg-footer-socialmedia) {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 0;
+          }
+          :global(.bg-footer-socialmedia a) {
+            margin: 0 10px;
+          }
+          :global(.bg-footer-questions span, .bg-footer-questions a) {
+            margin: 0 4px;
+          }
+          :global(.socialmedia a) {
+            margin: 0 10px;
+            max-width: 30%;
+            cursor: pointer;
           }
         `}</style>
+        <div className="bg-footer-questions">
           <FormattedMessage id="pages.games.explore.questions" />
           <Link href="/faq">
             <a>
               <FormattedMessage id="pages.games.explore.faq" />
             </a>
           </Link>
+        </div>
+        <div className="bg-footer-socialmedia">
+          <a href="https://www.facebook.com/bitguildplat/" target="_blank" rel="noopener noreferrer" onClick={() => {
+            this.props.analytics.ga.event({
+              category: "Site Interaction",
+              action: "Page Visit",
+              label: "Facebook",
+            });
+          }}>
+            <Image responsive src="/static/images/icons/facebook.png" />
+          </a>
+          <a href="https://twitter.com/bitguildplat" target="_blank" rel="noopener noreferrer" onClick={() => {
+            this.props.analytics.ga.event({
+              category: "Site Interaction",
+              action: "Page Visit",
+              label: "Twitter",
+            });
+          }}>
+            <Image responsive src="/static/images/icons/twitter.png" />
+          </a>
           <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer" onClick={() => {
             this.props.analytics.ga.event({
               category: "Site Interaction",
@@ -303,8 +332,9 @@ class GameList extends Component {
               label: "Discord",
             });
           }}>
-            <FormattedMessage id="pages.games.explore.discord" />
+            <Image responsive src="/static/images/icons/discord.png" />
           </a>
+        </div>
       </div>
     );
   }

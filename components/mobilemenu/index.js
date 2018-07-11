@@ -1,9 +1,8 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {FormattedMessage} from "react-intl";
 import {connect} from "react-redux";
-
-import {MENU_SHOW, CHAT_TOGGLE, USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
+import RegisterButton from "@/components/RegisterButton";
+import {MENU_SHOW, CHAT_TOGGLE} from "@/shared/constants/actions";
 import style from "@/shared/constants/style";
 
 
@@ -59,6 +58,11 @@ class MenuToggle extends Component {
           payload: {showMenu: !this.props.layout.showMenu},
         })}
       >
+        <style jsx>{`
+          g {
+            fill: white;
+          }
+        `}</style>
         <svg width="20px" height="17px" viewBox="0 0 20 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
           <g id="Portal-UIs-final" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <g id="chat--screen-2-copy-4" transform="translate(-337.000000, -21.000000)" fill="#D7DDE3">
@@ -93,6 +97,11 @@ class ChatToggle extends Component {
   render() {
     return (
       <HeaderItem active={this.props.chat.show} onClick={() => this.props.dispatch({type: CHAT_TOGGLE})}>
+        <style jsx>{`
+          g {
+            fill: white;
+          }
+        `}</style>
         <svg width="21px" height="21px" viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
           <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <g transform="translate(-297.000000, -20.000000)" fill="#FFFFFF" fillRule="nonzero">
@@ -110,20 +119,9 @@ class ChatToggle extends Component {
   }
 }
 
-@connect(
-  state => ({
-    user: state.user,
-  })
-)
+
 class MobileMenu extends Component {
-  static propTypes = {
-    user: PropTypes.object,
-    dispatch: PropTypes.func,
-  }
-
   render() {
-    const {user, dispatch} = this.props;
-
     return (
       <div className="menu-wrapper">
         <style jsx>{`
@@ -132,31 +130,11 @@ class MobileMenu extends Component {
             align-items: center;
             height: 100%;
           }
-          :global(.settings-button) {
-            display: ${user.data ? "none" : "flex"} !important; /* module overrides */
-            color: white;
-            border: 0;
-            background: rgba(87, 181, 127, .9) !important; /* module overrides */
-            padding: 0 30px !important; /* module overrides */
-            text-transform: uppercase;
-            font-weight: 500;
-            align-items: center;
-            justify-content: center;
-            font-weight: 100;
-            font-size: 14px;
-            letter-spacing: 1px;
-          }
-          :global(.settings-button:hover) {
-            background: rgba(87, 181, 127, 1) !important;
-          }
         `}</style>
         <ChatToggle />
         <MenuToggle />
-        <HeaderItem className="settings-button" onClick={() => dispatch({
-          type: USER_SHOW_REGISTER_WORKFLOW,
-          payload: !this.props.user.showRegisterWorkflow,
-        })}>
-          <FormattedMessage id="buttons.register" />
+        <HeaderItem>
+          <RegisterButton />
         </HeaderItem>
       </div>
     );

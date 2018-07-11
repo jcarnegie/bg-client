@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import StayScrolled from "react-stay-scrolled";
 import {isEmpty, map} from "ramda";
-import {FormattedMessage} from "react-intl";
 import {Button, Form, FormControl, FormGroup} from "react-bootstrap";
 
-import {sendChatMessage} from "../../client/actions/chat";
+import style from "@/shared/constants/style";
+import {sendChatMessage} from "@/client/actions/chat";
 import Message from "./message";
 
 
@@ -63,24 +63,14 @@ export default class Chat extends Component {
         <div className="wrapper">
           <style jsx global>{`
             .chat {
-              background: #F2F3F8;
+              background: white;
             }
             .chat .wrapper {
-              background-color: #F2F3F8;
+              background-color: white;
               border-left: solid 1px #C2C3D2;
               display: flex;
               flex-direction: column;
               height: calc(100vh - 62px);
-            }
-            .chat .wrapper .top {
-              align-items: center;
-              background-color: #DEE6F4;
-              color: #8AA0C8;
-              display: flex;
-              font-size: 14px;
-              height: 32px;
-              justify-content: center;
-              min-height: 32px;
             }
             .chat .wrapper .list {
               flex-grow: 1;
@@ -100,16 +90,17 @@ export default class Chat extends Component {
             }
             .chat form .form-group .form-control[type=text] {
               border: none;
+              border-bottom: 1px solid lightgray;
               flex: 1;
               outline: none;
               margin: 10px 10px 15px 10px;
-              border-radius: 10px;
               box-shadow: none;
               padding: 0;
               padding-left: 10px;
               height: auto;
-              background-color: #F4F7FB;
-
+              background-color: transparent !important; /* Bootstrap overrides */
+              font-weight: 100;
+              border-radius: 0;
             }
             .chat form .form-group .btn {
               background-color: #FFF;
@@ -120,22 +111,24 @@ export default class Chat extends Component {
               text-transform: uppercase;
               max-width: 60px;
             }
-            .send-button{
+            .send-button {
               height: 30px;
               width: 30px;
             }
+            .send-button polygon {
+              fill: ${style.colors.primary};
+            }
           `}</style>
-          <div className="top">
-            <FormattedMessage id="chat.chat" />
-          </div>
           <StayScrolled className="list" component="div" provideControllers={this.storeScrolledControllers}>
             {map(msg => <Message key={msg.messageId} message={msg} user={user} />, messages)}
           </StayScrolled>
           <Form onSubmit={::this.handleSubmit}>
             <FormGroup>
-              <FormControl onChange={::this.handleMessageChange} type="text" value={this.state.newMessage} placeholder='Type Something' />
+              <FormControl onChange={::this.handleMessageChange} type="text" value={this.state.newMessage} placeholder='Write Something' />
               <Button type="submit">
-                <img className="send-button" src="../static/images/icons/send-button.svg"/>
+                <svg className="send-button" enableBackground="new 0 0 535.5 535.5" version="1.1" viewBox="0 0 535.5 535.5" xmlSpace="preserve" xmlns="http://www.w3.org/2000/svg">
+                  <polygon points="0 497.25 535.5 267.75 0 38.25 0 216.75 382.5 267.75 0 318.75" fill="#006DF0"/>
+                </svg>
               </Button>
             </FormGroup>
           </Form>

@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 
 import {Mobile, Desktop} from "@/components/responsive";
 
+import style from "@/shared/constants/style";
 
 @connect(
   state => ({
@@ -29,6 +30,7 @@ export default class User extends Component {
         <style jsx>{`
           .user {
             line-height: 0;
+            height: 62px;
             display: flex;
             align-items: center;
             color: white;
@@ -42,12 +44,13 @@ export default class User extends Component {
           .user .text {
             line-height: 15px;
             display: inline-block;
-            margin: 15px 0;
+            margin: 14px 0;
             vertical-align: middle;
             padding: 0 0 0 8px;
           }
           .user .text .name {
             text-transform: uppercase;
+            font-size: 14px;
             display: block;
             text-align: right;
             float: left;
@@ -61,10 +64,10 @@ export default class User extends Component {
             font-size: 12px;
           }
           .user .user-mobile {
-            border-bottom: 1px solid rgba(133, 148, 183);
+            border-bottom: ${style.header.border};
             width: 100%;
             padding: 20px 27px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 100;
           }
           .user .user-mobile .text {

@@ -1,6 +1,6 @@
 export const colors = {
-  primary: "#130029",
-  secondary: "#314B88",
+  primary: "#314B88",
+  secondary: "",
   tertiary: "#536EAD",
   logos: "#FFD57D",
   background: "rgb(250, 250, 250)",
@@ -9,6 +9,7 @@ export const colors = {
 
 export const header = {
   height: "62px",
+  border: "1px solid #4062B2",
 };
 
 export const chat = {

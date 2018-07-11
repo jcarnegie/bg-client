@@ -4,6 +4,8 @@ import React, {Component} from "react";
 import {path} from "ramda";
 import {Image} from "react-bootstrap";
 
+import style from "@/shared/constants/style";
+
 
 const reWebUrl = new RegExp(
   "^" +
@@ -49,8 +51,8 @@ export default class Message extends Component {
     user: PropTypes.object,
   };
 
-  renderAvatar(flag, diameter = 34) {
-    if (!flag) {
+  renderAvatar(myMessage, diameter = 32) {
+    if (!myMessage) {
       return null;
     }
 
@@ -89,19 +91,19 @@ export default class Message extends Component {
             width: 100%;
           }
           .chat .message .message-box {
-            background-color: #FFF;
+            background-color: #F3F3F3;
             border-radius: 10px;
             flex-grow: 10;
             padding: 5px 10px 10px;
             width: 100%;
           }
           .chat .message .message-box.my {
-            background-color: #5789FF;
+            background-color: #83B2FF;
           }
           :global(.chat .message .message-box.my .body) {
             font-size: 13px;
             margin-top: 5px;
-            color: #FFFF;  
+            color: #FFF;
           }
           .chat .message .header {
             color: #9FB1CD;
@@ -122,16 +124,11 @@ export default class Message extends Component {
             align-self: flex-end;
             flex-grow: 1;
             margin: 0 10px;
-            width: 34px;
           }
           .chat .message .avatarRight {
             align-self: flex-end;
             flex-grow: 1;
             margin: 0 10px;
-            width: 34px;
-          }
-          .nickname {
-            background-color: #F2F3F8;
           }
         `}</style>
         <div className="avatarLeft">

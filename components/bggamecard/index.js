@@ -34,19 +34,9 @@ class BGGameCard extends PureComponent {
     const {mobile} = this.props.layout.type;
     const playButtonSize = mobile ? "50" : "60";
     return (
-      <div className="bg-game-card" onClick={this.props.onClick}>
+      <div className="bg-game-card-wrapper" onClick={this.props.onClick}>
         <style jsx>{`
-          @keyframes card-hover-float {
-            0% {
-              box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.4);
-              transform: translateY(-5px);
-            }
-            50% {
-              box-shadow: 0 6px 10px 2px rgba(0, 0, 0, 0.2);
-              transform: translateY(-10px);
-            }
-          }
-          .bg-game-card {
+          .bg-game-card-wrapper {
             display: flex;
             position: relative;
             flex-direction: column;
@@ -61,17 +51,21 @@ class BGGameCard extends PureComponent {
             background: white;
             border-radius: 6px;
             box-shadow: ${style.boxShadow.default};
-            padding: 10px;
+            padding: ${mobile ? "5px" : "10px"};
             cursor: pointer;
             border: 1px solid white;
+            opacity: 1;
           }
           .bg-game-card:hover {
+            background: white;
+            opacity: ${this.props.playButton ? ".70" : "1"};
+          }
+          .bg-game-card-wrapper:hover {
             transform: translateY(-5px);
-            animation: card-hover-float 4s ease-in-out infinite;
-            transition: ${style.transition.slow};
+            transition: ${style.transition.default};
             border: 1px solid rgb(121, 182, 250);
           }
-          .bg-game-card .play-game-button {
+          .bg-game-card-wrapper .play-game-button {
             visibility: hidden;
             position: absolute;
             left: calc(50% - ${Math.floor(playButtonSize / 2)}px);
@@ -80,16 +74,17 @@ class BGGameCard extends PureComponent {
             display: flex;
             align-items: center;
             justify-content: center;
-            background: white;
+            background: rgba(255, 255, 255, 1);
             width: ${playButtonSize}px;
             height: ${playButtonSize}px;
             line-height: ${playButtonSize}px;
-            font-size: 0.75em;
+            font-size: 0.70em;
             border-radius: 50%;
             border: 1px solid rgb(121, 182, 250);
             text-transform: uppercase;
+            font-weight: 600;
           }
-          .bg-game-card:hover .play-game-button {
+          .bg-game-card-wrapper:hover .play-game-button {
             visibility: visible;
           }
           .bg-game-card-img {
@@ -104,11 +99,13 @@ class BGGameCard extends PureComponent {
             margin: 0;
           }
         `}</style>
+        <div className="bg-game-card" onClick={this.props.onClick}>
           <img className="bg-game-card-img" src={`/static/images/games/${this.props.game.slug}/thumbnail.jpg`} alt="game thumbnail" />
           {this.props.playButton ? <div className="play-game-button"><MdPlayArrow /><FormattedMessage id="global.play" /></div> : null}
           <h6>{this.props.game.name}</h6>
           <p>{this.props.game.description}</p>
           {this.props.children}
+        </div>
       </div>
     );
   }

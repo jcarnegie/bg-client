@@ -12,7 +12,7 @@ import {Mobile, Desktop} from "@/components/responsive";
 @injectIntl
 @connect(
   state => ({
-    user: state.user
+    user: state.user,
   })
 )
 export default class Language extends Component {
@@ -30,15 +30,15 @@ export default class Language extends Component {
       type: UPDATE_USER,
       payload: {
         language,
-      }
+      },
     });
     document.documentElement.setAttribute("lang", language);
   }
 
-  renderLanguageMenuItems(){
-    let dropDownLanguages = []
+  renderLanguageMenuItems() {
+    let dropDownLanguages = [];
 
-    for (let i = 0; i < enabledLanguagesNativeText.length; i++){
+    for (let i = 0; i < enabledLanguagesNativeText.length; i++) {
       dropDownLanguages.push(
         <MenuItem
           key={enabledLanguagesNativeText[i]}
@@ -68,7 +68,8 @@ export default class Language extends Component {
             }
 
             .lang-menu .caret {
-              color: gray;
+              color: white;
+              transform: translate(0, 0) !important; /* Bootstrap overrides */
             }
             .lang-menu:hover .caret {
               color: white;
@@ -94,9 +95,11 @@ export default class Language extends Component {
               padding: 15px;
             }
 
-            .lang-dropdown .dropdown .btn img,
-            .lang-dropdown .dropdown .btn .caret {
+            .lang-dropdown .dropdown .btn img {
               transform: translateX(4px);
+            }
+            .lang-dropdown .dropdown .btn .caret {
+              transform: translate(0, -2px); 
             }
 
             .lang-dropdown .dropdown-menu {
@@ -134,6 +137,7 @@ export default class Language extends Component {
             .current-lang{
               color: white;
               padding-left: 12px;
+              vertical-align: middle;
             }
           `}</style>
         </Desktop>
@@ -186,15 +190,15 @@ export default class Language extends Component {
             }
           `}</style>
         </Mobile>
-        <DropdownButton 
+        <DropdownButton
           title={
             <span>
-              <Image src={`/static/images/language/globe.svg`} />
+              <Image src={"/static/images/language/globe.svg"} />
               <span className="current-lang">{language.toUpperCase()} </span>
             </span>
-          }            
-          className="lang-menu" id="lang-menu">
-        
+          }
+          className="lang-menu" id="lang-menu"
+        >
           {this.renderLanguageMenuItems()}
         </DropdownButton>
       </div>
