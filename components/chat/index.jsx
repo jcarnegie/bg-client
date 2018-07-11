@@ -20,11 +20,11 @@ import Message from "./message";
 export default class Chat extends Component {
   static propTypes = {
     chat: PropTypes.object,
-    user: PropTypes.object
+    user: PropTypes.object,
   };
 
   state = {
-    newMessage: ""
+    newMessage: "",
   };
 
   componentDidUpdate() {
@@ -64,6 +64,7 @@ export default class Chat extends Component {
           <style jsx global>{`
             .chat {
               background: white;
+              z-index: 1020;
             }
             .chat .wrapper {
               background-color: white;
