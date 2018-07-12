@@ -1,14 +1,19 @@
 {
   "global": {
     "about": "About",
+    "days": "days",
     "description": "Pre-Sale",
+    "expired": "Expired",
+    "expires-in": "Expires in",
     "faq": "About Bitizens",
     "remaining": "remaining",
     "rules": "Rules",
     "all-games": "All Games",
     "about-bitguild": "About BitGuild",
     "coming-soon": "Coming Soon",
-    "play": "Play"
+    "play": "Play",
+    "sell-for": "Sell for",
+    "sell-this-item": "Sell this item"
   },
   "components": {
     "switchLanguage": "Switch Language",
@@ -119,6 +124,7 @@
       "title": "My Items",
       "all": "All",
       "all-items": "All Items",
+      "on-sale": "On Sale",
       "back-to-game": "Back to game",
       "tx": "Transaction in progress",
       "empty": "You have no items yet!",

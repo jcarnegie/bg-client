@@ -1,32 +1,58 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Form, Modal} from "react-bootstrap";
-import {connect} from "react-redux";
-import {FormattedMessage, FormattedHTMLMessage} from "react-intl";
+import * as log from "loglevel";
+import {FormattedMessage, FormattedHTMLMessage, injectIntl, intlShape} from "react-intl";
 
+import withFormHelper from "@/components/inputs/withFormHelper";
 import BGModal from "@/components/modal";
+import BGButton from "@/components/bgbutton";
+import {featureOn} from "@/shared/utils";
 
 
-@connect(
-  state => ({
-    user: state.user,
-    network: state.network,
-  })
-)
-export default class SellPopup extends Component {
+@withFormHelper
+@injectIntl
+class SellPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
     onHide: PropTypes.func,
+    item: PropTypes.object,
   };
 
-  onSubmit(e) {
-    e.preventDefault();
+  static defaultProps = {
+    show: false,
+    onHide: () => {},
+    item: {},
+  };
+
+  onSubmit() {
+    log.info("Instantiating sell transaction...");
+
+    ::this.props.onHide();
   }
 
   render() {
     const {show, onHide} = this.props;
 
-    return (
+    return featureOn("marketplace") ? (
+      <BGModal show={show} className="sell" onHide={onHide} backdropClassName="semi" bsSize="lg">
+        <style jsx global>{`
+          .sell .modal-header {
+            border: 0;
+            position: absolute;
+            z-index: 1;
+            right: 0;
+          }
+        `}</style>
+        <Modal.Header closeButton />
+        <Modal.Body>
+          <FormattedMessage id="global.sell-for" />
+          <BGButton onClick={() => {
+            ::this.onSubmit();
+          }}><FormattedMessage id="global.sell-this-item" /></BGButton>
+        </Modal.Body>
+      </BGModal>
+      ) : (
       <BGModal show={show} className="sell" onHide={onHide} backdropClassName="semi">
         <style jsx global>{`
           .sell .modal-header {
@@ -39,10 +65,10 @@ export default class SellPopup extends Component {
         <Modal.Header closeButton />
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
-            <h2><FormattedMessage id="modals.sell.title" /></h2>
+            <h2><FormattedMessage id="modals.sell-feature-coming.title" /></h2>
             <br />
 
-            <p><FormattedMessage id="modals.sell.p1" /></p>
+            <p><FormattedMessage id="modals.sell-feature-coming.p1" /></p>
 
             <br />
             <br />
@@ -56,3 +82,5 @@ export default class SellPopup extends Component {
     );
   }
 }
+
+export default SellPopup;

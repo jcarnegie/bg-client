@@ -20,7 +20,7 @@ import {
 import {calcMaxItemsStats, isValidItemCategory} from "@/client/utils/item";
 import DataLoading from "@/components/DataLoading";
 
-import Item from "./item";
+import {InventoryItem as Item} from "@/components/item";
 
 
 @injectIntl
@@ -142,10 +142,15 @@ class Inventory extends Component {
             )}
           </Tab>
           {visibleGames.map((game, i) =>
-            <Tab eventKey={i + 2} title={game.name || game.slug} key={game.id}>
+            <Tab eventKey={i + 3} title={game.name || game.slug} key={game.id}>
               {this.renderTab(game, items.filter(item => item.game.id === game.id))}
             </Tab>
           )}
+          <Tab eventKey={2} title={<FormattedMessage id="pages.inventory.on-sale" />}>
+            {visibleGames.map(game =>
+              this.renderTab(game, items.filter(item => item.game.id === game.id))
+            )}
+          </Tab>
         </Tabs>
       </>
     );
