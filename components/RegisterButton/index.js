@@ -8,17 +8,22 @@ import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
 @injectIntl
 @connect(
   state => ({
+    account: state.account,
+    network: state.network,
     user: state.user,
   })
 )
 class RegisterButton extends Component {
   static propTypes = {
+    account: PropTypes.object,
+    network: PropTypes.object,
     user: PropTypes.object,
     dispatch: PropTypes.func,
   }
-  render() {
+
+  renderButtonWithText(text) {
     const {dispatch, user} = this.props;
-    return user.data ? null : (
+    return (
       <button className="register-button" onClick={() => dispatch({
         type: USER_SHOW_REGISTER_WORKFLOW,
         payload: !user.showRegisterWorkflow,
@@ -50,9 +55,53 @@ class RegisterButton extends Component {
           }
         `}</style>
         <img className="register-icon" src="/static/images/icons/register.png" />
-        <FormattedMessage id="buttons.register" />
+        {text}
       </button>
     );
+  }
+
+  render() {
+    const {account, network, user} = this.props;
+
+    /* Render null if loading */
+    if (user.isLoading || network.isLoading) return null;
+
+    /* If network has not resolved, show nothing */
+    if (network.isLoading) {
+      return null;
+    }
+
+    /* If user does not have web3, show "register" */
+    if (!network.available) {
+      return ::this.renderButtonWithText(<FormattedMessage id="buttons.register" />);
+    }
+
+    /* Not on supported network, show "login" */
+    if (!network.data || !network.data.supported) {
+      return ::this.renderButtonWithText(<FormattedMessage id="buttons.login" />);
+    }
+
+    /* If wallet and user are available, show nothing */
+    if (account.wallet && user.data) {
+      return null;
+    }
+
+    /* If user is logged into web3 but does not have a user account, show "register" */
+    if (account.wallet && !user.data) {
+      return ::this.renderButtonWithText(<FormattedMessage id="buttons.register" />);
+    }
+
+    /* If wallet is not available, but user is still defined in apollo cache, show render null */
+    if (!account.wallet && user.data) {
+      return null;
+    }
+
+    /* If wallet is not available, but user has web3, show "login" */
+    if (!account.wallet && !user.data) {
+      return ::this.renderButtonWithText(<FormattedMessage id="buttons.login" />);
+    }
+
+    return null;
   }
 }
 

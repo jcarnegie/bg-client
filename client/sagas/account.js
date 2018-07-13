@@ -55,12 +55,6 @@ function * getAccount() {
     const userSignedOutBeforeLastTick = !web3AccountSignedIn && !noWalletExistsInStore && account.success;
     const userHasNotSignedIn = !account.success && !web3EthWallet;
 
-    log.trace(`web3AccountSignedIn: ${web3AccountSignedIn}`);
-    log.trace(`noWalletExistsInStore: ${noWalletExistsInStore}`);
-    log.trace(`account.wallet: ${account.wallet}`);
-    log.trace(`accountInStoreDoesNotMatchWeb3Account: ${accountInStoreDoesNotMatchWeb3Account}`);
-    log.trace(`account.success: ${account.success}`);
-
     if (web3AccountSignedIn && (noWalletExistsInStore || accountInStoreDoesNotMatchWeb3Account)) {
       yield put({
         type: ACCOUNT_LOGGED_IN,
@@ -86,6 +80,7 @@ function * getAccount() {
           wallet: null,
         },
       });
+      yield client.resetStore();
     }
   } catch (err) {
     log.error(err);

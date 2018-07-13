@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
-import * as log from "loglevel";
 import {withRouter} from "next/router";
 import {compose} from "react-apollo";
 
@@ -29,12 +28,14 @@ import Register from "@/components/popups/register";
 @withRouter
 @connect(
   state => ({
+    account: state.account,
     network: state.network,
     reduxUser: state.user,
   })
 )
 class Web3 extends Component {
   static propTypes = {
+    account: PropTypes.object,
     router: PropTypes.object,
     network: PropTypes.object,
     reduxUser: PropTypes.object,
@@ -55,7 +56,7 @@ class Web3 extends Component {
   }
 
   render() {
-    const {network, pathname, router, reduxUser, user} = this.props;
+    const {account, network, pathname, router, reduxUser, user} = this.props;
 
     const guestRoutes = [
       "",
@@ -79,23 +80,19 @@ class Web3 extends Component {
     const onSupportedNetwork = networkIsSupported(network);
     const networkLoadedSuccess = !network.isLoading && network.success;
     const showNetwork = networkLoadedSuccess && !onSupportedNetwork;
-    const showWeb3Login = !user || (user && (!user.loading && (user.viewUserByWallet && !user.viewUserByWallet.wallet)));
-    const userIsAlreadyRegistered = user.viewUserByWallet && user.viewUserByWallet.wallet;
-    const showRegister = !showNetwork && !showWeb3Login && !userIsAlreadyRegistered && !user.loading && reduxUser.showRegisterWorkflow;
+    if (showNetwork) return <Web3Network show={true} onHide={::this.hideRegistrationWorkflowModals} />;
 
-    log.info(`show modals: network: ${showNetwork}, login: ${showWeb3Login}, register: ${showRegister}`);
+    const showWeb3Login = !account.wallet && (!reduxUser.data && !reduxUser.isLoading);
+    if (showWeb3Login) return <Web3Login show={true} onHide={::this.hideRegistrationWorkflowModals} />;
 
-    return (
-      <>
-        <Web3Login show={showWeb3Login} onHide={::this.hideRegistrationWorkflowModals} />
-        <Web3Network show={showNetwork} onHide={::this.hideRegistrationWorkflowModals} />
-        <Register show={showRegister} onHide={::this.hideRegistrationWorkflowModals} />
-      </>
-    );
+    const userIsAlreadyRegistered = reduxUser.data && reduxUser.wallet;
+    const showRegister = !userIsAlreadyRegistered && !reduxUser.isLoading && reduxUser.showRegisterWorkflow;
+    if (showRegister) return <Register show={showRegister} onHide={::this.hideRegistrationWorkflowModals} />;
+
+    return null;
   }
 }
 
 export default compose(
   viewUserByWalletQuery
 )(Web3);
-

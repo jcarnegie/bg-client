@@ -7,7 +7,7 @@ import {
   NETWORK_LOADING,
 } from "@/shared/constants/actions";
 
-import {networkIdToName} from "@/shared/utils/network";
+import {networkIdToName, networkIdIsSupported} from "@/shared/utils/network";
 
 
 const network = {
@@ -32,12 +32,14 @@ export default function networkReducer(state = network, action) {
         success: false,
       });
     case NETWORK_CHANGED:
-      const networkName = networkIdToName(action.payload.id);
-      log.info(`Setting network to "${networkName}", id resolved as ${action.payload.id} from provider.`);
+      const {id} = action.payload;
+      const name = networkIdToName(id);
+      log.info(`Setting network to "${name}", id resolved as ${id} from provider.`);
       return Object.assign({}, state, {
         data: {
-          name: networkName,
-          id: action.payload.id,
+          name,
+          id,
+          supported: networkIdIsSupported(id),
         },
         isLoading: false,
         success: true,

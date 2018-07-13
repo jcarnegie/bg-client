@@ -110,7 +110,9 @@ function * getNetwork() {
     yield put({type: NETWORK_LOADING});
     yield put({
       type: NETWORK_CHANGED,
-      payload: {id: yield bluebird.promisify(window.web3.version.getNetwork)()},
+      payload: {
+        id: yield bluebird.promisify(window.web3.version.getNetwork)(),
+      },
     });
     yield put({type: NETWORK_GET_BALANCE_ETH});
     yield put({type: NETWORK_GET_BALANCE_PLAT});

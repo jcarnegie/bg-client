@@ -73,6 +73,7 @@
   "buttons": {
     "submit": "Submit",
     "register": "Register",
+    "login": "Login",
     "sell": "Sell",
     "gift": "Gift",
     "convert": "Purchase",

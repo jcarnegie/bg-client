@@ -35,6 +35,11 @@ export function networkIsSupported(network) {
   return Object.keys(networkAddressMap).includes(network.data.name);
 }
 
+export function networkIdIsSupported(networkId) {
+  if (!networkId) return false;
+  return Object.keys(networkAddressMap).includes(networkIdToName(networkId));
+}
+
 export function web3IsInstalled() {
   return (typeof window !== "undefined" && window.hasOwnProperty("web3"));
 }
