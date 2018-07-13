@@ -82,6 +82,7 @@ function * fetchUser() {
   } catch (error) {
     yield put({type: USER_ERROR});
     log.error("fetchUser error:", error);
+    log.error("This workflow is expected when a user has a web3 address but does not have an account in the database.");
   }
 }
 

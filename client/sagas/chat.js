@@ -30,6 +30,7 @@ import {
   CHAT_SET_CHANNEL,
   SENDBIRD_INIT,
   USER_CHANGED,
+  USER_ERROR,
   USER_SHOW_REGISTER_WORKFLOW,
 } from "@/shared/constants/actions";
 
@@ -122,5 +123,6 @@ function * initChat(action) {
 export default function * chatSaga() {
   yield takeEvery(CHAT_MESSAGE_SEND, sendChatMessage);
   yield takeEvery(USER_CHANGED, initChat);
+  yield takeEvery(USER_ERROR, initChat);
   yield takeEvery(ACCOUNT_LOGGED_OUT, initChat);
 }
