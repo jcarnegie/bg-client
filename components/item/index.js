@@ -5,8 +5,14 @@ import {FormattedMessage, injectIntl} from "react-intl";
 import {compose, filter, isNil, map, not} from "ramda";
 
 import {isValidItemCategory, itemStats} from "@/client/utils/item";
+import style from "@/shared/constants/style";
+
+import BGModal from "@/components/modal";
 import Gift from "@/components/popups/gift";
 import Sell from "@/components/popups/sell";
+import Buy from "@/components/popups/buy";
+
+import {featureOn} from "@/shared/utils";
 
 const notNil = compose(not, isNil);
 
@@ -38,6 +44,8 @@ class Item extends Component {
 
   expiredBanner() {
     let {saleExpiration, saleState} = this.props.item;
+
+    if (!featureOn("marketplace")) return null;
 
     // TODO - dev
     saleState = "listed";
@@ -117,6 +125,7 @@ class Item extends Component {
             border: 0;
             background-color: #FAFAFA;
             border-radius: 6px;
+            box-shadow: ${style.boxShadow.wide};
           }
           .item .thumbnail img {
             height: 100%;
@@ -177,7 +186,7 @@ class Item extends Component {
           }
           .item .thumbnail .platToken {
             display: inline-block;
-            height: auto;
+            height: 25px;
             width: auto;
             padding: 0px 5px 4px 5px;
             line-height: 16px;
@@ -278,11 +287,15 @@ class MarketplaceItem extends Component {
   }
 
   render() {
+    const {item, game} = this.props
     return (
-      <Item
-        item={this.props.item}
-        buttons={::this.renderButtons()}
-      />
+      <>
+        <Buy show={this.state.buy} item={item} game={game} onHide={::this.onHideBuy} />
+        <Item
+          item={this.props.item}
+          buttons={::this.renderButtons()}
+        />
+      </>
     );
   }
 }
@@ -315,25 +328,11 @@ class InventoryItem extends Component {
   }
 
   state = {
-    gift: false,
-    sell: false,
+    modal: null,
   };
 
-  onShowSell(e) {
-    this.setState({sell: true});
-  }
-
-  onShowGift(e) {
-    e.preventDefault();
-    this.setState({gift: true});
-  }
-
-  onHideSell() {
-    this.setState({sell: false});
-  }
-
-  onHideGift() {
-    this.setState({gift: false});
+  onHideModal() {
+    this.setState({modal: null});
   }
 
   renderPresaleButton() {
@@ -348,25 +347,10 @@ class InventoryItem extends Component {
     );
   }
 
-  renderButtons() {
-    const {gifts, item, game} = this.props;
-
-    const gift = gifts.data && gifts.data.find(gift => gift.item === item.tokenId && gift.game === game.id);
-
-    if (gift) {
-      return (
-        <div className="tx">
-          <FormattedMessage id="pages.inventory.tx" />
-        </div>
-      );
-    }
-
+  actionButton(side = "left", onClick = () => {}, children) {
     return (
-      <div className="item-button-bar">
+      <button onClick={onClick} className={`item-button item-button-${side}`}>
         <style jsx>{`
-          .item-button-bar {
-            width: 100%;
-          }
           .item-button {
             color: white;
             font-size: 0.9em;
@@ -382,21 +366,67 @@ class InventoryItem extends Component {
             opacity: 0.9;
             color: white;
           }
-          .button-left, .button-left:hover, .button-left:focus {
+          .item-button-left, .item-button-left:hover, .item-button-left:focus {
             border-bottom-left-radius: 6px;
             background-color: rgb(59, 90, 149);
           }
-          .button-right, .button-right:hover, .button-right:focus {
+          .item-button-right, .item-button-right:hover, .item-button-right:focus {
             background-color: rgb(80, 130, 206);
             border-bottom-right-radius: 6px;
           }
         `}</style>
-        <button href="#" onClick={::this.onShowSell} className="item-button button-left">
-          <FormattedMessage id="buttons.sell" />
-        </button>
-        <button href="#" onClick={::this.onShowGift} className="item-button button-right">
-          <FormattedMessage id="buttons.gift" />
-        </button>
+        {children}
+      </button>
+    );
+  }
+
+  sellButton(side = "left", onClick = () => ::this.setState({modal: "sell"}), children = <FormattedMessage id="buttons.sell" />) {
+    return this.actionButton(side, onClick, children);
+  }
+  giftButton(side = "right", onClick = () => ::this.setState({modal: "gift"}), children = <FormattedMessage id="buttons.gift" />) {
+    return this.actionButton(side, onClick, children);
+  }
+  renewButton(side = "left", onClick = () => ::this.setState({modal: "renew"}), children = <FormattedMessage id="buttons.renew" />) {
+    return this.actionButton(side, onClick, children);
+  }
+  withdrawButton(side = "right", onClick = () => ::this.setState({modal: "withdraw"}), children = <FormattedMessage id="buttons.withdraw" />) {
+    return this.actionButton(side, onClick, children);
+  }
+
+  renderButtons() {
+    const {gifts, item, game} = this.props;
+    let saleState = Math.random() > 0.5 ? "listed" : "sold";
+
+    const gift = gifts.data && gifts.data.find(gift => gift.item === item.tokenId && gift.game === game.id);
+
+    if (gift) {
+      return (
+        <div className="tx">
+          <FormattedMessage id="pages.inventory.tx" />
+        </div>
+      );
+    }
+
+    const buttons = (saleState === "sold" || !featureOn("marketplace")) ? (
+      <>
+        {this.sellButton()}
+        {this.giftButton()}
+      </>
+    ) : (
+      <>
+        {this.renewButton()}
+        {this.withdrawButton()}
+      </>
+    );
+
+    return (
+      <div className="item-button-bar">
+        <style jsx>{`
+          .item-button-bar {
+            width: 100%;
+          }
+        `}</style>
+        {buttons}
       </div>
     );
   }
@@ -405,8 +435,12 @@ class InventoryItem extends Component {
     const {item, game} = this.props;
     return (
       <>
-        <Gift show={this.state.gift} item={item} game={game} onHide={::this.onHideGift} />
-        <Sell show={this.state.sell} item={item} game={game} onHide={::this.onHideSell} />
+        <Gift show={this.state.modal === "gift"} item={item} game={game} onHide={::this.onHideModal} />
+        <Sell show={this.state.modal === "sell"} item={item} game={game} onHide={::this.onHideModal} />
+        {/* TODO - replace with ItemModal renew */}
+        <BGModal show={this.state.modal === "renew"} item={item} game={game} onHide={::this.onHideModal} />
+        {/* TODO - replace with ItemModal withdraw */}
+        <BGModal show={this.state.modal === "withdraw"} item={item} game={game} onHide={::this.onHideModal} />
         <Item
           className="marketplace-item"
           item={item}

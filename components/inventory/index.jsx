@@ -17,6 +17,8 @@ import {
   listItemsQuery,
 } from "@/shared/utils/apollo";
 
+import {featureOn} from "@/shared/utils";
+
 import {calcMaxItemsStats, isValidItemCategory} from "@/client/utils/item";
 import DataLoading from "@/components/DataLoading";
 
@@ -146,11 +148,14 @@ class Inventory extends Component {
               {this.renderTab(game, items.filter(item => item.game.id === game.id))}
             </Tab>
           )}
-          <Tab eventKey={2} title={<FormattedMessage id="pages.inventory.on-sale" />}>
-            {visibleGames.map(game =>
-              this.renderTab(game, items.filter(item => item.game.id === game.id))
-            )}
-          </Tab>
+          {featureOn("marketplace") ? (
+            <Tab eventKey={2} title={<FormattedMessage id="pages.inventory.on-sale" />}>
+              {visibleGames.map(game =>
+                this.renderTab(game, items.filter(item => item.game.id === game.id))
+              )}
+            </Tab>
+            ) : null
+          }
         </Tabs>
       </>
     );

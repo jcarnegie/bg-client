@@ -4,7 +4,15 @@ import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 import {Image, Row} from "react-bootstrap";
 import {connect} from "react-redux";
 // import Link from "next/link";
-import {contains, filter, flatten, map, path, uniq, values} from "ramda";
+import {
+  contains,
+  filter,
+  flatten,
+  map,
+  path,
+  uniq,
+  // values,
+} from "ramda";
 // import Router from "next/router";
 import TreeView from "@/components/treeview/treeview";
 
@@ -41,7 +49,7 @@ class Market extends Component {
     user: PropTypes.object,
     lastLocation: PropTypes.shape({
       pathname: PropTypes.string,
-    })
+    }),
   }
 
   state = {
@@ -51,22 +59,26 @@ class Market extends Component {
   renderFilters() {
     const {games} = this.props;
     const items = itemList;
+    let dataSource = [];
+
+    for (let i = 0; i < games.listGames.length; i++) {
+      dataSource.push({
+        game: games.listGames[i].name,
+        id: games.listGames[i].id,
+        collapsed: true,
+        categories: [],
+      });
+    }
+
     const attrs = flatten(items.map(item => {
       let values = Object.values(item.attrs || {});
-      values.forEach(value => {value.game = item.game.id})
+      values = values.map(value => {
+        value.game = item.game.id;
+        return value;
+      });
       return values;
     }));
 
-    let dataSource = [];
-    games.listGames.forEach(game => {
-      dataSource.push({
-        game: game.name,
-        id: "1",
-        collapsed: true,
-        categories: [
-        ],
-      });
-    });
     const categories = {};
     attrs.forEach(attr => {
       if (categories.hasOwnProperty(attr.game)) {

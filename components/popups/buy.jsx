@@ -167,7 +167,9 @@ export default class BuyPopup extends Component {
           }
           .itemInfo {
             float: right;
-            width: 50%;
+            width: 45%;
+            position: relative;
+            top: 12px;
           }
           .modal .modal-content {
             width: 700px;
@@ -176,18 +178,47 @@ export default class BuyPopup extends Component {
             margin: 0px;
             width: 75%;
           }
+          form .itemInfo h2 {
+            float: left
+          }
+          form .itemInfo .itemPrice{
+            float: left;
+            font-size: 20px;
+            font-weight: 600
+          }
           form .itemInfo dl {
             display: grid;
             grid-template-columns: max-content auto;
-            padding: 0 15px 10px 15px;
             margin: 0;
+            width: 100%;
           }
           form .itemInfo dl dt {
             grid-column-start: 1;
+            font-weight: 300;
+            text-align: left;
           }
           form .itemInfo dl dd {
             grid-column-start: 2;
             margin-left: 10px;
+            text-align: left;
+          }
+          form .itemInfo .platToken{
+            position: relative;
+            bottom: 5px;
+            height: 30px;
+          }
+          button .platToken{
+            position: relative;
+            bottom: 3px;
+            height: 15px;
+          }
+          .attrs{
+            float: left;
+          }
+          .attrs .badge{
+            color: #3B5998;
+            background-color: #E7EDFD;
+            font-weight: 200;
           }
         `}</style>
         <Modal.Header closeButton />
@@ -198,12 +229,14 @@ export default class BuyPopup extends Component {
             </div>
             <div className="itemInfo">
               <h2>{item.name}</h2>
-              <img src="/static/images/icons/plat.png" className="platToken" />{item.price.plat} PLAT
+              <div className="itemPrice">
+              <img src="/static/images/icons/plat.png" className="platToken" />{" " + item.price.plat + " "}PLAT
+              </div>
               {this.renderStats()}
               {this.renderAttributes()}
             </div>
-            <Button type="submit" className="btn-block text-uppercase">
-              Buy for<img src="/static/images/icons/plat.png" className="platToken" />{item.price.plat} Plat
+            <Button type="submit" className="btn-block">
+            BUY for <img src="/static/images/icons/plat.png" className="platToken" />{" " + item.price.plat}PLAT
             </Button>
           </Form>
         </Modal.Body>
