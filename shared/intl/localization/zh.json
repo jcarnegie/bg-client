@@ -1,10 +1,10 @@
 {
   "global": {
     "about": "About",
-    "description": "Pre-Sale",
-    "faq": "About Bitizens",
+    "description": "预售",
+    "faq": "关于 Bitizen",
     "remaining": "剩余",
-    "rules": "Rules",
+    "rules": "规则",
     "all-games": "All Games",
     "about-bitguild": "About BitGuild",
     "coming-soon": "Coming Soon",
@@ -251,7 +251,7 @@
         "items-bought": "Items sold",
         "items-left": "left",
         "total-buyers": "Total buyers",
-        "stretch-goals-unlocked": "Bonus rewards unlocked",
+        "stretch-goals-unlocked": "已解锁",
         "stretch-goals-locked": "locked",
         "bonus-reward-1-title": "Dril'r Bot Pioneer-I",
         "bonus-reward-1-description": "Once <strong>30%</strong> of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot Pioneer-I paint job!",
@@ -268,13 +268,13 @@
         "description-text": {
           "p1": "参加我们的预售活动，获得以下独家物品。 这将是您获取这些物品的唯一机会 - 数量有限，切勿错过！",
           "p2": "参加 Bitizen 预售活动不仅可帮助我们制作出优质的游戏，率先满足玩家的需求，提供深入、有意义且引人入胜的区块链游戏体验，同时还将有助于展示您作为 Bitizen 和 BitGuild Portal 的开拓者的地位。 游戏上线后，这些特殊的限量版发行物品将不再能通过传统的游戏方式获得；您必须通过交易换取它们！",
-          "p3": "Once the game launches, these special, limited run items can't be acquired by traditional in-game means; You'd have to trade for them!",
+          "p3": "游戏上线后，这些特殊的限量版发行物品将不再能通过传统的游戏方式获得；您必须通过交易换取它们！",
           "p4": "保留属于您的那份加密游戏历史记录，立即确立您作为 Bitizen 开拓者的地位！"
         },
         "faq-text": {
-          "p1": "<strong>Your invitation to come and make the world a better place.</strong>",
-          "p2": "<strong>Welcome to Bitropolis - the ultimate destination for a new crypto world!</strong>",
-          "p3": "Visit this sprawling cityscape and enjoy everything it has to offer, from the sunny digital skies to the depths of the bitmines. Everyone is welcome, all you have to do is sign up - Your digital cognition will then be loaded into your new destination in a matter of mere clicks!",
+          "p1": "<strong>应您的邀请前来，让世界变得更美好。</strong>",
+          "p2": "<strong>欢迎来到 Bitropolis - 新密码世界的终极目的地！</strong>",
+          "p3": "参观这里四下延伸的都市风景，从阳光明媚的数字天空到地下矿井，享受它所提供的一切。 这里欢迎每个人的到来，您所要做的就是注册 - 只需点击几下，您的数字认知就会加载到您的新目的地！",
           "p4": "这是什么地方？",
           "p5": "哦，这没什么大不了的，它只是区块链的这一侧一个最壮观的数字文明（可能在另一侧也是如此……但我们去不到那里。） 这是一个广阔的、永无止境的城市丛林，在这里，您最疯狂的梦想都可以实现 - 只要您想在密码世界里大展身手！ 启程前往这个新的互联虚拟乌托邦，体验无限的可能性。",
           "p6": "在这里我是谁？",
@@ -289,14 +289,14 @@
           "p15": "您现在就可以点击此处，预订前往 Bitropolis 虚拟世界的单程票（让我们面对这样一个事实：您不需要回程票）。 根本就没有经济舱的座位 -对 Bitizen 来说，全部都是头等舱，宝贝！"
         },
         "rules-text": {
-          "p1": "<strong>Limitations:</strong>",
+          "p1": "<strong>限制：</strong>",
           "l1": "您不能多次购买同一套装。",
           "l2": "多次购买只会让您获得每一级的一项奖金奖励。",
           "l3": "在预售结束后，这些物品将不再发售。",
           "l4": "开拓者物品将允许在我们的市场上销售。",
           "l5": "所有预售物品都只能使用 PLAT 购买。",
           "l6": "所有预售交易均无法反悔。",
-          "p2": "<strong>Distribution:</strong>",
+          "p2": "<strong>分布：</strong>",
           "l7": "开拓者套装、物品和奖金奖励可在 Bitizen 衣橱发布时（定于 7 月底）认领。",
           "l8": "您必须使用购买物品时使用的帐号来认领您的物品。",
           "l9": "在兑换游戏内物品时，可以应用燃气费。"
@@ -367,8 +367,8 @@
             }
           },
           "pioneer_compass": {
-            "name": "Pioneer's Compass",
-            "description": "This ancient compass always shows the way, but no one know where to exactly. Some say it points to the long-lost heart of Bitropolis, others say it points to your innermost desires - Either way, it increases your chance to find something nice while mining!"
+            "name": "开拓者罗盘",
+            "description": "这个古老的罗盘总是能够指示方向，但没有人知道它指向的确切目标。 有人说它指向 Bitropolis 失落已久的心脏，还有人说它指向您内心的渴望 - 无论如何，它都能增加您在挖矿期间找到好东西的机会！"
           }
         }
       }

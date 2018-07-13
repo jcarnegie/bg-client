@@ -1,10 +1,10 @@
 {
   "global": {
     "about": "About",
-    "description": "Pre-Sale",
-    "faq": "About Bitizens",
+    "description": "プレセール",
+    "faq": "Bitizenについて",
     "remaining": "残り",
-    "rules": "Rules",
+    "rules": "ルール",
     "all-games": "All Games",
     "about-bitguild": "About BitGuild",
     "coming-soon": "Coming Soon",
@@ -251,7 +251,7 @@
         "items-bought": "Items sold",
         "items-left": "left",
         "total-buyers": "Total buyers",
-        "stretch-goals-unlocked": "Bonus rewards unlocked",
+        "stretch-goals-unlocked": "ロック解除済み",
         "stretch-goals-locked": "locked",
         "bonus-reward-1-title": "Dril'r Bot Pioneer-I",
         "bonus-reward-1-description": "Once <strong>30%</strong> of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot Pioneer-I paint job!",
@@ -268,13 +268,13 @@
         "description-text": {
           "p1": "プレセールイベントに参加して、次の限定アイテムをゲットしよう。 これらのアイテムを確実にゲットする唯一のチャンスです。数量限定なのでお見逃しなく！",
           "p2": "Bitizenのプレセールに参加していただくと、私たちがプレイヤーの皆様を最優先する質の高いゲームを開発を行う助けになります。深みがあり、有意義。そして魅力に溢れるブロックチェーンゲーム体験を提供できるようになります。また、それだけではなくBitizenとBitGuildポータル両方のパイオニアとしてのステータスを紹介する助けにもなります。 ゲームがリリースされると、この特別な限定アイテムはゲーム内の従来の手段では入手できません。トレードする必要があります！",
-          "p3": "Once the game launches, these special, limited run items can't be acquired by traditional in-game means; You'd have to trade for them!",
+          "p3": "ゲームがリリースされると、この特別な限定アイテムはゲーム内の従来の手段では入手できません。トレードする必要があります！",
           "p4": "クリプトゲームの歴史に一歩を刻み、今すぐBitizenのパイオニアになろう！"
         },
         "faq-text": {
-          "p1": "<strong>Your invitation to come and make the world a better place.</strong>",
-          "p2": "<strong>Welcome to Bitropolis - the ultimate destination for a new crypto world!</strong>",
-          "p3": "Visit this sprawling cityscape and enjoy everything it has to offer, from the sunny digital skies to the depths of the bitmines. Everyone is welcome, all you have to do is sign up - Your digital cognition will then be loaded into your new destination in a matter of mere clicks!",
+          "p1": "<strong>世界をもっとすばらしい場所にしませんか。皆様を招待いたします。</strong>",
+          "p2": "<strong>新しいクリプト世界の究極の目的地。Bitropolisへようこそ！</strong>",
+          "p3": "この無秩序な都市を訪れ、明るいデジタルの空からビットマインの深みまで、すべてをお楽しみください。 誰でも歓迎されます。必要なのは登録だけ。たった数クリックで、あなたのデジタル意識が新しい目的地に読み込まれます！",
           "p4": "Bitropolisとは？",
           "p5": "ブロックチェーンのこちら側は最も壮大なデジタル文明というだけであって、大したものではありません（おそらく逆側もそうですが... わざわざ行く必要もないでしょう）。 ここは、最高にワイルドな夢が実現する、秩序も際限もない都会のジャングルです。クリプトの世界で一山当てたければの話ですが！ 相互接続された新たな仮想世界のユートピアに旅立って、無限の可能性をお楽しみください。",
           "p6": "私は誰？",
@@ -289,14 +289,14 @@
           "p15": "こちらをクリックすると、仮想世界Bitropolisへの片道切符を今すぐ予約することができます（見れば帰りたくなくなります）。 エコノミーシートのようなものはありません。Bitizenでは、最後までファーストクラスです！"
         },
         "rules-text": {
-          "p1": "<strong>Limitations:</strong>",
+          "p1": "<strong>制限:</strong>",
           "l1": "2回、同じセットを購入することはできません。",
           "l2": "複数回購入しても、各レベルのボーナスは1回だけ有効になります。",
           "l3": "プレセールが完了すると、これらのアイテムは入手できなくなります。",
           "l4": "パイオニアアイテムは、マーケットプレイスで販売することができます。",
           "l5": "プレセールのすべてのアイテムの購入には、PLATのみ使用できます。",
           "l6": "プレセールのすべての取引は最終的なものです。",
-          "p2": "<strong>Distribution:</strong>",
+          "p2": "<strong>配布:</strong>",
           "l7": "パイオニアセット、アイテム、ボーナス報酬は、7月下旬に予定されるBitizenのワードローブのリリース時に入手できます。",
           "l8": "アイテムは購入に使用するアカウントに獲得する必要があります。",
           "l9": "ゲーム内でのアイテムの回収時、ガスによる手数料が適用される可能性があります。  "
@@ -367,8 +367,8 @@
             }
           },
           "pioneer_compass": {
-            "name": "Pioneer's Compass",
-            "description": "This ancient compass always shows the way, but no one know where to exactly. Some say it points to the long-lost heart of Bitropolis, others say it points to your innermost desires - Either way, it increases your chance to find something nice while mining!"
+            "name": "パイオニアのコンパス",
+            "description": "この古代のコンパスは、常に道を示してくれますが、正確な目的地は誰にも分かりません。 「長く失われたBitropolisの中心を示している」という人もいますが、「あなたの心の奥の望みを示している」という人もいます。どちらにしても、マイニング中、何か素晴らしいものを見つけるチャンスが増大します！"
           }
         }
       }

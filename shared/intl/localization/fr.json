@@ -1,10 +1,10 @@
 {
   "global": {
-    "about": "About",
-    "description": "Pre-Sale",
-    "faq": "About Bitizens",
+    "about": "A propos",
+    "description": "Prévente",
+    "faq": "À propos de Bitizens",
     "remaining": "Quantité restante",
-    "rules": "Rules",
+    "rules": "Règles",
     "all-games": "All Games",
     "about-bitguild": "About BitGuild",
     "coming-soon": "Coming Soon",
@@ -251,7 +251,7 @@
         "items-bought": "Items sold",
         "items-left": "left",
         "total-buyers": "Total buyers",
-        "stretch-goals-unlocked": "Bonus rewards unlocked",
+        "stretch-goals-unlocked": "Déverrouillé",
         "stretch-goals-locked": "locked",
         "bonus-reward-1-title": "Dril'r Bot Pioneer-I",
         "bonus-reward-1-description": "Once <strong>30%</strong> of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot Pioneer-I paint job!",
@@ -268,13 +268,13 @@
         "description-text": {
           "p1": "Mettez la main sur les items exclusifs ci-dessous en participant à notre événement de prévente. Ce sera une occasion UNIQUE de posséder ces items  : n'hésitez pas, car les quantités sont limitées !",
           "p2": "En participant à la prévente Bitizens, vous nous aiderez non seulement à produire un jeu de qualité s'adressant avant tout aux joueurs en leur offrant des expériences de jeu de blockchain intenses, enrichissantes et captivantes. Mais cela vous aidera également à afficher votre statut de pionnier des Bitizens et du portail BitGuild. Une fois le jeu lancé, ces items spéciaux et disponibles pour une durée limitée ne peuvent pas être acquis de manière traditionnelle : vous ne pourrez les avoir que par le biais d'échanges !",
-          "p3": "Once the game launches, these special, limited run items can't be acquired by traditional in-game means; You'd have to trade for them!",
+          "p3": "Une fois le jeu lancé, ces items spéciaux et disponibles pour une durée limitée ne peuvent pas être acquis de manière traditionnelle : vous ne pourrez les avoir que par le biais d'échanges !",
           "p4": "Saisissez votre chance d'acquérir un fragment de l'histoire des crypto-jeux et de devenir un pionnier Bitizens dès aujourd'hui !"
         },
         "faq-text": {
-          "p1": "<strong>Your invitation to come and make the world a better place.</strong>",
-          "p2": "<strong>Welcome to Bitropolis - the ultimate destination for a new crypto world!</strong>",
-          "p3": "Visit this sprawling cityscape and enjoy everything it has to offer, from the sunny digital skies to the depths of the bitmines. Everyone is welcome, all you have to do is sign up - Your digital cognition will then be loaded into your new destination in a matter of mere clicks!",
+          "p1": "<strong>Votre invitation à participer pour rendre le monde meilleur.</strong>",
+          "p2": "<strong>Bienvenue à Bitropolis : la destination obligée pour un nouveau monde crypto !</strong>",
+          "p3": "Visitez cette ville tentaculaire et profitez de tout ce qu'elle a à offrir, du ciel numérique ensoleillé aux profondeurs des bitmines. Tout le monde est le bienvenu, il ne vous reste plus qu'à vous inscrire : votre connaissance numérique sera ensuite chargée dans votre nouvelle destination en quelques clics !",
           "p4": "Qu'est-ce que c'est que cet endroit ?",
           "p5": "Oh ce n'est pas grand chose, il s'agit simplement de la civilisation numérique la plus majestueuse de ce coté de la blockchain (probablement de l'autre côté aussi… mais on ne va pas là-bas.) C'est une jungle urbaine tentaculaire et interminable dans laquelle vos rêves les plus fous peuvent se réaliser : à condition que vous vouliez décrocher le jackpot dans le monde du crypto ! Expérimentez des possibilités illimitées pendant votre voyage vers cette nouvelle utopie virtuelle interconnectée.",
           "p6": "Qui suis-je ici ?",
@@ -367,8 +367,8 @@
             }
           },
           "pioneer_compass": {
-            "name": "Pioneer's Compass",
-            "description": "This ancient compass always shows the way, but no one know where to exactly. Some say it points to the long-lost heart of Bitropolis, others say it points to your innermost desires - Either way, it increases your chance to find something nice while mining!"
+            "name": "Boussole du pionnier",
+            "description": "Cette boussole ancienne montre toujours le chemin, mais personne ne sait exactement où. Certains disent qu'elle indique le cœur perdu depuis longtemps de Bitropolis, d'autres disent qu'elle pointe vers vos désirs les plus intimes. De toute façon, elle augmente vos chances de trouver quelque chose de bien dans les mines !"
           }
         }
       }

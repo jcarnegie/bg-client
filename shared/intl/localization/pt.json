@@ -1,10 +1,10 @@
 {
   "global": {
-    "about": "About",
-    "description": "Pre-Sale",
-    "faq": "About Bitizens",
+    "about": "Sobre",
+    "description": "Pré-venda",
+    "faq": "Sobre Bitizens",
     "remaining": "restantes",
-    "rules": "Rules",
+    "rules": "Regras",
     "all-games": "All Games",
     "about-bitguild": "About BitGuild",
     "coming-soon": "Coming Soon",
@@ -250,7 +250,7 @@
         "items-bought": "Items sold",
         "items-left": "left",
         "total-buyers": "Total buyers",
-        "stretch-goals-unlocked": "Bonus rewards unlocked",
+        "stretch-goals-unlocked": "desbloqueado",
         "stretch-goals-locked": "locked",
         "bonus-reward-1-title": "Dril'r Bot Pioneer-I",
         "bonus-reward-1-description": "Once <strong>30%</strong> of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot Pioneer-I paint job!",
@@ -267,13 +267,13 @@
         "description-text": {
           "p1": "Participe do nosso evento de pré-venda para colocar as mãos nos itens exclusivos abaixo. Essa vai ser sua ÚNICA chance de conquistar esses itens - Não perca, porque a tiragem é limitada!",
           "p2": "Participar da pré-venda Bitizen não apenas ajuda a gente a produzir um jogo de qualidade que prioriza os jogadores, trazendo experiências profundas de jogo na blockchain, significativas e envolventes, mas também ajuda a ostentar o seu status de Pioneiro tanto no Bitizen quanto no portal BitGuild. Quando o jogo for lançado, esses itens especiais e limitados não poderão ser adquiridos por meios tradicionais dentro do jogo: você vai ter que trocar com alguém!",
-          "p3": "Once the game launches, these special, limited run items can't be acquired by traditional in-game means; You'd have to trade for them!",
+          "p3": "Quando o jogo for lançado, esses itens especiais e limitados não poderão ser adquiridos por meios tradicionais dentro do jogo: você vai ter que trocar com alguém!",
           "p4": "Garanta seu lugar na história dos criptojogos e torne-se um Pioneiro Bitizen hoje mesmo!"
         },
         "faq-text": {
-          "p1": "<strong>Your invitation to come and make the world a better place.</strong>",
-          "p2": "<strong>Welcome to Bitropolis - the ultimate destination for a new crypto world!</strong>",
-          "p3": "Visit this sprawling cityscape and enjoy everything it has to offer, from the sunny digital skies to the depths of the bitmines. Everyone is welcome, all you have to do is sign up - Your digital cognition will then be loaded into your new destination in a matter of mere clicks!",
+          "p1": "<strong>O seu convite para vir fazer do mundo um lugar melhor.</strong>",
+          "p2": "<strong>Bem-vindo a Bitropolis - o destino definitivo para um novo criptomundo!</strong>",
+          "p3": "Visite essa florescente cidade e desfrute de tudo que ela tem para oferecer, desde o ensolarado céu digital até as profundezas das minas de bits. Todos são bem-vindos, bastando apenas se cadastrar; sua cognição digital será carregada ao seu novo destino em poucos cliques!",
           "p4": "<strong>O que é esse lugar?</strong>",
           "p5": "Ah, nada de mais... só a civilização digital mais magnífica destas bandas da blockchain (talvez de todas as outras, também... mas a gente não vai lá). É uma selva urbana florescente e infinita na qual seus sonhos mais loucos podem se realizar - se você estiver disposto a virar o tal no mundo cripto! Viva possibilidades sem limites na sua jornada rumo a essa nova utopia virtual interconectada.",
           "p6": "<strong>Quem eu sou, aqui?</strong>",
@@ -288,14 +288,14 @@
           "p15": "Você consegue a sua passagem de ida (e convenhamos, não vai precisar de passagem de volta) para o mundo virtual de Bitrópolis agora mesmo clicando aqui. E nada de classe econômica: para os Bitizens, tudo é de primeira classe, baby!"
         },
         "rules-text": {
-          "p1": "<strong>Limitations:</strong>",
+          "p1": "<strong>Limitações:</strong>",
           "l1": "Você não pode comprar o mesmo conjunto mais de uma vez.",
           "l2": "Compras múltiplas só qualificam você para uma recompensa bônus de cada categoria.",
           "l3": "Esses itens não estarão mais disponíveis depois do período de pré-venda.",
           "l4": "Será possível vender itens dos Pioneiros no nosso Mercado.",
           "l5": "Todos os itens de pré-venda estão disponíveis para compra apenas com PLAT.",
           "l6": "Todas as transações de pré-venda são definitivas.",
-          "p2": "<strong>Distribution:</strong>",
+          "p2": "<strong>Distribuição::</strong>",
           "l7": "Conjuntos e itens de Pioneiros e recompensas bônus estarão disponíveis para ser resgatados quando o Bitizen's Wardrobe for lançado, no fim de julho.",
           "l8": "Você deve resgatar os itens com a conta que foi usada para comprá-los.",
           "l9": "Pode haver taxas de 'gas' no momento do resgate de itens dentro do jogo. "
@@ -366,8 +366,8 @@
             }
           },
           "pioneer_compass": {
-            "name": "Pioneer's Compass",
-            "description": "This ancient compass always shows the way, but no one know where to exactly. Some say it points to the long-lost heart of Bitropolis, others say it points to your innermost desires - Either way, it increases your chance to find something nice while mining!"
+            "name": "Bússola do Pioneiro",
+            "description": "Essa antiga bússola sempre mostra o caminho, mas ninguém sabe bem para onde. Uns dizem que aponta para o coração perdido de Bitropolis; outros, que ela aponta para os seus desejos mais secretos... De qualquer modo, ela aumenta suas chances de encontrar algo legal durante a mineração!"
           }
         }
       }
