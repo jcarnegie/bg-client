@@ -56,7 +56,7 @@ class Web3 extends Component {
   }
 
   render() {
-    const {account, network, pathname, router, reduxUser, user} = this.props;
+    const {account, network, pathname, router, reduxUser} = this.props;
 
     const guestRoutes = [
       "",
@@ -68,6 +68,11 @@ class Web3 extends Component {
     /* Regex is insensitive, matches startswith. Ex: presale/bitizens is public. */
     const matchExp = new RegExp(`^(${guestRoutes.reduce((a, b) => (a + `|\\/${b}`))})`, "i");
     const path = pathname || router.pathname;
+
+    /* If we haven't read the account state from web3, don't render any modals */
+    if (!account.success) {
+      return null;
+    }
 
     if (!path || (path.match(matchExp) && !reduxUser.showRegisterWorkflow)) {
       return null;
@@ -87,7 +92,7 @@ class Web3 extends Component {
 
     const userIsAlreadyRegistered = reduxUser.data && reduxUser.wallet;
     const showRegister = !userIsAlreadyRegistered && !reduxUser.isLoading && reduxUser.showRegisterWorkflow;
-    if (showRegister) return <Register show={showRegister} onHide={::this.hideRegistrationWorkflowModals} />;
+    if (showRegister) return <Register show={true} onHide={::this.hideRegistrationWorkflowModals} />;
 
     return null;
   }
