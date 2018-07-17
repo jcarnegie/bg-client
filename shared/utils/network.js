@@ -1,3 +1,5 @@
+import bluebird from 'bluebird';
+
 import topupABI from '@/shared/contracts/topup';
 import bitGuildTokenABI from '@/shared/contracts/token';
 import oracleABI from '@/shared/contracts/oracle';
@@ -29,6 +31,10 @@ export const networkAddressMap = {
     bitizensIGO: process.env.RINKEBY_BITIZENS_IGO_CONTRACT_ADDR,
   },
 };
+
+export function asyncGetNetworkId() {
+  return bluebird.promisify(window.web3.version.getNetwork)();
+}
 
 export function networkIdToName(id) {
   return networkIdToNameMap[id];

@@ -9,8 +9,56 @@ if (typeof global !== 'undefined') {
 
 export const uri = (process.env.NODE_ENV === 'development' ? 'http://localhost:7000' : '') + '/api/';
 
+
+const typeDefs = `
+  type Network {
+    id: Int
+    available: Boolean
+    name: String
+    supported: Boolean
+  }
+
+  type Mutation {
+    updateNetwork(id: Int!, available: Boolean!, name: String!, supported: Boolean!): Network
+    // updateWallet(wallet: String!): Wallet
+  }
+
+  type Query {
+    wallet: String
+    network: [Network]
+  }
+`;
+
 export const client = new ApolloClient({
   uri,
+  clientState: {
+    defaults: {
+      wallet: null,
+      network: {
+        id: null,
+        name: null,
+        supported: null,
+        __typename: "Network",
+      },
+    },
+    resolvers: {
+      Mutation: {
+        updateNetwork: (_, {id, name, supported}, {cache}) => {
+          cache.writeData({
+            data: {
+              network: {id, name, supported},
+            },
+          });
+          return null;
+        },
+        updateWallet: (_, {wallet}, {cache}) => {
+          cache.writeData({data: {wallet}});
+          return null;
+        },
+      },
+    },
+    typeDefs,
+  },
 });
 
 
