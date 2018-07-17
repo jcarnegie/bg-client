@@ -1,29 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { compose, graphql } from "react-apollo";
+
+import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
+
+import { queries } from '@/shared/utils/apollo';
+import { getWeb3Wallet } from '@/shared/utils/network';
+import style from '@/shared/constants/style';
 
 import { Mobile, Desktop } from '@/components/responsive';
 
-import style from '@/shared/constants/style';
 
-@connect(
-  state => ({
-    user: state.user,
-  })
-)
-export default class User extends Component {
+class User extends Component {
   static propTypes = {
-    user: PropTypes.object,
-    balanceETH: PropTypes.object,
-    balancePLAT: PropTypes.object,
+    data: PropTypes.object,
   };
 
   render() {
-    const { user } = this.props;
+    const { viewUserByWallet } = this.props.data;
 
-    if (user.isLoading || !user.success) {
-      return null;
-    }
+    if (!viewUserByWallet) return <ScaleLoader height={10} width={2} color="white" />;
+    if (viewUserByWallet.loading) return <ScaleLoader height={10} width={2} color="white" />;
+    if (viewUserByWallet.error) return "Error"; // TODO - error states
 
     return (
       <div className="user">
@@ -78,8 +76,8 @@ export default class User extends Component {
           <div className="user-desktop">
           <img src="/static/images/icons/avatar_my.png" className="avatar" />
           <span className="text">
-            <span className="name">{user.data.nickName}</span>
-            <span className="wallet">{user.data.wallet.substring(0, 10) + '...'}</span>
+            <span className="name">{viewUserByWallet.nickName}</span>
+            <span className="wallet">{viewUserByWallet.wallet.substring(0, 10) + "..."}</span>
           </span>
           </div>
         </Desktop>
@@ -87,8 +85,8 @@ export default class User extends Component {
           <div className="user-mobile">
           <img src="/static/images/icons/avatar_my.png" className="avatar" />
           <span className="text">
-            <span className="name">{user.data.nickName}</span>
-            <span className="wallet">{user.data.wallet.substring(0, 10) + '...'}</span>
+            <span className="name">{viewUserByWallet.nickName}</span>
+            <span className="wallet">{viewUserByWallet.wallet.substring(0, 10) + "..."}</span>
           </span>
           </div>
         </Mobile>
@@ -96,3 +94,10 @@ export default class User extends Component {
     );
   }
 }
+
+export default compose(graphql(queries.viewUserByWallet, {
+  options: props => ({
+    variables: {wallet: getWeb3Wallet()},
+    ssr: false,
+  }),
+}))(User);
