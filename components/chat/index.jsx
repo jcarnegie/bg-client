@@ -21,7 +21,12 @@ export default class Chat extends Component {
   static propTypes = {
     chat: PropTypes.object,
     user: PropTypes.object,
+    parentCollapsed: PropTypes.bool,
   };
+
+  static defaultProps = {
+    parentCollapsed: false,
+  }
 
   state = {
     newMessage: '',
@@ -55,9 +60,63 @@ export default class Chat extends Component {
     this.scrollBottom = scrollBottom;
   };
 
+  sendButton() {
+    return (
+      <Button type="submit">
+        <style jsx>{`
+          .send-button {
+            height: 30px;
+            width: 30px;
+          }
+          .send-button polygon {
+            fill: ${style.colors.primary};
+          }
+        `}</style>
+        <svg className="send-button" enableBackground="new 0 0 535.5 535.5" version="1.1" viewBox="0 0 535.5 535.5" xmlSpace="preserve" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="0 497.25 535.5 267.75 0 38.25 0 216.75 382.5 267.75 0 318.75" fill="#006DF0" />
+        </svg>
+      </Button>
+    );
+  }
+
+  sendButtonWithoutBootstrap() {
+    return (
+      <button onClick={::this.handleSubmit}>
+        <style jsx>{`
+          button {
+            background-color: #FFF;
+            border-radius: 3px;
+            color: #F9F9FB;
+            padding: 15px 10px;
+            text-transform: uppercase;
+            width: 60px;
+            height: 60px;
+            border: 0;
+            border-top: 1px solid lightgray;
+            cursor: default;
+            outline: none;
+          }
+          .send-button {
+            height: 30px;
+            width: 30px;
+          }
+          .send-button polygon {
+            fill: ${style.colors.primary};
+          }
+        `}</style>
+        <svg className="send-button" enableBackground="new 0 0 535.5 535.5" version="1.1" viewBox="0 0 535.5 535.5" xmlSpace="preserve" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="0 497.25 535.5 267.75 0 38.25 0 216.75 382.5 267.75 0 318.75" fill="#006DF0" />
+        </svg>
+      </button>
+    );
+  }
+
   render() {
     const { messages } = this.props.chat;
-    const { user } = this.props;
+    const { user, parentCollapsed } = this.props;
+
+    const renderMessages = map(msg => <Message key={msg.messageId} message={msg} user={user} />, messages);
+
     return (
       <div className="chat">
         <div className="wrapper">
@@ -112,27 +171,18 @@ export default class Chat extends Component {
               text-transform: uppercase;
               max-width: 60px;
             }
-            .send-button {
-              height: 30px;
-              width: 30px;
-            }
-            .send-button polygon {
-              fill: ${style.colors.primary};
-            }
           `}</style>
           <StayScrolled className="list" component="div" provideControllers={this.storeScrolledControllers}>
-            {map(msg => <Message key={msg.messageId} message={msg} user={user} />, messages)}
+            {parentCollapsed ? null : renderMessages}
           </StayScrolled>
-          <Form onSubmit={::this.handleSubmit}>
-            <FormGroup>
-              <FormControl onChange={::this.handleMessageChange} type="text" value={this.state.newMessage} placeholder='Write Something' />
-              <Button type="submit">
-                <svg className="send-button" enableBackground="new 0 0 535.5 535.5" version="1.1" viewBox="0 0 535.5 535.5" xmlSpace="preserve" xmlns="http://www.w3.org/2000/svg">
-                  <polygon points="0 497.25 535.5 267.75 0 38.25 0 216.75 382.5 267.75 0 318.75" fill="#006DF0" />
-                </svg>
-              </Button>
-            </FormGroup>
-          </Form>
+          {parentCollapsed ? ::this.sendButtonWithoutBootstrap() : (
+            <Form onSubmit={::this.handleSubmit}>
+              <FormGroup>
+                <FormControl onChange={::this.handleMessageChange} type="text" value={this.state.newMessage} placeholder='Write Something' />
+                {this.sendButton()}
+              </FormGroup>
+            </Form>
+          )}
         </div>
       </div>
     );

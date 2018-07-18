@@ -10,6 +10,7 @@ function Main(props) {
           width: 100%;
           margin-top: ${style.header.height};
           width: calc(100% - ${props.offsetRight ? props.offsetRight : '0'});
+          transition: ${style.transition.default};
         }
       `}</style>
       {props.children}

@@ -41,6 +41,7 @@ export const textShadow = {
 };
 
 export const transition = {
+  button: 'all 0.1s cubic-bezier(.25,.8,.25,1)',
   default: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
   medium: 'all 0.7s cubic-bezier(.25,.8,.25,1)',
   slow: 'all 1.0s cubic-bezier(.25,.8,.25,1)',

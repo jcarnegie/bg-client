@@ -145,7 +145,7 @@ class GameList extends Component {
       <div onClick={() => Router.push({ pathname: '/presale', query: { slug } }, `/presale/${slug}`)} className="promotional-banner presale-banner">
         <style jsx>{`
           .promotional-banner.presale-banner {
-            background-color: rgba(109, 151, 233, 1);
+            background: linear-gradient(to right, #8AAFF2, #5180EB);;
             color: ${style.colors.logos};
             border-bottom: 1px solid #c7c6f2;
             height: 200px;
@@ -314,7 +314,7 @@ class GameList extends Component {
               label: 'Facebook',
             });
           }}>
-            <Image responsive src="/static/images/icons/facebook.png" />
+            <Image height={28} width={28} src="/static/images/icons/facebook.png" />
           </a>
           <a href="https://twitter.com/bitguildplat" target="_blank" rel="noopener noreferrer" onClick={() => {
             this.props.analytics.ga.event({
@@ -323,7 +323,7 @@ class GameList extends Component {
               label: 'Twitter',
             });
           }}>
-            <Image responsive src="/static/images/icons/twitter.png" />
+            <Image height={28} width={28} src="/static/images/icons/twitter.png" />
           </a>
           <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer" onClick={() => {
             this.props.analytics.ga.event({
@@ -332,7 +332,7 @@ class GameList extends Component {
               label: 'Discord',
             });
           }}>
-            <Image responsive src="/static/images/icons/discord.png" />
+            <Image height={28} width={28} src="/static/images/icons/discord.png" />
           </a>
         </div>
       </div>

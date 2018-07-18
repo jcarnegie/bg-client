@@ -2,12 +2,16 @@ import {
   MENU_SHOW,
   APP_RESIZE,
   SHOW_CONVERT_MODAL,
+  LAYOUT_ASIDE_RIGHT_COLLAPSED,
 } from '@/shared/constants/actions';
 import { breakpoints } from '@/shared/constants/style';
 
 
 const layout = {
   showMenu: false,
+  asideRightCollapsed: false,
+  asideRightWidth: '285px',
+  asideRightCollapsedWidth: '60px',
   innerWidth: 1401,
   innerHeight: 1401,
   type: {
@@ -22,6 +26,10 @@ export default function itemsReducer(state = layout, action) {
     case SHOW_CONVERT_MODAL:
       return Object.assign({}, state, {
         showConvertModal: action.payload,
+      });
+    case LAYOUT_ASIDE_RIGHT_COLLAPSED:
+      return Object.assign({}, state, {
+        asideRightCollapsed: action.payload,
       });
     case APP_RESIZE:
       const { innerWidth } = window;
