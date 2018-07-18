@@ -6,11 +6,6 @@ General
 - Style jsx / eslint and editor support
 - Style updates, component rewrites.
 
-Landing V2
-- Get updated game banners from @Ani
-- Get updated social media icons from @Ani
-
-
 ## Dependencies
 
 ## Setup
