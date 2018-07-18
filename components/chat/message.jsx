@@ -73,7 +73,10 @@ export default class Message extends Component {
   render() {
     const { message, user } = this.props;
 
-    const isMyMessage = path(['sender', 'userId'], message) === path(['data', 'wallet'], user);
+    const userWallet = path(['data', 'wallet'], user);
+    const messageUserId = path(['sender', 'userId'], message);
+    const isMyMessage = Boolean(userWallet && (messageUserId === userWallet));
+    const messageUserNickname = message.messageType === 'admin' ? 'Admin' : path(['sender', 'nickname'], message);
 
     return (
       <div className="message">
@@ -145,7 +148,7 @@ export default class Message extends Component {
             </div>
             <div className="message-box-container">
               <div className="header">
-                <div className="nickname">{path(['sender', 'nickname'], message)}</div>
+                <div className="nickname">{messageUserNickname}</div>
               </div>
               <div className="message-box">
                 <div className="body contents">{this.createMessage()}</div>
