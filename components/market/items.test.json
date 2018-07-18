@@ -24,18 +24,6 @@
     "defence": {
       "keyLan": "Defense",
       "value": 38
-    },
-      "attack": {
-      "keyLan": "Attack",
-      "value": "67 - 384"
-    },
-    "health": {
-      "keyLan": "Health",
-      "value": 714
-    },
-    "attack": {
-      "keyLan": "Attack",
-      "value": "68 - 387"
     }
   },
   "presale": false,

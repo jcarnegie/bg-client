@@ -1,13 +1,12 @@
-import React, { Component, Fragment } from "react";
+import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
-import { Badge, Button, Form, Modal, Thumbnail } from "react-bootstrap";
-import { connect } from "react-redux";
-import { FormattedMessage, injectIntl, intlShape } from "react-intl";
-import { compose, filter, isNil, map, not } from "ramda";
+import {Badge, Button, Form, Modal} from "react-bootstrap";
+import {connect} from "react-redux";
+import {FormattedMessage, intlShape} from "react-intl";
+import {compose, filter, isNil, map, not} from "ramda";
 
 import BGModal from "@/components/modal";
-import InputGroupValidation from "@/components/inputs/input.group.validation";
-import {isValidItemCategory, itemStats} from "../../client/utils/item";
+import {isValidItemCategory, itemStats} from "@/client/utils/item";
 
 const notNil = compose(not, isNil);
 @connect(
@@ -17,14 +16,16 @@ const notNil = compose(not, isNil);
   })
 )
 
-export default class BuyPopup extends Component {
+export default class ItemPopup extends Component {
   static propTypes = {
+    type: PropTypes.string,
     show: PropTypes.bool,
     network: PropTypes.object,
     gas: PropTypes.object,
     formData: PropTypes.object,
     onChange: PropTypes.func,
     onHide: PropTypes.func,
+    onSubmit: PropTypes.func,
     item: PropTypes.shape({
       name: PropTypes.string,
       image: PropTypes.string,
@@ -35,20 +36,24 @@ export default class BuyPopup extends Component {
     intl: intlShape,
   };
 
-  state = {};
+  static defaultProps = {
+    onHide: () => {},
+    onSubmit: () => {},
+  }
+
+  state = {sellPrice: 0};
 
   onSubmit(e) {
     e.preventDefault();
+    this.props.onSubmit();
+    this.props.onHide();
+  }
 
-    if (!this.isvalid()) {
-      return false;
-    }
-    this.transfer();
-  };
+  handleChange(e) {
+    this.setState({ sellPrice: event.target.value });
+  }
 
-  transfer() {
-    const {network, gas, user, item, game, onHide, formData} = this.props;
-    onHide();
+  // transfer() {
     // keeping for example
     // const contract = window.web3.eth.contract(nftABI).at(game.nft[network.data.id]);
     // contract.safeTransferFrom(user.data.wallet, formData.wallet, item.tokenId, {
@@ -77,9 +82,9 @@ export default class BuyPopup extends Component {
     //     onHide();
     //   }
     // );
-  };
+  // };
 
-  isValid() {
+  // isValid() {
   // keeping for example
   //   const {intl, formData} = this.props;
 
@@ -103,10 +108,10 @@ export default class BuyPopup extends Component {
   //   }
 
   //   return isValid;
-  }
+  // }
 
   renderStats() {
-    const { item, maxStats } = this.props;
+    const {item} = this.props;
     return (
       <dl>
         {map(stat => (
@@ -120,14 +125,14 @@ export default class BuyPopup extends Component {
   }
 
   renderAttributes() {
-    const { item } = this.props;
+    const {item} = this.props;
     const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => Object.values(attr)[1]));
     return (
       <div className="attrs">
         {attributes
           .filter(isValidItemCategory)
           .map(attribute =>
-            <Badge key={attribute}>
+            <Badge key={"itemCard" + attribute}>
               {attribute}
             </Badge>
           )}
@@ -136,9 +141,8 @@ export default class BuyPopup extends Component {
   }
 
   render() {
-    const {show, onHide, item, formData, onChange} = this.props;
-
-    return(
+    const {show, onHide, item, type} = this.props;
+    return (
        <BGModal show={show} className="buy" onHide={onHide} backdropClassName="semi">
         <style jsx global>{`
           .buy .modal-header {
@@ -161,22 +165,22 @@ export default class BuyPopup extends Component {
             height: 100%;
             width: 100%;
           }
-          .imageContainer {
-            float: left;
-            width: 50%;
-          }
-          .itemInfo {
-            float: right;
-            width: 45%;
-            position: relative;
-            top: 12px;
-          }
           .modal .modal-content {
             width: 700px;
           }
           .modal .modal-content .modal-body form{
             margin: 0px;
             width: 75%;
+          }
+          form .imageContainer {
+            float: left;
+            width: 50%;
+          }
+          form .itemInfo {
+            float: right;
+            width: 45%;
+            position: relative;
+            top: 12px;
           }
           form .itemInfo h2 {
             float: left
@@ -202,6 +206,30 @@ export default class BuyPopup extends Component {
             margin-left: 10px;
             text-align: left;
           }
+          form .sellBlock {
+            float: left;
+            width: 100%;
+            height: 40px;
+          }
+          form .sell-input {
+            float: left;
+            width: 50%;
+            height: 100%;
+          }
+          form .btn-block-sell {
+            float: right;
+            width: 40%;
+          }
+           form .sell-text {
+            float: left;
+            width: 100%;
+            text-align: left;
+          }
+           form .sell-disclaimer {
+              float: left;
+              width: 50%;
+              text-align: left;
+          }
           form .itemInfo .platToken{
             position: relative;
             bottom: 5px;
@@ -225,19 +253,52 @@ export default class BuyPopup extends Component {
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
             <div className="imageContainer">
-              <img src={item.image} className="buyImage"/>
+              <img src={item.image} className="buyImage" />
             </div>
             <div className="itemInfo">
               <h2>{item.name}</h2>
               <div className="itemPrice">
-              <img src="/static/images/icons/plat.png" className="platToken" />{" " + item.price.plat + " "}PLAT
+              {
+                type === "sell"
+                ? null
+                : <>
+                    <img src="/static/images/icons/plat.png" className="platToken" />{" " + " "}PLAT
+                  </>
+              }
               </div>
               {this.renderStats()}
               {this.renderAttributes()}
             </div>
-            <Button type="submit" className="btn-block">
-            BUY for <img src="/static/images/icons/plat.png" className="platToken" />{" " + item.price.plat}PLAT
-            </Button>
+            {
+              type === "renew"
+              ? <Button type="submit" className="btn-block">
+                Renew Marketplace Expiration
+                </Button>
+              : type === "withdraw"
+              ? <Button type="submit" className="btn-block">
+                  Withdraw from Marketplace
+                </Button>
+              : type === "sell"
+              ? (<div>
+                  <div className="sell-text">
+                    Sell for
+                  </div>
+                  <div className="sellBlock">
+                    <input type="text" value={this.state.sellPrice} onChange={::this.handleChange} className="sell-input">
+                    </input>
+                    <Button type="submit" className="btn-block-sell">
+                      Sell this Item
+                    </Button>
+                  </div>
+                  <div className="sell-disclaimer">
+                    BitGuild charges a X% fee on all trades.
+                    You will get XXX PLAT for this price.
+                  </div>
+                </div>)
+              : <Button type="submit" className="btn-block">
+                  BUY for <img src="/static/images/icons/plat.png" className="platToken" />{" "}PLAT
+                </Button>
+            }
           </Form>
         </Modal.Body>
       </BGModal>

@@ -6,7 +6,7 @@ import {call, take, put, select, takeLatest} from "redux-saga/effects";
 import {
   networkIsSupported,
   getOracleContract,
-  getTokenContract,
+  getBitGuildTokenContract,
 } from "@/shared/utils/network";
 
 import {
@@ -73,7 +73,7 @@ function * getBalancePLAT() {
     const network = yield select(state => state.network);
     yield put({type: BALANCE_PLAT_LOADING});
     if (networkIsSupported(network)) {
-      const balance = yield bluebird.promisify(getTokenContract(network).balanceOf)(account.wallet);
+      const balance = yield bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(account.wallet);
       yield put({
         type: BALANCE_PLAT_CHANGED,
         payload: window.web3.fromWei(balance, "ether").toNumber(),

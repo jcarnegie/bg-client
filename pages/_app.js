@@ -20,7 +20,7 @@ import ResizeListener from "@/components/resizelistener";
 // import LoadingPage from "@/components/LoadingPage";
 // import ErrorPage from "@/components/ErrorPage";
 import Web3Modals from "@/components/popups/Web3Modals";
-import GlobalStyles from "@/pages/globalstyles";
+import GlobalStyles from "@/components/GlobalStyles";
 import style from "@/shared/constants/style";
 import {APP_INIT} from "@/shared/constants/actions";
 

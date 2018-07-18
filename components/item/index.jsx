@@ -3,14 +3,21 @@ import {Badge, Button, ButtonGroup, Col, Thumbnail} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {FormattedMessage, injectIntl} from "react-intl";
 import {compose, filter, isNil, map, not} from "ramda";
+import {connect} from "react-redux";
+import * as log from "loglevel";
+
+import {
+  getMarketplaceContract,
+  getBitGuildTokenContract,
+} from "@/shared/utils/network";
 
 import {isValidItemCategory, itemStats} from "@/client/utils/item";
 import style from "@/shared/constants/style";
 
-import BGModal from "@/components/modal";
+// import BGModal from "@/components/modal";
 import Gift from "@/components/popups/gift";
-import Sell from "@/components/popups/sell";
-import Buy from "@/components/popups/buy";
+// import Sell from "@/components/popups/sell";
+import ItemPopup from "@/components/popups/itempopup";
 
 import {featureOn} from "@/shared/utils";
 
@@ -98,12 +105,13 @@ class Item extends Component {
   renderAttributes() {
     const {item} = this.props;
     const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => Object.values(attr)[1]));
+    // fix duplicate keys
     return (
       <div className="attrs">
         {attributes
           .filter(isValidItemCategory)
           .map(attribute =>
-            <Badge key={attribute}>
+            <Badge key={"item" + attribute}>
               {attribute}
             </Badge>
           )}
@@ -119,6 +127,7 @@ class Item extends Component {
           .item {
             padding-left: 35px;
             padding-right: 35px;
+            max-width: 275px;
           }
           .item .thumbnail {
             padding: 0;
@@ -127,9 +136,13 @@ class Item extends Component {
             border-radius: 6px;
             box-shadow: ${style.boxShadow.wide};
           }
-          .item .thumbnail img {
+          .item .thumbnail .itemImage {
+            display: block;
+            margin: auto auto;
             height: 100%;
             width: 100%;
+            max-height: 200px;
+            max-width: 200px;
           }
           .item .thumbnail .caption {
             padding: 0;
@@ -150,18 +163,27 @@ class Item extends Component {
             background-color: #F4F6F9;
             padding: 5px 15px 5px 15px;
             margin: 0;
+            columns: 4;
+            min-height: 46px;
           }
           .item .thumbnail .caption dl dt {
             grid-column-start: 1;
             display: inline-block;
             font-weight: 300;
           }
-           .item .thumbnail .caption dl dt:not(:first-child) {
+          .item .thumbnail .caption dl dt:nth-of-type(even) {
+            grid-column-start: 3;
             display: inline-block;
             font-weight: 300;
           }
           .item .thumbnail .caption dl dd {
             grid-column-start: 2;
+            display: inline-block;
+            font-weight: 500;
+            margin-left: 5px;
+          }
+          .item .thumbnail .caption dl dd:nth-of-type(even)  {
+            grid-column-start: 4;
             display: inline-block;
             font-weight: 500;
             margin-left: 5px;
@@ -233,7 +255,7 @@ class Item extends Component {
           }
         `}</style>
         <Thumbnail>
-          <img src={item.image} />
+          <img src={item.image} className="itemImage"/>
           {::this.expiredBanner()}
           <h4>{item.name}</h4>
           {this.renderStats()}
@@ -246,8 +268,16 @@ class Item extends Component {
 }
 
 
+@connect(
+  state => ({
+    account: state.account,
+    network: state.network,
+  })
+)
 class MarketplaceItem extends Component {
   static propTypes = {
+    account: PropTypes.object,
+    network: PropTypes.object,
     item: PropTypes.shape({
       game: PropTypes.object,
       name: PropTypes.string,
@@ -271,15 +301,45 @@ class MarketplaceItem extends Component {
   }
 
   onHideBuy() {
+    console.log('onhide buy');
+    this.setState({buy: false});
+  }
+
+  onSubmit() {
+    const {
+      account,
+      network,
+      item,
+      game,
+      // onHide,
+    } = this.props;
+
+    log.info("Instantiating buy transaction...");
+
+    const BitGuildTokenContract = getBitGuildTokenContract(network);
+    console.log(BitGuildTokenContract, network);
+    console.log(game, item);
+    /* Buy listed item */
+    const itemPrice = 6000; // item.price
+    const listingId = 1; // item.listingId
+    BitGuildTokenContract.approveAndCall(account.wallet, itemPrice, listingId, (err, res) => {
+      if (err) {
+        log.error(err);
+      } else {
+        log.info("all good!");
+        log.info(res);
+      }
+    });
+
     this.setState({buy: false});
   }
 
   renderButtons() {
-    const {item, game} = this.props;
+    const {item} = this.props;
     return (
       <ButtonGroup justified>
         <Button href="#" onClick={::this.onShowBuy} className="buy">
-          Buy for<img src="/static/images/icons/plat.png" className="platToken" />{item.price.plat}
+          Buy for<img src="/static/images/icons/plat.png" className="platToken" />{item.price ? item.price.plat : 0}
           {/* <FormattedMessage id="Buy" /> */}
         </Button>
       </ButtonGroup>
@@ -287,12 +347,19 @@ class MarketplaceItem extends Component {
   }
 
   render() {
-    const {item, game} = this.props
+    const {item, game} = this.props;
     return (
       <>
-        <Buy show={this.state.buy} item={item} game={game} onHide={::this.onHideBuy} />
+        <ItemPopup
+          show={this.state.buy}
+          type="buy"
+          item={item}
+          game={game}
+          onHide={::this.onHideBuy}
+          onSubmit={::this.onSubmit}
+        />
         <Item
-          item={this.props.item}
+          item={item}
           buttons={::this.renderButtons()}
         />
       </>
@@ -300,9 +367,14 @@ class MarketplaceItem extends Component {
   }
 }
 
-
+@connect(
+  state => ({
+    network: state.network,
+  })
+)
 class InventoryItem extends Component {
   static propTypes = {
+    network: PropTypes.object,
     item: PropTypes.shape({
       game: PropTypes.object,
       name: PropTypes.string,
@@ -333,6 +405,36 @@ class InventoryItem extends Component {
 
   onHideModal() {
     this.setState({modal: null});
+  }
+
+  onSubmit() {
+    console.log("onsubmit");
+  }
+
+  onSellSubmit() {
+    console.log("onsell submit");
+    const {
+      network,
+      item,
+      game,
+      onHide,
+    } = this.props;
+
+    log.info("Instantiating sell transaction...");
+
+    const price = 1000; // TODO
+    const MarketplaceContract = getMarketplaceContract(network);
+    console.log(MarketplaceContract, network);
+    console.log(game, item);
+    /* Create item listing */
+    MarketplaceContract.listItemPLAT(game.nft[network.data.id], item.tokenId, price, (err, res) => {
+      if (err) {
+        log.error(err);
+      } else {
+        log.info("all good!");
+        log.info(res);
+      }
+    });
   }
 
   renderPresaleButton() {
@@ -435,14 +537,34 @@ class InventoryItem extends Component {
     const {item, game} = this.props;
     return (
       <>
-        <Gift show={this.state.modal === "gift"} item={item} game={game} onHide={::this.onHideModal} />
-        <Sell show={this.state.modal === "sell"} item={item} game={game} onHide={::this.onHideModal} />
-        {/* TODO - replace with ItemModal renew */}
-        <BGModal show={this.state.modal === "renew"} item={item} game={game} onHide={::this.onHideModal} />
-        {/* TODO - replace with ItemModal withdraw */}
-        <BGModal show={this.state.modal === "withdraw"} item={item} game={game} onHide={::this.onHideModal} />
+        <Gift
+          show={this.state.modal === "gift"}
+          item={item} game={game} onHide={::this.onHideModal} />
+        <ItemPopup
+          show={this.state.modal === "sell"}
+          type="sell"
+          item={item}
+          game={game}
+          onHide={::this.onHideModal}
+          onSubmit={::this.onSellSubmit}
+        />
+        <ItemPopup
+          show={this.state.modal === "renew"}
+          type="renew"
+          item={item}
+          game={game}
+          onHide={::this.onHideModal}
+          onSubmit={::this.onSubmit}
+        />
+        <ItemPopup
+          show={this.state.modal === "withdraw"}
+          type="withdraw"
+          item={item}
+          game={game}
+          onHide={::this.onHideModal}
+          onSubmit={::this.onSubmit}
+        />
         <Item
-          className="marketplace-item"
           item={item}
           buttons={item.presale ? ::this.renderPresaleButton() : ::this.renderButtons()}
         />

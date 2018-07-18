@@ -1,11 +1,13 @@
 import {
   filter,
+  flatten,
   is,
   length,
   map,
   not,
   propIs,
   values,
+  uniq,
 } from "ramda";
 import {matchesOneOf} from "./string";
 
@@ -29,4 +31,20 @@ export const calcMaxItemsStats = items => {
   const stats = map(itemStats, items);
   const lengths = map(length, stats);
   return Math.max(...lengths);
+};
+
+export const getAttrsFromItems = items => {
+  return flatten(items.map(item => values(item.attrs || {})));
+};
+
+export const getCategoriesFromItemAttrs = attrs => {
+  const sortedAttrs = attrs.sort((a, b) => {
+    const aKey = a.keyLan.toLowerCase();
+    const bKey = b.keyLan.toLowerCase();
+    if (aKey > bKey) return 1;
+    if (aKey < bKey) return -1;
+    return 0;
+  });
+
+  return uniq(sortedAttrs.map(attr => attr.value));
 };

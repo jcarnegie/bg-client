@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 import {Image, Row} from "react-bootstrap";
 import {connect} from "react-redux";
-// import Link from "next/link";
+import {compose} from "react-apollo";
 import {
   contains,
   filter,
@@ -11,17 +11,15 @@ import {
   map,
   path,
   uniq,
-  // values,
 } from "ramda";
-// import Router from "next/router";
-import TreeView from "@/components/treeview/treeview";
 
-import {compose} from "react-apollo";
+import TreeView from "@/components/treeview/treeview";
+import DataLoading from "@/components/DataLoading";
 
 import {
   listGamesQuery,
-  listItemsQuery,
   viewUserByWalletQuery,
+  listMarketplaceItemsQuery,
 } from "@/shared/utils/apollo";
 
 import {
@@ -31,7 +29,7 @@ import {
 } from "@/client/utils/item";
 import {MarketplaceItem as Item} from "@/components/item";
 
-import itemList from "./items.test.json";
+// import itemList from "./items.test.json";
 
 @injectIntl
 @connect(
@@ -50,21 +48,24 @@ class Market extends Component {
     lastLocation: PropTypes.shape({
       pathname: PropTypes.string,
     }),
+    marketItems: PropTypes.object,
   }
 
   state = {
     filters: {},
   }
 
-  renderFilters() {
-    const {games} = this.props;
-    const items = itemList;
-    let dataSource = [];
+  handleFilter(filterName) {
+    // graphql call goes here
+  }
 
-    for (let i = 0; i < games.listGames.length; i++) {
-      dataSource.push({
-        game: games.listGames[i].name,
-        id: games.listGames[i].id,
+  renderFilters(items, games) {
+    let gameFilters = [];
+
+    for (let i = 0; i < games.length; i++) {
+      gameFilters.push({
+        game: games[i].name,
+        id: games[i].id,
         collapsed: true,
         categories: [],
       });
@@ -98,7 +99,7 @@ class Market extends Component {
         categories[key][categoryKey] = new Set(categories[key][categoryKey]);
       }
     }
-    dataSource.forEach(game => {
+    gameFilters.forEach(game => {
       for (var gameID in categories) {
         if (game.id === gameID) {
           for (var categoryKey in categories[gameID]) {
@@ -131,23 +132,25 @@ class Market extends Component {
           .tree-view {
             overflow-y: hidden;
           }
-
+          .tree-view_item .node {
+            font-size: 20px;
+          }
           .tree-view_item {
             /* immediate child of .tree-view, for styling convenience */
             cursor: pointer;
             border-bottom: 1px solid #EEEEEE;
             border-right: 1px solid #EEEEEE;
           }
-
+          .info {
+            cursor: pointer;
+          }
           /* style for the children nodes container */
           .tree-view_children {
             margin-left: 16px;
           }
-
           .tree-view_children-collapsed {
             height: 0px;
           }
-
           .tree-view_arrow {
             cursor: pointer;
             margin-right: 6px;
@@ -164,7 +167,6 @@ class Market extends Component {
             position: relative;
             top: 5px;
           }
-
           .tree-view_arrow:after {
             width: 25px;
             background-color: #bbb;
@@ -172,7 +174,6 @@ class Market extends Component {
             display: inline-block;
             border: 1px solid black;
           }
-
           /* rotate the triangle to close it */
           .tree-view_arrow-collapsed {
             -webkit-transform: rotate(-90deg);
@@ -183,19 +184,19 @@ class Market extends Component {
         `}
         </style>
         <div className="gameFilterHeader">GAMES</div>
-        {dataSource.map((node, i) => {
+        {gameFilters.map((node, i) => {
           const name = node.game;
           const label = <span className="node">{name}</span>;
           return (
-            <TreeView key={name + "|" + i} nodeLabel={label} defaultCollapsed={true}>
+            <TreeView key={name + "|" + i} nodeLabel={label} defaultCollapsed={true} onClick={() => ::this.handleFilter(name)}>
               {node.categories.map(category => {
                 const label2 = <span className="node">{category.categoryName}</span>;
                 return (
-                  <TreeView nodeLabel={label2} key={category.categoryName} defaultCollapsed={true}>
+                  <TreeView nodeLabel={label2} key={category.categoryName} defaultCollapsed={true} onClick={() => ::this.handleFilter(category.categoryName)}>
                   {
                     category.subCategories.map(subCategory => {
                       return (
-                        <div key={subCategory} className="info">{subCategory}</div>
+                        <div key={subCategory} className="info" onClick={() => ::this.handleFilter(subCategory)}>{subCategory}</div>
                       );
                     })
                   }
@@ -210,24 +211,21 @@ class Market extends Component {
     );
   }
 
-  renderMarket() {
-    // const {items, games} = this.props;
-    const {games} = this.props;
-    const items = itemList;
-
-    return items.length ? this.renderItems(items, games.listGames) : this.renderEmpty();
+  renderMarket(items, games) {
+    return (items && items.length) ? this.renderItems(items, games) : this.renderEmpty();
   }
 
-  renderItems() {
-    const {games} = this.props;
-    // saving for pattern
-    // const items = this.props.items.listItems || [];
-    const items = itemList;
+  renderItems(items, games) {
     const gameIdsWithItems = uniq(map(path(["game", "id"]), items));
-    const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games.listGames);
+    const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games);
 
     return (
-      <div>
+      <div className="filteredMarket">
+        <style jsx>{`
+        .filteredMarket {
+          width: 100%;
+        }
+      `}</style>
         {visibleGames.map(game =>
           this.renderItem(game, items.filter(item => item.game.id === game.id))
         )}
@@ -236,16 +234,12 @@ class Market extends Component {
   }
 
   renderItem(game, items) {
-    // console.log(items)
-    items = items || [];
-		// const attrs = flatten(items.map(item => values(item.attrs || {})));
 		const maxStats = calcMaxItemsStats(items);
-
     return (
       <Fragment key={game.id}>
         <div>
         </div>
-        <Row>
+        <Row className="flex-row">
           {items.filter(item => Object.keys(this.state.filters).includes(item.game.id) ? this.state.filters[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
             .map(item =>
               <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} />
@@ -273,11 +267,16 @@ class Market extends Component {
 
 
   render() {
-    const {games} = this.props;
-    const items = itemList;
+    const {games, marketItems} = this.props;
+    if (!games || !marketItems) return <DataLoading />;
+    if (games.error || marketItems.error) return <div>games Error!</div>;
 
-    if (games.loading || items.loading) return <div>loading!</div>;
-    if (games.error || items.error) return <div>games.listGames Error!</div>;
+    let listItems = marketItems.listMarketplaceItems;
+    let listGames = games.listGames;
+
+
+    const loadingAny = games.loading || marketItems.loading;
+
     return (
       <div className="marketplace">
         <style jsx>{`
@@ -285,16 +284,36 @@ class Market extends Component {
           display: flex;
         }
       `}</style>
-        {this.renderFilters()}
-        {this.renderMarket()}
+        {this.flexStyle()}
+        {loadingAny ? <DataLoading /> : this.renderFilters(listItems, listGames)}
+        {loadingAny ? <DataLoading /> : this.renderMarket(listItems, listGames)}
       </div>
     );
   };
-};
 
+  flexStyle() {
+    return (
+      <style jsx global>{`
+        .flex-row {
+          display: flex;
+          flex-wrap: wrap;
+          width: 100%;
+        }
+        .flex-row > [class*='col-'] {
+          display: flex
+          flex-direction: column;
+        }
+        .flex-row:after,
+        .flex-row:before {
+          display: flex;
+        }
+      `}</style>
+    );
+  }
+};
 
 export default compose(
   viewUserByWalletQuery,
   listGamesQuery,
-  listItemsQuery,
+  listMarketplaceItemsQuery,
 )(Market);

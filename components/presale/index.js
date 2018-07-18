@@ -9,7 +9,7 @@ import MDCheck from "react-icons/lib/md/check";
 
 import ScaleLoader from "react-spinners/dist/spinners/ScaleLoader";
 import {
-  getTokenContract,
+  getBitGuildTokenContract,
   getBitizensIGOContract,
   getBitizensIGOContractAddress,
 } from "@/shared/utils/network";
@@ -216,7 +216,7 @@ class Presale extends Component {
     }
 
     // Trigger approval for transaction
-    getTokenContract(this.props.network).approveAndCall(getBitizensIGOContractAddress(this.props.network), priceForUserBigNumber, set.tokenId, (err, tx) => {
+    getBitGuildTokenContract(this.props.network).approveAndCall(getBitizensIGOContractAddress(this.props.network), priceForUserBigNumber, set.tokenId, (err, tx) => {
       if (err) {
         log.error(err);
       } else {

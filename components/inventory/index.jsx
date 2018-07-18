@@ -6,7 +6,7 @@ import {Button, Image, Row, Tab, Tabs} from "react-bootstrap";
 import PropTypes from "prop-types";
 import Link from "next/link";
 import Router from "next/router";
-import {contains, filter, flatten, map, path, uniq, values} from "ramda";
+import {contains, filter, map, path, uniq} from "ramda";
 import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
 import {compose} from "react-apollo";
 
@@ -19,7 +19,12 @@ import {
 
 import {featureOn} from "@/shared/utils";
 
-import {calcMaxItemsStats, isValidItemCategory} from "@/client/utils/item";
+import {
+  calcMaxItemsStats,
+  isValidItemCategory,
+  getAttrsFromItems,
+  getCategoriesFromItemAttrs,
+} from "@/client/utils/item";
 import DataLoading from "@/components/DataLoading";
 
 import {InventoryItem as Item} from "@/components/item";
@@ -107,9 +112,9 @@ class Inventory extends Component {
   }
 
 	renderTab(game, items) {
-		const attrs = flatten(items.map(item => values(item.attrs || {})));
+    const attrs = getAttrsFromItems(items);
+    const categories = getCategoriesFromItemAttrs(attrs);
 		const maxStats = calcMaxItemsStats(items);
-		const categories = uniq(attrs.map(attr => attr.value));
 
     return (
       <Fragment key={game.id}>
@@ -258,6 +263,7 @@ class Inventory extends Component {
         .flex-row {
           display: flex;
           flex-wrap: wrap;
+          width: 100%;
         }
         .flex-row > [class*='col-'] {
           display: flex

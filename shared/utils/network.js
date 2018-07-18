@@ -1,6 +1,7 @@
 import topupABI from "@/shared/contracts/topup";
-import tokenABI from "@/shared/contracts/token";
+import bitGuildTokenABI from "@/shared/contracts/token";
 import oracleABI from "@/shared/contracts/oracle";
+import marketplaceABI from "@/shared/contracts/marketplace";
 import bitizensIGOABI from "@/shared/contracts/bitizensIGOABI";
 
 
@@ -16,12 +17,14 @@ export const networkAddressMap = {
     token: process.env.MAINNET_TOKEN_CONTRACT_ADDR,
     topup: process.env.MAINNET_TOPUP_CONTRACT_ADDR,
     oracle: process.env.MAINNET_ORACLE_CONTRACT_ADDR,
+    marketplace: process.env.MAINNET_MARKETPLACE_CONTRACT_ADDR,
     bitizensIGO: process.env.MAINNET_BITIZENS_IGO_CONTRACT_ADDR,
   },
   rinkeby: {
     token: process.env.RINKEBY_TOKEN_CONTRACT_ADDR,
     topup: process.env.RINKEBY_TOPUP_CONTRACT_ADDR,
     oracle: process.env.RINKEBY_ORACLE_CONTRACT_ADDR,
+    marketplace: process.env.RINKEBY_MARKETPLACE_CONTRACT_ADDR,
     bitizensIGO: process.env.RINKEBY_BITIZENS_IGO_CONTRACT_ADDR,
   },
 };
@@ -52,8 +55,13 @@ export function getOracleContractAddress(network) {
   return networkAddressMap[network.data.name].oracle;
 }
 
-export function getTokenContractAddress(network) {
+
+export function getBitGuildTokenContractAddress(network) {
   return networkAddressMap[network.data.name].token;
+}
+
+export function getMarketplaceContractAddress(network) {
+  return networkAddressMap[network.data.name].marketplace;
 }
 
 export function getTopupContractAddress(network) {
@@ -68,12 +76,16 @@ export function getTopupContract(network) {
   return window.web3.eth.contract(topupABI).at(getTopupContractAddress(network));
 }
 
-export function getTokenContract(network) {
-  return window.web3.eth.contract(tokenABI).at(getTokenContractAddress(network));
+export function getBitGuildTokenContract(network) {
+  return window.web3.eth.contract(bitGuildTokenABI).at(getBitGuildTokenContractAddress(network));
 }
 
 export function getOracleContract(network) {
   return window.web3.eth.contract(oracleABI).at(getOracleContractAddress(network));
+}
+
+export function getMarketplaceContract(network) {
+  return window.web3.eth.contract(marketplaceABI).at(getMarketplaceContractAddress(network));
 }
 
 export function getBitizensIGOContract(network) {
