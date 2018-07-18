@@ -73,11 +73,7 @@ class Market extends Component {
 
     const attrs = flatten(items.map(item => {
       let values = Object.values(item.attrs || {});
-      values = values.map(value => {
-        value.game = item.game.id;
-        return value;
-      });
-      return values;
+      return values.map(value => Object.assign({ game: item.game.id }, value));
     }));
 
     const categories = {};
@@ -117,14 +113,16 @@ class Market extends Component {
       <div className="filters">
         <style jsx>{`
           .filters {
-            flex: 0 0 200px;
+            flex: 0 0 250px;
           }
           .gameFilterHeader{
             width: 100%;
             display: inline-block;
             text-align: center;
-            border-bottom: 1px solid #EEEEEE;
-            border-right: 1px solid #EEEEEE;
+            border-bottom: 1px solid #E1E1E1;
+            border-right: 1px solid #E1E1E1;
+            height: 40px;
+            font-weight: 400;
           }
         `}
         </style>
@@ -133,20 +131,27 @@ class Market extends Component {
             overflow-y: hidden;
           }
           .tree-view_item .node {
-            font-size: 20px;
+            font-size: 16px;
+            font-weight: 500;
           }
           .tree-view_item {
             /* immediate child of .tree-view, for styling convenience */
             cursor: pointer;
-            border-bottom: 1px solid #EEEEEE;
-            border-right: 1px solid #EEEEEE;
+            border-bottom: 1px solid #E1E1E1;
+            border-right: 1px solid #E1E1E1;
+            position: relative;
+            left: 20px;
           }
           .info {
             cursor: pointer;
           }
           /* style for the children nodes container */
           .tree-view_children {
-            margin-left: 16px;
+            margin-left: 14px;
+            font-weight: 300;
+            font-size: 13px;
+            border-bottom: 1px solid #E1E1E1;
+            border-right: 1px solid #E1E1E1;
           }
           .tree-view_children-collapsed {
             height: 0px;
@@ -225,7 +230,15 @@ class Market extends Component {
         .filteredMarket {
           width: 100%;
         }
+        .currentGameFilter {
+          height: 60px;
+          font-size: 28px;
+          font-weight: 500;
+        }
       `}</style>
+        <div className='currentGameFilter'>
+          HI IM A GAME
+        </div>
         {visibleGames.map(game =>
           this.renderItem(game, items.filter(item => item.game.id === game.id))
         )}

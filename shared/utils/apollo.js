@@ -3,8 +3,6 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import * as log from 'loglevel';
 
-import { readFromQueryString } from '@/client/utils/location';
-
 if (typeof global !== 'undefined') {
   global.fetch = require('node-fetch');
 }
@@ -18,8 +16,8 @@ export const client = new ApolloClient({
 
 export const queries = {
   listItems: gql`
-    query listItems($wallet: String!, $userId: ID!, $language: String!, $testItems: Boolean) {
-      listItems(wallet: $wallet, userId: $userId, language: $language, testItems: $testItems) {
+    query listItems($userId: ID!, $language: String!) {
+      listItems(userId: $userId, language: $language) {
         id presale lan tokenId image name description attrs categories game { id }
       }
     }
@@ -69,10 +67,8 @@ export const listItemsQuery = graphql(queries.listItems, {
     const user = props.user.viewUserByWallet ? props.user.viewUserByWallet : props.user;
     return ({
       variables: {
-        wallet: user.wallet,
         language: user.language,
         userId: user.id,
-        testItems: (readFromQueryString('testItems') === 'true'),
       },
     });
   },
@@ -94,15 +90,19 @@ export const viewGameBySlugQuery = graphql(queries.viewGameBySlug, {
 export const listMarketplaceItemsQuery = graphql(queries.listMarketplaceItems, {
   name: 'marketItems',
   skip: props => {
-    return ((props.user && props.user.loading) || (props.games && props.games.loading));
+    return (
+      !props.user || !props.games ||
+      (props.user && props.user.loading) || (props.games && props.games.loading)
+    );
   },
   options: props => {
     log.info('Running listMarketplaceItemsQuery with props: ', props);
     const user = props.user.viewUserByWallet ? props.user.viewUserByWallet : props.user;
     const games = props.games.listGames ? props.games.listGames : props.games;
+
     return ({
       variables: {
-        language: user.language,
+        language: 'en',
         userId: user.id,
         gameId: games[0].id,
         categories: [],

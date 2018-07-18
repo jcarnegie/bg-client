@@ -263,7 +263,6 @@ class Inventory extends Component {
         .flex-row {
           display: flex;
           flex-wrap: wrap;
-          width: 100%;
         }
         .flex-row > [class*='col-'] {
           display: flex

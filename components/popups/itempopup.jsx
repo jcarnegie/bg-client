@@ -166,19 +166,20 @@ export default class ItemPopup extends Component {
             width: 100%;
           }
           .modal .modal-content {
-            width: 700px;
+            width: 1000px;
+            height: 550px;
           }
           .modal .modal-content .modal-body form{
             margin: 0px;
-            width: 75%;
+            width: 95%;
           }
           form .imageContainer {
             float: left;
-            width: 50%;
+            width: 45%;
           }
           form .itemInfo {
             float: right;
-            width: 45%;
+            width: 50%;
             position: relative;
             top: 12px;
           }
@@ -247,6 +248,12 @@ export default class ItemPopup extends Component {
             color: #3B5998;
             background-color: #E7EDFD;
             font-weight: 200;
+            background-color: #E7EDFD;
+            border: 1px solid #BECFFB;
+            border-radius: 6px;
+            color: #6A7CAC;
+            font-weight: 300;
+            font-size: 14px;
           }
         `}</style>
         <Modal.Header closeButton />

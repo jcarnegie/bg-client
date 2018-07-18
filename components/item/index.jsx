@@ -125,8 +125,6 @@ class Item extends Component {
       <Col sm={6} md={4} lg={3} className={`item ${className}`}>
         <style jsx global>{`
           .item {
-            padding-left: 35px;
-            padding-right: 35px;
             max-width: 275px;
           }
           .item .thumbnail {
@@ -150,7 +148,7 @@ class Item extends Component {
             border-radius: 6px;
           }
           .item .thumbnail .caption h4 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 500;
             background-color: #F4F6F9;
             padding: 10px 15px 5px 15px;
@@ -170,17 +168,19 @@ class Item extends Component {
             grid-column-start: 1;
             display: inline-block;
             font-weight: 300;
+            font-size: 14px;
           }
           .item .thumbnail .caption dl dt:nth-of-type(even) {
             grid-column-start: 3;
             display: inline-block;
             font-weight: 300;
+            font-size: 14px;
           }
           .item .thumbnail .caption dl dd {
             grid-column-start: 2;
             display: inline-block;
-            font-weight: 500;
-            margin-left: 5px;
+            font-weight: 300;
+            font-size: 14px;
           }
           .item .thumbnail .caption dl dd:nth-of-type(even)  {
             grid-column-start: 4;
@@ -232,24 +232,24 @@ class Item extends Component {
             margin-right: 3px;
             margin-bottom: 5px;
             margin-left: 10px;
-            background-color: #ffffff;
-            border: 1px solid #C9C9C9;
-            border-radius: 12px;
-            color: #797979;
+            background-color: #E7EDFD;
+            border: 1px solid #BECFFB;
+            border-radius: 6px;
+            color: #6A7CAC;
             font-weight: 300;
-            font-size: 12px;
+            font-size: 14px;
             line-height: 18px;
             cursor: pointer;
            }
           .item .thumbnail .caption .attrs .badge {
             margin-right: 3px;
             margin-bottom: 5px;
-            background-color: #ffffff;
-            border: 1px solid #C9C9C9;
-            border-radius: 12px;
-            color: #797979;
+            background-color: #E7EDFD;
+            border: 1px solid #BECFFB;
+            border-radius: 6px;
+            color: #6A7CAC;
             font-weight: 300;
-            font-size: 12px;
+            font-size: 14px;
             line-height: 18px;
             cursor: pointer;
           }
