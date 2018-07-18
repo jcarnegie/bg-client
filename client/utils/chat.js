@@ -1,6 +1,6 @@
-import Promise from "bluebird";
-import * as log from "loglevel";
-import SendBird from "sendbird";
+import Promise from 'bluebird';
+import * as log from 'loglevel';
+import SendBird from 'sendbird';
 import {
   find,
   head,
@@ -11,8 +11,8 @@ import {
   reverse,
   split,
   toUpper,
-} from "ramda";
-import {defaultLanguage} from "@/shared/constants/language";
+} from 'ramda';
+import { defaultLanguage } from '@/shared/constants/language';
 
 
 /**
@@ -26,9 +26,9 @@ export const sbp = fn => new Promise((resolve, reject) =>
 export const firstNameLastInitial = name => {
   const parts = split(/\s+/, name);
   const firstName = head(parts);
-  let lastName = "";
+  let lastName = '';
   if (length(parts) > 1) lastName = last(parts);
-  const lastInitial = isEmpty(lastName) ? "" : ` ${toUpper(head(lastName))}.`;
+  const lastInitial = isEmpty(lastName) ? '' : ` ${toUpper(head(lastName))}.`;
   return `${firstName}${lastInitial}`;
 };
 
@@ -36,7 +36,7 @@ export const chatNickName = nickname => firstNameLastInitial(nickname);
 
 export async function chatInit(wallet, nickName) {
   log.info(`Initializing chat for user: ${nickName}, wallet: ${wallet}.`);
-  let sb = new SendBird({appId: process.env.SENDBIRD_APP_ID});
+  let sb = new SendBird({ appId: process.env.SENDBIRD_APP_ID });
   let sbUser = await sbp(cb => sb.connect(wallet, cb));
   sbUser = await sbp(cb => sb.updateCurrentUserInfo(chatNickName(nickName), null, cb));
   return [sb, sbUser];
@@ -48,7 +48,7 @@ export const channels = async sb => {
 };
 
 export const findChannelByName = (name, channels, sb) => {
-  return find(propEq("name", name), channels);
+  return find(propEq('name', name), channels);
 };
 
 export const getChannelByName = async(name, channel, sb) => {
@@ -77,7 +77,7 @@ export const sendMessage = async(msg, channel) =>
 
 export const channelNameForLocale = locale => {
   /* Channel locale is always -en, unless the environment is 'production' */
-  const channelLocale = process.env.NODE_ENV === "production" ? locale : defaultLanguage;
+  const channelLocale = process.env.NODE_ENV === 'production' ? locale : defaultLanguage;
   /* Channel names follow this scheme: BitGuild-${env}-${locale}, ex: BitGuild-production-en */
   return `BitGuild-${process.env.NODE_ENV}-${channelLocale}`;
 };

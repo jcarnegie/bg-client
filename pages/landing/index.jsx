@@ -1,6 +1,6 @@
-import {DesktopLayout, MobileLayout} from "@/components/layouts";
-import Landing from "@/components/landing";
-import Chat from "@/components/chat";
+import { DesktopLayout, MobileLayout } from '@/components/layouts';
+import Landing from '@/components/landing';
+import Chat from '@/components/chat';
 
 
 const LandingPage = props => (

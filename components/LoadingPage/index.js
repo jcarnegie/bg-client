@@ -1,4 +1,4 @@
-import PacmanLoader from "react-spinners/dist/spinners/PacmanLoader";
+import PacmanLoader from 'react-spinners/dist/spinners/PacmanLoader';
 
 
 const LoadingPage = props => (

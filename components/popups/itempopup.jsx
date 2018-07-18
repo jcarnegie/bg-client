@@ -1,12 +1,12 @@
-import React, {Component, Fragment} from "react";
-import PropTypes from "prop-types";
-import {Badge, Button, Form, Modal} from "react-bootstrap";
-import {connect} from "react-redux";
-import {FormattedMessage, intlShape} from "react-intl";
-import {compose, filter, isNil, map, not} from "ramda";
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { Badge, Button, Form, Modal } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { FormattedMessage, intlShape } from 'react-intl';
+import { compose, filter, isNil, map, not } from 'ramda';
 
-import BGModal from "@/components/modal";
-import {isValidItemCategory, itemStats} from "@/client/utils/item";
+import BGModal from '@/components/modal';
+import { isValidItemCategory, itemStats } from '@/client/utils/item';
 
 const notNil = compose(not, isNil);
 @connect(
@@ -41,7 +41,7 @@ export default class ItemPopup extends Component {
     onSubmit: () => {},
   }
 
-  state = {sellPrice: 0};
+  state = { sellPrice: 0 };
 
   onSubmit(e) {
     e.preventDefault();
@@ -111,7 +111,7 @@ export default class ItemPopup extends Component {
   // }
 
   renderStats() {
-    const {item} = this.props;
+    const { item } = this.props;
     return (
       <dl>
         {map(stat => (
@@ -125,14 +125,14 @@ export default class ItemPopup extends Component {
   }
 
   renderAttributes() {
-    const {item} = this.props;
+    const { item } = this.props;
     const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => Object.values(attr)[1]));
     return (
       <div className="attrs">
         {attributes
           .filter(isValidItemCategory)
           .map(attribute =>
-            <Badge key={"itemCard" + attribute}>
+            <Badge key={'itemCard' + attribute}>
               {attribute}
             </Badge>
           )}
@@ -141,7 +141,7 @@ export default class ItemPopup extends Component {
   }
 
   render() {
-    const {show, onHide, item, type} = this.props;
+    const { show, onHide, item, type } = this.props;
     return (
        <BGModal show={show} className="buy" onHide={onHide} backdropClassName="semi">
         <style jsx global>{`
@@ -259,10 +259,10 @@ export default class ItemPopup extends Component {
               <h2>{item.name}</h2>
               <div className="itemPrice">
               {
-                type === "sell"
+                type === 'sell'
                 ? null
                 : <>
-                    <img src="/static/images/icons/plat.png" className="platToken" />{" " + " "}PLAT
+                    <img src="/static/images/icons/plat.png" className="platToken" />{' ' + ' '}PLAT
                   </>
               }
               </div>
@@ -270,15 +270,15 @@ export default class ItemPopup extends Component {
               {this.renderAttributes()}
             </div>
             {
-              type === "renew"
+              type === 'renew'
               ? <Button type="submit" className="btn-block">
                 Renew Marketplace Expiration
                 </Button>
-              : type === "withdraw"
+              : type === 'withdraw'
               ? <Button type="submit" className="btn-block">
                   Withdraw from Marketplace
                 </Button>
-              : type === "sell"
+              : type === 'sell'
               ? (<div>
                   <div className="sell-text">
                     Sell for
@@ -296,7 +296,7 @@ export default class ItemPopup extends Component {
                   </div>
                 </div>)
               : <Button type="submit" className="btn-block">
-                  BUY for <img src="/static/images/icons/plat.png" className="platToken" />{" "}PLAT
+                  BUY for <img src="/static/images/icons/plat.png" className="platToken" />{' '}PLAT
                 </Button>
             }
           </Form>

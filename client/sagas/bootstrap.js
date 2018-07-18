@@ -1,20 +1,20 @@
-import {put, takeLatest} from "redux-saga/effects";
-import * as log from "loglevel";
+import { put, takeLatest } from 'redux-saga/effects';
+import * as log from 'loglevel';
 
 import {
   ACCOUNT_INIT,
   APP_INIT,
   APP_RESIZE,
   GA_CREATE,
-} from "@/shared/constants/actions";
+} from '@/shared/constants/actions';
 
-import BGReactGA from "@/client/utils/react-ga";
+import BGReactGA from '@/client/utils/react-ga';
 
 
 function * appInit(action) {
-  log.info("Bootstrapping app.");
+  log.info('Bootstrapping app.');
 
-  yield put({type: APP_RESIZE});
+  yield put({ type: APP_RESIZE });
 
   /* Bootstrap Google Analytics */
   yield put({
@@ -23,7 +23,7 @@ function * appInit(action) {
   });
 
   /* Bootstrap Account */
-  yield put({type: ACCOUNT_INIT});
+  yield put({ type: ACCOUNT_INIT });
 }
 
 

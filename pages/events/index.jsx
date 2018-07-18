@@ -1,6 +1,6 @@
-import {DesktopContent, MobileContent, DesktopLayout, MobileLayout} from "@/components/layouts";
-import Events from "@/components/events";
-import Chat from "@/components/chat";
+import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
+import Events from '@/components/events';
+import Chat from '@/components/chat';
 
 
 const EventsPage = props => (

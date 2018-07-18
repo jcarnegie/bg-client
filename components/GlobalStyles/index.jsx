@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-function GlobalStyles({style}) {
+function GlobalStyles({ style }) {
   return (
     <div>
       <style jsx global>{`

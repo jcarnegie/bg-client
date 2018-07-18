@@ -1,8 +1,7 @@
-import React, {Component} from "react";
-import {FormattedMessage, FormattedHTMLMessage} from "react-intl";
-import {Col, Row} from "react-bootstrap";
+import React, { Component } from 'react';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
-import Article from "@/components/article";
+import Article from '@/components/article';
 
 
 export default class Faq extends Component {

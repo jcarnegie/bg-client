@@ -1,13 +1,13 @@
-import bluebird from "bluebird";
-import * as log from "loglevel";
-import {eventChannel} from "redux-saga";
-import {call, take, put, select, takeLatest} from "redux-saga/effects";
+import bluebird from 'bluebird';
+import * as log from 'loglevel';
+import { eventChannel } from 'redux-saga';
+import { call, take, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
   networkIsSupported,
   getOracleContract,
   getBitGuildTokenContract,
-} from "@/shared/utils/network";
+} from '@/shared/utils/network';
 
 import {
   NETWORK_GET,
@@ -31,22 +31,22 @@ import {
   RATE_ERROR,
   RATE_LOADING,
   RATE_REQUEST,
-} from "@/shared/constants/actions";
+} from '@/shared/constants/actions';
 
 
 function * getRate() {
   try {
     const network = yield select(state => state.network);
     if (networkIsSupported(network)) {
-      yield put({type: RATE_LOADING});
+      yield put({ type: RATE_LOADING });
       const ETHPrice = yield bluebird.promisify(getOracleContract(network).ETHPrice)();
       yield put({
         type: RATE_CHANGED,
-        payload: window.web3.fromWei(ETHPrice, "ether").toNumber(),
+        payload: window.web3.fromWei(ETHPrice, 'ether').toNumber(),
       });
     }
   } catch (error) {
-    yield put({type: RATE_ERROR});
+    yield put({ type: RATE_ERROR });
   }
 }
 
@@ -54,16 +54,16 @@ function * getBalanceETH() {
   try {
     const account = yield select(state => state.account);
     const network = yield select(state => state.network);
-    yield put({type: BALANCE_ETH_LOADING});
+    yield put({ type: BALANCE_ETH_LOADING });
     if (networkIsSupported(network)) {
       const balance = yield bluebird.promisify(window.web3.eth.getBalance)(account.wallet);
       yield put({
         type: BALANCE_ETH_CHANGED,
-        payload: window.web3.fromWei(balance, "ether").toNumber(),
+        payload: window.web3.fromWei(balance, 'ether').toNumber(),
       });
     }
   } catch (error) {
-    yield put({type: BALANCE_ETH_ERROR});
+    yield put({ type: BALANCE_ETH_ERROR });
   }
 }
 
@@ -71,23 +71,23 @@ function * getBalancePLAT() {
   try {
     const account = yield select(state => state.account);
     const network = yield select(state => state.network);
-    yield put({type: BALANCE_PLAT_LOADING});
+    yield put({ type: BALANCE_PLAT_LOADING });
     if (networkIsSupported(network)) {
       const balance = yield bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(account.wallet);
       yield put({
         type: BALANCE_PLAT_CHANGED,
-        payload: window.web3.fromWei(balance, "ether").toNumber(),
+        payload: window.web3.fromWei(balance, 'ether').toNumber(),
       });
     }
   } catch (error) {
-    yield put({type: BALANCE_PLAT_ERROR});
+    yield put({ type: BALANCE_PLAT_ERROR });
   }
 }
 
 
 function * checkNetworkAvailability() {
   try {
-    const web3IsAvailable = typeof window !== "undefined" && window.web3;
+    const web3IsAvailable = typeof window !== 'undefined' && window.web3;
     yield put({
       type: NETWORK_AVAILABLE,
       payload: Boolean(web3IsAvailable),
@@ -101,22 +101,22 @@ function * checkNetworkAvailability() {
 
 function * getNetwork() {
   try {
-    yield put({type: NETWORK_GET_AVAILABILITY});
+    yield put({ type: NETWORK_GET_AVAILABILITY });
 
     const network = yield select(state => state.network);
 
     if (!network.available) return;
 
-    yield put({type: NETWORK_LOADING});
+    yield put({ type: NETWORK_LOADING });
     yield put({
       type: NETWORK_CHANGED,
       payload: {
         id: yield bluebird.promisify(window.web3.version.getNetwork)(),
       },
     });
-    yield put({type: NETWORK_GET_BALANCE_ETH});
-    yield put({type: NETWORK_GET_BALANCE_PLAT});
-    yield put({type: NETWORK_BEGIN_LISTENING});
+    yield put({ type: NETWORK_GET_BALANCE_ETH });
+    yield put({ type: NETWORK_GET_BALANCE_PLAT });
+    yield put({ type: NETWORK_BEGIN_LISTENING });
   } catch (error) {
     log.error(error);
   }
@@ -124,7 +124,7 @@ function * getNetwork() {
 
 function networkListenChannel(interval) {
   return eventChannel(emitter => {
-    window.web3.eth.filter("latest").watch((error, result) => {
+    window.web3.eth.filter('latest').watch((error, result) => {
       if (error) {
         log.error(error);
       } else {
@@ -145,7 +145,7 @@ function * networkBeginListening() {
   try {
     while (true) {
       const payload = yield take(channel);
-      yield put({type: NETWORK_NEW_BLOCK, payload});
+      yield put({ type: NETWORK_NEW_BLOCK, payload });
     }
   } catch (err) {
     log.error(err);

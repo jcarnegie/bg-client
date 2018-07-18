@@ -1,15 +1,15 @@
-import topupABI from "@/shared/contracts/topup";
-import bitGuildTokenABI from "@/shared/contracts/token";
-import oracleABI from "@/shared/contracts/oracle";
-import marketplaceABI from "@/shared/contracts/marketplace";
-import bitizensIGOABI from "@/shared/contracts/bitizensIGOABI";
+import topupABI from '@/shared/contracts/topup';
+import bitGuildTokenABI from '@/shared/contracts/token';
+import oracleABI from '@/shared/contracts/oracle';
+import marketplaceABI from '@/shared/contracts/marketplace';
+import bitizensIGOABI from '@/shared/contracts/bitizensIGOABI';
 
 
 export const networkIdToNameMap = {
-  "1": "main",
-  "2": "kovan",
-  "3": "ropsten",
-  "4": "rinkeby",
+  '1': 'main',
+  '2': 'kovan',
+  '3': 'ropsten',
+  '4': 'rinkeby',
 };
 
 export const networkAddressMap = {
@@ -44,7 +44,7 @@ export function networkIdIsSupported(networkId) {
 }
 
 export function web3IsInstalled() {
-  return (typeof window !== "undefined" && window.hasOwnProperty("web3"));
+  return (typeof window !== 'undefined' && window.hasOwnProperty('web3'));
 }
 
 export function getWeb3Wallet() {

@@ -8,8 +8,8 @@ import {
   propIs,
   values,
   uniq,
-} from "ramda";
-import {matchesOneOf} from "./string";
+} from 'ramda';
+import { matchesOneOf } from './string';
 
 export const STATS_MATCHERS = [
   // +10%, +20%, etc
@@ -19,7 +19,7 @@ export const STATS_MATCHERS = [
 ];
 
 export const isStat = attr =>
-  propIs(Number, "value", attr) || matchesOneOf(STATS_MATCHERS, attr.value);
+  propIs(Number, 'value', attr) || matchesOneOf(STATS_MATCHERS, attr.value);
 
 export const itemStats = item =>
   filter(isStat, values(item.attrs));

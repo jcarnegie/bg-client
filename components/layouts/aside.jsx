@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 function Aside(props) {
   return (
@@ -22,8 +22,8 @@ Aside.propTypes = {
 };
 
 Aside.defaultProps = {
-  width: "285px",
-  offsetTop: "0px",
+  width: '285px',
+  offsetTop: '0px',
   children: null,
 };
 

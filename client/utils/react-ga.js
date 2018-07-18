@@ -1,5 +1,5 @@
-import ReactGA from "react-ga";
-import * as log from "loglevel";
+import ReactGA from 'react-ga';
+import * as log from 'loglevel';
 
 class BGReactGA {
   constructor(trackingId) {
@@ -22,7 +22,7 @@ class BGReactGA {
   }
 
   event(event) {
-    log.info("Sending Google Analytics event: ", event);
+    log.info('Sending Google Analytics event: ', event);
     return this.engine.event(event);
   }
 };

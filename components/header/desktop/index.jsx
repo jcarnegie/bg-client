@@ -1,18 +1,18 @@
-import React, {Component} from "react";
-import Link from "next/link";
-import {FormattedMessage, injectIntl} from "react-intl";
-import {connect} from "react-redux";
-import PropTypes from "prop-types";
-import cx from "classnames";
+import React, { Component } from 'react';
+import Link from 'next/link';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
-import RegisterButton from "@/components/RegisterButton";
-import ActiveLink from "@/components/activelink";
-import Language from "@/components/language";
-import Balance from "@/components/balance";
-import User from "@/components/user";
-import FeatureFlag from "@/components/featureflag";
+import RegisterButton from '@/components/RegisterButton';
+import ActiveLink from '@/components/activelink';
+import Language from '@/components/language';
+import Balance from '@/components/balance';
+import User from '@/components/user';
+import FeatureFlag from '@/components/featureflag';
 
 
 @injectIntl
@@ -33,13 +33,13 @@ export default class Header extends Component {
 
   navigation() {
     const activeNavigationLinkStyle = {
-      boxShadow: "inset 0px -4px 0px 0px #ffd57d",
-      background: "rgba(255, 255, 255, .15)",
+      boxShadow: 'inset 0px -4px 0px 0px #ffd57d',
+      background: 'rgba(255, 255, 255, .15)',
     };
     const defaultNavigationLinkStyle = {
-      textDecoration: "none",
-      margin: "0",
-      padding: "0 20px",
+      textDecoration: 'none',
+      margin: '0',
+      padding: '0 20px',
     };
     return (
       <div className="navigation">
@@ -86,7 +86,7 @@ export default class Header extends Component {
         <ActiveLink
           href="/inventory"
           activeStyle={activeNavigationLinkStyle}
-          style={Object.assign({}, defaultNavigationLinkStyle, {marginLeft: 0})}
+          style={Object.assign({}, defaultNavigationLinkStyle, { marginLeft: 0 })}
         >
           <span className="navigation-link"><FormattedMessage id="components.menu.inventory" /></span>
         </ActiveLink>
@@ -104,7 +104,7 @@ export default class Header extends Component {
   }
 
   settings() {
-    const {user} = this.props;
+    const { user } = this.props;
     return (
       <div className="settings">
         <style jsx>{`
@@ -124,10 +124,10 @@ export default class Header extends Component {
           }
           .settings .user {
             margin: 0 10px 0 0;
-            display: ${user.data ? "initial" : "none"};
+            display: ${user.data ? 'initial' : 'none'};
           }
         `}</style>
-        <div className={cx({"spaced-right": !!user.data})}>
+        <div className={cx({ 'spaced-right': !!user.data })}>
           <Balance />
         </div>
         <div className="user">

@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
 
 
 export default function withFormHelper(WrappedComponent) {
@@ -8,47 +8,47 @@ export default function withFormHelper(WrappedComponent) {
     };
 
     onChange(e) {
-      const {name, type, checked, value} = e.target;
-      if (e.target.tagName === "SELECT") {
-        if (type === "select-one") {
-          switch (e.target.getAttribute("type")) {
-            case "number":
+      const { name, type, checked, value } = e.target;
+      if (e.target.tagName === 'SELECT') {
+        if (type === 'select-one') {
+          switch (e.target.getAttribute('type')) {
+            case 'number':
               return this.setState({
-                [name]: value === "" ? value : parseFloat(value)
+                [name]: value === '' ? value : parseFloat(value),
               });
             default:
               return this.setState({
-                [name]: value
+                [name]: value,
               });
           }
         } else { // select-multiple
-          switch (e.target.getAttribute("type")) {
-            case "number":
+          switch (e.target.getAttribute('type')) {
+            case 'number':
               return this.setState({
-                [name]: [].slice.call(e.target.selectedOptions).map(a => parseFloat(a.value))
+                [name]: [].slice.call(e.target.selectedOptions).map(a => parseFloat(a.value)),
               });
             default:
               return this.setState({
-                [name]: [].slice.call(e.target.selectedOptions).map(a => a.value)
+                [name]: [].slice.call(e.target.selectedOptions).map(a => a.value),
               });
           }
         }
       } else { // INPUT
         switch (type) {
-          case "number":
+          case 'number':
             return this.setState({
-              [name]: value === "" ? value : parseFloat(value)
+              [name]: value === '' ? value : parseFloat(value),
             });
-          case "checkbox":
+          case 'checkbox':
             return this.setState({
-              [name]: checked
+              [name]: checked,
             });
-          case "text":
-          case "email":
-          case "password":
+          case 'text':
+          case 'email':
+          case 'password':
           default:
             return this.setState({
-              [name]: value
+              [name]: value,
             });
         }
       }

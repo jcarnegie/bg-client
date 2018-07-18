@@ -1,13 +1,13 @@
-import React, {Component} from "react";
-import * as log from "loglevel";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import ScaleLoader from "react-spinners/dist/spinners/ScaleLoader";
-import MdAddCircle from "react-icons/lib/md/add-circle";
+import React, { Component } from 'react';
+import * as log from 'loglevel';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
+import MdAddCircle from 'react-icons/lib/md/add-circle';
 
-import Convert from "@/components/popups/convert";
+import Convert from '@/components/popups/convert';
 
-import {USER_SHOW_REGISTER_WORKFLOW, SHOW_CONVERT_MODAL} from "@/shared/constants/actions";
+import { USER_SHOW_REGISTER_WORKFLOW, SHOW_CONVERT_MODAL } from '@/shared/constants/actions';
 
 
 @connect(
@@ -54,11 +54,11 @@ export default class Balance extends Component {
   onClick(e) {
     e.preventDefault();
     if (!this.props.user.data) {
-      return this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: true});
+      return this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
     }
 
     if (!this.props.rate.data) {
-      log.info("No rate info is avaliable, so convert workflow may not work properly.");
+      log.info('No rate info is avaliable, so convert workflow may not work properly.');
     }
 
     this.setState({
@@ -67,7 +67,7 @@ export default class Balance extends Component {
   }
 
   onHide() {
-    this.props.dispatch({type: SHOW_CONVERT_MODAL, payload: false});
+    this.props.dispatch({ type: SHOW_CONVERT_MODAL, payload: false });
     this.setState({
       show: false,
     });
@@ -98,7 +98,7 @@ export default class Balance extends Component {
             cursor:  not-allowed;
           }
         `}</style>
-        <a href="#" className="plus" onClick={::this.onClick} disabled={!Boolean(this.props.rate.data)}>
+        <a href="#" className="plus" onClick={::this.onClick} disabled={!this.props.rate.data}>
           <MdAddCircle height="30" width="30" />
         </a>
       </span>
@@ -106,7 +106,7 @@ export default class Balance extends Component {
   }
 
   balances() {
-    const {balanceETH, balancePLAT} = this.state;
+    const { balanceETH, balancePLAT } = this.state;
 
     if (!Number.isFinite(balanceETH.data) || !Number.isFinite(balancePLAT.data)) {
       return null;

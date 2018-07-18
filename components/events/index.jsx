@@ -1,23 +1,23 @@
-import React, {Component} from "react";
-import {Image, Row, Col} from "react-bootstrap";
-import {FormattedHTMLMessage} from "react-intl";
+import React, { Component } from 'react';
+import { Image, Row, Col } from 'react-bootstrap';
+import { FormattedHTMLMessage } from 'react-intl';
 
-import Article from "@/components/article";
-import BGModal from "@/components/modal";
-import {Mobile, Desktop} from "@/components/responsive";
+import Article from '@/components/article';
+import BGModal from '@/components/modal';
+import { Mobile, Desktop } from '@/components/responsive';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
 
 export default class Events extends Component {
   state = {
-    popupUrl: "",
+    popupUrl: '',
   }
 
   desktopPopup() {
-    const {popupUrl} = this.state;
+    const { popupUrl } = this.state;
     return popupUrl ? (
-      <BGModal className="events-popup" show={Boolean(popupUrl)} onHide={() => this.setState({popupUrl: ""})}>
+      <BGModal className="events-popup" show={Boolean(popupUrl)} onHide={() => this.setState({ popupUrl: '' })}>
         <style jsx>{`
           :global(.modal-dialog),
           :global(.modal-content) {
@@ -54,16 +54,16 @@ export default class Events extends Component {
             height: (100vh - 62px - 20px);
           }
         `}</style>
-        <img src="/static/images/icons/close.png" className="events-popup-close" onClick={() => this.setState({popupUrl: ""})} />
+        <img src="/static/images/icons/close.png" className="events-popup-close" onClick={() => this.setState({ popupUrl: '' })} />
         <iframe src={popupUrl} />
       </BGModal>
     ) : null;
   }
 
   mobilePopup() {
-    const {popupUrl} = this.state;
+    const { popupUrl } = this.state;
     return popupUrl ? (
-      <BGModal className="events-popup" show={Boolean(popupUrl)} onHide={() => this.setState({popupUrl: ""})}>
+      <BGModal className="events-popup" show={Boolean(popupUrl)} onHide={() => this.setState({ popupUrl: '' })}>
         <style jsx>{`
           :global(.modal-dialog),
           :global(.modal-content) {
@@ -97,7 +97,7 @@ export default class Events extends Component {
             height: (100vh - 62px - 20px);
           }
         `}</style>
-        <img src="/static/images/icons/close.png" className="events-popup-close" onClick={() => this.setState({popupUrl: ""})} />
+        <img src="/static/images/icons/close.png" className="events-popup-close" onClick={() => this.setState({ popupUrl: '' })} />
         <iframe src={popupUrl} />
       </BGModal>
     ) : null;
@@ -164,7 +164,7 @@ export default class Events extends Component {
 
           <Row>
             <Col xs={12} sm={3}>
-              <a onClick={() => this.setState({popupUrl: "https://gleam.io/Qv4W7/bitguild-giveaway-ether-online-warbear"})}>
+              <a onClick={() => this.setState({ popupUrl: 'https://gleam.io/Qv4W7/bitguild-giveaway-ether-online-warbear' })}>
                 <Image src="/static/images/misc/pet-giveaway-warbear.png" className="article-inline-image" />
               </a>
             </Col>
@@ -176,7 +176,7 @@ export default class Events extends Component {
                   </a>
                 </li>
                 <li>
-                  <a onClick={() => this.setState({popupUrl: "https://gleam.io/Qv4W7/bitguild-giveaway-ether-online-warbear"})}>
+                  <a onClick={() => this.setState({ popupUrl: 'https://gleam.io/Qv4W7/bitguild-giveaway-ether-online-warbear' })}>
                     <FormattedHTMLMessage id="pages.events.l2" />
                   </a>
                 </li>
@@ -190,7 +190,7 @@ export default class Events extends Component {
 
           <Row>
             <Col xs={12} sm={3}>
-              <a onClick={() => this.setState({popupUrl: "https://gleam.io/Ksqof/bitguild-giveaway-ether-online-royal-eagle"})}>
+              <a onClick={() => this.setState({ popupUrl: 'https://gleam.io/Ksqof/bitguild-giveaway-ether-online-royal-eagle' })}>
                 <Image src="/static/images/misc/pet-giveaway-eagle.png" className="article-inline-image" />
               </a>
             </Col>
@@ -199,7 +199,7 @@ export default class Events extends Component {
                 <li><FormattedHTMLMessage id="pages.events.l5" /></li>
                 <li><FormattedHTMLMessage id="pages.events.l6" /></li>
                 <li>
-                  <a onClick={() => this.setState({popupUrl: "https://gleam.io/Ksqof/bitguild-giveaway-ether-online-royal-eagle"})}>
+                  <a onClick={() => this.setState({ popupUrl: 'https://gleam.io/Ksqof/bitguild-giveaway-ether-online-royal-eagle' })}>
                     <FormattedHTMLMessage id="pages.events.l7" />
                   </a>
                 </li>
@@ -213,14 +213,14 @@ export default class Events extends Component {
 
           <Row>
             <Col xs={12} sm={3} className="inline-image-container">
-              <a onClick={() => this.setState({popupUrl: "https://gleam.io/VsjzO/bitguild-giveaway-ether-online-raging-tiger"})}>
+              <a onClick={() => this.setState({ popupUrl: 'https://gleam.io/VsjzO/bitguild-giveaway-ether-online-raging-tiger' })}>
                 <Image src="/static/images/misc/pet-giveaway-raging-tiger.png" className="article-inline-image" />
               </a>
             </Col>
             <Col xs={12} sm={9}>
               <ol>
                 <li>
-                  <a onClick={() => this.setState({popupUrl: "https://gleam.io/VsjzO/bitguild-giveaway-ether-online-raging-tiger"})}>
+                  <a onClick={() => this.setState({ popupUrl: 'https://gleam.io/VsjzO/bitguild-giveaway-ether-online-raging-tiger' })}>
                     <FormattedHTMLMessage id="pages.events.l10" />
                   </a>
                 </li>

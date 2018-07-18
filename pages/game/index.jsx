@@ -1,7 +1,7 @@
-import {DesktopLayout, MobileLayout} from "@/components/layouts";
-import Game from "@/components/game";
-import Chat from "@/components/chat";
-import {userLoginRouteGuard, ethNetworkRouteGuard} from "@/shared/utils";
+import { DesktopLayout, MobileLayout } from '@/components/layouts';
+import Game from '@/components/game';
+import Chat from '@/components/chat';
+import { userLoginRouteGuard, ethNetworkRouteGuard } from '@/shared/utils';
 
 const GamePage = props => (
   <>

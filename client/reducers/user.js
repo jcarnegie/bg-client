@@ -5,7 +5,7 @@ import {
   USER_RESET,
   USER_LOADING,
   PRESALE_TRANSACTIONS_CHANGED,
-} from "@/shared/constants/actions";
+} from '@/shared/constants/actions';
 
 
 const user = {

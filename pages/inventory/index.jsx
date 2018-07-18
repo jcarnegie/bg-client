@@ -1,7 +1,7 @@
-import {DesktopContent, MobileContent, DesktopLayout, MobileLayout} from "@/components/layouts";
-import Inventory from "@/components/inventory";
-import Chat from "@/components/chat";
-import {userLoginRouteGuard, ethNetworkRouteGuard} from "@/shared/utils";
+import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
+import Inventory from '@/components/inventory';
+import Chat from '@/components/chat';
+import { userLoginRouteGuard, ethNetworkRouteGuard } from '@/shared/utils';
 
 
 const InventoryPage = props => {

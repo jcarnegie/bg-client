@@ -1,4 +1,4 @@
-import {RATE_CHANGED, RATE_ERROR, RATE_LOADING} from "../../shared/constants/actions";
+import { RATE_CHANGED, RATE_ERROR, RATE_LOADING } from '../../shared/constants/actions';
 
 const rate = {
   isLoading: false,

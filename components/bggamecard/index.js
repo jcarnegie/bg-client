@@ -1,10 +1,10 @@
-import {PureComponent} from "react";
-import PropTypes from "prop-types";
-import {FormattedMessage} from "react-intl";
-import {connect} from "react-redux";
-import MdPlayArrow from "react-icons/lib/md/play-arrow";
+import { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import MdPlayArrow from 'react-icons/lib/md/play-arrow';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
 @connect(
   state => ({
@@ -22,7 +22,7 @@ class BGGameCard extends PureComponent {
   }
 
   static defaultProps = {
-    margin: "2%",
+    margin: '2%',
     game: {},
     layout: {},
     children: null,
@@ -31,8 +31,8 @@ class BGGameCard extends PureComponent {
   }
 
   render() {
-    const {mobile} = this.props.layout.type;
-    const playButtonSize = mobile ? "50" : "60";
+    const { mobile } = this.props.layout.type;
+    const playButtonSize = mobile ? '50' : '60';
     return (
       <div className="bg-game-card-wrapper" onClick={this.props.onClick}>
         <style jsx>{`
@@ -51,14 +51,14 @@ class BGGameCard extends PureComponent {
             background: white;
             border-radius: 6px;
             box-shadow: ${style.boxShadow.default};
-            padding: ${mobile ? "5px" : "10px"};
+            padding: ${mobile ? '5px' : '10px'};
             cursor: pointer;
             border: 1px solid white;
             opacity: 1;
           }
           .bg-game-card:hover {
             background: white;
-            opacity: ${this.props.playButton ? ".60" : "1"};
+            opacity: ${this.props.playButton ? '.60' : '1'};
           }
           .bg-game-card-wrapper:hover {
             transform: translateY(-5px);
@@ -69,7 +69,7 @@ class BGGameCard extends PureComponent {
             visibility: hidden;
             position: absolute;
             left: calc(50% - ${Math.floor(playButtonSize / 2)}px);
-            top: ${mobile ? "45%" : "50%"};
+            top: ${mobile ? '45%' : '50%'};
             transform: translateY(-75%);
             display: flex;
             align-items: center;

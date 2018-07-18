@@ -1,7 +1,7 @@
-import {PureComponent} from "react";
-import PropTypes from "prop-types";
+import { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
 
 class BGButton extends PureComponent {
@@ -14,7 +14,7 @@ class BGButton extends PureComponent {
   static defaultProps = {
     onClick: () => {},
     children: null,
-    className: "",
+    className: '',
     style: {},
   }
 

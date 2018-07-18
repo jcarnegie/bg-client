@@ -1,17 +1,17 @@
-import {eventChannel} from "redux-saga";
-import {call, put, select, take, takeEvery} from "redux-saga/effects";
-import {SENDBIRD_INIT, CHAT_MESSAGE_RECEIVED, GLOBAL_HANDLER} from "@/shared/constants/actions";
-import * as log from "loglevel";
+import { eventChannel } from 'redux-saga';
+import { call, put, select, take, takeEvery } from 'redux-saga/effects';
+import { SENDBIRD_INIT, CHAT_MESSAGE_RECEIVED, GLOBAL_HANDLER } from '@/shared/constants/actions';
+import * as log from 'loglevel';
 
 
 function sendBirdListen(state) {
   try {
     return eventChannel(emit => {
-    const {sb} = state.chat;
+    const { sb } = state.chat;
     const channelHandler = new sb.ChannelHandler();
 
     channelHandler.onMessageReceived = (channel, message) => {
-      emit({type: CHAT_MESSAGE_RECEIVED, payload: {channel, message}});
+      emit({ type: CHAT_MESSAGE_RECEIVED, payload: { channel, message } });
     };
 
     sb.addChannelHandler(GLOBAL_HANDLER, channelHandler);
@@ -21,7 +21,7 @@ function sendBirdListen(state) {
       };
     });
   } catch (e) {
-    log.error("sendBirdListen error:", e);
+    log.error('sendBirdListen error:', e);
   }
 }
 
@@ -34,7 +34,7 @@ function * initSendBird() {
       yield put(action);
     }
   } catch (e) {
-    log.error("initSendBird error:", e);
+    log.error('initSendBird error:', e);
   }
 }
 

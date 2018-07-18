@@ -1,4 +1,4 @@
-import {GAMES_CHANGED, GAMES_ERROR, GAMES_LOADING} from "@/shared/constants/actions";
+import { GAMES_CHANGED, GAMES_ERROR, GAMES_LOADING } from '@/shared/constants/actions';
 
 const games = {
   isLoading: false,
@@ -7,36 +7,36 @@ const games = {
   /* TODO - Add descriptions, use database? */
   active: [
     {
-      name: "Ether Online",
-      slug: "ether.online",
-      description: "",
+      name: 'Ether Online',
+      slug: 'ether.online',
+      description: '',
     },
     {
-      name: "Magic Academy",
-      slug: "magicacademy",
-      description: "",
+      name: 'Magic Academy',
+      slug: 'magicacademy',
+      description: '',
     },
   ],
   comingSoon: [
     {
-      name: "Bitizens",
-      slug: "bitizens",
-      description: "",
+      name: 'Bitizens',
+      slug: 'bitizens',
+      description: '',
     },
     {
-      name: "Axie Infinity",
-      slug: "axie",
-      description: "",
+      name: 'Axie Infinity',
+      slug: 'axie',
+      description: '',
     },
     {
-      name: "Mythereum",
-      slug: "mythereum",
-      description: "",
+      name: 'Mythereum',
+      slug: 'mythereum',
+      description: '',
     },
     {
-      name: "Eth Town",
-      slug: "eth_town",
-      description: "",
+      name: 'Eth Town',
+      slug: 'eth_town',
+      description: '',
     },
   ],
 };

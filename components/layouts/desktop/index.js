@@ -1,11 +1,11 @@
-import PropTypes from "prop-types";
-import Header from "@/components/header/desktop";
+import PropTypes from 'prop-types';
+import Header from '@/components/header/desktop';
 
-import Main from "@/components/layouts/main";
-import Aside from "@/components/layouts/aside";
-import {Desktop} from "@/components/responsive";
+import Main from '@/components/layouts/main';
+import Aside from '@/components/layouts/aside';
+import { Desktop } from '@/components/responsive';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
 
 function DesktopLayout(props) {

@@ -1,7 +1,7 @@
-import {Component} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {APP_RESIZE} from "@/shared/constants/actions";
+import { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { APP_RESIZE } from '@/shared/constants/actions';
 
 
 @connect()
@@ -17,15 +17,15 @@ class ResizeListener extends Component {
 
   resize() {
     if (!window) return;
-    this.props.dispatch({type: APP_RESIZE});
+    this.props.dispatch({ type: APP_RESIZE });
   }
 
   componentDidMount() {
-    window.addEventListener("resize", this.resize);
+    window.addEventListener('resize', this.resize);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.resize);
+    window.removeEventListener('resize', this.resize);
   }
 
   render() {

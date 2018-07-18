@@ -1,4 +1,4 @@
-import {GIFT_ADD_LOADING, GIFT_ADD_ERROR, GIFT_REMOVE_ERROR, GIFT_REMOVE_LOADING, GIFT_REMOVE_SUCCESS, GIFT_ADD_SUCCESS} from "../../shared/constants/actions";
+import { GIFT_ADD_LOADING, GIFT_ADD_ERROR, GIFT_REMOVE_ERROR, GIFT_REMOVE_LOADING, GIFT_REMOVE_SUCCESS, GIFT_ADD_SUCCESS } from '../../shared/constants/actions';
 
 const gift = {
   isLoading: false,

@@ -1,4 +1,4 @@
-import {append} from "ramda";
+import { append } from 'ramda';
 import {
   SENDBIRD_INIT,
   CHAT_LOAD_MESSAGES,
@@ -6,7 +6,7 @@ import {
   CHAT_MESSAGE_SENT,
   CHAT_SET_CHANNEL,
   CHAT_TOGGLE,
-} from "@/shared/constants/actions";
+} from '@/shared/constants/actions';
 
 const chat = {
     sb: null,

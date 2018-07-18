@@ -1,4 +1,4 @@
-import {INVENTORY_ITEMS_CHANGED, INVENTORY_ITEMS_ERROR, INVENTORY_ITEMS_LOADING} from "@/shared/constants/actions";
+import { INVENTORY_ITEMS_CHANGED, INVENTORY_ITEMS_ERROR, INVENTORY_ITEMS_LOADING } from '@/shared/constants/actions';
 
 
 const items = {

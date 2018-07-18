@@ -1,20 +1,20 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import cx from "classnames";
-import {Button, Form, Modal} from "react-bootstrap";
-import BGModal from "@/components/modal";
-import {FormattedMessage, injectIntl, intlShape} from "react-intl";
-import {connect} from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
+import { Button, Form, Modal } from 'react-bootstrap';
+import BGModal from '@/components/modal';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
 
-import withFormHelper from "@/components/inputs/withFormHelper";
-import {updateIntl} from "react-intl-redux/lib/index";
-import {localization} from "@/shared/intl/setup";
+import withFormHelper from '@/components/inputs/withFormHelper';
+import { updateIntl } from 'react-intl-redux/lib/index';
+import { localization } from '@/shared/intl/setup';
 
-import {email, nickName, wallet} from "@/shared/constants/placeholder";
-import {reEmail} from "@/shared/constants/regexp";
-import {CREATE_USER, MESSAGE_ADD} from "@/shared/constants/actions";
-import {enabledLanguages} from "@/shared/constants/language";
-import InputGroupValidation from "@/components/inputs/input.group.validation";
+import { email, nickName, wallet } from '@/shared/constants/placeholder';
+import { reEmail } from '@/shared/constants/regexp';
+import { CREATE_USER, MESSAGE_ADD } from '@/shared/constants/actions';
+import { enabledLanguages } from '@/shared/constants/language';
+import InputGroupValidation from '@/components/inputs/input.group.validation';
 
 
 @withFormHelper
@@ -73,18 +73,18 @@ export default class RegisterPopup extends Component {
   }
 
   isValid() {
-    const {intl, formData} = this.props;
+    const { intl, formData } = this.props;
 
     let e;
     let isValid = true;
     for (let i in formData) {
       switch (i) {
-        case "wallet":
+        case 'wallet':
           if (!window.web3.isAddress(formData[i])) {
             e = document.getElementsByName(i)[0];
-            e.parentNode.parentNode.classList.add("has-error");
+            e.parentNode.parentNode.classList.add('has-error');
             e.setCustomValidity(intl.formatMessage({
-              id: "fields.wallet.invalid",
+              id: 'fields.wallet.invalid',
             }));
             isValid = false;
           }
@@ -98,15 +98,15 @@ export default class RegisterPopup extends Component {
   }
 
   static toHex(text) {
-    return "0x" + Buffer.from(text, "utf8").toString("hex");
+    return '0x' + Buffer.from(text, 'utf8').toString('hex');
   }
 
   sign() {
-    const {dispatch, intl, formData} = this.props;
-    const message = RegisterPopup.toHex(intl.formatMessage({id: "modals.register.text"}));
+    const { dispatch, intl, formData } = this.props;
+    const message = RegisterPopup.toHex(intl.formatMessage({ id: 'modals.register.text' }));
 
     window.web3.currentProvider.sendAsync({
-      method: "personal_sign",
+      method: 'personal_sign',
       params: [message, formData.wallet],
       from: formData.wallet,
     }, (err, result) => {
@@ -119,7 +119,7 @@ export default class RegisterPopup extends Component {
       }
 
       window.web3.currentProvider.sendAsync({
-        method: "personal_ecRecover",
+        method: 'personal_ecRecover',
         params: [message, result.result],
         from: formData.wallet,
       }, (err, recovered) => {
@@ -130,9 +130,9 @@ export default class RegisterPopup extends Component {
           });
 
           this.props.analytics.ga.event({
-            category: "Site Interaction",
-            action: "Sign-up",
-            label: "Create account",
+            category: 'Site Interaction',
+            action: 'Sign-up',
+            label: 'Create account',
           });
           return;
         }
@@ -146,7 +146,7 @@ export default class RegisterPopup extends Component {
           dispatch({
             type: MESSAGE_ADD,
             payload: new Error(intl.formatMessage({
-              id: "errors.spoofing-attempt",
+              id: 'errors.spoofing-attempt',
             }, {
               wallet1: recovered.result,
               wallet2: formData.wallet,
@@ -158,16 +158,16 @@ export default class RegisterPopup extends Component {
   }
 
   onChangeLang(e) {
-    const {dispatch, onChange} = this.props;
+    const { dispatch, onChange } = this.props;
     dispatch(updateIntl(localization[e.target.value]));
     onChange(e);
   }
 
   render() {
-    const {show, formData, onChange, onHide} = this.props;
+    const { show, formData, onChange, onHide } = this.props;
 
     return (
-      <BGModal show={show} className={cx("register", {show})} onHide={onHide}>
+      <BGModal show={show} className={cx('register', { show })} onHide={onHide}>
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
             <h2>
@@ -199,7 +199,7 @@ export default class RegisterPopup extends Component {
             <InputGroupValidation
               type="email"
               name="email"
-              pattern={reEmail.source.replace("a-z", "a-zA-Z")} // there is no `i` flag
+              pattern={reEmail.source.replace('a-z', 'a-zA-Z')} // there is no `i` flag
               defaultValue={formData.email}
               onChange={onChange}
               placeholder={email}

@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
-import Router, {withRouter} from "next/router";
+import PropTypes from 'prop-types';
+import Router, { withRouter } from 'next/router';
 
-const ActiveLink = ({children, router = Router, href, style, activeStyle, className}) => {
+const ActiveLink = ({ children, router = Router, href, style, activeStyle, className }) => {
   const allStyle = Object.assign({}, style, activeStyle);
 
   const handleClick = e => {
@@ -27,9 +27,9 @@ ActiveLink.propTypes = {
 
 ActiveLink.defaultProps = {
   children: null,
-  className: "",
+  className: '',
   router: Router,
-  href: "/",
+  href: '/',
   style: {},
   activeStyle: {},
 };

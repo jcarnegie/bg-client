@@ -1,5 +1,5 @@
-import * as log from "loglevel";
-import {MESSAGE_ADD, MESSAGE_ADD_ALL, MESSAGE_REMOVE, MESSAGE_REMOVE_ALL} from "@/shared/constants/actions";
+import * as log from 'loglevel';
+import { MESSAGE_ADD, MESSAGE_ADD_ALL, MESSAGE_REMOVE, MESSAGE_REMOVE_ALL } from '@/shared/constants/actions';
 
 
 const messages = [];

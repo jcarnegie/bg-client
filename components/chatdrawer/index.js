@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import Chat from "@/components/chat";
-import style from "@/shared/constants/style";
+import Chat from '@/components/chat';
+import style from '@/shared/constants/style';
 
 
 class ChatDrawer extends Component {
@@ -19,9 +19,9 @@ class ChatDrawer extends Component {
       <div className="chat-drawer">
         <style jsx>{`
           .chat-drawer {
-            min-width: ${this.props.show ? "100%" : "0"};
-            max-width: ${this.props.show ? "100%" : "0"};
-            visibility: ${this.props.show ? "visible" : "hidden"};
+            min-width: ${this.props.show ? '100%' : '0'};
+            max-width: ${this.props.show ? '100%' : '0'};
+            visibility: ${this.props.show ? 'visible' : 'hidden'};
             position: fixed;
             top: ${style.header.height};
             bottom: 0;

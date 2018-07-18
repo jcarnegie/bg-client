@@ -1,15 +1,15 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {Button, Form, Modal, Thumbnail} from "react-bootstrap";
-import {connect} from "react-redux";
-import {FormattedMessage, injectIntl, intlShape} from "react-intl";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button, Form, Modal, Thumbnail } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
-import BGModal from "@/components/modal";
-import withFormHelper from "@/components/inputs/withFormHelper";
-import InputGroupValidation from "@/components/inputs/input.group.validation";
-import {wallet} from "@/shared/constants/placeholder";
-import nftABI from "@/shared/contracts/ERC721";
-import {GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD} from "@/shared/constants/actions";
+import BGModal from '@/components/modal';
+import withFormHelper from '@/components/inputs/withFormHelper';
+import InputGroupValidation from '@/components/inputs/input.group.validation';
+import { wallet } from '@/shared/constants/placeholder';
+import nftABI from '@/shared/contracts/ERC721';
+import { GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD } from '@/shared/constants/actions';
 
 
 @injectIntl
@@ -54,7 +54,7 @@ export default class GiftPopup extends Component {
   }
 
   transfer() {
-    const {network, gas, user, item, game, onHide, dispatch, formData} = this.props;
+    const { network, gas, user, item, game, onHide, dispatch, formData } = this.props;
 
     dispatch({
       type: GIFT_ADD_LOADING,
@@ -89,18 +89,18 @@ export default class GiftPopup extends Component {
   }
 
   isValid() {
-    const {intl, formData} = this.props;
+    const { intl, formData } = this.props;
 
     let e;
     let isValid = true;
     for (let i in formData) {
       switch (i) {
-        case "wallet":
+        case 'wallet':
           if (!window.web3.isAddress(formData[i])) {
             e = document.getElementsByName(i)[0];
-            e.parentNode.parentNode.classList.add("has-error");
+            e.parentNode.parentNode.classList.add('has-error');
             e.setCustomValidity(intl.formatMessage({
-              id: "fields.wallet.invalid",
+              id: 'fields.wallet.invalid',
             }));
             isValid = false;
           }
@@ -114,7 +114,7 @@ export default class GiftPopup extends Component {
   }
 
   render() {
-    const {show, onHide, item, formData, onChange} = this.props;
+    const { show, onHide, item, formData, onChange } = this.props;
 
     return (
       <BGModal show={show} className="gift" onHide={onHide} backdropClassName="semi">

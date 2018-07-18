@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
-import {Modal} from "react-bootstrap";
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
 
 function BGDesktopModal(props) {
   return (

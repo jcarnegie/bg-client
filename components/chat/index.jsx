@@ -1,13 +1,13 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import StayScrolled from "react-stay-scrolled";
-import {isEmpty, map} from "ramda";
-import {Button, Form, FormControl, FormGroup} from "react-bootstrap";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import StayScrolled from 'react-stay-scrolled';
+import { isEmpty, map } from 'ramda';
+import { Button, Form, FormControl, FormGroup } from 'react-bootstrap';
 
-import style from "@/shared/constants/style";
-import {sendChatMessage} from "@/client/actions/chat";
-import Message from "./message";
+import style from '@/shared/constants/style';
+import { sendChatMessage } from '@/client/actions/chat';
+import Message from './message';
 
 
 @connect(
@@ -15,7 +15,7 @@ import Message from "./message";
     chat: state.chat,
     user: state.user,
   }),
-  {sendChatMessage}
+  { sendChatMessage }
 )
 export default class Chat extends Component {
   static propTypes = {
@@ -24,7 +24,7 @@ export default class Chat extends Component {
   };
 
   state = {
-    newMessage: "",
+    newMessage: '',
   };
 
   componentDidUpdate() {
@@ -32,8 +32,8 @@ export default class Chat extends Component {
   }
 
   async handleSubmit(e) {
-    const {sendChatMessage} = this.props;
-    const {newMessage} = this.state;
+    const { sendChatMessage } = this.props;
+    const { newMessage } = this.state;
 
     e.preventDefault();
 
@@ -43,21 +43,21 @@ export default class Chat extends Component {
 
     sendChatMessage(this.state.newMessage);
     // clear the message input
-    this.setState({newMessage: ""});
+    this.setState({ newMessage: '' });
   }
 
   handleMessageChange(e) {
-    this.setState({newMessage: e.target.value});
+    this.setState({ newMessage: e.target.value });
   }
 
-  storeScrolledControllers = ({stayScrolled, scrollBottom}) => {
+  storeScrolledControllers = ({ stayScrolled, scrollBottom }) => {
     this.stayScrolled = stayScrolled;
     this.scrollBottom = scrollBottom;
   };
 
   render() {
-    const {messages} = this.props.chat;
-    const {user} = this.props;
+    const { messages } = this.props.chat;
+    const { user } = this.props;
     return (
       <div className="chat">
         <div className="wrapper">

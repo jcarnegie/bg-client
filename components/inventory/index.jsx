@@ -1,33 +1,33 @@
 /*
  * TODO - Modularize sub-components for re-use
 **/
-import React, {Component, Fragment} from "react";
-import {Button, Image, Row, Tab, Tabs} from "react-bootstrap";
-import PropTypes from "prop-types";
-import Link from "next/link";
-import Router from "next/router";
-import {contains, filter, map, path, uniq} from "ramda";
-import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
-import {compose} from "react-apollo";
+import React, { Component, Fragment } from 'react';
+import { Button, Image, Row, Tab, Tabs } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import Link from 'next/link';
+import Router from 'next/router';
+import { contains, filter, map, path, uniq } from 'ramda';
+import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
+import { compose } from 'react-apollo';
 
 import {
   viewGameBySlugQuery,
   viewUserByWalletQuery,
   listGamesQuery,
   listItemsQuery,
-} from "@/shared/utils/apollo";
+} from '@/shared/utils/apollo';
 
-import {featureOn} from "@/shared/utils";
+import { featureOn } from '@/shared/utils';
 
 import {
   calcMaxItemsStats,
   isValidItemCategory,
   getAttrsFromItems,
   getCategoriesFromItemAttrs,
-} from "@/client/utils/item";
-import DataLoading from "@/components/DataLoading";
+} from '@/client/utils/item';
+import DataLoading from '@/components/DataLoading';
 
-import {InventoryItem as Item} from "@/components/item";
+import { InventoryItem as Item } from '@/components/item';
 
 
 @injectIntl
@@ -60,14 +60,14 @@ class Inventory extends Component {
 
 	onSelect(key) {
 		if (key === 1) {
-			this.setState({filters: {}});
+			this.setState({ filters: {} });
 		}
 	}
 
 	renderInventory() {
-    const {items, games, user} = this.props;
+    const { items, games, user } = this.props;
 
-    if (!user.viewUserByWallet && !user.loading) Router.push("/");
+    if (!user.viewUserByWallet && !user.loading) Router.push('/');
 
     if (user.loading || items.loading || games.loading) return <DataLoading />;
     if (user.error || items.error || games.error) return <div>error!</div>;
@@ -76,7 +76,7 @@ class Inventory extends Component {
 	}
 
 	renderBackToGameButton() {
-    const {game} = this.props;
+    const { game } = this.props;
     if (!game || (game && !game.viewGameBySlug)) return null;
 
 		return (
@@ -133,7 +133,7 @@ class Inventory extends Component {
   }
 
 	renderTabs(games, items) {
-    const gameIdsWithItems = uniq(map(path(["game", "id"]), items));
+    const gameIdsWithItems = uniq(map(path(['game', 'id']), items));
     const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games);
 
     return (
@@ -153,7 +153,7 @@ class Inventory extends Component {
               {this.renderTab(game, items.filter(item => item.game.id === game.id))}
             </Tab>
           )}
-          {featureOn("marketplace") ? (
+          {featureOn('marketplace') ? (
             <Tab eventKey={2} title={<FormattedMessage id="pages.inventory.on-sale" />}>
               {visibleGames.map(game =>
                 this.renderTab(game, items.filter(item => item.game.id === game.id))

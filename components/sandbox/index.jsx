@@ -1,12 +1,12 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import Init from "@/components/common/init";
-import {Col, Row} from "react-bootstrap";
-import * as log from "loglevel";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Init from '@/components/common/init';
+import { Col, Row } from 'react-bootstrap';
+import * as log from 'loglevel';
 
 // const BITGUILD_INFO_URL = "https://bitguild.info/";
-const HEADER_HEIGHT = "62px";
-const ETHER_ONLINE_URL = "https://ether.online/";
+const HEADER_HEIGHT = '62px';
+const ETHER_ONLINE_URL = 'https://ether.online/';
 
 
 export default class SandBox extends Component {
@@ -16,24 +16,24 @@ export default class SandBox extends Component {
     }),
   };
 
-  static async getInitialProps({query}) {
-    log.info("getInitialProps: query: ", query);
-    return {query: (query || {})};
+  static async getInitialProps({ query }) {
+    log.info('getInitialProps: query: ', query);
+    return { query: (query || {}) };
   }
 
   state = {
-    url: "",
+    url: '',
   }
 
   dom = {
     c: {},
   }
 
-  getDerivedStateFromProps({query}) {
-    log.info("query: ", query);
+  getDerivedStateFromProps({ query }) {
+    log.info('query: ', query);
     // let url = query.url && /^https?:\/\//.test(query.url) ? query.url : BITGUILD_INFO_URL;
-    let url = query && query.url ? query.url : "http://test.magicacademy.bitguild.io";
-    this.setState({url});
+    let url = query && query.url ? query.url : 'http://test.magicacademy.bitguild.io';
+    this.setState({ url });
   }
 
   renderIframe() {
@@ -41,7 +41,7 @@ export default class SandBox extends Component {
   }
 
   render() {
-    const {query} = this.props;
+    const { query } = this.props;
     return (
       <Row>
         <style jsx global>{`
@@ -74,7 +74,7 @@ export default class SandBox extends Component {
         <div className="url-input-wrapper">
           <input ref={c => (this.dom.input = c)} className="url-input" type="text" placeholder={ETHER_ONLINE_URL} />
           <button className="url-input-button" onClick={() => {
-            this.setState({url: this.dom.input.value || ETHER_ONLINE_URL});
+            this.setState({ url: this.dom.input.value || ETHER_ONLINE_URL });
           }}>Update</button>
         </div>
         <Col className="sandbox">

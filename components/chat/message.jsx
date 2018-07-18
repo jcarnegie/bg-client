@@ -1,47 +1,47 @@
-import PropTypes from "prop-types";
-import xssFilters from "xss-filters";
-import React, {Component} from "react";
-import {path} from "ramda";
-import {Image} from "react-bootstrap";
+import PropTypes from 'prop-types';
+import xssFilters from 'xss-filters';
+import React, { Component } from 'react';
+import { path } from 'ramda';
+import { Image } from 'react-bootstrap';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
 
 const reWebUrl = new RegExp(
-  "^" +
+  '^' +
     // protocol identifier
-    "(?:(?:https?|ftp)://)" +
+    '(?:(?:https?|ftp)://)' +
     // user:pass authentication
-    "(?:\\S+(?::\\S*)?@)?" +
-    "(?:" +
+    '(?:\\S+(?::\\S*)?@)?' +
+    '(?:' +
       // IP address exclusion
       // private & local networks
-      "(?!(?:10|127)(?:\\.\\d{1,3}){3})" +
-      "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" +
-      "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
+      '(?!(?:10|127)(?:\\.\\d{1,3}){3})' +
+      '(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})' +
+      '(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})' +
       // IP address dotted notation octets
       // excludes loopback network 0.0.0.0
       // excludes reserved space >= 224.0.0.0
       // excludes network & broacast addresses
       // (first & last IP address of each class)
-      "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
-      "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
-      "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
-    "|" +
+      '(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])' +
+      '(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}' +
+      '(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))' +
+    '|' +
       // host name
-      "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+      '(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)' +
       // domain name
-      "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+      '(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*' +
       // TLD identifier
-      "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+      '(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))' +
       // TLD may end with dot
-      "\\.?" +
-    ")" +
+      '\\.?' +
+    ')' +
     // port number
-    "(?::\\d{2,5})?" +
+    '(?::\\d{2,5})?' +
     // resource path
-    "(?:[/?#]\\S*)?" +
-  "$", "ig"
+    '(?:[/?#]\\S*)?' +
+  '$', 'ig'
 );
 
 
@@ -51,29 +51,29 @@ export default class Message extends Component {
     user: PropTypes.object,
   };
 
-  renderAvatar({diameter = 32, icon = "/static/images/icons/avatar.png"}) {
+  renderAvatar({ diameter = 32, icon = '/static/images/icons/avatar.png' }) {
     return (
       <Image src={icon} width={diameter} height={diameter} />
     );
   }
 
   createMessage() {
-    const {message} = this.props;
+    const { message } = this.props;
     let msg = xssFilters.inHTMLData(message.message);
     msg = msg.replace(reWebUrl, url => `<a rel="noopener noreferrer" href="${url}" target="_blank">${url}</a>`);
 
     return (
       <div
         className="contents"
-        dangerouslySetInnerHTML={{__html: msg}}
+        dangerouslySetInnerHTML={{ __html: msg }}
       />
     );
   }
 
   render() {
-    const {message, user} = this.props;
+    const { message, user } = this.props;
 
-    const isMyMessage = path(["sender", "userId"], message) === path(["data", "wallet"], user);
+    const isMyMessage = path(['sender', 'userId'], message) === path(['data', 'wallet'], user);
 
     return (
       <div className="message">
@@ -135,17 +135,17 @@ export default class Message extends Component {
               </div>
             </div>
             <div className="avatar-right">
-              {this.renderAvatar({diameter: 18, icon: "/static/images/icons/avatar_my.png"})}
+              {this.renderAvatar({ diameter: 18, icon: '/static/images/icons/avatar_my.png' })}
             </div>
           </>
         ) : (
           <>
             <div className="avatar-left">
-              {this.renderAvatar({diameter: 32})}
+              {this.renderAvatar({ diameter: 32 })}
             </div>
             <div className="message-box-container">
               <div className="header">
-                <div className="nickname">{path(["sender", "nickname"], message)}</div>
+                <div className="nickname">{path(['sender', 'nickname'], message)}</div>
               </div>
               <div className="message-box">
                 <div className="body contents">{this.createMessage()}</div>

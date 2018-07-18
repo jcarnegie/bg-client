@@ -3,7 +3,7 @@ import {
   BALANCE_ETH_ERROR,
   BALANCE_ETH_LOADING,
   BALANCE_ETH_RESET,
-} from "@/shared/constants/actions";
+} from '@/shared/constants/actions';
 
 const balance = {
   isLoading: false,

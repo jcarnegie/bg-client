@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {Button, Form, Modal} from "react-bootstrap";
-import {FormattedHTMLMessage, FormattedMessage} from "react-intl";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
+import { FormattedHTMLMessage, FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
 
-import BGModal from "@/components/modal";
+import BGModal from '@/components/modal';
 
 export default class Web3InstallPopup extends Component {
   static propTypes = {
@@ -12,7 +12,7 @@ export default class Web3InstallPopup extends Component {
   };
 
   render() {
-    const {show, onHide} = this.props;
+    const { show, onHide } = this.props;
 
     return (
       <BGModal show={show} className="metamask-install" onHide={onHide}>

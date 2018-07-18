@@ -1,10 +1,10 @@
-import * as log from "loglevel";
+import * as log from 'loglevel';
 import {
   ACCOUNT_ERROR,
   ACCOUNT_RESET,
   ACCOUNT_LOGGED_IN,
   ACCOUNT_LOGGED_OUT,
-} from "@/shared/constants/actions";
+} from '@/shared/constants/actions';
 
 const account = {
   success: false,
@@ -14,14 +14,14 @@ const account = {
 export default function accountReducer(state = account, action) {
   switch (action.type) {
     case ACCOUNT_LOGGED_IN:
-      const {wallet} = action.payload;
+      const { wallet } = action.payload;
       log.info(`Account is logged in with wallet: ${wallet}`);
       return Object.assign({}, state, {
         wallet,
         success: true,
       });
     case ACCOUNT_LOGGED_OUT:
-      log.info("Account is logged out.");
+      log.info('Account is logged out.');
       return Object.assign({}, state, {
         wallet: null,
         success: true,

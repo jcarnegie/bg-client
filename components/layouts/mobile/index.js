@@ -1,12 +1,12 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import Main from "@/components/layouts/main";
-import Header from "@/components/header/mobile";
-import MenuDrawer from "@/components/menudrawer";
-import ChatDrawer from "@/components/chatdrawer";
-import {Mobile} from "@/components/responsive";
+import Main from '@/components/layouts/main';
+import Header from '@/components/header/mobile';
+import MenuDrawer from '@/components/menudrawer';
+import ChatDrawer from '@/components/chatdrawer';
+import { Mobile } from '@/components/responsive';
 
 
 @connect(

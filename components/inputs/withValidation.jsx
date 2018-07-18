@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {omit} from "ramda";
-import {VALIDATION_REMOVE} from "@/shared/constants/actions";
-import {injectIntl, intlShape} from "react-intl";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { omit } from 'ramda';
+import { VALIDATION_REMOVE } from '@/shared/constants/actions';
+import { injectIntl, intlShape } from 'react-intl';
 
 
 export default function withValidation(Input) {
@@ -29,7 +29,7 @@ export default function withValidation(Input) {
     };
 
     componentWillUnmount() {
-      const {dispatch} = this.props;
+      const { dispatch } = this.props;
       const validation = this.getValidation(this.props.name);
       if (validation) {
         dispatch({
@@ -40,7 +40,7 @@ export default function withValidation(Input) {
     }
 
     onChange(e) {
-      const {name, dispatch, onChange} = this.props;
+      const { name, dispatch, onChange } = this.props;
       const validation = this.getValidation(name);
       if (validation) {
         dispatch({
@@ -52,20 +52,20 @@ export default function withValidation(Input) {
     }
 
     getValidation(name) {
-      const {validations} = this.props;
+      const { validations } = this.props;
       return validations.find(validation => validation.name === name);
     }
 
     render() {
-      const {name, intl} = this.props;
-      const props = omit(["validations", "dispatch", "intl"], this.props);
+      const { name, intl } = this.props;
+      const props = omit(['validations', 'dispatch', 'intl'], this.props);
       return (
         <Input
           {...props}
           onChange={::this.onChange}
           validation={this.getValidation(name)}
           onInvalid={e => {
-            e.target.parentNode.parentNode.classList.add("has-error");
+            e.target.parentNode.parentNode.classList.add('has-error');
             if (e.target.validity.valueMissing) {
               e.target.setCustomValidity(intl.formatMessage({
                 id: `fields.${name}.required`,
@@ -85,8 +85,8 @@ export default function withValidation(Input) {
             }
           }}
           onInput={e => {
-            e.target.parentNode.parentNode.classList.remove("has-error");
-            e.target.setCustomValidity("");
+            e.target.parentNode.parentNode.classList.remove('has-error');
+            e.target.setCustomValidity('');
           }}
         />
       );

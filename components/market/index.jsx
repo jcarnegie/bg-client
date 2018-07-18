@@ -1,9 +1,9 @@
-import React, {Component, Fragment} from "react";
-import PropTypes from "prop-types";
-import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
-import {Image, Row} from "react-bootstrap";
-import {connect} from "react-redux";
-import {compose} from "react-apollo";
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
+import { Image, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { compose } from 'react-apollo';
 import {
   contains,
   filter,
@@ -11,23 +11,23 @@ import {
   map,
   path,
   uniq,
-} from "ramda";
+} from 'ramda';
 
-import TreeView from "@/components/treeview/treeview";
-import DataLoading from "@/components/DataLoading";
+import TreeView from '@/components/treeview/treeview';
+import DataLoading from '@/components/DataLoading';
 
 import {
   listGamesQuery,
   viewUserByWalletQuery,
   listMarketplaceItemsQuery,
-} from "@/shared/utils/apollo";
+} from '@/shared/utils/apollo';
 
 import {
   calcMaxItemsStats,
   // isValidItemCategory,
   isStat,
-} from "@/client/utils/item";
-import {MarketplaceItem as Item} from "@/components/item";
+} from '@/client/utils/item';
+import { MarketplaceItem as Item } from '@/components/item';
 
 // import itemList from "./items.test.json";
 
@@ -188,7 +188,7 @@ class Market extends Component {
           const name = node.game;
           const label = <span className="node">{name}</span>;
           return (
-            <TreeView key={name + "|" + i} nodeLabel={label} defaultCollapsed={true} onClick={() => ::this.handleFilter(name)}>
+            <TreeView key={name + '|' + i} nodeLabel={label} defaultCollapsed={true} onClick={() => ::this.handleFilter(name)}>
               {node.categories.map(category => {
                 const label2 = <span className="node">{category.categoryName}</span>;
                 return (
@@ -216,7 +216,7 @@ class Market extends Component {
   }
 
   renderItems(items, games) {
-    const gameIdsWithItems = uniq(map(path(["game", "id"]), items));
+    const gameIdsWithItems = uniq(map(path(['game', 'id']), items));
     const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games);
 
     return (
@@ -267,7 +267,7 @@ class Market extends Component {
 
 
   render() {
-    const {games, marketItems} = this.props;
+    const { games, marketItems } = this.props;
     if (!games || !marketItems) return <DataLoading />;
     if (games.error || marketItems.error) return <div>games Error!</div>;
 

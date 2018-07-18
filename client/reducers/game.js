@@ -1,4 +1,4 @@
-import {GAME_CHANGED, GAME_ERROR, GAME_LOADING} from "../../shared/constants/actions";
+import { GAME_CHANGED, GAME_ERROR, GAME_LOADING } from '../../shared/constants/actions';
 
 const game = {
   isLoading: false,

@@ -1,29 +1,29 @@
-import React, {Component} from "react";
-import * as log from "loglevel";
-import gql from "graphql-tag";
-import PropTypes from "prop-types";
-import {Image, Row, Col, Tab, Tabs, ProgressBar} from "react-bootstrap";
-import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
-import {connect} from "react-redux";
-import MDCheck from "react-icons/lib/md/check";
+import React, { Component } from 'react';
+import * as log from 'loglevel';
+import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
+import { Image, Row, Col, Tab, Tabs, ProgressBar } from 'react-bootstrap';
+import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+import MDCheck from 'react-icons/lib/md/check';
 
-import ScaleLoader from "react-spinners/dist/spinners/ScaleLoader";
+import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 import {
   getBitGuildTokenContract,
   getBitizensIGOContract,
   getBitizensIGOContractAddress,
-} from "@/shared/utils/network";
+} from '@/shared/utils/network';
 
-import {Mobile, Desktop} from "@/components/responsive";
-import ItemSetDetailsCard from "@/components/ItemSetDetailsCard";
+import { Mobile, Desktop } from '@/components/responsive';
+import ItemSetDetailsCard from '@/components/ItemSetDetailsCard';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 import {
   USER_SHOW_REGISTER_WORKFLOW,
   SHOW_CONVERT_MODAL,
-} from "@/shared/constants/actions";
+} from '@/shared/constants/actions';
 
-import {client as api} from "@/shared/utils/apollo";
+import { client as api } from '@/shared/utils/apollo';
 
 const PLAT_DISCOUNT = 50;
 const TOTAL_ITEMS_COUNT = 139;
@@ -31,31 +31,31 @@ const BITIZENS_GAME_ID = 3;
 
 const SETS = [
   {
-    id: "pioneer_of_the_wilds",
+    id: 'pioneer_of_the_wilds',
     tokenId: 17,
     total: 100,
     price: 60000,
   },
   {
-    id: "pioneer_of_the_skies",
+    id: 'pioneer_of_the_skies',
     tokenId: 16,
     total: 25,
     price: 180000,
   },
   {
-    id: "pioneer_of_the_seas",
+    id: 'pioneer_of_the_seas',
     tokenId: 18,
     total: 10,
     price: 480000,
   },
   {
-    id: "pioneer_of_the_cyberscape",
+    id: 'pioneer_of_the_cyberscape',
     tokenId: 19,
     total: 1,
     price: 3000000,
   },
   {
-    id: "pioneer_compass",
+    id: 'pioneer_compass',
     tokenId: 20,
     total: 3,
     price: 720000,
@@ -92,15 +92,15 @@ class Presale extends Component {
     counter: 0,
   }
 
-  static getInitialProps({err, req, res, query, store, isServer}) {
+  static getInitialProps({ err, req, res, query, store, isServer }) {
     if (err) {
       log.error(err);
     }
-    return {...query};
+    return { ...query };
   }
 
   async logPurchase(tx, set) {
-    const {user} = this.props;
+    const { user } = this.props;
     const mutation = gql`
       mutation createPresaleTicket($payload:CreatePresaleTicketPayload!) {
         createPresaleTicket(payload:$payload) {
@@ -120,8 +120,8 @@ class Presale extends Component {
         UserId: user.data.id,
       },
     };
-    const ticket = await api.mutate({mutation, variables});
-    log.info("Purchase ticket:", ticket);
+    const ticket = await api.mutate({ mutation, variables });
+    log.info('Purchase ticket:', ticket);
   }
 
   componentDidMount() {
@@ -140,7 +140,7 @@ class Presale extends Component {
 
   textLoading() {
     if (this.state.counter < 15) {
-      return <ScaleLoader height={10} width={2} color="black" style={{display: "inline"}} />;
+      return <ScaleLoader height={10} width={2} color="black" style={{ display: 'inline' }} />;
     } else {
       return <img src = "../static/images/icons/missing_data_placeholder.png" />;
     }
@@ -179,24 +179,24 @@ class Presale extends Component {
       if (err) {
         log.error(err);
       } else {
-        this.setState({[`qtyOf${setId}`]: qty.c[0]});
+        this.setState({ [`qtyOf${setId}`]: qty.c[0] });
       }
     });
   }
 
   purchase(set) {
-    log.info("User purchase flow for set: ", set);
-    const {balancePLAT} = this.props;
+    log.info('User purchase flow for set: ', set);
+    const { balancePLAT } = this.props;
 
     if (!this.props.network.data) {
-      log.error("Network has not loaded.");
-      this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: true});
+      log.error('Network has not loaded.');
+      this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
       return;
     }
 
     if (!this.props.user.data) {
-      log.info("User must be logged in to purchase item.");
-      this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: true});
+      log.info('User must be logged in to purchase item.');
+      this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
       return;
     }
 
@@ -205,13 +205,13 @@ class Presale extends Component {
 
     // Get Plat Balance and confirm user has enough...
     if (balancePLAT && balancePLAT.data < priceForUser) {
-      log.error("User has insufficient PLAT balance.");
-      this.props.dispatch({type: SHOW_CONVERT_MODAL, payload: true});
+      log.error('User has insufficient PLAT balance.');
+      this.props.dispatch({ type: SHOW_CONVERT_MODAL, payload: true });
       return;
     }
 
     if (::this.userHasAlreadyPurchasedItem(set.tokenId)) {
-      log.error("User has already purchased this item.");
+      log.error('User has already purchased this item.');
       return;
     }
 
@@ -220,7 +220,7 @@ class Presale extends Component {
       if (err) {
         log.error(err);
       } else {
-        log.info("Transaction hash: ", tx);
+        log.info('Transaction hash: ', tx);
         this.logPurchase(tx, set);
       }
     });
@@ -273,13 +273,13 @@ class Presale extends Component {
   }
 
   presaleTitles() {
-    const {mobile} = this.props.layout.type;
+    const { mobile } = this.props.layout.type;
     return (
       <Row>
         <style jsx>{`
           .title-section {
             display: flex;
-            margin-bottom: ${mobile ? "0" : "20px"};
+            margin-bottom: ${mobile ? '0' : '20px'};
           }
           .titles {
             height: 100px;
@@ -395,7 +395,7 @@ class Presale extends Component {
 
   unlocked() {
     return (
-      <div style={{marginTop: "10px"}}>Unlocked! <MDCheck height={20} width={20} color="green" style={{transform: "translateY(-5px)"}} /></div>
+      <div style={{ marginTop: '10px' }}>Unlocked! <MDCheck height={20} width={20} color="green" style={{ transform: 'translateY(-5px)' }} /></div>
     );
   }
 
@@ -449,14 +449,14 @@ class Presale extends Component {
           </Col>
           <Col md={12}>
             <div className="bonus-rewards">
-              <div className={`bonus-reward ${progress > 30 ? "bonus-reward-activated" : "bonus-reward-disabled"}`}>
+              <div className={`bonus-reward ${progress > 30 ? 'bonus-reward-activated' : 'bonus-reward-disabled'}`}>
                 <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_drillrbot.png`} />
                 <div className="bonus-reward-title">
                   <span><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-1-title`} /></span>
                   {progress > 30 ? ::this.unlocked() : null}
                 </div>
               </div>
-              <div className={`bonus-reward ${progress > 70 ? "bonus-reward-activated" : "bonus-reward-disabled"}`}>
+              <div className={`bonus-reward ${progress > 70 ? 'bonus-reward-activated' : 'bonus-reward-disabled'}`}>
                 <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_rocket.png`} />
                 <div className="bonus-reward-title">
                   <span><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.bonus-reward-2-title`} /></span>

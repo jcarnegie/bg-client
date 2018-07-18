@@ -1,4 +1,4 @@
-import ClipLoader from "react-spinners/dist/spinners/ClipLoader";
+import ClipLoader from 'react-spinners/dist/spinners/ClipLoader';
 
 
 const DataLoading = props => (

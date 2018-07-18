@@ -1,25 +1,25 @@
-import React, {Component, Fragment} from "react";
-import {Badge, Button, ButtonGroup, Col, Thumbnail} from "react-bootstrap";
-import PropTypes from "prop-types";
-import {FormattedMessage, injectIntl} from "react-intl";
-import {compose, filter, isNil, map, not} from "ramda";
-import {connect} from "react-redux";
-import * as log from "loglevel";
+import React, { Component, Fragment } from 'react';
+import { Badge, Button, ButtonGroup, Col, Thumbnail } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { compose, filter, isNil, map, not } from 'ramda';
+import { connect } from 'react-redux';
+import * as log from 'loglevel';
 
 import {
   getMarketplaceContract,
   getBitGuildTokenContract,
-} from "@/shared/utils/network";
+} from '@/shared/utils/network';
 
-import {isValidItemCategory, itemStats} from "@/client/utils/item";
-import style from "@/shared/constants/style";
+import { isValidItemCategory, itemStats } from '@/client/utils/item';
+import style from '@/shared/constants/style';
 
 // import BGModal from "@/components/modal";
-import Gift from "@/components/popups/gift";
+import Gift from '@/components/popups/gift';
 // import Sell from "@/components/popups/sell";
-import ItemPopup from "@/components/popups/itempopup";
+import ItemPopup from '@/components/popups/itempopup';
 
-import {featureOn} from "@/shared/utils";
+import { featureOn } from '@/shared/utils';
 
 const notNil = compose(not, isNil);
 
@@ -46,18 +46,18 @@ class Item extends Component {
 
   static defaultProps = {
     buttons: null,
-    className: "",
+    className: '',
   }
 
   expiredBanner() {
-    let {saleExpiration, saleState} = this.props.item;
+    let { saleExpiration, saleState } = this.props.item;
 
-    if (!featureOn("marketplace")) return null;
+    if (!featureOn('marketplace')) return null;
 
     // TODO - dev
-    saleState = "listed";
+    saleState = 'listed';
 
-    if (saleState !== "listed") return null;
+    if (saleState !== 'listed') return null;
 
     const expired = Math.random() > 0.5;
     const n = Math.round(Math.random() * 6);
@@ -89,7 +89,7 @@ class Item extends Component {
   }
 
   renderStats() {
-    const {item} = this.props;
+    const { item } = this.props;
     return (
       <dl>
         {map(stat => (
@@ -103,7 +103,7 @@ class Item extends Component {
   }
 
   renderAttributes() {
-    const {item} = this.props;
+    const { item } = this.props;
     const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => Object.values(attr)[1]));
     // fix duplicate keys
     return (
@@ -111,7 +111,7 @@ class Item extends Component {
         {attributes
           .filter(isValidItemCategory)
           .map(attribute =>
-            <Badge key={"item" + attribute}>
+            <Badge key={'item' + attribute}>
               {attribute}
             </Badge>
           )}
@@ -120,7 +120,7 @@ class Item extends Component {
   }
 
   render() {
-    const {item, className} = this.props;
+    const { item, className } = this.props;
     return (
       <Col sm={6} md={4} lg={3} className={`item ${className}`}>
         <style jsx global>{`
@@ -255,7 +255,7 @@ class Item extends Component {
           }
         `}</style>
         <Thumbnail>
-          <img src={item.image} className="itemImage"/>
+          <img src={item.image} className="itemImage" />
           {::this.expiredBanner()}
           <h4>{item.name}</h4>
           {this.renderStats()}
@@ -297,12 +297,12 @@ class MarketplaceItem extends Component {
 
   onShowBuy(e) {
     e.preventDefault();
-    this.setState({buy: true});
+    this.setState({ buy: true });
   }
 
   onHideBuy() {
     console.log('onhide buy');
-    this.setState({buy: false});
+    this.setState({ buy: false });
   }
 
   onSubmit() {
@@ -314,7 +314,7 @@ class MarketplaceItem extends Component {
       // onHide,
     } = this.props;
 
-    log.info("Instantiating buy transaction...");
+    log.info('Instantiating buy transaction...');
 
     const BitGuildTokenContract = getBitGuildTokenContract(network);
     console.log(BitGuildTokenContract, network);
@@ -326,16 +326,16 @@ class MarketplaceItem extends Component {
       if (err) {
         log.error(err);
       } else {
-        log.info("all good!");
+        log.info('all good!');
         log.info(res);
       }
     });
 
-    this.setState({buy: false});
+    this.setState({ buy: false });
   }
 
   renderButtons() {
-    const {item} = this.props;
+    const { item } = this.props;
     return (
       <ButtonGroup justified>
         <Button href="#" onClick={::this.onShowBuy} className="buy">
@@ -347,7 +347,7 @@ class MarketplaceItem extends Component {
   }
 
   render() {
-    const {item, game} = this.props;
+    const { item, game } = this.props;
     return (
       <>
         <ItemPopup
@@ -404,15 +404,15 @@ class InventoryItem extends Component {
   };
 
   onHideModal() {
-    this.setState({modal: null});
+    this.setState({ modal: null });
   }
 
   onSubmit() {
-    console.log("onsubmit");
+    console.log('onsubmit');
   }
 
   onSellSubmit() {
-    console.log("onsell submit");
+    console.log('onsell submit');
     const {
       network,
       item,
@@ -420,7 +420,7 @@ class InventoryItem extends Component {
       onHide,
     } = this.props;
 
-    log.info("Instantiating sell transaction...");
+    log.info('Instantiating sell transaction...');
 
     const price = 1000; // TODO
     const MarketplaceContract = getMarketplaceContract(network);
@@ -431,7 +431,7 @@ class InventoryItem extends Component {
       if (err) {
         log.error(err);
       } else {
-        log.info("all good!");
+        log.info('all good!');
         log.info(res);
       }
     });
@@ -440,16 +440,16 @@ class InventoryItem extends Component {
   renderPresaleButton() {
     return (
       <Button style={{
-        color: "gold",
-        backgroundColor: "rgb(49,75,136)",
-        width: "100%",
+        color: 'gold',
+        backgroundColor: 'rgb(49,75,136)',
+        width: '100%',
         focus: 0,
-        cursor: "default",
+        cursor: 'default',
       }}>PRESALE</Button>
     );
   }
 
-  actionButton(side = "left", onClick = () => {}, children) {
+  actionButton(side = 'left', onClick = () => {}, children) {
     return (
       <button onClick={onClick} className={`item-button item-button-${side}`}>
         <style jsx>{`
@@ -482,22 +482,22 @@ class InventoryItem extends Component {
     );
   }
 
-  sellButton(side = "left", onClick = () => ::this.setState({modal: "sell"}), children = <FormattedMessage id="buttons.sell" />) {
+  sellButton(side = 'left', onClick = () => ::this.setState({ modal: 'sell' }), children = <FormattedMessage id="buttons.sell" />) {
     return this.actionButton(side, onClick, children);
   }
-  giftButton(side = "right", onClick = () => ::this.setState({modal: "gift"}), children = <FormattedMessage id="buttons.gift" />) {
+  giftButton(side = 'right', onClick = () => ::this.setState({ modal: 'gift' }), children = <FormattedMessage id="buttons.gift" />) {
     return this.actionButton(side, onClick, children);
   }
-  renewButton(side = "left", onClick = () => ::this.setState({modal: "renew"}), children = <FormattedMessage id="buttons.renew" />) {
+  renewButton(side = 'left', onClick = () => ::this.setState({ modal: 'renew' }), children = <FormattedMessage id="buttons.renew" />) {
     return this.actionButton(side, onClick, children);
   }
-  withdrawButton(side = "right", onClick = () => ::this.setState({modal: "withdraw"}), children = <FormattedMessage id="buttons.withdraw" />) {
+  withdrawButton(side = 'right', onClick = () => ::this.setState({ modal: 'withdraw' }), children = <FormattedMessage id="buttons.withdraw" />) {
     return this.actionButton(side, onClick, children);
   }
 
   renderButtons() {
-    const {gifts, item, game} = this.props;
-    let saleState = Math.random() > 0.5 ? "listed" : "sold";
+    const { gifts, item, game } = this.props;
+    let saleState = Math.random() > 0.5 ? 'listed' : 'sold';
 
     const gift = gifts.data && gifts.data.find(gift => gift.item === item.tokenId && gift.game === game.id);
 
@@ -509,7 +509,7 @@ class InventoryItem extends Component {
       );
     }
 
-    const buttons = (saleState === "sold" || !featureOn("marketplace")) ? (
+    const buttons = (saleState === 'sold' || !featureOn('marketplace')) ? (
       <>
         {this.sellButton()}
         {this.giftButton()}
@@ -534,14 +534,14 @@ class InventoryItem extends Component {
   }
 
   render() {
-    const {item, game} = this.props;
+    const { item, game } = this.props;
     return (
       <>
         <Gift
-          show={this.state.modal === "gift"}
+          show={this.state.modal === 'gift'}
           item={item} game={game} onHide={::this.onHideModal} />
         <ItemPopup
-          show={this.state.modal === "sell"}
+          show={this.state.modal === 'sell'}
           type="sell"
           item={item}
           game={game}
@@ -549,7 +549,7 @@ class InventoryItem extends Component {
           onSubmit={::this.onSellSubmit}
         />
         <ItemPopup
-          show={this.state.modal === "renew"}
+          show={this.state.modal === 'renew'}
           type="renew"
           item={item}
           game={game}
@@ -557,7 +557,7 @@ class InventoryItem extends Component {
           onSubmit={::this.onSubmit}
         />
         <ItemPopup
-          show={this.state.modal === "withdraw"}
+          show={this.state.modal === 'withdraw'}
           type="withdraw"
           item={item}
           game={game}

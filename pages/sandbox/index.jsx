@@ -1,6 +1,6 @@
-import {DesktopLayout, MobileLayout} from "@/components/layouts";
-import Sandbox from "@/components/sandbox";
-import Chat from "@/components/chat";
+import { DesktopLayout, MobileLayout } from '@/components/layouts';
+import Sandbox from '@/components/sandbox';
+import Chat from '@/components/chat';
 
 
 const SandboxPage = props => (
@@ -16,7 +16,7 @@ const SandboxPage = props => (
 );
 
 SandboxPage.getInitialProps = ctx => {
-  console.log("ctx.query: ", ctx.query);
+  console.log('ctx.query: ', ctx.query);
   return Sandbox.getInitialProps(ctx);
 };
 

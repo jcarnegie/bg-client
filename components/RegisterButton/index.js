@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {injectIntl, FormattedMessage} from "react-intl";
-import {connect} from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 
-import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
+import { USER_SHOW_REGISTER_WORKFLOW } from '@/shared/constants/actions';
 
 @injectIntl
 @connect(
@@ -22,7 +22,7 @@ class RegisterButton extends Component {
   }
 
   renderButtonWithText(text) {
-    const {dispatch, user} = this.props;
+    const { dispatch, user } = this.props;
     return (
       <button className="register-button" onClick={() => dispatch({
         type: USER_SHOW_REGISTER_WORKFLOW,
@@ -61,7 +61,7 @@ class RegisterButton extends Component {
   }
 
   render() {
-    const {account, network, user} = this.props;
+    const { account, network, user } = this.props;
 
     /* Render null if loading */
     if (user.isLoading || network.isLoading) return null;

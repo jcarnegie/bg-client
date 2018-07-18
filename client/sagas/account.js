@@ -1,11 +1,11 @@
-import {eventChannel} from "redux-saga";
-import {take, call, put, select, takeLatest} from "redux-saga/effects";
-import * as log from "loglevel";
+import { eventChannel } from 'redux-saga';
+import { take, call, put, select, takeLatest } from 'redux-saga/effects';
+import * as log from 'loglevel';
 
 import {
   client,
   queries,
-} from "@/shared/utils/apollo";
+} from '@/shared/utils/apollo';
 
 import {
   ACCOUNT_INIT,
@@ -15,11 +15,11 @@ import {
   ACCOUNT_BEGIN_POLLING,
   ACCOUNT_POLL,
   NETWORK_GET_AVAILABILITY,
-} from "@/shared/constants/actions";
+} from '@/shared/constants/actions';
 
 
 /* Poll web3 interface for user account changes with this frequency */
-const WEB3_ACCOUNT_POLLING_INTERVAL = process.env.NODE_ENV === "development" ? 1000 : 200;
+const WEB3_ACCOUNT_POLLING_INTERVAL = process.env.NODE_ENV === 'development' ? 1000 : 200;
 
 
 function * getAccount() {
@@ -29,7 +29,7 @@ function * getAccount() {
 
     if (network.available === null) {
       /* Bootstrap Network */
-      return yield put({type: NETWORK_GET_AVAILABILITY});
+      return yield put({ type: NETWORK_GET_AVAILABILITY });
     }
 
     /* If web3 is not available, and we have not set initial account state, set account to logged out */
@@ -42,9 +42,9 @@ function * getAccount() {
         },
       });
     } else if (!network.available) {
-      log.info("Waiting for user to install web3...");
+      log.info('Waiting for user to install web3...');
       /* Check network availability */
-      return yield put({type: NETWORK_GET_AVAILABILITY});
+      return yield put({ type: NETWORK_GET_AVAILABILITY });
     }
 
     const web3EthWallets = window.web3.eth.accounts;
@@ -63,14 +63,14 @@ function * getAccount() {
         },
       });
 
-      const {data} = yield client.query({
+      const { data } = yield client.query({
         query: queries.viewUserByWallet,
-        variables: {wallet: web3EthWallet},
+        variables: { wallet: web3EthWallet },
       });
 
       yield client.writeQuery({
         query: queries.viewUserByWallet,
-        variables: {wallet: web3EthWallet},
+        variables: { wallet: web3EthWallet },
         data,
       });
     } else if (userSignedOutBeforeLastTick || userHasNotSignedIn) {
@@ -93,7 +93,7 @@ function * pollForAccountChanges() {
     while (true) {
       yield take(channel);
       /* Account poll and account get use the same operations */
-      yield put({type: ACCOUNT_GET});
+      yield put({ type: ACCOUNT_GET });
     }
   } catch (err) {
     log.error(err);
@@ -103,7 +103,7 @@ function * pollForAccountChanges() {
 function accountPollChannel(interval) {
   return eventChannel(emitter => {
       const iv = setInterval(() => {
-        emitter({type: ACCOUNT_POLL});
+        emitter({ type: ACCOUNT_POLL });
       }, interval);
       /* Unsubscribe */
       return () => clearInterval(iv);
@@ -112,8 +112,8 @@ function accountPollChannel(interval) {
 }
 
 function * accountInit() {
-  yield put({type: ACCOUNT_GET});
-  yield put({type: ACCOUNT_BEGIN_POLLING});
+  yield put({ type: ACCOUNT_GET });
+  yield put({ type: ACCOUNT_BEGIN_POLLING });
 }
 
 export default function * accountSaga() {

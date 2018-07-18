@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
 
 class ItemSetDetailsCard extends React.PureComponent {
@@ -28,7 +28,7 @@ class ItemSetDetailsCard extends React.PureComponent {
 
   render() {
     return (
-      <div className={`item-set-details-card ${this.props.disabled === true ? "disabled" : ""}`} onClick={() => {
+      <div className={`item-set-details-card ${this.props.disabled === true ? 'disabled' : ''}`} onClick={() => {
         if (!this.props.disabled) {
           this.props.onClick();
         }
@@ -75,7 +75,7 @@ class ItemSetDetailsCard extends React.PureComponent {
             display: flex;
             flex-wrap: wrap;
             padding: 1% 5px 3.5% 5px;
-            display: ${this.props.itemImages ? "initial" : "none"};
+            display: ${this.props.itemImages ? 'initial' : 'none'};
           }
           :global(.item-set-details-card-item-grid img) {
             margin: 2.5% 5% 0 5%;
@@ -134,7 +134,6 @@ class ItemSetDetailsCard extends React.PureComponent {
       </div>
     );
   }
-
 }
 
 export default ItemSetDetailsCard;

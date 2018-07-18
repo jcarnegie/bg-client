@@ -1,15 +1,15 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import RegisterButton from "@/components/RegisterButton";
-import {MENU_SHOW, CHAT_TOGGLE} from "@/shared/constants/actions";
-import style from "@/shared/constants/style";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import RegisterButton from '@/components/RegisterButton';
+import { MENU_SHOW, CHAT_TOGGLE } from '@/shared/constants/actions';
+import style from '@/shared/constants/style';
 
 
 class HeaderItem extends Component {
   static defaultProps = {
     active: false,
-    className: "",
+    className: '',
     onClick: () => {},
   }
 
@@ -29,7 +29,7 @@ class HeaderItem extends Component {
             align-items: center;
             height: 100%;
             padding: 0 15px;
-            background: ${this.props.active ? "rgba(255, 255, 255, .2)" : "transparent"};
+            background: ${this.props.active ? 'rgba(255, 255, 255, .2)' : 'transparent'};
           }
         `}</style>
         {this.props.children}
@@ -55,7 +55,7 @@ class MenuToggle extends Component {
         active={this.props.layout.showMenu}
         onClick={() => this.props.dispatch({
           type: MENU_SHOW,
-          payload: {showMenu: !this.props.layout.showMenu},
+          payload: { showMenu: !this.props.layout.showMenu },
         })}
       >
         <style jsx>{`
@@ -96,7 +96,7 @@ class ChatToggle extends Component {
 
   render() {
     return (
-      <HeaderItem active={this.props.chat.show} onClick={() => this.props.dispatch({type: CHAT_TOGGLE})}>
+      <HeaderItem active={this.props.chat.show} onClick={() => this.props.dispatch({ type: CHAT_TOGGLE })}>
         <style jsx>{`
           g {
             fill: white;

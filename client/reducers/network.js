@@ -1,13 +1,13 @@
-import * as log from "loglevel";
+import * as log from 'loglevel';
 
 import {
   NETWORK_AVAILABLE,
   NETWORK_CHANGED,
   NETWORK_ERROR,
   NETWORK_LOADING,
-} from "@/shared/constants/actions";
+} from '@/shared/constants/actions';
 
-import {networkIdToName, networkIdIsSupported} from "@/shared/utils/network";
+import { networkIdToName, networkIdIsSupported } from '@/shared/utils/network';
 
 
 const network = {
@@ -21,7 +21,7 @@ const network = {
 export default function networkReducer(state = network, action) {
   switch (action.type) {
     case NETWORK_AVAILABLE:
-      log.info(`${action.payload ? "Found" : "Could not find"} web3 network provider on the window.`);
+      log.info(`${action.payload ? 'Found' : 'Could not find'} web3 network provider on the window.`);
       return Object.assign({}, network, {
         available: action.payload,
       });
@@ -32,7 +32,7 @@ export default function networkReducer(state = network, action) {
         success: false,
       });
     case NETWORK_CHANGED:
-      const {id} = action.payload;
+      const { id } = action.payload;
       const name = networkIdToName(id);
       log.info(`Setting network to "${name}", id resolved as ${id} from provider.`);
       return Object.assign({}, state, {

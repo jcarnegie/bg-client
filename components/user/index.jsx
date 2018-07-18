@@ -1,10 +1,10 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import {Mobile, Desktop} from "@/components/responsive";
+import { Mobile, Desktop } from '@/components/responsive';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
 @connect(
   state => ({
@@ -19,7 +19,7 @@ export default class User extends Component {
   };
 
   render() {
-    const {user} = this.props;
+    const { user } = this.props;
 
     if (user.isLoading || !user.success) {
       return null;
@@ -79,7 +79,7 @@ export default class User extends Component {
           <img src="/static/images/icons/avatar_my.png" className="avatar" />
           <span className="text">
             <span className="name">{user.data.nickName}</span>
-            <span className="wallet">{user.data.wallet.substring(0, 10) + "..."}</span>
+            <span className="wallet">{user.data.wallet.substring(0, 10) + '...'}</span>
           </span>
           </div>
         </Desktop>
@@ -88,7 +88,7 @@ export default class User extends Component {
           <img src="/static/images/icons/avatar_my.png" className="avatar" />
           <span className="text">
             <span className="name">{user.data.nickName}</span>
-            <span className="wallet">{user.data.wallet.substring(0, 10) + "..."}</span>
+            <span className="wallet">{user.data.wallet.substring(0, 10) + '...'}</span>
           </span>
           </div>
         </Mobile>

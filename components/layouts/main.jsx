@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
 function Main(props) {
   return (
@@ -9,7 +9,7 @@ function Main(props) {
         main {
           width: 100%;
           margin-top: ${style.header.height};
-          width: calc(100% - ${props.offsetRight ? props.offsetRight : "0"});
+          width: calc(100% - ${props.offsetRight ? props.offsetRight : '0'});
         }
       `}</style>
       {props.children}
@@ -23,7 +23,7 @@ Main.propTypes = {
 };
 
 Main.defaultProps = {
-  offsetRight: "0",
+  offsetRight: '0',
   children: null,
 };
 

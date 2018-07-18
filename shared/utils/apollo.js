@@ -1,15 +1,15 @@
-import ApolloClient from "apollo-boost";
-import {graphql} from "react-apollo";
-import gql from "graphql-tag";
-import * as log from "loglevel";
+import ApolloClient from 'apollo-boost';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import * as log from 'loglevel';
 
-import {readFromQueryString} from "@/client/utils/location";
+import { readFromQueryString } from '@/client/utils/location';
 
-if (typeof global !== "undefined") {
-  global.fetch = require("node-fetch");
+if (typeof global !== 'undefined') {
+  global.fetch = require('node-fetch');
 }
 
-export const uri = (process.env.NODE_ENV === "development" ? "http://localhost:7000" : "") + "/api/";
+export const uri = (process.env.NODE_ENV === 'development' ? 'http://localhost:7000' : '') + '/api/';
 
 export const client = new ApolloClient({
   uri,
@@ -49,40 +49,40 @@ export const queries = {
 };
 
 export const viewUserByWalletQuery = graphql(queries.viewUserByWallet, {
-  name: "user",
+  name: 'user',
   options: props => {
-    log.trace("Running viewUserByWalletQuery with props: ", props);
+    log.trace('Running viewUserByWalletQuery with props: ', props);
     return ({
-      variables: {wallet: typeof window !== "undefined" && window.web3 && (window.web3.eth.accounts[0] || null)},
+      variables: { wallet: typeof window !== 'undefined' && window.web3 && (window.web3.eth.accounts[0] || null) },
       ssr: false,
     });
   },
 });
 
-export const listGamesQuery = graphql(queries.listGames, {name: "games"});
+export const listGamesQuery = graphql(queries.listGames, { name: 'games' });
 
 export const listItemsQuery = graphql(queries.listItems, {
-  name: "items",
+  name: 'items',
   skip: props => (props.user && props.user.loading),
   options: props => {
-    log.trace("Running listItemsQuery with props: ", props);
+    log.trace('Running listItemsQuery with props: ', props);
     const user = props.user.viewUserByWallet ? props.user.viewUserByWallet : props.user;
     return ({
       variables: {
         wallet: user.wallet,
         language: user.language,
         userId: user.id,
-        testItems: (readFromQueryString("testItems") === "true"),
+        testItems: (readFromQueryString('testItems') === 'true'),
       },
     });
   },
 });
 
 export const viewGameBySlugQuery = graphql(queries.viewGameBySlug, {
-  name: "game",
+  name: 'game',
   skip: props => !props.slug,
   options: props => {
-    log.trace("Running viewGameBySlugQuery with props: ", props);
+    log.trace('Running viewGameBySlugQuery with props: ', props);
     return ({
       variables: {
         slug: props.slug || (props.game && props.game.slug),
@@ -92,12 +92,12 @@ export const viewGameBySlugQuery = graphql(queries.viewGameBySlug, {
 });
 
 export const listMarketplaceItemsQuery = graphql(queries.listMarketplaceItems, {
-  name: "marketItems",
+  name: 'marketItems',
   skip: props => {
     return ((props.user && props.user.loading) || (props.games && props.games.loading));
   },
   options: props => {
-    log.info("Running listMarketplaceItemsQuery with props: ", props);
+    log.info('Running listMarketplaceItemsQuery with props: ', props);
     const user = props.user.viewUserByWallet ? props.user.viewUserByWallet : props.user;
     const games = props.games.listGames ? props.games.listGames : props.games;
     return ({
@@ -106,7 +106,7 @@ export const listMarketplaceItemsQuery = graphql(queries.listMarketplaceItems, {
         userId: user.id,
         gameId: games[0].id,
         categories: [],
-        sort: null
+        sort: null,
       },
     });
   },

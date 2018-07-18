@@ -1,10 +1,10 @@
-import gql from "graphql-tag";
-import * as log from "loglevel";
-import {call, put, select, takeEvery} from "redux-saga/effects";
-import {updateIntl} from "react-intl-redux";
-import {dissoc, filter, isEmpty, map, merge, path, pickAll, prop, propEq} from "ramda";
+import gql from 'graphql-tag';
+import * as log from 'loglevel';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { updateIntl } from 'react-intl-redux';
+import { dissoc, filter, isEmpty, map, merge, path, pickAll, prop, propEq } from 'ramda';
 
-import {client} from "@/shared/utils/apollo";
+import { client } from '@/shared/utils/apollo';
 import {
   ACCOUNT_LOGGED_IN,
   ACCOUNT_LOGGED_OUT,
@@ -21,8 +21,8 @@ import {
   USER_LOADING,
   USER_RESET,
   VALIDATION_ADD_ALL,
-} from "@/shared/constants/actions";
-import {localization} from "@/shared/intl/setup";
+} from '@/shared/constants/actions';
+import { localization } from '@/shared/intl/setup';
 
 
 function * listUserPresaleTickets() {
@@ -40,22 +40,22 @@ function * listUserPresaleTickets() {
 
     if (!account.wallet || !user.data) return;
 
-    const variables = {wallet: account.wallet, userId: user.data.id};
-    const tx = yield client.query({query, variables});
+    const variables = { wallet: account.wallet, userId: user.data.id };
+    const tx = yield client.query({ query, variables });
 
     yield put({
       type: PRESALE_TRANSACTIONS_CHANGED,
-      payload: {presaleTransactions: tx.data.listUserPresaleTickets},
+      payload: { presaleTransactions: tx.data.listUserPresaleTickets },
     });
   } catch (e) {
-    log.error("listUserPresaleTickets error:", e);
+    log.error('listUserPresaleTickets error:', e);
   }
 }
 
 
 function * fetchUser() {
   try {
-    yield put({type: USER_LOADING});
+    yield put({ type: USER_LOADING });
 
     const account = yield select(state => state.account);
     const query = gql`
@@ -66,9 +66,9 @@ function * fetchUser() {
       }
     `;
 
-    const variables = {wallet: account.wallet};
-    const result = yield client.query({query, variables});
-    const user = path(["data", "viewUserByWallet"], result);
+    const variables = { wallet: account.wallet };
+    const result = yield client.query({ query, variables });
+    const user = path(['data', 'viewUserByWallet'], result);
 
     if (user) {
       yield put({
@@ -77,18 +77,18 @@ function * fetchUser() {
       });
       yield put(updateIntl(localization[user.language]));
     } else {
-      throw ("User object returned was falsy: ", user);
+      throw ('User object returned was falsy: ', user);
     }
   } catch (error) {
-    yield put({type: USER_ERROR});
-    log.error("fetchUser error:", error);
-    log.error("This workflow is expected when a user has a web3 address but does not have an account in the database.");
+    yield put({ type: USER_ERROR });
+    log.error('fetchUser error:', error);
+    log.error('This workflow is expected when a user has a web3 address but does not have an account in the database.');
   }
 }
 
 function * createUser(action) {
   try {
-    yield put({type: USER_LOADING});
+    yield put({ type: USER_LOADING });
 
     const mutation = gql`
       mutation createUser($payload: UserCreatePayload!) {
@@ -98,21 +98,21 @@ function * createUser(action) {
       }
     `;
     const intl = yield select(state => state.intl);
-    const newUser = merge(action.payload, {language: intl.locale});
-    const userFields = ["wallet", "email", "nickName", "language"];
-    const variables = {payload: pickAll(userFields, newUser)};
-    const user = yield call(::client.mutate, {mutation, variables});
+    const newUser = merge(action.payload, { language: intl.locale });
+    const userFields = ['wallet', 'email', 'nickName', 'language'];
+    const variables = { payload: pickAll(userFields, newUser) };
+    const user = yield call(::client.mutate, { mutation, variables });
 
     yield put({
       type: USER_CHANGED,
       payload: user.data.createUser,
     });
   } catch (error) {
-    yield put({type: USER_ERROR});
-    log.error("createUser error:", error);
+    yield put({ type: USER_ERROR });
+    log.error('createUser error:', error);
 
-    const dupErrors = filter(propEq("name", "UniqueConstraintError"), error.graphQLErrors);
-    const dups = map(prop("data"), dupErrors);
+    const dupErrors = filter(propEq('name', 'UniqueConstraintError'), error.graphQLErrors);
+    const dups = map(prop('data'), dupErrors);
 
     if (!isEmpty(dups)) {
       yield put({
@@ -139,14 +139,14 @@ function * updateUser(action) {
           }
         }
       `;
-      const variables = {id: user.data.id, payload: dissoc("__typename", merge(user.data, action.payload))};
-      const _user = path(["data", "updateUser"], yield client.mutate({mutation, variables}));
+      const variables = { id: user.data.id, payload: dissoc('__typename', merge(user.data, action.payload)) };
+      const _user = path(['data', 'updateUser'], yield client.mutate({ mutation, variables }));
       yield put({
         type: USER_CHANGED,
         payload: _user,
       });
     } catch (error) {
-      log.error("updateUser error:", error);
+      log.error('updateUser error:', error);
 
       const errors = [].concat(error);
       if ([400, 409].includes(errors[0].status)) {
@@ -166,12 +166,12 @@ function * updateUser(action) {
 
 function * signOutAccount(action) {
   try {
-    yield put({type: USER_RESET});
-    yield put({type: ACCOUNT_RESET});
-    yield put({type: BALANCE_ETH_RESET});
-    yield put({type: BALANCE_PLAT_RESET});
+    yield put({ type: USER_RESET });
+    yield put({ type: ACCOUNT_RESET });
+    yield put({ type: BALANCE_ETH_RESET });
+    yield put({ type: BALANCE_PLAT_RESET });
   } catch (e) {
-    log.error("signOutUser error:", e);
+    log.error('signOutUser error:', e);
   }
 }
 

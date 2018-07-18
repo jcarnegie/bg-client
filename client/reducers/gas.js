@@ -1,4 +1,4 @@
-import {GAS_CHANGED, GAS_ERROR, GAS_LOADING} from "../../shared/constants/actions";
+import { GAS_CHANGED, GAS_ERROR, GAS_LOADING } from '../../shared/constants/actions';
 
 const gas = {
   isLoading: false,

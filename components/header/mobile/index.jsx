@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import Link from "next/link";
+import React, { Component } from 'react';
+import Link from 'next/link';
 
-import style from "@/shared/constants/style";
-import MobileMenu from "@/components/mobilemenu";
+import style from '@/shared/constants/style';
+import MobileMenu from '@/components/mobilemenu';
 
 
 export default class Header extends Component {

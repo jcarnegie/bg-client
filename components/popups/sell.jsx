@@ -1,13 +1,13 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {Form, Modal} from "react-bootstrap";
-import * as log from "loglevel";
-import {FormattedMessage, FormattedHTMLMessage, injectIntl, intlShape} from "react-intl";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Form, Modal } from 'react-bootstrap';
+import * as log from 'loglevel';
+import { FormattedMessage, FormattedHTMLMessage, injectIntl } from 'react-intl';
 
-import withFormHelper from "@/components/inputs/withFormHelper";
-import BGModal from "@/components/modal";
-import BGButton from "@/components/bgbutton";
-import {featureOn} from "@/shared/utils";
+import withFormHelper from '@/components/inputs/withFormHelper';
+import BGModal from '@/components/modal';
+import BGButton from '@/components/bgbutton';
+import { featureOn } from '@/shared/utils';
 
 
 @withFormHelper
@@ -26,15 +26,15 @@ class SellPopup extends Component {
   };
 
   onSubmit() {
-    log.info("Instantiating sell transaction...");
+    log.info('Instantiating sell transaction...');
 
     ::this.props.onHide();
   }
 
   render() {
-    const {show, onHide} = this.props;
+    const { show, onHide } = this.props;
 
-    return featureOn("marketplace") ? (
+    return featureOn('marketplace') ? (
       <BGModal show={show} className="sell" onHide={onHide} backdropClassName="semi" bsSize="lg">
         <style jsx global>{`
           .sell .modal-header {

@@ -1,13 +1,13 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {updateIntl} from "react-intl-redux";
-import {injectIntl, intlShape} from "react-intl";
-import {Image, MenuItem, DropdownButton} from "react-bootstrap";
-import {enabledLanguages, enabledLanguagesNativeText} from "@/shared/constants/language";
-import {localization} from "@/shared/intl/setup";
-import {UPDATE_USER} from "@/shared/constants/actions";
-import {Mobile, Desktop} from "@/components/responsive";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { updateIntl } from 'react-intl-redux';
+import { injectIntl, intlShape } from 'react-intl';
+import { Image, MenuItem, DropdownButton } from 'react-bootstrap';
+import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
+import { localization } from '@/shared/intl/setup';
+import { UPDATE_USER } from '@/shared/constants/actions';
+import { Mobile, Desktop } from '@/components/responsive';
 
 @injectIntl
 @connect(
@@ -23,7 +23,7 @@ export default class Language extends Component {
   };
 
   onSelect(language) {
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
 
     dispatch(updateIntl(localization[language]));
     dispatch({
@@ -32,7 +32,7 @@ export default class Language extends Component {
         language,
       },
     });
-    document.documentElement.setAttribute("lang", language);
+    document.documentElement.setAttribute('lang', language);
   }
 
   renderLanguageMenuItems() {
@@ -43,17 +43,17 @@ export default class Language extends Component {
         <MenuItem
           key={enabledLanguagesNativeText[i]}
           eventKey={ enabledLanguagesNativeText[i]}
-          onSelect={() => {this.onSelect(enabledLanguages[i])}}
+          onSelect={() => { this.onSelect(enabledLanguages[i]); }}
         >
           {<div className="native-language"> {enabledLanguagesNativeText[i]} </div>}
         </MenuItem>
-      )
+      );
     }
-    return dropDownLanguages
+    return dropDownLanguages;
   }
 
   render() {
-    const {user, intl} = this.props;
+    const { user, intl } = this.props;
 
     const language = !user.isLoading && user.success ? user.data.language : intl.locale;
 
@@ -193,7 +193,7 @@ export default class Language extends Component {
         <DropdownButton
           title={
             <span>
-              <Image src={"/static/images/language/globe.svg"} />
+              <Image src={'/static/images/language/globe.svg'} />
               <span className="current-lang">{language.toUpperCase()} </span>
             </span>
           }

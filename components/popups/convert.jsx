@@ -1,18 +1,18 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {Button, Form, Glyphicon, Modal, Grid, Row, Col} from "react-bootstrap";
-import {connect} from "react-redux";
-import {FormattedMessage} from "react-intl";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button, Form, Glyphicon, Modal, Grid, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 
-import BGModal from "@/components/modal";
-import withFormHelper from "@/components/inputs/withFormHelper";
+import BGModal from '@/components/modal';
+import withFormHelper from '@/components/inputs/withFormHelper';
 
 import {
   getTopupContract,
-} from "@/shared/utils/network";
+} from '@/shared/utils/network';
 
-import {MESSAGE_ADD} from "@/shared/constants/actions";
-import InputGroup from "@/components/inputs/input.group";
+import { MESSAGE_ADD } from '@/shared/constants/actions';
+import InputGroup from '@/components/inputs/input.group';
 
 
 function precisionRound(number, precision) {
@@ -47,7 +47,7 @@ export default class ConvertPopup extends Component {
   state = {};
 
   componentDidMount() {
-    const {setState, rate} = this.props;
+    const { setState, rate } = this.props;
     setState({
       eth: 1,
       plat: rate.data,
@@ -65,7 +65,7 @@ export default class ConvertPopup extends Component {
   }
 
   onChangeETH(e) {
-    const {setState, rate} = this.props;
+    const { setState, rate } = this.props;
     setState({
       eth: e.target.value,
       plat: rate.data * e.target.value,
@@ -73,7 +73,7 @@ export default class ConvertPopup extends Component {
   }
 
   onChangePLAT(e) {
-    const {setState, rate} = this.props;
+    const { setState, rate } = this.props;
     setState({
       eth: e.target.value / rate.data,
       plat: e.target.value,
@@ -82,9 +82,9 @@ export default class ConvertPopup extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const {network, user, gas, dispatch, formData} = this.props;
+    const { network, user, gas, dispatch, formData } = this.props;
     getTopupContract(network).buyTokens({
-        value: window.web3.toWei(precisionRound(formData.eth, 6), "ether"),
+        value: window.web3.toWei(precisionRound(formData.eth, 6), 'ether'),
         from: user.data.wallet,
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(gas.data.average),
@@ -97,9 +97,9 @@ export default class ConvertPopup extends Component {
           });
         }
         this.props.analytics.ga.event({
-          category: "Site Interaction",
-          action: "Purchase",
-          label: "Buy-Plat",
+          category: 'Site Interaction',
+          action: 'Purchase',
+          label: 'Buy-Plat',
         });
       }
     );
@@ -112,7 +112,7 @@ export default class ConvertPopup extends Component {
   }
 
   render() {
-    const {rate, show, onHide, formData} = this.props;
+    const { rate, show, onHide, formData } = this.props;
 
     if (!rate.data) {
       return null;
@@ -173,7 +173,7 @@ export default class ConvertPopup extends Component {
               <Row>
                 <h2 className="convert-title">1 ETH = {rate.data} PLAT</h2>
               </Row>
-              <Row style={{display: "flex"}}>
+              <Row style={{ display: 'flex' }}>
                 <Col sm={5} className="no-padding">
                   <InputGroup
                     type="number"

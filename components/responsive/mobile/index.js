@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
-import Responsive from "react-responsive";
+import PropTypes from 'prop-types';
+import Responsive from 'react-responsive';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
 function Mobile(props) {
   return (

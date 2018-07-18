@@ -1,7 +1,7 @@
-import gql from "graphql-tag";
-import {call, put} from "redux-saga/effects";
-import {path} from "ramda";
-import {client} from "@/shared/utils/apollo";
+import gql from 'graphql-tag';
+import { call, put } from 'redux-saga/effects';
+import { path } from 'ramda';
+import { client } from '@/shared/utils/apollo';
 import {
   GAME_LOADING,
   GAME_CHANGED,
@@ -10,7 +10,7 @@ import {
   GAMES_CHANGED,
   GAMES_ERROR,
   MESSAGE_ADD,
-} from "@/shared/constants/actions";
+} from '@/shared/constants/actions';
 
 
 export function * fetchGame(action) {
@@ -27,9 +27,9 @@ export function * fetchGame(action) {
       }
     `;
 
-    const variables = {slug: action.payload.slug};
-    const result = yield call(::client.query, {query, variables});
-    const game = path(["data", "viewGameBySlug"], result);
+    const variables = { slug: action.payload.slug };
+    const result = yield call(::client.query, { query, variables });
+    const game = path(['data', 'viewGameBySlug'], result);
 
     if (game) {
       yield put({
@@ -59,8 +59,8 @@ export function * getGames() {
       type: GAMES_LOADING,
     });
     const query = gql`{ listGames { id name slug url api nft } }`;
-    const result = yield call(::client.query, {query});
-    const games = path(["data", "listGames"], result);
+    const result = yield call(::client.query, { query });
+    const games = path(['data', 'listGames'], result);
     yield put({
       type: GAMES_CHANGED,
       payload: games,

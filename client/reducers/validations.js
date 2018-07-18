@@ -1,5 +1,5 @@
-import * as log from "loglevel";
-import {VALIDATION_ADD, VALIDATION_ADD_ALL, VALIDATION_REMOVE, VALIDATION_REMOVE_ALL} from "@/shared/constants/actions";
+import * as log from 'loglevel';
+import { VALIDATION_ADD, VALIDATION_ADD_ALL, VALIDATION_REMOVE, VALIDATION_REMOVE_ALL } from '@/shared/constants/actions';
 
 
 const validations = [];
