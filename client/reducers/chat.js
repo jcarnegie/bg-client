@@ -5,7 +5,6 @@ import {
   CHAT_MESSAGE_RECEIVED,
   CHAT_MESSAGE_SENT,
   CHAT_SET_CHANNEL,
-  CHAT_TOGGLE,
 } from '@/shared/constants/actions';
 
 const chat = {
@@ -14,7 +13,6 @@ const chat = {
     currentChannel: null,
     messages: [],
     user: null,
-    show: false,
 };
 
 export default function chatReducer(state = chat, action) {
@@ -47,11 +45,6 @@ export default function chatReducer(state = chat, action) {
       return {
         ...state,
         currentChannel: action.payload,
-      };
-    case CHAT_TOGGLE:
-      return {
-        ...state,
-        show: !state.show,
       };
     default:
       return state;

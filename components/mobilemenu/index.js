@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import RegisterButton from '@/components/RegisterButton';
-import { MENU_SHOW, CHAT_TOGGLE } from '@/shared/constants/actions';
+
+import {
+  LAYOUT_MOBILE_MENU_SHOW,
+  LAYOUT_MOBILE_CHAT_SHOW,
+} from '@/shared/constants/actions';
+
 import style from '@/shared/constants/style';
 
 
@@ -54,7 +59,7 @@ class MenuToggle extends Component {
       <HeaderItem
         active={this.props.layout.showMenu}
         onClick={() => this.props.dispatch({
-          type: MENU_SHOW,
+          type: LAYOUT_MOBILE_MENU_SHOW,
           payload: { showMenu: !this.props.layout.showMenu },
         })}
       >
@@ -83,20 +88,26 @@ class MenuToggle extends Component {
 
 @connect(
   state => ({
-    chat: state.chat,
+    layout: state.layout,
   })
 )
 class ChatToggle extends Component {
   static propTypes = {
-    chat: PropTypes.shape({
-      show: PropTypes.bool,
+    layout: PropTypes.shape({
+      chatMobileShow: PropTypes.bool,
     }),
     dispatch: PropTypes.func,
   }
 
   render() {
     return (
-      <HeaderItem active={this.props.chat.show} onClick={() => this.props.dispatch({ type: CHAT_TOGGLE })}>
+      <HeaderItem
+        active={this.props.layout.chatMobileShow}
+        onClick={() => this.props.dispatch({
+          type: LAYOUT_MOBILE_CHAT_SHOW,
+          payload: !this.props.layout.chatMobileShow,
+        })}
+      >
         <style jsx>{`
           g {
             fill: white;

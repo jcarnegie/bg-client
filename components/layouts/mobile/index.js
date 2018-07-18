@@ -28,7 +28,7 @@ class MobileLayout extends Component {
           {props.main}
         </Main>
         <MenuDrawer show={props.layout.showMenu} />
-        <ChatDrawer show={props.chat.show} />
+        <ChatDrawer show={props.layout.chatMobileShow} />
         {props.children}
       </Mobile>
     );

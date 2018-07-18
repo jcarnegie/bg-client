@@ -1,8 +1,9 @@
 import {
-  MENU_SHOW,
   APP_RESIZE,
   SHOW_CONVERT_MODAL,
+  LAYOUT_MOBILE_MENU_SHOW,
   LAYOUT_ASIDE_RIGHT_COLLAPSED,
+  LAYOUT_MOBILE_CHAT_SHOW,
 } from '@/shared/constants/actions';
 import { breakpoints } from '@/shared/constants/style';
 
@@ -19,6 +20,7 @@ const layout = {
     desktop: false,
   },
   showConvertModal: false,
+  chatMobileShow: false,
 };
 
 export default function itemsReducer(state = layout, action) {
@@ -30,6 +32,16 @@ export default function itemsReducer(state = layout, action) {
     case LAYOUT_ASIDE_RIGHT_COLLAPSED:
       return Object.assign({}, state, {
         asideRightCollapsed: action.payload,
+      });
+    case LAYOUT_MOBILE_CHAT_SHOW:
+      return Object.assign({}, state, {
+        chatMobileShow: action.payload,
+        showMenu: false,
+      });
+    case LAYOUT_MOBILE_MENU_SHOW:
+      return Object.assign({}, state, {
+        showMenu: action.payload.showMenu,
+        chatMobileShow: false,
       });
     case APP_RESIZE:
       const { innerWidth } = window;
@@ -52,10 +64,6 @@ export default function itemsReducer(state = layout, action) {
           mobile,
           desktop,
         },
-      });
-    case MENU_SHOW:
-      return Object.assign({}, state, {
-        showMenu: action.payload.showMenu,
       });
     default:
       return state;
