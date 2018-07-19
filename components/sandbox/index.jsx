@@ -72,7 +72,17 @@ export default class SandBox extends Component {
           }
         `}</style>
         <div className="url-input-wrapper">
-          <input ref={c => (this.dom.input = c)} className="url-input" type="text" placeholder={ETHER_ONLINE_URL} />
+          <input
+            ref={c => (this.dom.input = c)}
+            className="url-input"
+            type="text"
+            placeholder={ETHER_ONLINE_URL}
+            onKeyUp={e => {
+              if (e.keyCode === 13) {
+                this.setState({ url: this.dom.input.value || ETHER_ONLINE_URL });
+              }
+            }}
+          />
           <button className="url-input-button" onClick={() => {
             this.setState({ url: this.dom.input.value || ETHER_ONLINE_URL });
           }}>Update</button>
