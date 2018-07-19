@@ -72,6 +72,20 @@
     },
     {
       "constant": true,
+      "inputs": [],
+      "name": "total",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
       "inputs": [
         {
           "name": "",
@@ -87,6 +101,24 @@
       ],
       "payable": false,
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_addresses",
+          "type": "address[]"
+        },
+        {
+          "name": "_whitelisted",
+          "type": "bool"
+        }
+      ],
+      "name": "whitelistAddresses",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -173,24 +205,6 @@
         }
       ],
       "name": "addOperator",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_addresses",
-          "type": "address[]"
-        },
-        {
-          "name": "_whitelisted",
-          "type": "bool"
-        }
-      ],
-      "name": "whitelistAddress",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -535,7 +549,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_contract",
+          "name": "_operator",
+          "type": "address"
+        },
+        {
+          "name": "_from",
           "type": "address"
         },
         {
@@ -543,12 +561,17 @@
           "type": "uint256"
         },
         {
-          "name": "_price",
-          "type": "uint256"
+          "name": "_extraData",
+          "type": "bytes"
         }
       ],
-      "name": "listItemETH",
-      "outputs": [],
+      "name": "onERC721Received",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes4"
+        }
+      ],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
@@ -557,7 +580,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_contract",
+          "name": "_from",
           "type": "address"
         },
         {
@@ -565,12 +588,17 @@
           "type": "uint256"
         },
         {
-          "name": "_price",
-          "type": "uint256"
+          "name": "_extraData",
+          "type": "bytes"
         }
       ],
-      "name": "listItemPLAT",
-      "outputs": [],
+      "name": "onERC721Received",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes4"
+        }
+      ],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"

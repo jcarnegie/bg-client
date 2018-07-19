@@ -45,12 +45,13 @@ export default class ItemPopup extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    this.props.onSubmit();
+    console.log(this.state);
+    this.props.onSubmit(this.state);
     this.props.onHide();
   }
 
   handleChange(e) {
-    this.setState({ sellPrice: event.target.value });
+    this.setState({ sellPrice: e.target.value });
   }
 
   // transfer() {
@@ -126,7 +127,7 @@ export default class ItemPopup extends Component {
 
   renderAttributes() {
     const { item } = this.props;
-    const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => Object.values(attr)[1]));
+    const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => typeof Object.values(attr)[0] === 'number' ? Object.values(attr)[1] : Object.values(attr)[0]));
     return (
       <div className="attrs">
         {attributes
@@ -143,8 +144,24 @@ export default class ItemPopup extends Component {
   render() {
     const { show, onHide, item, type } = this.props;
     return (
-       <BGModal show={show} className="buy" onHide={onHide} backdropClassName="semi">
-        <style jsx global>{`
+      <>
+        <style jsx>{`
+          form .btn {
+            font-size: 14px;
+            background-color: #314B88;
+            color: #ffffff;
+            border: 0;
+            padding: 20px;
+            border-radius: 2px;
+            width: 80%;
+            position: relative;
+            left: 10%;
+          }
+          .modal .modal-dialog {
+            margin: auto;
+            position: relative;
+            right: 10%;
+          }
           .buy .modal-header {
             border: 0;
             position: absolute;
@@ -165,13 +182,21 @@ export default class ItemPopup extends Component {
             height: 100%;
             width: 100%;
           }
-          .modal .modal-content {
+          .buy .modal-content {
             width: 1000px;
             height: 550px;
           }
           .modal .modal-content .modal-body form{
             margin: 0px;
             width: 95%;
+          }
+          .modal .modal-content h2 {
+            font-weight: 500;
+            font-size: 40px;
+            margin-top: 0;
+            text-align: left;
+            width: 100%;
+            margin-bottom: 30px;
           }
           form .imageContainer {
             float: left;
@@ -189,23 +214,28 @@ export default class ItemPopup extends Component {
           form .itemInfo .itemPrice{
             float: left;
             font-size: 20px;
-            font-weight: 600
+            font-weight: 600;
+            padding-bottom: 30px;
           }
           form .itemInfo dl {
             display: grid;
             grid-template-columns: max-content auto;
-            margin: 0;
+            margin: 0 0 30px 0;
             width: 100%;
           }
           form .itemInfo dl dt {
             grid-column-start: 1;
+            display: inline-block;
             font-weight: 300;
+            font-size: 20px;
             text-align: left;
           }
           form .itemInfo dl dd {
             grid-column-start: 2;
-            margin-left: 10px;
-            text-align: left;
+            display: inline-block;
+            font-weight: 300;
+            font-size: 20px;
+            width: 90px;
           }
           form .sellBlock {
             float: left;
@@ -227,9 +257,9 @@ export default class ItemPopup extends Component {
             text-align: left;
           }
            form .sell-disclaimer {
-              float: left;
-              width: 50%;
-              text-align: left;
+            float: left;
+            width: 50%;
+            text-align: left;
           }
           form .itemInfo .platToken{
             position: relative;
@@ -245,70 +275,72 @@ export default class ItemPopup extends Component {
             float: left;
           }
           .attrs .badge{
-            color: #3B5998;
-            background-color: #E7EDFD;
-            font-weight: 200;
             background-color: #E7EDFD;
             border: 1px solid #BECFFB;
             border-radius: 6px;
             color: #6A7CAC;
             font-weight: 300;
-            font-size: 14px;
+            font-size: 15px;
+            line-height: 18px;
+            cursor: pointer;
+            margin-right: 8px;
           }
         `}</style>
-        <Modal.Header closeButton />
-        <Modal.Body>
-          <Form onSubmit={::this.onSubmit}>
-            <div className="imageContainer">
-              <img src={item.image} className="buyImage" />
-            </div>
-            <div className="itemInfo">
-              <h2>{item.name}</h2>
-              <div className="itemPrice">
-              {
-                type === 'sell'
-                ? null
-                : <>
-                    <img src="/static/images/icons/plat.png" className="platToken" />{' ' + ' '}PLAT
-                  </>
-              }
+        <BGModal show={show} className="buy" onHide={onHide} backdropClassName="semi">
+          <Modal.Header closeButton />
+          <Modal.Body>
+            <Form onSubmit={::this.onSubmit}>
+              <div className="imageContainer">
+                <img src={item.image} className="buyImage" />
               </div>
-              {this.renderStats()}
-              {this.renderAttributes()}
-            </div>
-            {
-              type === 'renew'
-              ? <Button type="submit" className="btn-block">
-                Renew Marketplace Expiration
-                </Button>
-              : type === 'withdraw'
-              ? <Button type="submit" className="btn-block">
-                  Withdraw from Marketplace
-                </Button>
-              : type === 'sell'
-              ? (<div>
-                  <div className="sell-text">
-                    Sell for
-                  </div>
-                  <div className="sellBlock">
-                    <input type="text" value={this.state.sellPrice} onChange={::this.handleChange} className="sell-input">
-                    </input>
-                    <Button type="submit" className="btn-block-sell">
-                      Sell this Item
-                    </Button>
-                  </div>
-                  <div className="sell-disclaimer">
-                    BitGuild charges a X% fee on all trades.
-                    You will get XXX PLAT for this price.
-                  </div>
-                </div>)
-              : <Button type="submit" className="btn-block">
-                  BUY for <img src="/static/images/icons/plat.png" className="platToken" />{' '}PLAT
-                </Button>
-            }
-          </Form>
-        </Modal.Body>
-      </BGModal>
+              <div className="itemInfo">
+                <h2>{item.name}</h2>
+                <div className="itemPrice">
+                {
+                  type === 'sell'
+                  ? null
+                  : <>
+                      <img src="/static/images/icons/plat.png" className="platToken" />{' ' + ' '}PLAT
+                    </>
+                }
+                </div>
+                {this.renderStats()}
+                {this.renderAttributes()}
+              </div>
+              {
+                type === 'renew'
+                ? <Button type="submit" className="btn-block">
+                  Renew Marketplace Expiration
+                  </Button>
+                : type === 'withdraw'
+                ? <Button type="submit" className="btn-block">
+                    Withdraw from Marketplace
+                  </Button>
+                : type === 'sell'
+                ? (<div>
+                    <div className="sell-text">
+                      Sell for
+                    </div>
+                    <div className="sellBlock">
+                      <input type="text" value={this.state.sellPrice} onChange={::this.handleChange} className="sell-input">
+                      </input>
+                      <Button type="submit" className="btn-block-sell">
+                        Sell this Item
+                      </Button>
+                    </div>
+                    <div className="sell-disclaimer">
+                      BitGuild charges a X% fee on all trades.
+                      You will get XXX PLAT for this price.
+                    </div>
+                  </div>)
+                : <Button type="submit" className="btn-block">
+                    BUY for <img src="/static/images/icons/plat.png" className="platToken" />{' '}PLAT
+                  </Button>
+              }
+            </Form>
+          </Modal.Body>
+        </BGModal>
+      </>
     );
   }
 }

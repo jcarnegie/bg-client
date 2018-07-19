@@ -23,7 +23,6 @@ function GlobalStyles({ style }) {
           color: ${style.colors.text};
           background: ${style.colors.background};
         }
-        
         h1 {
           font-size: 2.6em;
         }
@@ -72,8 +71,6 @@ function GlobalStyles({ style }) {
         }
         .modal .modal-dialog {
           margin: auto;
-          position: relative;
-          right: 10%;
         }
         .modal .modal-content {
           box-shadow: none;
@@ -103,10 +100,9 @@ function GlobalStyles({ style }) {
         }
         .modal .modal-content h2 {
           font-weight: 500;
-          font-size: 40px;
+          font-size: 35px;
           margin-top: 0;
           text-align: left;
-          width: 100%
         }
         .modal .modal-content p {
           font-size: 15px;

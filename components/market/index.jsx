@@ -52,12 +52,23 @@ class Market extends Component {
   }
 
   state = {
-    filter: 1,
+    gameFilter: "1",
     categories: [],
   }
 
-  handleFilter(filter) {
-    this.setState({ filter });
+  handleGameFilter(gameFilter) {
+    if (this.state.gameFilter !== gameFilter) {
+      this.setState({ gameFilter });
+    }
+  }
+
+  handleSubCategories(subCategory) {
+    if (this.state.categories.includes(subCategory)) {
+      let index = this.state.categories.indexOf(subCategory);
+      this.state.categories.splice(index, 1);
+    } else {
+      this.state.categories.push(subCategory);
+    }
   }
 
   renderFilters(items, games) {
@@ -69,6 +80,7 @@ class Market extends Component {
         id: games[i].id,
         collapsed: true,
         categories: [],
+        imgSource: `/static/images/games/${games[i].slug}/filter.png` || null,
       });
     }
 
@@ -116,41 +128,45 @@ class Market extends Component {
           .filters {
             flex: 0 0 250px;
           }
-          .gameFilterHeader{
+          .gameFilterHeader {
             width: 100%;
             display: inline-block;
             text-align: center;
             border-bottom: 1px solid #E1E1E1;
             border-right: 1px solid #E1E1E1;
-            height: 40px;
+            height: 50px;
             font-weight: 400;
+            line-height: 45px;
           }
         `}
         </style>
         <style global jsx>{`
-          .tree-view {
-            overflow-y: hidden;
-          }
+          .tree-view {}
           .tree-view_item .node {
-            font-size: 16px;
+            font-size: 22px;
             font-weight: 500;
+            position: relative;
+            top: 25%;
           }
           .tree-view_item {
             /* immediate child of .tree-view, for styling convenience */
             cursor: pointer;
             border-bottom: 1px solid #E1E1E1;
             border-right: 1px solid #E1E1E1;
-            position: relative;
-            left: 20px;
+            padding-left: 20px;
+            height: 80px;
           }
           .info {
             cursor: pointer;
+            font-size: 18px;
+            font-weight: 300;
+            padding-left: 100px;
+            height: 80px;
+            position: relative;
+            top: 25px;
           }
           /* style for the children nodes container */
           .tree-view_children {
-            margin-left: 14px;
-            font-weight: 300;
-            font-size: 13px;
             border-bottom: 1px solid #E1E1E1;
             border-right: 1px solid #E1E1E1;
           }
@@ -172,6 +188,8 @@ class Market extends Component {
             border: 1px solid black;
             position: relative;
             top: 5px;
+            position: relative;
+            top: 20%;
           }
           .tree-view_arrow:after {
             width: 25px;
@@ -179,6 +197,17 @@ class Market extends Component {
             border-radius: 50%;
             display: inline-block;
             border: 1px solid black;
+            position: relative;
+            top: 20%;
+          }
+          .tree-view_children .tree-view_game {
+            display: none;
+          }
+          .tree-view_children .tree-view_item .node{
+            padding-left: 55px;
+            font-weight: 400;
+            font-size: 20px;
+            top: 30%;
           }
           /* rotate the triangle to close it */
           .tree-view_arrow-collapsed {
@@ -186,6 +215,16 @@ class Market extends Component {
             -moz-transform: rotate(-90deg);
             -ms-transform: rotate(-90deg);
             transform: rotate(-90deg);
+            position: relative;
+            top: 20%;
+          }
+          .tree-view_game {
+            height: 45px;
+            width: 45px;
+            display: inline-block;
+            position: relative;
+            top: 20%;
+            margin-right: 10px;
           }
         `}
         </style>
@@ -194,15 +233,15 @@ class Market extends Component {
           const name = node.game;
           const label = <span className="node">{name}</span>;
           return (
-            <TreeView key={name + '|' + i} nodeLabel={label} defaultCollapsed={true} onClick={() => ::this.handleFilter(node.id)}>
+            <TreeView key={name + '|' + i} nodeLabel={label} defaultCollapsed={true} onClick={() => ::this.handleGameFilter(node.id)} imgSource={node.imgSource}>
               {node.categories.map(category => {
                 const label2 = <span className="node">{category.categoryName}</span>;
                 return (
-                  <TreeView nodeLabel={label2} key={category.categoryName} defaultCollapsed={true} onClick={() => ::this.handleFilter(category.categoryName)}>
+                  <TreeView nodeLabel={label2} key={category.categoryName} defaultCollapsed={true} >
                   {
                     category.subCategories.map(subCategory => {
                       return (
-                        <div key={subCategory} className="info" onClick={() => ::this.handleFilter(subCategory)}>{subCategory}</div>
+                        <div key={subCategory} className="info" onClick={() => ::this.handleSubCategories(subCategory)}>{subCategory}</div>
                       );
                     })
                   }
@@ -225,17 +264,21 @@ class Market extends Component {
     const gameIdsWithItems = uniq(map(path(['game', 'id']), items));
     const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games);
 
-    const filteredGame = visibleGames.find(game => parseInt(game.id, 10) === parseInt(this.state.filter, 10));
+    const filteredGame = visibleGames.find(game => parseInt(game.id, 10) === parseInt(this.state.gameFilter, 10));
     return (
       <div className="filteredMarket">
         <style jsx>{`
         .filteredMarket {
           width: 100%;
+          margin-left: 25px;
+          background-color: #F5F7FB;
         }
         .currentGameFilter {
-          height: 60px;
+          height: 80px;
           font-size: 28px;
           font-weight: 500;
+          line-height: 70px;
+          background-color: #F5F7FB;
         }
       `}</style>
         <div className='currentGameFilter'>
@@ -255,7 +298,7 @@ class Market extends Component {
         <div>
         </div>
         <Row className="flex-row">
-          {items.filter(item => Object.keys(this.state.filter).includes(item.game.id) ? this.state.filter[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
+          {items.filter(item => Object.keys(this.state.gameFilter).includes(item.game.id) ? this.state.gameFilter[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
             .map(item =>
               <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} />
           )}
@@ -297,7 +340,7 @@ class Market extends Component {
       <Query query={queries.listMarketplaceItems} variables={{
         userId: (viewUserByWallet) ? viewUserByWallet.id : null,
         language: (viewUserByWallet) ? viewUserByWallet.language : null,
-        gameId: this.state.filter,
+        gameId: this.state.gameFilter,
         sort: null,
         categories: this.state.categories,
       }}>

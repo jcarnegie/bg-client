@@ -1,6 +1,7 @@
 import topupABI from '@/shared/contracts/topup';
 import bitGuildTokenABI from '@/shared/contracts/token';
 import oracleABI from '@/shared/contracts/oracle';
+import ERC721ABI from '@/shared/contracts/ERC721';
 import marketplaceABI from '@/shared/contracts/marketplace';
 import bitizensIGOABI from '@/shared/contracts/bitizensIGOABI';
 
@@ -55,7 +56,6 @@ export function getOracleContractAddress(network) {
   return networkAddressMap[network.data.name].oracle;
 }
 
-
 export function getBitGuildTokenContractAddress(network) {
   return networkAddressMap[network.data.name].token;
 }
@@ -90,4 +90,8 @@ export function getMarketplaceContract(network) {
 
 export function getBitizensIGOContract(network) {
   return window.web3.eth.contract(bitizensIGOABI).at(getBitizensIGOContractAddress(network));
+}
+
+export function getERC721ConformingContract(contractAddress) {
+  return window.web3.eth.contract(ERC721ABI).at(contractAddress);
 }

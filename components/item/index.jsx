@@ -7,8 +7,10 @@ import { connect } from 'react-redux';
 import * as log from 'loglevel';
 
 import {
-  getMarketplaceContract,
+  getMarketplaceContractAddress,
+  // getMarketplaceContract,
   getBitGuildTokenContract,
+  getERC721ConformingContract,
 } from '@/shared/utils/network';
 
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
@@ -104,7 +106,7 @@ class Item extends Component {
 
   renderAttributes() {
     const { item } = this.props;
-    const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => Object.values(attr)[1]));
+    const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => typeof Object.values(attr)[0] === "number" ? Object.values(attr)[1] : Object.values(attr)[0]));
     // fix duplicate keys
     return (
       <div className="attrs">
@@ -139,13 +141,12 @@ class Item extends Component {
             margin: auto auto;
             height: 100%;
             width: 100%;
-            max-height: 200px;
-            max-width: 200px;
           }
           .item .thumbnail .caption {
             padding: 0;
             background-color: #ffffff;
             border-radius: 6px;
+            box-shadow: 0px 0px 20px 10px #EAECF0;
           }
           .item .thumbnail .caption h4 {
             font-size: 20px;
@@ -157,7 +158,7 @@ class Item extends Component {
           .item .thumbnail .caption dl {
             font-size: 13px;
             display: grid;
-            grid-template-columns: max-content auto;
+            grid-template-columns: minmax(0%, 30%);
             background-color: #F4F6F9;
             padding: 5px 15px 5px 15px;
             margin: 0;
@@ -168,19 +169,19 @@ class Item extends Component {
             grid-column-start: 1;
             display: inline-block;
             font-weight: 300;
-            font-size: 14px;
+            font-size: 15px;
           }
           .item .thumbnail .caption dl dt:nth-of-type(even) {
             grid-column-start: 3;
             display: inline-block;
             font-weight: 300;
-            font-size: 14px;
+            font-size: 15px;
           }
           .item .thumbnail .caption dl dd {
             grid-column-start: 2;
             display: inline-block;
             font-weight: 300;
-            font-size: 14px;
+            font-size: 15px;
           }
           .item .thumbnail .caption dl dd:nth-of-type(even)  {
             grid-column-start: 4;
@@ -223,35 +224,23 @@ class Item extends Component {
           }
           .item .thumbnail .caption .attrs {
             background-color: #F4F6F9;
-            padding: 5px 0px 10px 0px;
+            padding: 5px 0px 10px 15px;
           }
           .item .thumbnail .caption .attrs {
             background-color: #F4F6F9;
           }
-          .item .thumbnail .caption .attrs .badge:first-child {
-            margin-right: 3px;
-            margin-bottom: 5px;
-            margin-left: 10px;
-            background-color: #E7EDFD;
-            border: 1px solid #BECFFB;
-            border-radius: 6px;
-            color: #6A7CAC;
-            font-weight: 300;
-            font-size: 14px;
-            line-height: 18px;
-            cursor: pointer;
-           }
           .item .thumbnail .caption .attrs .badge {
-            margin-right: 3px;
+            margin-right: 8px;
             margin-bottom: 5px;
             background-color: #E7EDFD;
             border: 1px solid #BECFFB;
             border-radius: 6px;
             color: #6A7CAC;
             font-weight: 300;
-            font-size: 14px;
+            font-size: 15px;
             line-height: 18px;
             cursor: pointer;
+            min-height: 77px;
           }
         `}</style>
         <Thumbnail>
@@ -369,11 +358,15 @@ class MarketplaceItem extends Component {
 
 @connect(
   state => ({
+    account: state.account,
+    gas: state.gas,
     network: state.network,
   })
 )
 class InventoryItem extends Component {
   static propTypes = {
+    account: PropTypes.object,
+    gas: PropTypes.object,
     network: PropTypes.object,
     item: PropTypes.shape({
       game: PropTypes.object,
@@ -411,30 +404,35 @@ class InventoryItem extends Component {
     console.log('onsubmit');
   }
 
-  onSellSubmit() {
-    console.log('onsell submit');
+  onSellSubmit(data) {
     const {
+      account,
       network,
       item,
       game,
-      onHide,
     } = this.props;
 
-    log.info('Instantiating sell transaction...');
+    log.info('Beginning sell transaction...');
+    const GameContract = getERC721ConformingContract(game.contract);
+    const marketplaceContractAddress = getMarketplaceContractAddress(network);
+    const { wallet } = account;
+    const { tokenId } = item;
+    const { sellPrice } = data;
 
-    const price = 1000; // TODO
-    const MarketplaceContract = getMarketplaceContract(network);
-    console.log(MarketplaceContract, network);
-    console.log(game, item);
     /* Create item listing */
-    MarketplaceContract.listItemPLAT(game.nft[network.data.id], item.tokenId, price, (err, res) => {
-      if (err) {
-        log.error(err);
-      } else {
-        log.info('all good!');
-        log.info(res);
+    GameContract.safeTransferFrom['address,address,uint256,bytes'](
+      wallet,
+      marketplaceContractAddress,
+      tokenId,
+      window.web3.toHex(parseInt(sellPrice)),
+      (err, tx) => {
+        if (err) {
+          log.error(err);
+        } else {
+          log.info('Success! Transaction: ', tx);
+        }
       }
-    });
+    );
   }
 
   renderPresaleButton() {
@@ -497,7 +495,6 @@ class InventoryItem extends Component {
 
   renderButtons() {
     const { gifts, item, game } = this.props;
-    let saleState = Math.random() > 0.5 ? 'listed' : 'sold';
 
     const gift = gifts.data && gifts.data.find(gift => gift.item === item.tokenId && gift.game === game.id);
 
@@ -509,7 +506,7 @@ class InventoryItem extends Component {
       );
     }
 
-    const buttons = (saleState === 'sold' || !featureOn('marketplace')) ? (
+    const buttons = (item.saleState === 'sold' || !featureOn('marketplace')) ? (
       <>
         {this.sellButton()}
         {this.giftButton()}

@@ -38,6 +38,11 @@ const games = {
       slug: 'eth_town',
       description: '',
     },
+    {
+      name: 'Cryptage',
+      slug: 'cryptage',
+      description: '',
+    },
   ],
 };
 

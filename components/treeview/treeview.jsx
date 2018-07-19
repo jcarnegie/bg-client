@@ -7,6 +7,7 @@ class TreeView extends React.PureComponent {
     defaultCollapsed: PropTypes.bool,
     nodeLabel: PropTypes.node.isRequired,
     className: PropTypes.string,
+    imgSource: PropTypes.string,
     children: PropTypes.any,
     itemClassName: PropTypes.string,
     childrenClassName: PropTypes.string,
@@ -40,29 +41,28 @@ class TreeView extends React.PureComponent {
       nodeLabel,
       children,
       defaultCollapsed,
+      imgSource,
       ...rest
     } = this.props;
 
-    let arrowClassName = 'tree-view_arrow';
+    let gameImageClassName = 'tree-view_game';
     let containerClassName = 'tree-view_children';
     if (collapsed) {
-      arrowClassName += ' tree-view_arrow-collapsed';
       containerClassName += ' tree-view_children-collapsed';
     }
 
-    const arrow = (
-      <div
-        {...rest}
-        className={className + ' ' + arrowClassName}
+    const gameImage = (
+      <img
+        className={className + ' ' + gameImageClassName}
+        src={imgSource}
         onClick={this.handleClick}
       />
     );
-
     return (
       <div className={'tree-view ' + treeViewClassName}>
         <div className={'tree-view_item ' + itemClassName}
           onClick={this.handleClick}>
-          {arrow}
+          {gameImage}
           {nodeLabel}
         </div>
         <div className={containerClassName + ' ' + childrenClassName}>
