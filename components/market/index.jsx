@@ -286,7 +286,7 @@ class Market extends Component {
 
     if (!games || !user) return <DataLoading />;
     if (games.loading || user.loading) return <DataLoading />;
-    if (games.error || user.error) return <div>Error!</div>;
+    if (games.error) return <div>Error!</div>;
 
     let { listGames } = games;
     let { viewUserByWallet } = user;
@@ -295,8 +295,8 @@ class Market extends Component {
 
     return (
       <Query query={queries.listMarketplaceItems} variables={{
-        userId: viewUserByWallet.id,
-        language: viewUserByWallet.language,
+        userId: (viewUserByWallet) ? viewUserByWallet.id : null,
+        language: (viewUserByWallet) ? viewUserByWallet.language : null,
         gameId: this.state.filter,
         sort: null,
         categories: this.state.categories,
