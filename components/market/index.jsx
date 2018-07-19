@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
 import { Image, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { compose } from 'react-apollo';
+import { compose, Query } from 'react-apollo';
 import {
   contains,
   filter,
@@ -15,11 +15,12 @@ import {
 
 import TreeView from '@/components/treeview/treeview';
 import DataLoading from '@/components/DataLoading';
+import DataError from '@/components/DataError';
 
 import {
+  queries,
   listGamesQuery,
   viewUserByWalletQuery,
-  listMarketplaceItemsQuery,
 } from '@/shared/utils/apollo';
 
 import {
@@ -37,7 +38,6 @@ import { MarketplaceItem as Item } from '@/components/item';
     game: state.game,
   })
 )
-
 class Market extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
@@ -52,11 +52,12 @@ class Market extends Component {
   }
 
   state = {
-    filters: {},
+    filter: 1,
+    categories: [],
   }
 
-  handleFilter(filterName) {
-    // graphql call goes here
+  handleFilter(filter) {
+    this.setState({ filter });
   }
 
   renderFilters(items, games) {
@@ -193,7 +194,7 @@ class Market extends Component {
           const name = node.game;
           const label = <span className="node">{name}</span>;
           return (
-            <TreeView key={name + '|' + i} nodeLabel={label} defaultCollapsed={true} onClick={() => ::this.handleFilter(name)}>
+            <TreeView key={name + '|' + i} nodeLabel={label} defaultCollapsed={true} onClick={() => ::this.handleFilter(node.id)}>
               {node.categories.map(category => {
                 const label2 = <span className="node">{category.categoryName}</span>;
                 return (
@@ -224,6 +225,7 @@ class Market extends Component {
     const gameIdsWithItems = uniq(map(path(['game', 'id']), items));
     const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games);
 
+    const filteredGame = visibleGames.find(game => parseInt(game.id, 10) === parseInt(this.state.filter, 10));
     return (
       <div className="filteredMarket">
         <style jsx>{`
@@ -237,7 +239,7 @@ class Market extends Component {
         }
       `}</style>
         <div className='currentGameFilter'>
-          HI IM A GAME
+          {filteredGame ? filteredGame.name : 'Items'}
         </div>
         {visibleGames.map(game =>
           this.renderItem(game, items.filter(item => item.game.id === game.id))
@@ -253,7 +255,7 @@ class Market extends Component {
         <div>
         </div>
         <Row className="flex-row">
-          {items.filter(item => Object.keys(this.state.filters).includes(item.game.id) ? this.state.filters[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
+          {items.filter(item => Object.keys(this.state.filter).includes(item.game.id) ? this.state.filter[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
             .map(item =>
               <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} />
           )}
@@ -280,27 +282,45 @@ class Market extends Component {
 
 
   render() {
-    const { games, marketItems } = this.props;
-    if (!games || !marketItems) return <DataLoading />;
-    if (games.error || marketItems.error) return <div>games Error!</div>;
+    const { games, user } = this.props;
 
-    let listItems = marketItems.listMarketplaceItems;
-    let listGames = games.listGames;
+    if (!games || !user) return <DataLoading />;
+    if (games.loading || user.loading) return <DataLoading />;
+    if (games.error || user.error) return <div>Error!</div>;
 
+    let { listGames } = games;
+    let { viewUserByWallet } = user;
 
-    const loadingAny = games.loading || marketItems.loading;
+    const loadingAny = games.loading || user.loading;
 
     return (
-      <div className="marketplace">
-        <style jsx>{`
-        .marketplace {
-          display: flex;
-        }
-      `}</style>
-        {this.flexStyle()}
-        {loadingAny ? <DataLoading /> : this.renderFilters(listItems, listGames)}
-        {loadingAny ? <DataLoading /> : this.renderMarket(listItems, listGames)}
-      </div>
+      <Query query={queries.listMarketplaceItems} variables={{
+        userId: viewUserByWallet.id,
+        language: viewUserByWallet.language,
+        gameId: this.state.filter,
+        sort: null,
+        categories: this.state.categories,
+      }}>
+        {({ loading, error, data }) => {
+          if (loading) return <DataLoading />;
+          if (error) return <DataError />;
+
+          const { listMarketplaceItems } = data;
+
+          return (
+            <div className="marketplace">
+              <style jsx>{`
+              .marketplace {
+                display: flex;
+              }
+            `}</style>
+              {this.flexStyle()}
+              {loadingAny ? <DataLoading /> : this.renderFilters(listMarketplaceItems, listGames)}
+              {loadingAny ? <DataLoading /> : this.renderMarket(listMarketplaceItems, listGames)}
+            </div>
+          );
+        }}
+      </Query>
     );
   };
 
@@ -328,5 +348,4 @@ class Market extends Component {
 export default compose(
   viewUserByWalletQuery,
   listGamesQuery,
-  listMarketplaceItemsQuery,
 )(Market);
