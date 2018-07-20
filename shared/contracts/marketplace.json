@@ -269,11 +269,43 @@
         },
         {
           "indexed": false,
-          "name": "expiry",
+          "name": "_expiry",
           "type": "uint256"
         }
       ],
       "name": "LogListingCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_seller",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_contract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_createdAt",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_expiry",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogListingExtended",
       "type": "event"
     },
     {
@@ -511,6 +543,29 @@
         {
           "name": "",
           "type": "bytes4"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_contract",
+          "type": "address"
+        },
+        {
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "extendItem",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
         }
       ],
       "payable": false,

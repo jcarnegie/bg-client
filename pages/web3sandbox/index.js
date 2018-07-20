@@ -170,8 +170,6 @@ class Web3SandboxPage extends React.Component {
   onWithdrawItem() {
     const { network } = this.props;
 
-    console.log('network', network);
-
     const MarketplaceContract = getMarketplaceContract(network);
     // const listingId = this.dom.withdraw.listingId.value;
     const gameContract = this.dom.withdraw.gameContract.value;
@@ -279,9 +277,13 @@ class Web3SandboxPage extends React.Component {
     const { network } = this.props;
 
     const MarketplaceContract = getMarketplaceContract(network);
-    // const listingId = this.dom.withdraw.listingId.value;
-    const gameContract = this.dom.withdraw.gameContract.value;
-    const tokenId = this.dom.withdraw.tokenId.value;
+    const gameContract = this.dom.extend.gameContract.value;
+    const tokenId = this.dom.extend.tokenId.value;
+
+    log.info('Extending listing...');
+    log.info('MarketplaceContract: ', MarketplaceContract);
+    log.info('gameContract: ', gameContract);
+    log.info('tokenId: ', tokenId);
 
     /* Extend item from marketplace */
     MarketplaceContract.extendItem(
