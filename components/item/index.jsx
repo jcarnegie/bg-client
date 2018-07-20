@@ -149,7 +149,7 @@ class Item extends Component {
             box-shadow: 0px 0px 20px 10px #EAECF0;
           }
           .item .thumbnail .caption h4 {
-            font-size: 20px;
+            font-size: 1.1em;
             font-weight: 500;
             background-color: #F4F6F9;
             padding: 10px 15px 5px 15px;
@@ -169,19 +169,19 @@ class Item extends Component {
             grid-column-start: 1;
             display: inline-block;
             font-weight: 300;
-            font-size: 15px;
+            font-size: 1.2em;
           }
           .item .thumbnail .caption dl dt:nth-of-type(even) {
             grid-column-start: 3;
             display: inline-block;
             font-weight: 300;
-            font-size: 15px;
+            font-size: 1.2em;
           }
           .item .thumbnail .caption dl dd {
             grid-column-start: 2;
             display: inline-block;
             font-weight: 300;
-            font-size: 15px;
+            font-size: 1.2em;
           }
           .item .thumbnail .caption dl dd:nth-of-type(even)  {
             grid-column-start: 4;
