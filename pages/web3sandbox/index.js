@@ -15,7 +15,28 @@ import {
 import BGButton from '@/components/bgbutton';
 
 const testGameContractAddress = '0x856c82b392fa4041c3a63b3a8c8a7f258d2f27e0';
-const marketplaceContractAddress = '0x8B442fF8c496e720831155200554Cc05426093D7';
+// const marketplaceContractAddress = '0x1062e88cea36123c9913acfda367dc3d7e480b1e';
+
+// deposit:
+    // @param _extraData packed bytes of (uint _price, uint _currency)
+
+// web3.eth.abi.encodeParameters(['uint256','string'], ['2345675643', 'Hello!%']);
+// web3.eth.abi.encodeParameters(['uint8[]','bytes32'], [['34','434'], '0x324567fff']);
+
+
+function buildStrippedHexFromInt(integer) {
+  let hex = window.web3.toHex(integer).toString().replace(/0x/i, '');
+  while (hex.length < 32) {
+    hex = `0${hex}`;
+  }
+  return hex;
+}
+
+function packData(items) {
+  const strippedHexItems = items.map(i => buildStrippedHexFromInt(i));
+  const packedData = strippedHexItems.join('');
+  return `0x${packedData}`;
+}
 
 
 @connect(
@@ -76,7 +97,6 @@ class Web3SandboxPage extends React.Component {
     );
   }
 
-
   onListItem() {
     // const { account, network, game } = this.props;
     const GameContract = getERC721ConformingContract(testGameContractAddress);
@@ -86,11 +106,19 @@ class Web3SandboxPage extends React.Component {
     const from = this.dom.list.from.value;
     const to = this.dom.list.to.value;
     const tokenId = this.dom.list.tokenId.value;
-    const data = window.web3.toHex(parseInt(this.dom.list.extraData.value, 10));
+    const price = this.dom.list.price.value;
+    const currency = this.dom.list.currency.value;
+
+    // const data = window.web3.eth.abi.encodeParameters(['uint256', 'uint256'], [price, currency]);
+
+    const data = packData([price, currency]);
+
     // TODO - pack currency into data
     log.info('from: ', from);
     log.info('to: ', to);
     log.info('tokenId: ', tokenId);
+    log.info('price: ', price);
+    log.info('currency: ', currency);
     log.info('data: ', data);
 
     /* Create item listing */
@@ -109,7 +137,7 @@ class Web3SandboxPage extends React.Component {
     );
   }
 
-  sellWorkflow() {
+  listItemWorkflow() {
     const { account } = this.props;
     return (
       <div>
@@ -119,7 +147,7 @@ class Web3SandboxPage extends React.Component {
         </div>
 
         <div>
-          to: <input ref={c => (this.dom.list.to = c)} /> marketplace: {marketplaceContractAddress}
+          to: <input ref={c => (this.dom.list.to = c)} /> marketplace: {networkAddressMap.rinkeby.marketplace} (rinkeby)
         </div>
 
         <div>
@@ -127,7 +155,7 @@ class Web3SandboxPage extends React.Component {
         </div>
 
         <div>
-          data: <input ref={c => (this.dom.list.extraData = c)} /> ex: 5000
+          price: <input ref={c => (this.dom.list.price = c)} /> ex: 5000
         </div>
 
         <div>
@@ -166,7 +194,7 @@ class Web3SandboxPage extends React.Component {
       });
   }
 
-  withdrawWorkflow() {
+  withdrawItemWorkflow() {
     return (
       <div>
         <h3>Withdraw Item from Marketplace</h3>
@@ -266,8 +294,8 @@ class Web3SandboxPage extends React.Component {
         <h1>Web3 Testing</h1>
 
         <div className="workflows">
-          {::this.sellWorkflow()}
-          {::this.withdrawWorkflow()}
+          {::this.listItemWorkflow()}
+          {::this.withdrawItemWorkflow()}
           {::this.buyItemWorkflow()}
         </div>
 
