@@ -333,7 +333,7 @@ class Web3SandboxPage extends React.Component {
           .key {
             width: 40%;
             float: right;
-            padding: 20px;
+            padding: 0 20px 20px 20px;
           }
           .workflows {
             width: 60%;
