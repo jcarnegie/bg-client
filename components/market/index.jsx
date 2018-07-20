@@ -55,7 +55,7 @@ class Market extends Component {
   state = {
     mobile: this.props.layout.type.mobile,
     gameFilter: '1',
-    categories: [],
+    categories: null,
   }
 
   handleGameFilter(gameFilter) {
@@ -65,11 +65,22 @@ class Market extends Component {
   }
 
   handleSubCategories(subCategory) {
-    if (this.state.categories.includes(subCategory)) {
+    if (this.state.categories && this.state.categories.includes(subCategory)) {
       let index = this.state.categories.indexOf(subCategory);
       this.state.categories.splice(index, 1);
+      this.setState({
+        categories: null
+      });
     } else {
-      this.state.categories.push(subCategory);
+      if (this.state.categories) {
+        this.setState({
+          categories: null
+        });
+      } else {
+        const categories = this.state.categories || [];
+        categories.push(subCategory);
+        this.setState({ categories });
+      }
     }
   }
 
@@ -247,7 +258,7 @@ class Market extends Component {
                   {
                     category.subCategories.map(subCategory => {
                       return (
-                        <div key={subCategory} className="info" onClick={() => ::this.handleSubCategories(subCategory)}>{subCategory}</div>
+                        <div key={subCategory} className="info" onClick={() => ::this.handleSubCategories(subCategory, node.id)}>{subCategory}</div>
                       );
                     })
                   }
