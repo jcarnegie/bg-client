@@ -147,11 +147,11 @@ export default class ItemPopup extends Component {
       <div>
         <style global jsx>{`
           .buy form .btn {
-            font-size: 20px;
+            font-size: 1.1em;
             background-color: #314B88;
             color: #ffffff;
             border: 0;
-            padding: 20px;
+            padding: 1.1em;
             border-radius: 2px;
             width: 80%;
             position: relative;
@@ -190,7 +190,7 @@ export default class ItemPopup extends Component {
           }
           .buy .modal .modal-content h2 {
             font-weight: 500;
-            font-size: 38px;
+            font-size: 2em;
             margin-top: 0;
             text-align: left;
             width: 100%;
@@ -212,7 +212,7 @@ export default class ItemPopup extends Component {
           }
           .buy form .itemInfo .itemPrice{
             float: left;
-            font-size: 25px;
+            font-size: 1.4em;
             font-weight: 600;
             padding-bottom: 15px;
           }
@@ -226,14 +226,14 @@ export default class ItemPopup extends Component {
             grid-column-start: 1;
             display: inline-block;
             font-weight: 300;
-            font-size: 20px;
+            font-size: 1.1em;
             text-align: left;
           }
           .buy form .itemInfo dl dd {
             grid-column-start: 2;
             display: inline-block;
             font-weight: 300;
-            font-size: 20px;
+            font-size: 1.1em;
             width: 90px;
           }
           .buy form .sellBlock {

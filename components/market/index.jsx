@@ -128,7 +128,7 @@ class Market extends Component {
       <div className={this.state.mobile ? 'mobileFilters' : 'filters'}>
         <style jsx>{`
           .filters {
-            flex-basis: 20%;
+            flex-basis: 25%;
           }
           .mobileFilters {
             width: 100%;
@@ -142,6 +142,7 @@ class Market extends Component {
             height: 50px;
             font-weight: 400;
             line-height: 45px;
+            font-size: 1.2em;
           }
         `}
         </style>
@@ -271,11 +272,16 @@ class Market extends Component {
 
     const filteredGame = visibleGames.find(game => parseInt(game.id, 10) === parseInt(this.state.gameFilter, 10));
     return (
-      <div className="filteredMarket">
+      <div className={this.state.mobile ? 'filteredMobileMarket' : 'filteredMarket'}>
         <style jsx>{`
         .filteredMarket {
           width: 100%;
-          margin-left: 17%;
+          margin-left: 25px;
+          background-color: #F5F7FB;
+        }
+        .filteredMobileMarket {
+          width: 70%;
+          margin: 0 auto;
           background-color: #F5F7FB;
         }
         .currentGameFilter {
@@ -285,8 +291,16 @@ class Market extends Component {
           line-height: 70px;
           background-color: #F5F7FB;
         }
+        .currentGameMobileFilter {
+          height: 80px;
+          font-size: 28px;
+          font-weight: 500;
+          line-height: 70px;
+          background-color: #F5F7FB;
+          text-align: center;
+        }
       `}</style>
-        <div className='currentGameFilter'>
+        <div className={this.state.mobile ? 'currentGameMobileFilter' : 'currentGameFilter'}>
           {filteredGame ? filteredGame.name : 'Items'}
         </div>
         {visibleGames.map(game =>
@@ -300,8 +314,6 @@ class Market extends Component {
 		const maxStats = calcMaxItemsStats(items);
     return (
       <Fragment key={game.id}>
-        <div>
-        </div>
         <Row className="flex-row">
           {items.filter(item => Object.keys(this.state.gameFilter).includes(item.game.id) ? this.state.gameFilter[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
             .map(item =>
@@ -330,6 +342,9 @@ class Market extends Component {
 
 
   render() {
+    if (this.state.mobile !== this.props.layout.type.mobile) {
+      this.setState({ mobile: this.props.layout.type.mobile });
+    }
     const { games, user } = this.props;
 
     if (!games || !user) return <DataLoading />;
@@ -383,6 +398,7 @@ class Market extends Component {
           display: flex;
           flex-wrap: wrap;
           width: 100%;
+          margin: 0;
         }
         .flex-row > [class*='col-'] {
           display: flex
