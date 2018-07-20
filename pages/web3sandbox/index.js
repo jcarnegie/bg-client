@@ -333,9 +333,9 @@ class Web3SandboxPage extends React.Component {
             background: ${style.colors.background};
           }
           .key {
-            width: 40%;
+            width: calc(40% - 20px);
             float: right;
-            padding: 0 20px 20px 20px;
+            margin-left: 20px;
           }
           .workflows {
             width: 60%;
