@@ -35,6 +35,7 @@ import { MarketplaceItem as Item } from '@/components/item';
 @injectIntl
 @connect(
   state => ({
+    layout: state.layout,
     game: state.game,
   })
 )
@@ -52,7 +53,8 @@ class Market extends Component {
   }
 
   state = {
-    gameFilter: "1",
+    mobile: this.props.layout.type.mobile,
+    gameFilter: '1',
     categories: [],
   }
 
@@ -123,10 +125,13 @@ class Market extends Component {
     });
 
     return (
-      <div className="filters">
+      <div className={this.state.mobile ? 'mobileFilters' : 'filters'}>
         <style jsx>{`
           .filters {
-            flex: 0 0 250px;
+            flex-basis: 20%;
+          }
+          .mobileFilters {
+            width: 100%;
           }
           .gameFilterHeader {
             width: 100%;
@@ -270,7 +275,7 @@ class Market extends Component {
         <style jsx>{`
         .filteredMarket {
           width: 100%;
-          margin-left: 25px;
+          margin-left: 17%;
           background-color: #F5F7FB;
         }
         .currentGameFilter {
@@ -351,10 +356,14 @@ class Market extends Component {
           const { listMarketplaceItems } = data;
 
           return (
-            <div className="marketplace">
+            <div className={this.state.mobile ? 'mobileMarket' : 'marketplace'}>
               <style jsx>{`
               .marketplace {
                 display: flex;
+              }
+              .mobileMarket{
+                display: flex;
+                flex-direction: column;
               }
             `}</style>
               {this.flexStyle()}
