@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { compose, graphql } from "react-apollo";
+import { compose, graphql } from 'react-apollo';
 
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 
@@ -21,7 +21,7 @@ class User extends Component {
 
     if (!viewUserByWallet) return <ScaleLoader height={10} width={2} color="white" />;
     if (viewUserByWallet.loading) return <ScaleLoader height={10} width={2} color="white" />;
-    if (viewUserByWallet.error) return "Error"; // TODO - error states
+    if (viewUserByWallet.error) return 'Error'; // TODO - error states
 
     return (
       <div className="user">
@@ -77,7 +77,7 @@ class User extends Component {
           <img src="/static/images/icons/avatar_my.png" className="avatar" />
           <span className="text">
             <span className="name">{viewUserByWallet.nickName}</span>
-            <span className="wallet">{viewUserByWallet.wallet.substring(0, 10) + "..."}</span>
+            <span className="wallet">{viewUserByWallet.wallet.substring(0, 10) + '...'}</span>
           </span>
           </div>
         </Desktop>
@@ -86,7 +86,7 @@ class User extends Component {
           <img src="/static/images/icons/avatar_my.png" className="avatar" />
           <span className="text">
             <span className="name">{viewUserByWallet.nickName}</span>
-            <span className="wallet">{viewUserByWallet.wallet.substring(0, 10) + "..."}</span>
+            <span className="wallet">{viewUserByWallet.wallet.substring(0, 10) + '...'}</span>
           </span>
           </div>
         </Mobile>
@@ -97,7 +97,7 @@ class User extends Component {
 
 export default compose(graphql(queries.viewUserByWallet, {
   options: props => ({
-    variables: {wallet: getWeb3Wallet()},
+    variables: { wallet: getWeb3Wallet() },
     ssr: false,
   }),
 }))(User);
