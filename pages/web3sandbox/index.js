@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as log from 'loglevel';
 
+import EthABI from 'ethereumjs-abi/index';
+
 import { connect } from 'react-redux';
 
 import {
@@ -24,19 +26,21 @@ const testGameContractAddress = '0x856c82b392fa4041c3a63b3a8c8a7f258d2f27e0';
 // web3.eth.abi.encodeParameters(['uint8[]','bytes32'], [['34','434'], '0x324567fff']);
 
 
-function buildStrippedHexFromInt(integer) {
-  let hex = window.web3.toHex(integer).toString().replace(/0x/i, '');
-  while (hex.length < 32) {
-    hex = `0${hex}`;
-  }
-  return hex;
-}
+log.info('EthABI: ', EthABI);
 
-function packData(items) {
-  const strippedHexItems = items.map(i => buildStrippedHexFromInt(i));
-  const packedData = strippedHexItems.join('');
-  return `0x${packedData}`;
-}
+// function buildStrippedHexFromInt(integer) {
+//   let hex = window.web3.toHex(integer).toString().replace(/0x/i, '');
+//   while (hex.length < 32) {
+//     hex = `0${hex}`;
+//   }
+//   return hex;
+// }
+
+// function packData(items) {
+//   const strippedHexItems = items.map(i => buildStrippedHexFromInt(i));
+//   const packedData = strippedHexItems.join('');
+//   return `0x${packedData}`;
+// }
 
 
 @connect(
@@ -106,12 +110,13 @@ class Web3SandboxPage extends React.Component {
     const from = this.dom.list.from.value;
     const to = this.dom.list.to.value;
     const tokenId = this.dom.list.tokenId.value;
-    const price = this.dom.list.price.value;
-    const currency = this.dom.list.currency.value;
+    const price = parseInt(this.dom.list.price.value, 10);
+    const currency = parseInt(this.dom.list.currency.value, 10);
 
     // const data = window.web3.eth.abi.encodeParameters(['uint256', 'uint256'], [price, currency]);
 
-    const data = packData([price, currency]);
+    const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [price, currency]);
+    const dataHex = dataBuffer.toString('hex');
 
     // TODO - pack currency into data
     log.info('from: ', from);
@@ -119,14 +124,15 @@ class Web3SandboxPage extends React.Component {
     log.info('tokenId: ', tokenId);
     log.info('price: ', price);
     log.info('currency: ', currency);
-    log.info('data: ', data);
+    log.info('dataBuffer: ', dataBuffer);
+    log.info('dataHex: ', dataHex);
 
     /* Create item listing */
     GameContract.safeTransferFrom['address,address,uint256,bytes'](
       from,
       to,
       tokenId,
-      data,
+      dataHex,
       (err, tx) => {
         if (err) {
           log.error(err);
@@ -143,23 +149,23 @@ class Web3SandboxPage extends React.Component {
       <div>
         <h3>List Item for Sale</h3>
         <div>
-          from: <input ref={c => (this.dom.list.from = c)} /> current user: {account.wallet}
+          <label>from: </label><input ref={c => (this.dom.list.from = c)} /> current user: {account.wallet}
         </div>
 
         <div>
-          to: <input ref={c => (this.dom.list.to = c)} /> marketplace: {networkAddressMap.rinkeby.marketplace} (rinkeby)
+          <label>to: </label><input ref={c => (this.dom.list.to = c)} /> marketplace: {networkAddressMap.rinkeby.marketplace} (rinkeby)
         </div>
 
         <div>
-          tokenId: <input ref={c => (this.dom.list.tokenId = c)} /> ex: 1
+          <label>tokenId: </label><input ref={c => (this.dom.list.tokenId = c)} /> ex: 1
         </div>
 
         <div>
-          price: <input ref={c => (this.dom.list.price = c)} /> ex: 5000
+          <label>price: </label><input ref={c => (this.dom.list.price = c)} /> ex: 5000
         </div>
 
         <div>
-          currency: <input ref={c => (this.dom.list.currency = c)} /> ex: (0|1) - 0: ETH, 1: PLAT
+          <label>currency: </label><input ref={c => (this.dom.list.currency = c)} /> ex: (0|1) - 0: ETH, 1: PLAT
         </div>
 
         <br />
@@ -199,9 +205,10 @@ class Web3SandboxPage extends React.Component {
       <div>
         <h3>Withdraw Item from Marketplace</h3>
         <div>
-          {/* listingId: <input ref={c => (this.dom.withdraw.listingId = c)} /> */}
-          gameContract: <input ref={c => (this.dom.withdraw.gameContract = c)} />
-          tokenId: <input ref={c => (this.dom.withdraw.tokenId = c)} />
+          <label>gameContract: </label><input ref={c => (this.dom.withdraw.gameContract = c)} />
+        </div>
+        <div>
+          <label>tokenId: </label><input ref={c => (this.dom.withdraw.tokenId = c)} />
         </div>
 
         <br />
@@ -260,9 +267,13 @@ class Web3SandboxPage extends React.Component {
       <div>
         <h3>Buy Item from Marketplace</h3>
         <div>
-          tokenId: <input ref={c => (this.dom.buy.tokenId = c)} />
-          gameContract: <input ref={c => (this.dom.buy.gameContract = c)} />
-          price: <input ref={c => (this.dom.buy.price = c)} />
+          <label>tokenId: </label><input ref={c => (this.dom.buy.tokenId = c)} />
+        </div>
+        <div>
+          <label>gameContract: </label><input ref={c => (this.dom.buy.gameContract = c)} />
+        </div>
+        <div>
+          <label>price: </label><input ref={c => (this.dom.buy.price = c)} />
         </div>
 
         <br />
@@ -270,6 +281,11 @@ class Web3SandboxPage extends React.Component {
         <BGButton onClick={() => ::this.onBuyItem()}>Buy Item from Marketplace</BGButton>
       </div>
     );
+  }
+
+
+  componentDidMount() {
+    window.EthABI = EthABI;
   }
 
 
@@ -290,7 +306,11 @@ class Web3SandboxPage extends React.Component {
             float: left;
           }
         `}</style>
-
+        <style jsx global>{`
+          .web3-testing label {
+            min-width
+          }
+        `}</style>
         <h1>Web3 Testing</h1>
 
         <div className="workflows">
