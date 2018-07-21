@@ -8,7 +8,7 @@ import * as log from 'loglevel';
 
 import {
   getMarketplaceContractAddress,
-  // getMarketplaceContract,
+  getMarketplaceContract,
   getBitGuildTokenContract,
   getERC721ConformingContract,
 } from '@/shared/utils/network';
@@ -285,8 +285,47 @@ class MarketplaceItem extends Component {
   };
 
   onShowBuy(e) {
-    e.preventDefault();
-    this.setState({ buy: true });
+    const { network } = this.props;
+
+    const price = parseInt(this.dom.buy.price.value, 10);
+    const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
+    const tokenIdAndGameContract = '1234512345'; // TODO
+
+    log.info('tokenId: ', tokenId);
+    log.info('price: ', price);
+
+    const BitGuildTokenContract = getBitGuildTokenContract(network);
+    // const MarketplaceContract = getMarketplaceContract(network);
+    log.info('BitGuildTokenContract: ', BitGuildTokenContract);
+
+    /* Buy item from marketplace - new workflow */
+    BitGuildTokenContract.approveAndCall(
+      getMarketplaceContractAddress(network),
+      price,
+      tokenIdAndGameContract,
+      (err, tx) => {
+        if (err) {
+          log.error(err);
+        } else {
+          log.info('Transaction hash: ', tx);
+        }
+      }
+    );
+
+    return;
+    /* Buy item from marketplace */
+    BitGuildTokenContract.approveAndCall(
+      getMarketplaceContractAddress(network),
+      price,
+      listingId,
+      (err, tx) => {
+        if (err) {
+          log.error(err);
+        } else {
+          log.info('Transaction hash: ', tx);
+        }
+      }
+    );
   }
 
   onHideBuy() {
@@ -400,8 +439,53 @@ class InventoryItem extends Component {
     this.setState({ modal: null });
   }
 
-  onSubmit() {
-    console.log('onsubmit');
+  onSubmit(type) {
+    if (type === 'renew') {
+      const { network, game } = this.props;
+
+      const MarketplaceContract = getMarketplaceContract(network);
+      //replace through props stuff
+      const gameContract = this.dom.extend.gameContract.value;
+      const tokenId = this.dom.extend.tokenId.value;
+
+      log.info('Extending listing...');
+      log.info('MarketplaceContract: ', MarketplaceContract);
+      log.info('gameContract: ', gameContract);
+      log.info('tokenId: ', tokenId);
+
+      /* Extend item from marketplace */
+      MarketplaceContract.extendItem(
+        gameContract,
+        tokenId,
+        (err, res) => {
+          console.log('extend');
+          if (err) {
+            console.error(err);
+          } else {
+            console.log('worked!', res);
+          }
+        });
+    } else if (type === 'withdraw') {
+      const { network } = this.props;
+
+      const MarketplaceContract = getMarketplaceContract(network);
+      // const listingId = this.dom.withdraw.listingId.value;
+      const gameContract = this.dom.withdraw.gameContract.value;
+      const tokenId = this.dom.withdraw.tokenId.value;
+
+      /* Withdraw item from marketplace */
+      MarketplaceContract.withdrawItem(
+        gameContract,
+        tokenId,
+        (err, res) => {
+          console.log('withdraw');
+          if (err) {
+            console.error(err);
+          } else {
+            console.log('worked!', res);
+          }
+        });
+    }
   }
 
   onSellSubmit(data) {
@@ -486,10 +570,10 @@ class InventoryItem extends Component {
   giftButton(side = 'right', onClick = () => ::this.setState({ modal: 'gift' }), children = <FormattedMessage id="buttons.gift" />) {
     return this.actionButton(side, onClick, children);
   }
-  renewButton(side = 'left', onClick = () => ::this.setState({ modal: 'renew' }), children = <FormattedMessage id="buttons.renew" />) {
+  renewButton(side = 'left', onClick = () => ::this.onSubmit('renew'), children = <FormattedMessage id="buttons.renew" />) {
     return this.actionButton(side, onClick, children);
   }
-  withdrawButton(side = 'right', onClick = () => ::this.setState({ modal: 'withdraw' }), children = <FormattedMessage id="buttons.withdraw" />) {
+  withdrawButton(side = 'right', onClick = () => ::this.onSubmit('withdraw'), children = <FormattedMessage id="buttons.withdraw" />) {
     return this.actionButton(side, onClick, children);
   }
 
