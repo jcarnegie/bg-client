@@ -26,6 +26,7 @@ import {
   getCategoriesFromItemAttrs,
 } from '@/client/utils/item';
 import DataLoading from '@/components/DataLoading';
+import DataError from '@/components/DataError';
 
 import { InventoryItem as Item } from '@/components/item';
 
@@ -70,7 +71,7 @@ class Inventory extends Component {
     if (!user.viewUserByWallet && !user.loading) Router.push('/');
 
     if (user.loading || items.loading || games.loading) return <DataLoading />;
-    if (user.error || items.error || games.error) return <div>error!</div>;
+    if (user.error || items.error || games.error) return <DataError />;
 
 		return items.listItems && items.listItems.length ? this.renderTabs(games.listGames, items.listItems) : this.renderEmpty();
 	}
