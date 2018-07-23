@@ -16,11 +16,30 @@ Marketplace
   x - shain - Reduce flashy loading on game filter click
   x - shain - Remove text select from filters and cards
   shain - Polish filter collapse experience
+  yong - make categories smaller height
+  yong - add border between desktop games filters and market
+  yong - center marketplace empty placeholder (centered in market section), put at top
 
 Inventory
   shain - Apollo user change - switch inventory to new user
-  shain - On Sale still renders game titles when when no onsale items exist
+  x - shain - On Sale still renders game titles when when no onsale items exist
   x - yong - item height is the same with or without expired banner (done)
+
+List of Marketplace translations to get:
+- Marketplace
+- Games
+- On Sale
+- Expires in 7 days
+- Expires in 1 day
+- Expired
+- Buy for 1791 PLAT
+- RENEW
+- WITHDRAW
+- BitGuild charges a 5.0% fee on all trades. You will get 2150 PLAT for this sale.
+- Sell
+- Sell for
+- SELL THIS ITEM
+- ** get official text for from Max: "No items are listed for this game right now, check back later!"
 
 ## Dependencies
 
