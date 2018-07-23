@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
 import { Image, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -84,62 +85,67 @@ class Market extends Component {
     }
   }
 
-  renderFilters(items, games) {
+  renderFilters(items, games, loading = false) {
     let gameFilters = [];
 
-    for (let i = 0; i < games.length; i++) {
-      gameFilters.push({
-        game: games[i].name,
-        id: games[i].id,
-        collapsed: true,
-        categories: [],
-        imgSource: `/static/images/games/${games[i].slug}/filter.png` || null,
-      });
-    }
+    if (!loading || (games && items)) {
+      for (let i = 0; i < games.length; i++) {
+        gameFilters.push({
+          game: games[i].name,
+          id: games[i].id,
+          collapsed: true,
+          categories: [],
+          imgSource: `/static/images/games/${games[i].slug}/filter.png` || null,
+        });
+      }
 
-    const attrs = flatten(items.map(item => {
-      let values = Object.values(item.attrs || {});
-      return values.map(value => Object.assign({ game: item.game.id }, value));
-    }));
+      const attrs = flatten(items.map(item => {
+        let values = Object.values(item.attrs || {});
+        return values.map(value => Object.assign({ game: item.game.id }, value));
+      }));
 
-    const categories = {};
-    attrs.forEach(attr => {
-      if (categories.hasOwnProperty(attr.game)) {
-        if (!categories[attr.game].hasOwnProperty(attr.keyLan) && !isStat(attr)) {
-          categories[attr.game][attr.keyLan] = [attr.value];
+      const categories = {};
+      attrs.forEach(attr => {
+        if (categories.hasOwnProperty(attr.game)) {
+          if (!categories[attr.game].hasOwnProperty(attr.keyLan) && !isStat(attr)) {
+            categories[attr.game][attr.keyLan] = [attr.value];
+          } else if (!isStat(attr)) {
+            categories[attr.game][attr.keyLan].push(attr.value);
+          }
         } else if (!isStat(attr)) {
-          categories[attr.game][attr.keyLan].push(attr.value);
+          categories[attr.game] = {};
+          categories[attr.game][attr.keyLan] = [attr.value];
         }
-      } else if (!isStat(attr)) {
-        categories[attr.game] = {};
-        categories[attr.game][attr.keyLan] = [attr.value];
-      }
-    });
+      });
 
-    for (var key in categories) {
-      for (var categoryKey in categories[key]) {
-        categories[key][categoryKey] = new Set(categories[key][categoryKey]);
+      for (var key in categories) {
+        for (var categoryKey in categories[key]) {
+          categories[key][categoryKey] = new Set(categories[key][categoryKey]);
+        }
       }
-    }
-    gameFilters.forEach(game => {
-      for (var gameID in categories) {
-        if (game.id === gameID) {
-          for (var categoryKey in categories[gameID]) {
-            game.categories.push({
-              categoryName: categoryKey,
-              subCategories: Array.from(categories[gameID][categoryKey]),
-              }
-            );
+      gameFilters.forEach(game => {
+        for (var gameID in categories) {
+          if (game.id === gameID) {
+            for (var categoryKey in categories[gameID]) {
+              game.categories.push({
+                categoryName: categoryKey,
+                subCategories: Array.from(categories[gameID][categoryKey]),
+                }
+              );
+            }
           }
         }
-      }
-    });
-
+      });
+    }
     return (
-      <div className={this.state.mobile ? 'mobileFilters' : 'filters'}>
+      <div className={cx({
+        mobileFilters: this.state.mobile,
+        filters: !this.state.mobile,
+      }, 'no-select')}>
         <style jsx>{`
           .filters {
             flex-basis: 25%;
+            max-width: 282px;
           }
           .mobileFilters {
             width: 100%;
@@ -172,6 +178,9 @@ class Market extends Component {
             border-right: 1px solid #E1E1E1;
             padding-left: 20px;
             height: 80px;
+          }
+          .treeview-active-item {
+            background-color: rgb(240,240,240);
           }
           .info {
             cursor: pointer;
@@ -246,11 +255,18 @@ class Market extends Component {
         `}
         </style>
         <div className="gameFilterHeader">GAMES</div>
-        {gameFilters.map((node, i) => {
+        {(loading && !(games && items)) ? <DataLoading /> : gameFilters.map((node, i) => {
           const name = node.game;
           const label = <span className="node">{name}</span>;
           return (
-            <TreeView key={name + '|' + i} nodeLabel={label} defaultCollapsed={true} onClick={() => ::this.handleGameFilter(node.id)} imgSource={node.imgSource}>
+            <TreeView
+              key={name + '|' + i}
+              nodeLabel={label}
+              defaultCollapsed={true}
+              onClick={() => ::this.handleGameFilter(node.id)}
+              imgSource={node.imgSource}
+              itemClassName={this.state.gameFilter === node.id ? 'treeview-active-item' : ''}
+            >
               {node.categories.map(category => {
                 const label2 = <span className="node">{category.categoryName}</span>;
                 return (
@@ -273,7 +289,7 @@ class Market extends Component {
     );
   }
 
-  renderMarket(items, games) {
+  renderMarket(items, games, loading = false) {
     return (items && items.length) ? this.renderItems(items, games) : this.renderEmpty();
   }
 
@@ -337,15 +353,52 @@ class Market extends Component {
 
   renderEmpty() {
     return (
-      <div>
+      <div className="empty">
+        <style jsx global>{`
+         .marketplace .empty {
+          display: flex;
+          text-align: center;
+          align-items: center;
+          vertical-align: middle;
+          justify-content: center;
+          height: calc(100vh - 62px);
+        }
+        .marketplace .empty h2 {
+          font-size: 38px;
+        }
+        .marketplace .empty img {
+          height: 220px;
+          width: 220px;
+          margin: 40px;
+        }
+        .marketplace .empty p {
+          font-size: 28px;
+        }
+        .mobileMarket .empty {
+          display: flex;
+          text-align: center;
+          align-items: center;
+          vertical-align: middle;
+          justify-content: center;
+          height: 100%
+        }
+        .mobileMarket .empty h2 {
+          font-size: 38px;
+        }
+        .mobileMarket .empty img {
+          height: 220px;
+          width: 220px;
+          margin: 40px;
+        }
+        .mobileMarket .empty p {
+          font-size: 28px;
+        }
+        `}</style>
         <div>
           <h2>
-            <FormattedMessage id="pages.inventory.empty" />
+            <FormattedMessage id="pages.marketplace.empty" />
           </h2>
           <Image src="/static/images/misc/empty-box.png" />
-          <p>
-            <FormattedHTMLMessage id="pages.inventory.faq" />
-          </p>
         </div>
       </div>
     );
@@ -365,8 +418,6 @@ class Market extends Component {
     let { listGames } = games;
     let { viewUserByWallet } = user;
 
-    const loadingAny = games.loading || user.loading;
-
     return (
       <Query query={queries.listMarketplaceItems} variables={{
         userId: (viewUserByWallet) ? viewUserByWallet.id : null,
@@ -376,10 +427,11 @@ class Market extends Component {
         categories: this.state.categories,
       }}>
         {({ loading, error, data }) => {
-          if (loading) return <DataLoading />;
           if (error) return <DataError />;
 
           const { listMarketplaceItems } = data;
+
+          const loadingAny = loading || games.loading || user.loading;
 
           return (
             <div className={this.state.mobile ? 'mobileMarket' : 'marketplace'}>
@@ -393,8 +445,8 @@ class Market extends Component {
               }
             `}</style>
               {this.flexStyle()}
-              {loadingAny ? <DataLoading /> : this.renderFilters(listMarketplaceItems, listGames)}
-              {loadingAny ? <DataLoading /> : this.renderMarket(listMarketplaceItems, listGames)}
+              {this.renderFilters(listMarketplaceItems, listGames, loadingAny)}
+              {(!loadingAny || (listMarketplaceItems && listGames)) ? this.renderMarket(listMarketplaceItems, listGames) : null}
             </div>
           );
         }}

@@ -6,7 +6,14 @@ import { Button, Image, Row, Tab, Tabs } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Router from 'next/router';
-import { contains, filter, map, path, uniq } from 'ramda';
+import {
+  contains,
+  filter,
+  map,
+  path,
+  uniq,
+  isEmpty,
+} from 'ramda';
 import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
 import { compose } from 'react-apollo';
 
@@ -26,6 +33,7 @@ import {
   getCategoriesFromItemAttrs,
 } from '@/client/utils/item';
 import DataLoading from '@/components/DataLoading';
+import DataError from '@/components/DataError';
 
 import { InventoryItem as Item } from '@/components/item';
 
@@ -70,7 +78,7 @@ class Inventory extends Component {
     if (!user.viewUserByWallet && !user.loading) Router.push('/');
 
     if (user.loading || items.loading || games.loading) return <DataLoading />;
-    if (user.error || items.error || games.error) return <div>error!</div>;
+    if (user.error || items.error || games.error) return <DataError />;
 
 		return items.listItems && items.listItems.length ? this.renderTabs(games.listGames, items.listItems) : this.renderEmpty();
 	}
@@ -115,6 +123,13 @@ class Inventory extends Component {
     const attrs = getAttrsFromItems(items);
     const categories = getCategoriesFromItemAttrs(attrs);
     const maxStats = calcMaxItemsStats(items);
+    const itemsToRender = items.filter(item => Object.keys(this.state.filters).includes(item.game.id) ? this.state.filters[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
+      .map(item => (
+         type === undefined ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
+        : type === 'onsale' && item.saleState === 'listed'
+        ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
+        : null
+      ));
     return (
       <Fragment key={game.id}>
         <div className="arrow-right pull-right">
@@ -122,14 +137,7 @@ class Inventory extends Component {
         </div>
         <h3>{game.name}</h3>
         <Row className="flex-row">
-          {items.filter(item => Object.keys(this.state.filters).includes(item.game.id) ? this.state.filters[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
-            .map(item => (
-               type === undefined ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
-              : type === 'onsale' && item.saleState === 'listed'
-              ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
-              : null
-            )
-            )}
+          {itemsToRender}
         </Row>
       </Fragment>
     );
@@ -138,6 +146,9 @@ class Inventory extends Component {
 	renderTabs(games, items) {
     const gameIdsWithItems = uniq(map(path(['game', 'id']), items));
     const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games);
+    const itemsByGameId = {};
+
+    games.forEach(game => itemsByGameId[game.id] = items.filter(item => item.game.id === game.id))
 
     return (
       <>
@@ -148,18 +159,21 @@ class Inventory extends Component {
         <Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
           <Tab eventKey={1} title={<FormattedMessage id="pages.inventory.all-items" />}>
             {visibleGames.map(game =>
-              this.renderTab(game, items.filter(item => item.game.id === game.id))
+              this.renderTab(game, itemsByGameId[game.id])
             )}
           </Tab>
           {visibleGames.map((game, i) =>
             <Tab eventKey={i + 3} title={game.name || game.slug} key={game.id}>
-              {this.renderTab(game, items.filter(item => item.game.id === game.id))}
+              {this.renderTab(game, itemsByGameId[game.id])}
             </Tab>
           )}
           {featureOn('marketplace') ? (
             <Tab eventKey={2} title={<FormattedMessage id="pages.inventory.on-sale" />}>
               {visibleGames.map(game =>
-                this.renderTab(game, items.filter(item => item.game.id === game.id), 'onsale')
+                (
+                  itemsByGameId[game.id].some(item => item.saleState === 'listed') ?
+                  this.renderTab(game, itemsByGameId[game.id], 'onsale') : null
+                )
               )}
             </Tab>
             ) : null

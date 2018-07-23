@@ -18,7 +18,7 @@ export const queries = {
   listItems: gql`
     query listItems($userId: ID!, $language: String!) {
       listItems(userId: $userId, language: $language) {
-        id presale lan tokenId image name description attrs saleState categories game { id }
+        id presale lan tokenId image name description attrs saleExpiration saleState categories game { id }
       }
     }
   `,
@@ -40,7 +40,7 @@ export const queries = {
   listMarketplaceItems: gql`
     query listMarketplaceItems($language: String, $userId: Int, $gameId: Int!, $categories: [String], $sort: Value) {
       listMarketplaceItems(language: $language, userId: $userId, gameId: $gameId, categories: $categories, sort: $sort) {
-        id lan tokenId name description image attrs categories saleState lastOwner {id} saleExpiration saleCurrency game {id} user {id}
+        id lan tokenId name description image attrs categories saleExpiration saleState lastOwner {id} saleExpiration saleCurrency game {id} user {id}
       }
     }
   `,

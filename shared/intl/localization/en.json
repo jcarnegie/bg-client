@@ -133,7 +133,8 @@
       "faq": "Learn more about items in <a href='/faq'>FAQ</a>"
     },
     "marketplace": {
-      "title": "Marketplace"
+      "title": "Marketplace",
+      "empty": "There are no marketplace items with these categories!"
     },
     "faq": {
       "title": "FAQ",
