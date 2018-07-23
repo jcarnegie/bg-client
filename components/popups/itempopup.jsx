@@ -45,7 +45,6 @@ export default class ItemPopup extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
     this.props.onSubmit(this.state);
     this.props.onHide();
   }

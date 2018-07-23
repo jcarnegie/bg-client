@@ -307,12 +307,11 @@ class MarketplaceItem extends Component {
   }
 
   onSubmit() {
-    const { network } = this.props;
+    const { network, item } = this.props;
 
     log.info('Instantiating buy transaction...');
-    //hook up here
-    const price = parseInt(this.dom.buy.price.value, 10);
-    const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
+    const price = parseInt(item.salePrice);
+    const tokenId = parseInt(item.tokenId);
     const tokenIdAndGameContract = '1234512345'; // TODO
 
     log.info('tokenId: ', tokenId);
@@ -433,12 +432,11 @@ class InventoryItem extends Component {
 
   onSubmit(type) {
     if (type === 'renew') {
-      const { network, game } = this.props;
+      const { network, game, item } = this.props;
 
       const MarketplaceContract = getMarketplaceContract(network);
-      //replace through props stuff
-      const gameContract = this.dom.extend.gameContract.value;
-      const tokenId = this.dom.extend.tokenId.value;
+      const gameContract = game.contract;
+      const tokenId = parseInt(item.tokenId);
 
       log.info('Extending listing...');
       log.info('MarketplaceContract: ', MarketplaceContract);
@@ -458,12 +456,12 @@ class InventoryItem extends Component {
           }
         });
     } else if (type === 'withdraw') {
-      const { network } = this.props;
+      const { network, game, item } = this.props;
 
       const MarketplaceContract = getMarketplaceContract(network);
       // const listingId = this.dom.withdraw.listingId.value;
-      const gameContract = this.dom.withdraw.gameContract.value;
-      const tokenId = this.dom.withdraw.tokenId.value;
+      const gameContract = game.contract;
+      const tokenId = item.tokenId;
 
       /* Withdraw item from marketplace */
       MarketplaceContract.withdrawItem(
