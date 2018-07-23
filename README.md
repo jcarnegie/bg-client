@@ -14,13 +14,13 @@ Marketplace
   yong - Polish Sell modal
   yong - Hook up buy workflows
   x - shain - Reduce flashy loading on game filter click
-  shain - Remove text select from filters and cards
+  x - shain - Remove text select from filters and cards
   shain - Polish filter collapse experience
 
 Inventory
   shain - Apollo user change - switch inventory to new user
   shain - On Sale still renders game titles when when no onsale items exist
-  yong - item height is the same with or without expired banner (done)
+  x - yong - item height is the same with or without expired banner (done)
 
 ## Dependencies
 
