@@ -84,57 +84,58 @@ class Market extends Component {
     }
   }
 
-  renderFilters(items, games) {
+  renderFilters(items, games, loading = false) {
     let gameFilters = [];
 
-    for (let i = 0; i < games.length; i++) {
-      gameFilters.push({
-        game: games[i].name,
-        id: games[i].id,
-        collapsed: true,
-        categories: [],
-        imgSource: `/static/images/games/${games[i].slug}/filter.png` || null,
-      });
-    }
+    if (!loading || (games && items)) {
+      for (let i = 0; i < games.length; i++) {
+        gameFilters.push({
+          game: games[i].name,
+          id: games[i].id,
+          collapsed: true,
+          categories: [],
+          imgSource: `/static/images/games/${games[i].slug}/filter.png` || null,
+        });
+      }
 
-    const attrs = flatten(items.map(item => {
-      let values = Object.values(item.attrs || {});
-      return values.map(value => Object.assign({ game: item.game.id }, value));
-    }));
+      const attrs = flatten(items.map(item => {
+        let values = Object.values(item.attrs || {});
+        return values.map(value => Object.assign({ game: item.game.id }, value));
+      }));
 
-    const categories = {};
-    attrs.forEach(attr => {
-      if (categories.hasOwnProperty(attr.game)) {
-        if (!categories[attr.game].hasOwnProperty(attr.keyLan) && !isStat(attr)) {
-          categories[attr.game][attr.keyLan] = [attr.value];
+      const categories = {};
+      attrs.forEach(attr => {
+        if (categories.hasOwnProperty(attr.game)) {
+          if (!categories[attr.game].hasOwnProperty(attr.keyLan) && !isStat(attr)) {
+            categories[attr.game][attr.keyLan] = [attr.value];
+          } else if (!isStat(attr)) {
+            categories[attr.game][attr.keyLan].push(attr.value);
+          }
         } else if (!isStat(attr)) {
-          categories[attr.game][attr.keyLan].push(attr.value);
+          categories[attr.game] = {};
+          categories[attr.game][attr.keyLan] = [attr.value];
         }
-      } else if (!isStat(attr)) {
-        categories[attr.game] = {};
-        categories[attr.game][attr.keyLan] = [attr.value];
-      }
-    });
+      });
 
-    for (var key in categories) {
-      for (var categoryKey in categories[key]) {
-        categories[key][categoryKey] = new Set(categories[key][categoryKey]);
+      for (var key in categories) {
+        for (var categoryKey in categories[key]) {
+          categories[key][categoryKey] = new Set(categories[key][categoryKey]);
+        }
       }
-    }
-    gameFilters.forEach(game => {
-      for (var gameID in categories) {
-        if (game.id === gameID) {
-          for (var categoryKey in categories[gameID]) {
-            game.categories.push({
-              categoryName: categoryKey,
-              subCategories: Array.from(categories[gameID][categoryKey]),
-              }
-            );
+      gameFilters.forEach(game => {
+        for (var gameID in categories) {
+          if (game.id === gameID) {
+            for (var categoryKey in categories[gameID]) {
+              game.categories.push({
+                categoryName: categoryKey,
+                subCategories: Array.from(categories[gameID][categoryKey]),
+                }
+              );
+            }
           }
         }
-      }
-    });
-
+      });
+    }
     return (
       <div className={this.state.mobile ? 'mobileFilters' : 'filters'}>
         <style jsx>{`
@@ -246,7 +247,7 @@ class Market extends Component {
         `}
         </style>
         <div className="gameFilterHeader">GAMES</div>
-        {gameFilters.map((node, i) => {
+        {(loading && !(games && items)) ? <DataLoading /> : gameFilters.map((node, i) => {
           const name = node.game;
           const label = <span className="node">{name}</span>;
           return (
@@ -273,7 +274,7 @@ class Market extends Component {
     );
   }
 
-  renderMarket(items, games) {
+  renderMarket(items, games, loading = false) {
     return (items && items.length) ? this.renderItems(items, games) : this.renderEmpty();
   }
 
@@ -362,8 +363,6 @@ class Market extends Component {
     let { listGames } = games;
     let { viewUserByWallet } = user;
 
-    const loadingAny = games.loading || user.loading;
-
     return (
       <Query query={queries.listMarketplaceItems} variables={{
         userId: (viewUserByWallet) ? viewUserByWallet.id : null,
@@ -373,10 +372,11 @@ class Market extends Component {
         categories: this.state.categories,
       }}>
         {({ loading, error, data }) => {
-          if (loading) return <DataLoading />;
           if (error) return <DataError />;
 
           const { listMarketplaceItems } = data;
+
+          const loadingAny = loading || games.loading || user.loading;
 
           return (
             <div className={this.state.mobile ? 'mobileMarket' : 'marketplace'}>
@@ -390,8 +390,8 @@ class Market extends Component {
               }
             `}</style>
               {this.flexStyle()}
-              {loadingAny ? <DataLoading /> : this.renderFilters(listMarketplaceItems, listGames)}
-              {loadingAny ? <DataLoading /> : this.renderMarket(listMarketplaceItems, listGames)}
+              {this.renderFilters(listMarketplaceItems, listGames, loadingAny)}
+              {(!loadingAny || (listMarketplaceItems && listGames)) ? this.renderMarket(listMarketplaceItems, listGames) : null}
             </div>
           );
         }}
