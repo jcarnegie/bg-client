@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
 import { Image, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -137,7 +138,10 @@ class Market extends Component {
       });
     }
     return (
-      <div className={this.state.mobile ? 'mobileFilters' : 'filters'}>
+      <div className={cx({
+        mobileFilters: this.state.mobile,
+        filters: !this.state.mobile,
+      }, 'no-select')}>
         <style jsx>{`
           .filters {
             flex-basis: 25%;
@@ -173,6 +177,9 @@ class Market extends Component {
             border-right: 1px solid #E1E1E1;
             padding-left: 20px;
             height: 80px;
+          }
+          .treeview-active-item {
+            background-color: rgb(240,240,240);
           }
           .info {
             cursor: pointer;
@@ -251,7 +258,14 @@ class Market extends Component {
           const name = node.game;
           const label = <span className="node">{name}</span>;
           return (
-            <TreeView key={name + '|' + i} nodeLabel={label} defaultCollapsed={true} onClick={() => ::this.handleGameFilter(node.id)} imgSource={node.imgSource}>
+            <TreeView
+              key={name + '|' + i}
+              nodeLabel={label}
+              defaultCollapsed={true}
+              onClick={() => ::this.handleGameFilter(node.id)}
+              imgSource={node.imgSource}
+              itemClassName={this.state.gameFilter === node.id ? 'treeview-active-item' : ''}
+            >
               {node.categories.map(category => {
                 const label2 = <span className="node">{category.categoryName}</span>;
                 return (

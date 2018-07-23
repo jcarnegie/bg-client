@@ -8,7 +8,7 @@ function GlobalStyles({ style }) {
           padding-right: 0;
           padding-left: 0;
         }
-        .no-select{
+        .no-select {
           -webkit-user-select: none;
           -khtml-user-select: none;
           -moz-user-select: none;
