@@ -58,12 +58,10 @@ class Item extends Component {
 
     if (saleState !== 'listed') return null;
 
-    console.log(this.props.item);
     const msInOneDay = 24 * 60 * 60 * 1000;
     const expirationDate = new Date(saleExpiration);
     const today = new Date();
     const diff = expirationDate - today;
-    console.log(diff);
     const days = Math.round(diff / msInOneDay);
 
     return (
