@@ -369,10 +369,9 @@ class Market extends Component {
          .marketplace .empty {
           display: flex;
           text-align: center;
-          align-items: center;
-          vertical-align: middle;
           justify-content: center;
-          margin: auto;
+          margin-left: auto;
+          margin-right: auto;
         }
         .marketplace .empty h2 {
           font-size: 38px;
