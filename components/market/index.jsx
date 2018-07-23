@@ -338,7 +338,47 @@ class Market extends Component {
 
   renderEmpty() {
     return (
-      <div>
+      <div className="empty">
+        <style jsx global>{`
+         .marketplace .empty {
+          display: flex;
+          text-align: center;
+          align-items: center;
+          vertical-align: middle;
+          justify-content: center;
+          height: calc(100vh - 62px);
+        }
+        .marketplace .empty h2 {
+          font-size: 38px;
+        }
+        .marketplace .empty img {
+          height: 220px;
+          width: 220px;
+          margin: 40px;
+        }
+        .marketplace .empty p {
+          font-size: 28px;
+        }
+        .mobileMarket .empty {
+          display: flex;
+          text-align: center;
+          align-items: center;
+          vertical-align: middle;
+          justify-content: center;
+          height: 100%
+        }
+        .mobileMarket .empty h2 {
+          font-size: 38px;
+        }
+        .mobileMarket .empty img {
+          height: 220px;
+          width: 220px;
+          margin: 40px;
+        }
+        .mobileMarket .empty p {
+          font-size: 28px;
+        }
+        `}</style>
         <div>
           <h2>
             <FormattedMessage id="pages.marketplace.empty" />
