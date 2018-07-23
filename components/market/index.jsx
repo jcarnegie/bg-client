@@ -147,6 +147,7 @@ class Market extends Component {
             flex-basis: 25%;
             max-width: 282px;
             border-right: solid 2px #E1E1E1;
+            min-height: calc(100vh - 62px);
           }
           .mobileFilters {
             width: 100%;
@@ -371,7 +372,7 @@ class Market extends Component {
           align-items: center;
           vertical-align: middle;
           justify-content: center;
-          height: calc(100vh - 62px);
+          margin: auto;
         }
         .marketplace .empty h2 {
           font-size: 38px;
@@ -474,7 +475,7 @@ class Market extends Component {
           margin: 0;
         }
         .flex-row > [class*='col-'] {
-          display: flex
+          display: flex;
           flex-direction: column;
         }
         .flex-row:after,
