@@ -35,7 +35,7 @@ export function networkIdToName(id) {
 }
 
 export function networkIsSupported(network) {
-  if (!network.data) return false;
+  if (!network || !network.data) return false;
   return Object.keys(networkAddressMap).includes(network.data.name);
 }
 
