@@ -187,9 +187,12 @@ class Market extends Component {
             font-size: 18px;
             font-weight: 300;
             padding-left: 100px;
-            height: 80px;
-            position: relative;
-            top: 25px;
+            height: 65px;
+            {/* position: relative;
+            top: 25px; */}
+            padding-top: 20px;
+            border-bottom: 1px solid #E1E1E1;
+            border-right: 1px solid #E1E1E1;
           }
           /* style for the children nodes container */
           .tree-view_children {
@@ -234,6 +237,12 @@ class Market extends Component {
             font-weight: 400;
             font-size: 20px;
             top: 30%;
+          }
+          .tree-view_children .tree-view_item {
+            /* immediate child of .tree-view, for styling convenience */
+            cursor: pointer;
+            padding-left: 20px;
+            height: 65px;
           }
           /* rotate the triangle to close it */
           .tree-view_arrow-collapsed {
