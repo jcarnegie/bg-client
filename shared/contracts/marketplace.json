@@ -1,63 +1,6 @@
 [
     {
       "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "itemIdToCreatedAt",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "itemIdToTokenId",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "itemIdToETH",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
       "inputs": [],
       "name": "PLAT",
       "outputs": [
@@ -68,57 +11,6 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "total",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "name": "isWhitelisted",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_addresses",
-          "type": "address[]"
-        },
-        {
-          "name": "_whitelisted",
-          "type": "bool"
-        }
-      ],
-      "name": "whitelistAddresses",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -147,25 +39,11 @@
       "outputs": [
         {
           "name": "",
-          "type": "uint256"
+          "type": "bool"
         }
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_addr",
-          "type": "address"
-        }
-      ],
-      "name": "removeFromWhitelist",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -197,6 +75,44 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "lastTx",
+      "outputs": [
+        {
+          "name": "currency",
+          "type": "uint8"
+        },
+        {
+          "name": "seller",
+          "type": "address"
+        },
+        {
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "name": "createdAt",
+          "type": "uint256"
+        },
+        {
+          "name": "expiry",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -208,6 +124,20 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "Whitelist",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -238,46 +168,37 @@
       "inputs": [
         {
           "name": "",
-          "type": "uint256"
+          "type": "bytes32"
         }
       ],
-      "name": "itemIdToPLAT",
+      "name": "listings",
       "outputs": [
         {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
+          "name": "currency",
+          "type": "uint8"
+        },
         {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "itemIdToContract",
-      "outputs": [
-        {
-          "name": "",
+          "name": "seller",
           "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "currentItemId",
-      "outputs": [
+        },
         {
-          "name": "",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "name": "createdAt",
+          "type": "uint256"
+        },
+        {
+          "name": "expiry",
           "type": "uint256"
         }
       ],
@@ -308,20 +229,6 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_newAddr",
-          "type": "address"
-        }
-      ],
-      "name": "addToWhitelist",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
           "name": "_newOwner",
           "type": "address"
         }
@@ -330,25 +237,6 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "itemIdToSeller",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -366,7 +254,12 @@
         },
         {
           "indexed": false,
-          "name": "_itemId",
+          "name": "_contract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_tokenId",
           "type": "uint256"
         },
         {
@@ -376,11 +269,43 @@
         },
         {
           "indexed": false,
-          "name": "expiry",
+          "name": "_expiry",
           "type": "uint256"
         }
       ],
-      "name": "ItemDeposited",
+      "name": "LogListingCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_seller",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_contract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_createdAt",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_expiry",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogListingExtended",
       "type": "event"
     },
     {
@@ -398,21 +323,31 @@
         },
         {
           "indexed": false,
-          "name": "_itemId",
+          "name": "_contract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_tokenId",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_ETH",
+          "name": "_price",
           "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "_PLAT",
+          "name": "_currency",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_soldAt",
           "type": "uint256"
         }
       ],
-      "name": "ItemSold",
+      "name": "LogItemSold",
       "type": "event"
     },
     {
@@ -425,7 +360,12 @@
         },
         {
           "indexed": false,
-          "name": "_itemId",
+          "name": "_contract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_tokenId",
           "type": "uint256"
         },
         {
@@ -434,41 +374,34 @@
           "type": "uint256"
         }
       ],
-      "name": "ItemWithdrawn",
+      "name": "LogItemWithdrawn",
       "type": "event"
     },
     {
       "anonymous": false,
       "inputs": [
         {
-          "indexed": true,
-          "name": "addr",
+          "indexed": false,
+          "name": "_contract",
           "type": "address"
         },
         {
           "indexed": false,
-          "name": "operator",
-          "type": "address"
-        }
-      ],
-      "name": "AddressWhitelisted",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "addr",
-          "type": "address"
+          "name": "_tokenId",
+          "type": "uint256"
         },
         {
           "indexed": false,
-          "name": "operator",
-          "type": "address"
+          "name": "_modifiedAt",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_expiry",
+          "type": "uint256"
         }
       ],
-      "name": "AddressRemovedFromWhitelist",
+      "name": "LogItemExtended",
       "type": "event"
     },
     {
@@ -514,35 +447,48 @@
     },
     {
       "constant": true,
-      "inputs": [],
-      "name": "getAllItemIds",
+      "inputs": [
+        {
+          "name": "_contract",
+          "type": "address"
+        },
+        {
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getHashKey",
       "outputs": [
         {
-          "name": "",
-          "type": "uint256[]"
+          "name": "key",
+          "type": "bytes32"
         }
       ],
       "payable": false,
-      "stateMutability": "view",
+      "stateMutability": "pure",
       "type": "function"
     },
     {
       "constant": true,
       "inputs": [
         {
-          "name": "_contract",
-          "type": "address"
+          "name": "_price",
+          "type": "uint256"
+        },
+        {
+          "name": "_currency",
+          "type": "uint256"
         }
       ],
-      "name": "getTokenIdsByContract",
+      "name": "encodeData",
       "outputs": [
         {
           "name": "",
-          "type": "uint256[]"
+          "type": "bytes"
         }
       ],
       "payable": false,
-      "stateMutability": "view",
+      "stateMutability": "pure",
       "type": "function"
     },
     {
@@ -607,41 +553,18 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_itemId",
-          "type": "uint256"
-        }
-      ],
-      "name": "buyWithETH",
-      "outputs": [
-        {
-          "name": "success",
-          "type": "bool"
-        }
-      ],
-      "payable": true,
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_sender",
+          "name": "_contract",
           "type": "address"
         },
         {
-          "name": "_value",
+          "name": "_tokenId",
           "type": "uint256"
-        },
-        {
-          "name": "_extraData",
-          "type": "bytes"
         }
       ],
-      "name": "receiveApproval",
+      "name": "extendItem",
       "outputs": [
         {
-          "name": "success",
+          "name": "",
           "type": "bool"
         }
       ],
@@ -653,26 +576,21 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_itemId",
+          "name": "_contract",
+          "type": "address"
+        },
+        {
+          "name": "_tokenId",
           "type": "uint256"
         }
       ],
       "name": "withdrawItem",
       "outputs": [
         {
-          "name": "success",
+          "name": "",
           "type": "bool"
         }
       ],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "withdrawPLAT",
-      "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
@@ -681,6 +599,15 @@
       "constant": false,
       "inputs": [],
       "name": "withdrawETH",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "withdrawPLAT",
       "outputs": [],
       "payable": true,
       "stateMutability": "payable",

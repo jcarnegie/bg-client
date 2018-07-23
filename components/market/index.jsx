@@ -35,6 +35,7 @@ import { MarketplaceItem as Item } from '@/components/item';
 @injectIntl
 @connect(
   state => ({
+    layout: state.layout,
     game: state.game,
   })
 )
@@ -52,8 +53,9 @@ class Market extends Component {
   }
 
   state = {
-    gameFilter: "1",
-    categories: [],
+    mobile: this.props.layout.type.mobile,
+    gameFilter: '1',
+    categories: null,
   }
 
   handleGameFilter(gameFilter) {
@@ -63,11 +65,22 @@ class Market extends Component {
   }
 
   handleSubCategories(subCategory) {
-    if (this.state.categories.includes(subCategory)) {
+    if (this.state.categories && this.state.categories.includes(subCategory)) {
       let index = this.state.categories.indexOf(subCategory);
       this.state.categories.splice(index, 1);
+      this.setState({
+        categories: null
+      });
     } else {
-      this.state.categories.push(subCategory);
+      if (this.state.categories) {
+        this.setState({
+          categories: null
+        });
+      } else {
+        const categories = this.state.categories || [];
+        categories.push(subCategory);
+        this.setState({ categories });
+      }
     }
   }
 
@@ -123,10 +136,13 @@ class Market extends Component {
     });
 
     return (
-      <div className="filters">
+      <div className={this.state.mobile ? 'mobileFilters' : 'filters'}>
         <style jsx>{`
           .filters {
-            flex: 0 0 250px;
+            flex-basis: 25%;
+          }
+          .mobileFilters {
+            width: 100%;
           }
           .gameFilterHeader {
             width: 100%;
@@ -137,6 +153,7 @@ class Market extends Component {
             height: 50px;
             font-weight: 400;
             line-height: 45px;
+            font-size: 1.2em;
           }
         `}
         </style>
@@ -241,7 +258,7 @@ class Market extends Component {
                   {
                     category.subCategories.map(subCategory => {
                       return (
-                        <div key={subCategory} className="info" onClick={() => ::this.handleSubCategories(subCategory)}>{subCategory}</div>
+                        <div key={subCategory} className="info" onClick={() => ::this.handleSubCategories(subCategory, node.id)}>{subCategory}</div>
                       );
                     })
                   }
@@ -266,11 +283,16 @@ class Market extends Component {
 
     const filteredGame = visibleGames.find(game => parseInt(game.id, 10) === parseInt(this.state.gameFilter, 10));
     return (
-      <div className="filteredMarket">
+      <div className={this.state.mobile ? 'filteredMobileMarket' : 'filteredMarket'}>
         <style jsx>{`
         .filteredMarket {
           width: 100%;
           margin-left: 25px;
+          background-color: #F5F7FB;
+        }
+        .filteredMobileMarket {
+          width: 70%;
+          margin: 0 auto;
           background-color: #F5F7FB;
         }
         .currentGameFilter {
@@ -280,8 +302,16 @@ class Market extends Component {
           line-height: 70px;
           background-color: #F5F7FB;
         }
+        .currentGameMobileFilter {
+          height: 80px;
+          font-size: 28px;
+          font-weight: 500;
+          line-height: 70px;
+          background-color: #F5F7FB;
+          text-align: center;
+        }
       `}</style>
-        <div className='currentGameFilter'>
+        <div className={this.state.mobile ? 'currentGameMobileFilter' : 'currentGameFilter'}>
           {filteredGame ? filteredGame.name : 'Items'}
         </div>
         {visibleGames.map(game =>
@@ -295,8 +325,6 @@ class Market extends Component {
 		const maxStats = calcMaxItemsStats(items);
     return (
       <Fragment key={game.id}>
-        <div>
-        </div>
         <Row className="flex-row">
           {items.filter(item => Object.keys(this.state.gameFilter).includes(item.game.id) ? this.state.gameFilter[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
             .map(item =>
@@ -325,6 +353,9 @@ class Market extends Component {
 
 
   render() {
+    if (this.state.mobile !== this.props.layout.type.mobile) {
+      this.setState({ mobile: this.props.layout.type.mobile });
+    }
     const { games, user } = this.props;
 
     if (!games || !user) return <DataLoading />;
@@ -351,10 +382,14 @@ class Market extends Component {
           const { listMarketplaceItems } = data;
 
           return (
-            <div className="marketplace">
+            <div className={this.state.mobile ? 'mobileMarket' : 'marketplace'}>
               <style jsx>{`
               .marketplace {
                 display: flex;
+              }
+              .mobileMarket{
+                display: flex;
+                flex-direction: column;
               }
             `}</style>
               {this.flexStyle()}
@@ -374,6 +409,7 @@ class Market extends Component {
           display: flex;
           flex-wrap: wrap;
           width: 100%;
+          margin: 0;
         }
         .flex-row > [class*='col-'] {
           display: flex

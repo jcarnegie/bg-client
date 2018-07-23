@@ -35,8 +35,8 @@ class Item extends Component {
       image: PropTypes.string,
       attrs: PropTypes.object,
       presale: PropTypes.bool,
-      // saleExpiration: PropTypes.number,
-      // saleState: PropTypes.string,
+      saleExpiration: PropTypes.number,
+      saleState: PropTypes.string,
     }),
     game: PropTypes.shape({
       nft: PropTypes.object,
@@ -106,7 +106,7 @@ class Item extends Component {
 
   renderAttributes() {
     const { item } = this.props;
-    const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => typeof Object.values(attr)[0] === "number" ? Object.values(attr)[1] : Object.values(attr)[0]));
+    const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => typeof Object.values(attr)[0] === 'number' ? Object.values(attr)[1] : Object.values(attr)[0]));
     // fix duplicate keys
     return (
       <div className="attrs">
@@ -149,7 +149,7 @@ class Item extends Component {
             box-shadow: 0px 0px 20px 10px #EAECF0;
           }
           .item .thumbnail .caption h4 {
-            font-size: 20px;
+            font-size: 1.1em;
             font-weight: 500;
             background-color: #F4F6F9;
             padding: 10px 15px 5px 15px;
@@ -163,25 +163,25 @@ class Item extends Component {
             padding: 5px 15px 5px 15px;
             margin: 0;
             columns: 4;
-            min-height: 46px;
+            min-height: 52px;
           }
           .item .thumbnail .caption dl dt {
             grid-column-start: 1;
             display: inline-block;
             font-weight: 300;
-            font-size: 15px;
+            font-size: 1.2em;
           }
           .item .thumbnail .caption dl dt:nth-of-type(even) {
             grid-column-start: 3;
             display: inline-block;
             font-weight: 300;
-            font-size: 15px;
+            font-size: 1.2em;
           }
           .item .thumbnail .caption dl dd {
             grid-column-start: 2;
             display: inline-block;
             font-weight: 300;
-            font-size: 15px;
+            font-size: 1.2em;
           }
           .item .thumbnail .caption dl dd:nth-of-type(even)  {
             grid-column-start: 4;
@@ -228,6 +228,7 @@ class Item extends Component {
           }
           .item .thumbnail .caption .attrs {
             background-color: #F4F6F9;
+            min-height: 77px;
           }
           .item .thumbnail .caption .attrs .badge {
             margin-right: 8px;
@@ -240,7 +241,6 @@ class Item extends Component {
             font-size: 15px;
             line-height: 18px;
             cursor: pointer;
-            min-height: 77px;
           }
         `}</style>
         <Thumbnail>
@@ -495,7 +495,6 @@ class InventoryItem extends Component {
 
   renderButtons() {
     const { gifts, item, game } = this.props;
-
     const gift = gifts.data && gifts.data.find(gift => gift.item === item.tokenId && gift.game === game.id);
 
     if (gift) {
@@ -505,7 +504,6 @@ class InventoryItem extends Component {
         </div>
       );
     }
-
     const buttons = (item.saleState === 'sold' || !featureOn('marketplace')) ? (
       <>
         {this.sellButton()}

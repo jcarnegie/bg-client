@@ -41,7 +41,7 @@ export default class ItemPopup extends Component {
     onSubmit: () => {},
   }
 
-  state = { sellPrice: 0 };
+  state = { sellPrice: '0 PLAT' };
 
   onSubmit(e) {
     e.preventDefault();
@@ -144,23 +144,25 @@ export default class ItemPopup extends Component {
   render() {
     const { show, onHide, item, type } = this.props;
     return (
-      <>
-        <style jsx>{`
-          form .btn {
-            font-size: 14px;
+      <div>
+        <style global jsx>{`
+          .buy form .btn {
+            font-size: 1.1em;
             background-color: #314B88;
             color: #ffffff;
             border: 0;
-            padding: 20px;
+            padding: 1.1em;
             border-radius: 2px;
             width: 80%;
             position: relative;
             left: 10%;
+            margin-top: 310px;
           }
-          .modal .modal-dialog {
+          .buy.modal-dialog {
             margin: auto;
             position: relative;
-            right: 10%;
+            width: 900px;
+            height: 500px;
           }
           .buy .modal-header {
             border: 0;
@@ -179,102 +181,115 @@ export default class ItemPopup extends Component {
             min-height: 160px;
           }
           .buyImage{
-            height: 100%;
-            width: 100%;
+            height: 70%;
+            width: 70%;
           }
-          .buy .modal-content {
-            width: 1000px;
-            height: 550px;
-          }
-          .modal .modal-content .modal-body form{
+          .buy .modal-content .modal-body form{
             margin: 0px;
             width: 95%;
           }
-          .modal .modal-content h2 {
+          .buy .modal .modal-content h2 {
             font-weight: 500;
-            font-size: 40px;
+            font-size: 2em;
             margin-top: 0;
             text-align: left;
             width: 100%;
-            margin-bottom: 30px;
+            margin-bottom: 18px;
           }
-          form .imageContainer {
+          .buy form .imageContainer {
             float: left;
-            width: 45%;
+            width: 50%;
           }
-          form .itemInfo {
+          .buy form .itemInfo {
             float: right;
             width: 50%;
             position: relative;
             top: 12px;
           }
-          form .itemInfo h2 {
-            float: left
-          }
-          form .itemInfo .itemPrice{
+          .buy form .itemInfo h2 {
             float: left;
-            font-size: 20px;
-            font-weight: 600;
-            padding-bottom: 30px;
+            width: 80%;
           }
-          form .itemInfo dl {
+          .buy form .itemInfo .itemPrice{
+            float: left;
+            font-size: 1.4em;
+            font-weight: 600;
+            padding-bottom: 15px;
+          }
+          .buy form .itemInfo dl {
             display: grid;
             grid-template-columns: max-content auto;
-            margin: 0 0 30px 0;
+            margin: 0 0 20px 0;
             width: 100%;
           }
-          form .itemInfo dl dt {
+          .buy form .itemInfo dl dt {
             grid-column-start: 1;
             display: inline-block;
             font-weight: 300;
-            font-size: 20px;
+            font-size: 1.1em;
             text-align: left;
           }
-          form .itemInfo dl dd {
+          .buy form .itemInfo dl dd {
             grid-column-start: 2;
             display: inline-block;
             font-weight: 300;
-            font-size: 20px;
+            font-size: 1.1em;
             width: 90px;
           }
-          form .sellBlock {
+          .buy form .sellBlock {
             float: left;
             width: 100%;
             height: 40px;
           }
-          form .sell-input {
+          .buy form .sell-input {
             float: left;
-            width: 50%;
+            width: 37%;
             height: 100%;
+            position: relative;
+            left: 9%;
+            height: 60px;
+            border: none;
+            border-bottom: 1px solid black;
+            background-color: #F3F4FA;
           }
-          form .btn-block-sell {
+          .buy  form .btn-block-sell {
             float: right;
             width: 40%;
+            position: relative;
+            margin: 0;
+            left: 0%;
+            height: 60px;
           }
-           form .sell-text {
+          .buy form .sell-text {
             float: left;
-            width: 100%;
+            width: 51%;
             text-align: left;
+            position: relative;
+            left: 9%;
           }
-           form .sell-disclaimer {
+          .buy form .sell-disclaimer {
             float: left;
-            width: 50%;
+            width: 37%;
             text-align: left;
+            position: relative;
+            left: 9%;
+            top: 20px;
           }
-          form .itemInfo .platToken{
+          .buy form .itemInfo .platToken{
             position: relative;
             bottom: 5px;
             height: 30px;
           }
-          button .platToken{
+          .buy  button .platToken{
             position: relative;
             bottom: 3px;
             height: 15px;
           }
-          .attrs{
+          .buy .attrs {
             float: left;
+            width: 80%;
           }
-          .attrs .badge{
+          .buy .attrs .badge {
             background-color: #E7EDFD;
             border: 1px solid #BECFFB;
             border-radius: 6px;
@@ -284,9 +299,11 @@ export default class ItemPopup extends Component {
             line-height: 18px;
             cursor: pointer;
             margin-right: 8px;
+            float: left;
+            margin-bottom: 5px;
           }
         `}</style>
-        <BGModal show={show} className="buy" onHide={onHide} backdropClassName="semi">
+        <BGModal show={show} dialogClassName="buy" onHide={onHide} backdropClassName="semi">
           <Modal.Header closeButton />
           <Modal.Body>
             <Form onSubmit={::this.onSubmit}>
@@ -340,7 +357,7 @@ export default class ItemPopup extends Component {
             </Form>
           </Modal.Body>
         </BGModal>
-      </>
+      </div>
     );
   }
 }

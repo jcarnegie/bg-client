@@ -111,11 +111,10 @@ class Inventory extends Component {
     );
   }
 
-	renderTab(game, items) {
+	renderTab(game, items, type) {
     const attrs = getAttrsFromItems(items);
     const categories = getCategoriesFromItemAttrs(attrs);
-		const maxStats = calcMaxItemsStats(items);
-
+    const maxStats = calcMaxItemsStats(items);
     return (
       <Fragment key={game.id}>
         <div className="arrow-right pull-right">
@@ -124,8 +123,12 @@ class Inventory extends Component {
         <h3>{game.name}</h3>
         <Row className="flex-row">
           {items.filter(item => Object.keys(this.state.filters).includes(item.game.id) ? this.state.filters[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
-            .map(item =>
-              <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
+            .map(item => (
+               type === undefined ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
+              : type === 'onsale' && item.saleState === 'listed'
+              ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
+              : null
+            )
             )}
         </Row>
       </Fragment>
@@ -156,7 +159,7 @@ class Inventory extends Component {
           {featureOn('marketplace') ? (
             <Tab eventKey={2} title={<FormattedMessage id="pages.inventory.on-sale" />}>
               {visibleGames.map(game =>
-                this.renderTab(game, items.filter(item => item.game.id === game.id))
+                this.renderTab(game, items.filter(item => item.game.id === game.id), 'onsale')
               )}
             </Tab>
             ) : null
