@@ -17,7 +17,7 @@ Marketplace
   x - shain - Remove text select from filters and cards
   shain - Polish filter collapse experience
   yong - make categories smaller height (done)
-  yong - add border between desktop games filters and market
+  yong - add border between desktop games filters and market (done)
   yong - center marketplace empty placeholder (centered in market section), put at top
   shain - add en translations to en.json
 

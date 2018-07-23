@@ -146,6 +146,7 @@ class Market extends Component {
           .filters {
             flex-basis: 25%;
             max-width: 282px;
+            border-right: solid 2px #E1E1E1;
           }
           .mobileFilters {
             width: 100%;
@@ -312,7 +313,7 @@ class Market extends Component {
         <style jsx>{`
         .filteredMarket {
           width: 100%;
-          margin-left: 25px;
+          padding: 25px;
           background-color: #F5F7FB;
         }
         .filteredMobileMarket {
