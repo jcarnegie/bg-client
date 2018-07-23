@@ -56,7 +56,17 @@ class Item extends Component {
 
     if (!featureOn('marketplace')) return null;
 
-    if (saleState !== 'listed') return null;
+    if (saleState !== 'listed') {
+      return (
+        <div className="expired-banner">
+          <style jsx>{`
+          .expired-banner {
+            min-height: 21px;
+          }
+        `}</style>
+        </div>
+      );
+    }
 
     const msInOneDay = 24 * 60 * 60 * 1000;
     const expirationDate = new Date(saleExpiration);
