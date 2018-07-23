@@ -7,19 +7,20 @@ General
 - Style updates, component rewrites.
 
 Marketplace
-- Display for game with no items for sale (ux guidance needed)
-- Modals for anonymous user interactions
-- Search feature
-- Sort feature
-- Reduce flashy loading on game filter click
-- Remove text select from filters and cards
-- Hook up buy workflows
-- Polish Sell modal
-- Polish filter collapse experience
+  x - Search feature - not doing
+  x - Sort feature
+  yong - Display for game with no items for sale
+  yong - Modals for anonymous user interactions
+  yong - Polish Sell modal
+  yong - Hook up buy workflows
+  shain - Reduce flashy loading on game filter click
+  shain - Remove text select from filters and cards
+  shain - Polish filter collapse experience
 
 Inventory
-- Apollo user change - switch inventory to new user
-- On Sale still renders game titles when when no onsale items exist
+  shain - Apollo user change - switch inventory to new user
+  shain - On Sale still renders game titles when when no onsale items exist
+  yong - item height is the same with or without expired banner
 
 ## Dependencies
 
