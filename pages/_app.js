@@ -3,6 +3,8 @@ import React from 'react';
 import { Provider } from 'react-intl-redux';
 import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
+import gql from 'graphql-tag';
+import * as log from 'loglevel';
 
 import {
   ApolloProvider,
@@ -12,7 +14,13 @@ import {
   client,
 } from '@/shared/utils/apollo';
 
-import * as log from 'loglevel';
+import {
+  asyncGetNetworkId,
+  web3IsInstalled,
+  getWeb3Wallet,
+  networkIdToName,
+  networkIdIsSupported,
+} from '@/shared/utils/network';
 
 import configureStore from '@/client/utils/store';
 
@@ -23,6 +31,9 @@ import Web3Modals from '@/components/popups/Web3Modals';
 import GlobalStyles from '@/components/GlobalStyles';
 import style from '@/shared/constants/style';
 import { APP_INIT } from '@/shared/constants/actions';
+
+/* Poll web3 interface for user account with this frequency */
+const WEB3_ACCOUNT_POLLING_INTERVAL = process.env.NODE_ENV === 'development' ? 1000 : 200;
 
 
 if (process.env.NODE_ENV === 'production') {
@@ -45,9 +56,63 @@ class BGApp extends App {
   componentDidMount() {
     this.props.store.dispatch({ type: APP_INIT });
     const state = this.props.store.getState();
+
     if (state.analytics.ga.pageview) {
       state.analytics.ga.pageview(window.location.pathname);
     }
+
+    this.setState({
+      interval: window.setInterval(async() => {
+        if (!web3IsInstalled()) return;
+
+        const rootLocalQuery = gql`{
+          network @client {
+            id name supported
+          }
+          wallet @client
+        }`;
+
+        const { data } = await client.query({ query: rootLocalQuery });
+        const { network, wallet } = data;
+
+        // getWeb3Wallet()
+
+        const currentNetworkId = await asyncGetNetworkId();
+        const currentWallet = getWeb3Wallet();
+
+        /* Network has changed */
+        if (!network.id || (network.id !== currentNetworkId)) {
+          // await client.resetStore();
+          await client.writeData({
+            data: {
+              network: {
+                id: currentNetworkId,
+                name: networkIdToName(currentNetworkId),
+                supported: networkIdIsSupported(currentNetworkId),
+                __typename: 'Network',
+              },
+            },
+          });
+        }
+
+        /* Wallet has changed */
+        if (!wallet || wallet !== currentWallet) {
+          // await client.resetStore();
+          await client.writeData({
+            data: {
+              wallet: currentWallet,
+            },
+          });
+        }
+
+        console.log('network: ', network, 'wallet: ', wallet);
+      }, WEB3_ACCOUNT_POLLING_INTERVAL),
+    });
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.state.interval);
+    this.setState({ interval: null });
   }
 
   render() {
