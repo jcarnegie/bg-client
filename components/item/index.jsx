@@ -12,7 +12,7 @@ import {
   getBitGuildTokenContract,
   getERC721ConformingContract,
 } from '@/shared/utils/network';
-
+import { USER_SHOW_REGISTER_WORKFLOW } from '@/shared/constants/actions';
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
 import style from '@/shared/constants/style';
 
@@ -265,6 +265,7 @@ class Item extends Component {
   state => ({
     account: state.account,
     network: state.network,
+    user: state.user,
   })
 )
 class MarketplaceItem extends Component {
@@ -282,6 +283,9 @@ class MarketplaceItem extends Component {
       nft: PropTypes.object,
     }),
     maxStats: PropTypes.number,
+    user: PropTypes.shape({
+
+    }),
   };
 
   state = {
@@ -290,6 +294,10 @@ class MarketplaceItem extends Component {
 
   onShowBuy(e) {
     e.preventDefault();
+    if (!this.props.user.data) {
+      return this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
+    }
+
     this.setState({ buy: true });
   }
 

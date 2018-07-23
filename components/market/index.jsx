@@ -146,6 +146,8 @@ class Market extends Component {
           .filters {
             flex-basis: 25%;
             max-width: 282px;
+            border-right: solid 2px #E1E1E1;
+            min-height: calc(100vh - 62px);
           }
           .mobileFilters {
             width: 100%;
@@ -187,9 +189,12 @@ class Market extends Component {
             font-size: 18px;
             font-weight: 300;
             padding-left: 100px;
-            height: 80px;
-            position: relative;
-            top: 25px;
+            height: 65px;
+            {/* position: relative;
+            top: 25px; */}
+            padding-top: 20px;
+            border-bottom: 1px solid #E1E1E1;
+            border-right: 1px solid #E1E1E1;
           }
           /* style for the children nodes container */
           .tree-view_children {
@@ -234,6 +239,12 @@ class Market extends Component {
             font-weight: 400;
             font-size: 20px;
             top: 30%;
+          }
+          .tree-view_children .tree-view_item {
+            /* immediate child of .tree-view, for styling convenience */
+            cursor: pointer;
+            padding-left: 20px;
+            height: 65px;
           }
           /* rotate the triangle to close it */
           .tree-view_arrow-collapsed {
@@ -303,7 +314,7 @@ class Market extends Component {
         <style jsx>{`
         .filteredMarket {
           width: 100%;
-          margin-left: 25px;
+          padding: 25px;
           background-color: #F5F7FB;
         }
         .filteredMobileMarket {
@@ -358,10 +369,9 @@ class Market extends Component {
          .marketplace .empty {
           display: flex;
           text-align: center;
-          align-items: center;
-          vertical-align: middle;
           justify-content: center;
-          height: calc(100vh - 62px);
+          margin-left: auto;
+          margin-right: auto;
         }
         .marketplace .empty h2 {
           font-size: 38px;
@@ -464,7 +474,7 @@ class Market extends Component {
           margin: 0;
         }
         .flex-row > [class*='col-'] {
-          display: flex
+          display: flex;
           flex-direction: column;
         }
         .flex-row:after,
