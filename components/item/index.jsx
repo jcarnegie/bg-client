@@ -35,7 +35,7 @@ class Item extends Component {
       image: PropTypes.string,
       attrs: PropTypes.object,
       presale: PropTypes.bool,
-      saleExpiration: PropTypes.number,
+      saleExpiration: PropTypes.string,
       saleState: PropTypes.string,
     }),
     game: PropTypes.shape({
@@ -56,19 +56,15 @@ class Item extends Component {
 
     if (!featureOn('marketplace')) return null;
 
-    // TODO - dev
-    saleState = 'listed';
-
     if (saleState !== 'listed') return null;
 
-    const expired = Math.random() > 0.5;
-    const n = Math.round(Math.random() * 6);
-
-    if (!saleExpiration) {
-      const today = new Date();
-      const fiveDays = new Date(today.getFullYear(), today.getMonth(), today.getDate() + n);
-      saleExpiration = expired ? fiveDays : today;
-    }
+    console.log(this.props.item);
+    const msInOneDay = 24 * 60 * 60 * 1000;
+    const expirationDate = new Date(saleExpiration);
+    const today = new Date();
+    const diff = today - expirationDate;
+    console.log(diff);
+    const days = Math.round(diff / msInOneDay);
 
     return (
       <div className="expired-banner">
@@ -81,9 +77,9 @@ class Item extends Component {
             letter-spacing: 1px;
           }
         `}</style>
-        {expired ? <FormattedMessage id="global.expired" /> : (
+        {diff <= 0 ? <FormattedMessage id="global.expired" /> : (
           <>
-            <FormattedMessage id="global.expires-in" /> {n} <FormattedMessage id="global.days" />
+            <FormattedMessage id="global.expires-in" /> {days} <FormattedMessage id="global.days" />
           </>
         )}
       </div>
