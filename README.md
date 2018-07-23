@@ -6,6 +6,21 @@ General
 - Style jsx / eslint and editor support
 - Style updates, component rewrites.
 
+Marketplace
+- Display for game with no items for sale (ux guidance needed)
+- Modals for anonymous user interactions
+- Search feature
+- Sort feature
+- Reduce flashy loading on game filter click
+- Remove text select from filters and cards
+- Hook up buy workflows
+- Polish Sell modal
+- Polish filter collapse experience
+
+Inventory
+- Apollo user change - switch inventory to new user
+- On Sale stll renders game titles when when no onsale items exist
+
 ## Dependencies
 
 ## Setup
