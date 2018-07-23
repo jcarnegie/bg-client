@@ -2,7 +2,59 @@
     {
       "constant": true,
       "inputs": [],
+      "name": "DEBUG",
+      "outputs": [
+        {
+          "name": "currency",
+          "type": "uint8"
+        },
+        {
+          "name": "seller",
+          "type": "address"
+        },
+        {
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "name": "createdAt",
+          "type": "uint256"
+        },
+        {
+          "name": "expiry",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
       "name": "PLAT",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "debugBuyer",
       "outputs": [
         {
           "name": "",
@@ -39,7 +91,7 @@
       "outputs": [
         {
           "name": "",
-          "type": "bool"
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -339,7 +391,7 @@
         {
           "indexed": false,
           "name": "_currency",
-          "type": "uint256"
+          "type": "uint8"
         },
         {
           "indexed": false,
@@ -472,15 +524,38 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_price",
+          "name": "_currency",
           "type": "uint256"
         },
         {
-          "name": "_currency",
+          "name": "_price",
           "type": "uint256"
         }
       ],
-      "name": "encodeData",
+      "name": "encodePriceData",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_contract",
+          "type": "address"
+        },
+        {
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "encodeBuyData",
       "outputs": [
         {
           "name": "",
@@ -591,6 +666,32 @@
           "type": "bool"
         }
       ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_buyer",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        },
+        {
+          "name": "_PLAT",
+          "type": "address"
+        },
+        {
+          "name": "_extraData",
+          "type": "bytes"
+        }
+      ],
+      "name": "receiveApproval",
+      "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"

@@ -81,16 +81,27 @@ class Web3SandboxPage extends React.Component {
     );
   }
 
+  /*
+   * List Item
+   * 
+   * - PLAT Price - must be big number (price * 1e18)
+   * - gameContractAddress, tokenId - must be encoded
+  **/
   onListItem() {
     const GameContract = getERC721ConformingContract(testGameContractAddress);
 
     const from = this.dom.list.from.value;
     const to = this.dom.list.to.value;
     const tokenId = this.dom.list.tokenId.value;
-    const price = parseInt(this.dom.list.price.value, 10);
+    const price = parseInt(this.dom.list.price.value, 10) * 1e18;;
     const currency = parseInt(this.dom.list.currency.value, 10);
-    const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currency, price]);
+    const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currency, price.toString()]);
     const dataHex = `0x${dataBuffer.toString('hex')}`;
+
+    if (currency == 1) {
+      console.log('un-implemented for eth');
+      return; // do other stuff for ETH
+    }
 
     log.info('from: ', from);
     log.info('to: ', to);
@@ -138,7 +149,7 @@ class Web3SandboxPage extends React.Component {
         </div>
 
         <div>
-          <label>price: </label><input ref={c => (this.dom.list.price = c)} /> ex: 5000
+          <label>price: </label><input ref={c => (this.dom.list.price = c)} /> ex: 500000000000000000000
         </div>
 
         <br />
@@ -152,7 +163,6 @@ class Web3SandboxPage extends React.Component {
     const { network } = this.props;
 
     const MarketplaceContract = getMarketplaceContract(network);
-    // const listingId = this.dom.withdraw.listingId.value;
     const gameContract = this.dom.withdraw.gameContract.value;
     const tokenId = this.dom.withdraw.tokenId.value;
 
@@ -188,37 +198,49 @@ class Web3SandboxPage extends React.Component {
     );
   }
 
+  /*
+   * Buy Item
+   * 
+   * - PLAT Price - must be big number (price * 1e18)
+   * - gameContractAddress, tokenId - must be encoded
+  **/
   onBuyItem() {
     const { network } = this.props;
 
-    const price = parseInt(this.dom.buy.price.value, 10);
+    const currency = parseInt(this.dom.buy.currency.value, 10) || 0;
+    const price = parseInt(this.dom.buy.price.value, 10) * 1e18;
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
-    const tokenIdAndGameContract = '1234512345'; // TODO
+    const gameContractAddress = this.dom.buy.gameContract.value;
+
+
+    if (currency == 1) {
+      console.log('un-implemented for eth');
+      return; // do other stuff for ETH
+    }
 
     log.info('tokenId: ', tokenId);
     log.info('price: ', price);
 
     const BitGuildTokenContract = getBitGuildTokenContract(network);
-    // const MarketplaceContract = getMarketplaceContract(network);
+    const marketplaceAddress = getMarketplaceContractAddress(network);
     log.info('BitGuildTokenContract: ', BitGuildTokenContract);
 
-
-    const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currency, price]);
+    const dataBuffer = EthABI.rawEncode(['address', 'uint256'], [gameContractAddress, tokenId]);
     const dataHex = `0x${dataBuffer.toString('hex')}`;
 
-    // log.info('from: ', from);
-    // log.info('to: ', to);
-    // log.info('tokenId: ', tokenId);
-    // log.info('price: ', price);
-    // log.info('currency: ', currency);
-    // log.info('dataBuffer: ', dataBuffer);
-    // log.info('dataHex: ', dataHex);
+    log.info('gameContractAddress: ', gameContractAddress);
+    log.info('marketplaceAddress: ', marketplaceAddress);
+    log.info('tokenId: ', tokenId);
+    log.info('price: ', price);
+    log.info('currency: ', currency);
+    log.info('dataBuffer: ', dataBuffer);
+    log.info('dataHex: ', dataHex);
 
     /* Buy item from marketplace - new workflow */
     BitGuildTokenContract.approveAndCall(
-      getMarketplaceContractAddress(network),
+      marketplaceAddress,
       price,
-      tokenIdAndGameContract,
+      dataHex,
       (err, tx) => {
         if (err) {
           log.error(err);
@@ -253,6 +275,9 @@ class Web3SandboxPage extends React.Component {
         </div>
         <div>
           <label>gameContract: </label><input ref={c => (this.dom.buy.gameContract = c)} />
+        </div>
+        <div>
+          <label>currency: </label><input ref={c => (this.dom.buy.currency = c)} /> Ex: (0|1) (PLAT|ETH)
         </div>
         <div>
           <label>price: </label><input ref={c => (this.dom.buy.price = c)} />
