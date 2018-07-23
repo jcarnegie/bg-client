@@ -12,7 +12,7 @@ Marketplace
   yong - Display for game with no items for sale (done)
   yong - Modals for anonymous user interactions (done)
   yong - Polish Sell modal
-  yong - Hook up buy workflows
+  yong - Hook up buy workflows (done)
   x - shain - Reduce flashy loading on game filter click
   x - shain - Remove text select from filters and cards
   shain - Polish filter collapse experience
