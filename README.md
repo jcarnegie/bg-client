@@ -14,7 +14,7 @@ Marketplace
   yong - Polish Sell modal
   yong - Hook up buy workflows
   x - shain - Reduce flashy loading on game filter click
-  shain - Remove text select from filters and cards
+  x - shain - Remove text select from filters and cards
   shain - Polish filter collapse experience
 
 Inventory
