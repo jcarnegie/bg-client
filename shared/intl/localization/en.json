@@ -134,7 +134,7 @@
     },
     "marketplace": {
       "title": "Marketplace",
-      "emtpy": "There are no marketplace items with these categories!"
+      "empty": "There are no marketplace items with these categories!"
     },
     "faq": {
       "title": "FAQ",

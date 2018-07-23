@@ -62,7 +62,7 @@ class Item extends Component {
     const msInOneDay = 24 * 60 * 60 * 1000;
     const expirationDate = new Date(saleExpiration);
     const today = new Date();
-    const diff = today - expirationDate;
+    const diff = expirationDate - today;
     console.log(diff);
     const days = Math.round(diff / msInOneDay);
 
