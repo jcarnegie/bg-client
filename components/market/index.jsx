@@ -343,9 +343,6 @@ class Market extends Component {
             <FormattedMessage id="pages.inventory.empty" />
           </h2>
           <Image src="/static/images/misc/empty-box.png" />
-          <p>
-            <FormattedHTMLMessage id="pages.inventory.faq" />
-          </p>
         </div>
       </div>
     );

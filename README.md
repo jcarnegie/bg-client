@@ -19,7 +19,7 @@ Marketplace
 
 Inventory
 - Apollo user change - switch inventory to new user
-- On Sale stll renders game titles when when no onsale items exist
+- On Sale still renders game titles when when no onsale items exist
 
 ## Dependencies
 
