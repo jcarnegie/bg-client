@@ -145,6 +145,7 @@ class Market extends Component {
         <style jsx>{`
           .filters {
             flex-basis: 25%;
+            max-width: 282px;
           }
           .mobileFilters {
             width: 100%;
