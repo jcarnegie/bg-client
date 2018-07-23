@@ -285,8 +285,20 @@ class MarketplaceItem extends Component {
   };
 
   onShowBuy(e) {
+    e.preventDefault();
+    this.setState({ buy: true });
+  }
+
+  onHideBuy() {
+    console.log('onhide buy');
+    this.setState({ buy: false });
+  }
+
+  onSubmit() {
     const { network } = this.props;
 
+    log.info('Instantiating buy transaction...');
+    //hook up here
     const price = parseInt(this.dom.buy.price.value, 10);
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
     const tokenIdAndGameContract = '1234512345'; // TODO
@@ -312,6 +324,8 @@ class MarketplaceItem extends Component {
       }
     );
 
+    this.setState({ buy: false });
+
     return;
     /* Buy item from marketplace */
     BitGuildTokenContract.approveAndCall(
@@ -326,40 +340,6 @@ class MarketplaceItem extends Component {
         }
       }
     );
-  }
-
-  onHideBuy() {
-    console.log('onhide buy');
-    this.setState({ buy: false });
-  }
-
-  onSubmit() {
-    const {
-      account,
-      network,
-      item,
-      game,
-      // onHide,
-    } = this.props;
-
-    log.info('Instantiating buy transaction...');
-
-    const BitGuildTokenContract = getBitGuildTokenContract(network);
-    console.log(BitGuildTokenContract, network);
-    console.log(game, item);
-    /* Buy listed item */
-    const itemPrice = 6000; // item.price
-    const listingId = 1; // item.listingId
-    BitGuildTokenContract.approveAndCall(account.wallet, itemPrice, listingId, (err, res) => {
-      if (err) {
-        log.error(err);
-      } else {
-        log.info('all good!');
-        log.info(res);
-      }
-    });
-
-    this.setState({ buy: false });
   }
 
   renderButtons() {
