@@ -32,6 +32,17 @@ yarn build
 yarn start
 ```
 
+## Test
+
+- To test
+```bash
+yarn test
+```
+- To watch tests
+```bash
+yarn test -- --watch
+```
+
 ## Bundles
 
 - To view statistics on client output files

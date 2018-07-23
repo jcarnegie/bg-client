@@ -58,7 +58,6 @@
     "react-responsive": "4.1.0",
     "react-spinners": "0.3.2",
     "react-stay-scrolled": "2.1.1",
-    "react-treeview": "^0.4.7",
     "redux": "4.0.0",
     "redux-devtools-extension": "2.13.5",
     "redux-localstorage": "git://github.com/TrejGun/redux-localstorage#34b46014b2c5cd294de332b3c4161d204dc65973",
@@ -66,6 +65,7 @@
     "redux-logger": "3.0.6",
     "redux-saga": "0.16.0",
     "redux-thunk": "2.3.0",
+    "regenerator-runtime": "0.12.0",
     "sendbird": "3.0.66",
     "sha3": "1.2.2",
     "styled-jsx": "2.2.7",
@@ -74,7 +74,9 @@
   },
   "devDependencies": {
     "@zeit/next-bundle-analyzer": "0.1.1",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
+    "babel-jest": "23.4.0",
     "babel-plugin-inline-import": "3.0.0",
     "babel-plugin-transform-async-generator-functions": "7.0.0-beta.3",
     "babel-plugin-transform-class-properties": "7.0.0-beta.3",
@@ -82,6 +84,8 @@
     "babel-plugin-transform-function-bind": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "7.0.0-beta.3",
     "babel-plugin-transform-require-ignore": "0.1.1",
+    "babel-preset-env": "1.7.0",
+    "babel-preset-react": "6.24.1",
     "eslint": "4.19.1",
     "eslint-config-standard": "11.0.0",
     "eslint-plugin-babel": "5.1.0",
@@ -92,9 +96,11 @@
     "eslint-plugin-promise": "3.8.0",
     "eslint-plugin-react": "7.9.1",
     "eslint-plugin-standard": "3.1.0",
+    "jest": "23.4.1",
     "prettier": "1.13.5",
     "prop-types": "15.6.2",
     "react-hot-loader": "4.3.3",
+    "react-test-renderer": "16.4.1",
     "rimraf": "2.6.2",
     "url-loader": "1.0.1"
   },
@@ -108,6 +114,8 @@
     "dev": "source ./.env && NODE_ENV=development node server.js",
     "build": "source ./.env && NODE_ENV=production next build",
     "analyze-bundle": "NODE_ENV=production BUNDLE_ANALYZE=browser yarn build",
-    "start": "source ./.env && NODE_ENV=production node server.js"
+    "start": "source ./.env && NODE_ENV=production node server.js",
+    "test": "source ./.env && NODE_ENV=test yarn test:unit",
+    "test:unit": "source ./.env && NODE_ENV=test node_modules/.bin/jest"
   }
 }
