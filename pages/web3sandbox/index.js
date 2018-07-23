@@ -85,7 +85,8 @@ class Web3SandboxPage extends React.Component {
    * List Item
    * 
    * - PLAT Price - must be big number (price * 1e18)
-   * - gameContractAddress, tokenId - must be encoded
+   * - currency, price - must be encoded
+   * - price - should be passed as string to avoid JS issues with large ints
   **/
   onListItem() {
     const GameContract = getERC721ConformingContract(testGameContractAddress);
