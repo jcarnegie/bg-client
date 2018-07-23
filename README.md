@@ -20,7 +20,7 @@ Marketplace
 Inventory
   shain - Apollo user change - switch inventory to new user
   shain - On Sale still renders game titles when when no onsale items exist
-  yong - item height is the same with or without expired banner (done)
+  x - yong - item height is the same with or without expired banner (done)
 
 ## Dependencies
 
