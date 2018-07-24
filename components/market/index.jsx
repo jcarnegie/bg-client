@@ -265,7 +265,9 @@ class Market extends Component {
           }
         `}
         </style>
-        <div className="gameFilterHeader">GAMES</div>
+        <div className="gameFilterHeader">
+          <FormattedMessage id="pages.marketplace.games" />
+        </div>
         {(loading && !(games && items)) ? <DataLoading /> : gameFilters.map((node, i) => {
           const name = node.game;
           const label = <span className="node">{name}</span>;

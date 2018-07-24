@@ -87,7 +87,7 @@ class Item extends Component {
         `}</style>
         {diff <= 0 ? <FormattedMessage id="global.expired" /> : (
           <>
-            <FormattedMessage id="global.expires-in" /> {days} <FormattedMessage id="global.days" />
+            <FormattedMessage id="pages.marketplace.expires-in" /> {days} {days > 1 ? <FormattedMessage id="pages.marketplace.days" /> : <FormattedMessage id="pages.marketplace.day" />}
           </>
         )}
       </div>
@@ -195,7 +195,7 @@ class Item extends Component {
           }
           .item .thumbnail .caption .btn {
             font-size: 11px;
-            text-transform: uppercase;
+            {/* text-transform: uppercase; */}
             line-height: 16px;
             border-radius: 0;
             border: 0;
@@ -358,7 +358,7 @@ class MarketplaceItem extends Component {
     return (
       <ButtonGroup justified>
         <Button href="#" onClick={::this.onShowBuy} className="buy">
-          Buy for<img src="/static/images/icons/plat.png" className="platToken" />{item.price ? item.price.plat : 0}
+          <FormattedMessage id="pages.marketplace.buy-for" /><img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice ? item.salePrice : 0} PLAT
           {/* <FormattedMessage id="Buy" /> */}
         </Button>
       </ButtonGroup>
@@ -532,7 +532,6 @@ class InventoryItem extends Component {
             height: 45px;
             width: 50%;
             border: 0;
-            text-transform: uppercase;
             font-weight: 100;
             outline: 0;
           }
@@ -554,16 +553,16 @@ class InventoryItem extends Component {
     );
   }
 
-  sellButton(side = 'left', onClick = () => ::this.setState({ modal: 'sell' }), children = <FormattedMessage id="buttons.sell" />) {
+  sellButton(side = 'left', onClick = () => ::this.setState({ modal: 'sell' }), children = <FormattedMessage id="pages.marketplace.sell" />) {
     return this.actionButton(side, onClick, children);
   }
-  giftButton(side = 'right', onClick = () => ::this.setState({ modal: 'gift' }), children = <FormattedMessage id="buttons.gift" />) {
+  giftButton(side = 'right', onClick = () => ::this.setState({ modal: 'gift' }), children = <FormattedMessage id="pages.marketplace.gift" />) {
     return this.actionButton(side, onClick, children);
   }
-  renewButton(side = 'left', onClick = () => ::this.onSubmit('renew'), children = <FormattedMessage id="buttons.renew" />) {
+  renewButton(side = 'left', onClick = () => ::this.onSubmit('renew'), children = <FormattedMessage id="pages.marketplace.renew" />) {
     return this.actionButton(side, onClick, children);
   }
-  withdrawButton(side = 'right', onClick = () => ::this.onSubmit('withdraw'), children = <FormattedMessage id="buttons.withdraw" />) {
+  withdrawButton(side = 'right', onClick = () => ::this.onSubmit('withdraw'), children = <FormattedMessage id="pages.marketplace.withdraw" />) {
     return this.actionButton(side, onClick, children);
   }
 
