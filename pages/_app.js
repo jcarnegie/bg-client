@@ -145,6 +145,7 @@ class BGApp extends App {
               <ResizeListener />
               <Web3Modals {...web3ModalsProps} />
               <Query
+                skip={() => !wallet}
                 query={queries.viewUserByWallet}
                 variables={{ wallet }}
               >
