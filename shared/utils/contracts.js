@@ -81,6 +81,7 @@ export const listItem = ({
  * - contract - Game Contract Address
  * - price - ex: 1200
  * - tokenId - ex: 12
+ * -contract - Game Contract Address
  */
 export const buyItem = ({
   network,
