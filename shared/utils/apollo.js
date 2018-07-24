@@ -61,6 +61,36 @@ export const client = new ApolloClient({
   },
 });
 
+export const mutations = {
+  listItemForSale: gql`
+    mutation listItemForSale ($userId: Int!, $itemId: Int!, $saleListingId: Int!, $saleTxnHash: String!, $salePrice: Int!) {
+      listItemForSale(userId: $userId, itemId: $itemId, saleListingId: $saleListingId, saleTxnHash: $saleTxnHash, salePrice: $salePrice) {
+        id
+      }
+    }
+  `,
+  purchaseItem: gql`
+    mutation purchaseItem ($userId: Int!, $itemId: Int!, $salePurchaseTxnHash: String!) {
+      purchaseItem(userId: $userId, itemId: $itemId, salePurchaseTxnHash: $salePurchaseTxnHash) {
+        id
+      }
+    }
+  `,
+  extendItemForSale: gql`
+    mutation extendItemForSale ($itemId: Int!, $saleExtendTxnHash: String!) {
+      extendItemForSale(itemId: $itemId, saleExtendTxnHash: $saleExtendTxnHash) {
+        id
+      }
+    }
+  `,
+  withdrawItemFromSale: gql`
+    mutation withdrawItemFromSale ($itemId: Int!, $saleWithdrawTxnHash: String!) {
+      withdrawItemFromSale(itemId: $itemId, saleWithdrawTxnHash: $saleWithdrawTxnHash) {
+        id
+      }
+    }
+  `,
+};
 
 export const queries = {
   listItems: gql`

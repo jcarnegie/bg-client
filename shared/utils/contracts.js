@@ -2,6 +2,11 @@ import * as log from 'loglevel';
 import EthABI from 'ethereumjs-abi/index';
 
 import {
+  client,
+  mutations,
+} from '@/shared/utils/apollo';
+
+import {
   getWeb3Wallet,
   getERC721ConformingContract,
   getMarketplaceContract,
@@ -13,16 +18,19 @@ import {
 /*
  * listItem
  * - contract - Game Contract Address
- * - to - BGMarketplace Contract Address
  * - price - ex: 1200
  * - currency - (0|1) ... 0: ETH, 1: PLAT ... ex: 0
+ * - to - BGMarketplace Contract Address
+ * - user - [redux] user object
+ * - item - [redux] item object
  */
 export const listItem = ({
   contract,
-  to,
-  tokenId,
   price,
   currency = 0,
+  to,
+  user,
+  item,
 }) => new Promise((resolve, reject) => {
   const userAddress = getWeb3Wallet();
 
@@ -31,17 +39,21 @@ export const listItem = ({
     return reject();
   }
 
-  if (!contract || !to || !tokenId || !price) {
+  if (!user || !user.data || !item || !contract || !to || !item.tokenId || !price || !item.id) {
    log.info('listItem: incorrect parameters.')
    return reject();
   }
 
   const GameContract = getERC721ConformingContract(contract);
-
+  const tokenId = parseInt(item.tokenId, 10);
+  const itemId = parseInt(item.id, 10);
+  const userId = parseInt(user.data.id, 10);
   const priceBigNum = parseInt(price, 10) * 1e18;;
   const currencyInt = parseInt(currency, 10);
   const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNum.toString()]);
   const dataHex = `0x${dataBuffer.toString('hex')}`;
+
+
 
   if (currencyInt === 1) {
     log.info('listItem: ETH workflow not implemented.');
@@ -51,11 +63,13 @@ export const listItem = ({
   log.info('userAddress: ', userAddress);
   log.info('contract: ', contract);
   log.info('to: ', to);
-  log.info('tokenId: ', tokenId);
+  log.info('item.tokenId: ', item.tokenId);
   log.info('priceBigNum: ', priceBigNum);
   log.info('currencyInt: ', currencyInt);
   log.info('dataBuffer: ', dataBuffer);
   log.info('dataHex: ', dataHex);
+  log.info('user: ', user);
+  log.info('item: ', item);
 
   /* Create item listing */
   GameContract.safeTransferFrom['address,address,uint256,bytes'](
@@ -69,6 +83,16 @@ export const listItem = ({
         return resolve(err);
       } else {
         log.info('Success! Transaction: ', tx);
+        client.mutate({
+          mutation: mutations.listItemForSale,
+          variables: {
+            userId,
+            itemId,
+            saleListingId: 0, // Not used anymore
+            saleTxnHash: tx,
+            salePrice: price,
+          }
+        });
         return resolve(tx);
       }
     }
@@ -78,26 +102,29 @@ export const listItem = ({
 
 /*
  * buyItem
- * - network - [redux] network object
  * - contract - Game Contract Address
  * - price - ex: 1200
- * - tokenId - ex: 12
- * -contract - Game Contract Address
+ * - user - [redux] user object
+ * - network - [redux] network object
+ * - item - [redux] item object
  */
 export const buyItem = ({
-  network,
   price,
-  tokenId,
   contract,
+  user,
+  network,
+  item,
 }) => new Promise((resolve, reject) => {
-  if (!network || !price || !tokenId || !contract) {
+  if (!user || !item || !network || !price || !contract) {
    log.info('buyItem: incorrect parameters.')
    return reject();
   }
 
   const BitGuildTokenContract = getBitGuildTokenContract(network);
   const marketplaceAddress = getMarketplaceContractAddress(network);
-  const tokenIdInt = parseInt(tokenId, 10);
+  const tokenIdInt = parseInt(item.tokenId, 10);
+  const userId = parseInt(user.data.id, 10);
+  const itemId = parseInt(item.id, 10);
   const priceBigNum = parseInt(price, 10) * 1e18;;
   const dataBuffer = EthABI.rawEncode(['address', 'uint256'], [contract, tokenIdInt]);
   const dataHex = `0x${dataBuffer.toString('hex')}`;
@@ -120,6 +147,14 @@ export const buyItem = ({
         return resolve(err);
       } else {
         log.info('Success! Transaction: ', tx);
+        client.mutate({
+          mutation: mutations.purchaseItem,
+          variables: {
+            userId,
+            itemId,
+            salePurchaseTxnHash: tx,
+          }
+        });
         return resolve(tx);
       }
     }
@@ -129,25 +164,29 @@ export const buyItem = ({
 
 /*
  * extendItem
+ * - contract - Game Contract Address
  * - network - [redux] network object
- * - from - Game Contract Address
- * - tokenId - Item tokenId
+ * - item - [redux] item object
  */
 export const extendItem = ({
-  network,
   contract,
-  tokenId,
+  network,
+  item,
 }) => new Promise((resolve, reject) => {
-  if (!network || !contract || !tokenId) {
+  if (!network || !contract || !item) {
    log.info('extendItem: incorrect parameters.')
    return reject();
   }
 
   const MarketplaceContract = getMarketplaceContract(network);
 
+  const itemId = parseInt(item.id, 10);
+  const tokenId = parseInt(item.tokenId, 10);
+
   log.info('Extending item listing...');
   log.info('MarketplaceContract: ', MarketplaceContract);
   log.info('contract: ', contract);
+  log.info('itemId: ', itemId);
   log.info('tokenId: ', tokenId);
   log.info('network: ', network);
 
@@ -161,6 +200,13 @@ export const extendItem = ({
         return resolve(err);
       } else {
         log.info('Success! Transaction: ', tx);
+        client.mutate({
+          mutation: mutations.extendItemForSale,
+          variables: {
+            itemId,
+            saleExtendTxnHash: tx,
+          }
+        });
         return resolve(tx);
       }
     }
@@ -170,27 +216,30 @@ export const extendItem = ({
 
 /*
  * withdrawItem
+ * - contract - Game Contract Address
  * - network - [redux] network object
- * - from - Game Contract Address
- * - tokenId - Item tokenId
+ * - item - [redux] item object
  */
 export const withdrawItem = ({
-  network,
   contract,
-  tokenId,
+  network,
+  item,
 }) => new Promise((resolve, reject) => {
-  if (!network || !contract || !tokenId) {
+  if (!network || !contract || !item) {
    log.info('withdrawItem: incorrect parameters.')
    return reject();
   }
 
   const MarketplaceContract = getMarketplaceContract(network);
 
+  const itemId = parseInt(item.id, 10);
+  const tokenId = parseInt(item.tokenId, 10);
+
   log.info('Withdrawing item from marketplace ...');
   log.info('MarketplaceContract: ', MarketplaceContract);
   log.info('contract: ', contract);
-  log.info('tokenId: ', tokenId);
-  log.info('network: ', network);
+  log.info('itemId: ', itemId);
+  log.info('network: ', network); 
 
   /* Extend item from marketplace */
   MarketplaceContract.withdrawItem(
@@ -202,6 +251,13 @@ export const withdrawItem = ({
         return resolve(err);
       } else {
         log.info('Success! Transaction: ', tx);
+        client.mutate({
+          mutation: mutations.withdrawItemFromSale,
+          variables: {
+            itemId,
+            saleWithdrawTxnHash: tx,
+          }
+        }); 
         return resolve(tx);
       }
     }
