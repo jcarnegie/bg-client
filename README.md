@@ -19,7 +19,7 @@ Marketplace
   yong - make categories smaller height (done)
   yong - add border between desktop games filters and market (done)
   yong - center marketplace empty placeholder (centered in market section), put at top (done)
-  yong - add en translations to en.json
+  yong - add en translations to en.json (done)
 
 Inventory
   shain - Apollo user change - switch inventory to new user

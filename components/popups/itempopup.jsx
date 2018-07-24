@@ -257,7 +257,7 @@ export default class ItemPopup extends Component {
             width: 38%;
             margin: 0;
             height: 50px;
-            margin-right: 100px;
+            margin-right: 175px;
             line-height: 0px;
           }
           .buy form .sell-text {
@@ -339,22 +339,24 @@ export default class ItemPopup extends Component {
                 : type === 'sell'
                 ? (<div>
                     <div className="sell-text">
-                      Sell for
+                      <FormattedMessage id="pages.marketplace.sell-for" />
                     </div>
                     <div className="sellBlock">
                       <input type="text" value={this.state.sellPrice} placeholder="0 PLAT" onChange={::this.handleChange} className="sell-input">
                       </input>
                       <Button type="submit" className="btn-block-sell">
-                        SELL THIS ITEM
+                        <FormattedMessage id="pages.marketplace.sell-this-item" />
                       </Button>
                     </div>
                     <div className="sell-disclaimer">
-                      BitGuild charges a <strong>10%</strong> fee on all trades.
-                      You will get <strong>{this.state.sellPrice ? (parseInt(this.state.sellPrice) + (parseInt(this.state.sellPrice) * .1)) : '0'} PLAT</strong> for this price.
+                      <FormattedMessage id="pages.marketplace.bitguild-fee-1" /><strong>10%</strong> <FormattedMessage id="pages.marketplace.bitguild-fee-2" />
+                      <FormattedMessage id="pages.marketplace.bitguild-fee-3" />
+                        <strong>{this.state.sellPrice ? (parseInt(this.state.sellPrice) - (parseInt(this.state.sellPrice) * .05)) : '0'} PLAT </strong>
+                      <FormattedMessage id="pages.marketplace.bitguild-fee-4" />
                     </div>
                   </div>)
                 : <Button type="submit" className="btn-block">
-                    BUY for <img src="/static/images/icons/plat.png" className="platToken" />{' '}PLAT
+                    <FormattedMessage id="pages.marketplace.buy-for" /> <img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice ? item.salePrice : 0} PLAT
                   </Button>
               }
             </Form>
