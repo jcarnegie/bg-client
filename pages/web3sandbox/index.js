@@ -163,7 +163,7 @@ class Web3SandboxPage extends React.Component {
   async onBuyItem() {
     const { network } = this.props;
 
-    const price = parseInt(this.dom.buy.price.value, 10) * 1e18;
+    const price = parseInt(this.dom.buy.price.value, 10);
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
     const contract = this.dom.buy.gameContract.value;
 
