@@ -86,10 +86,6 @@ class Web3SandboxPage extends React.Component {
 
   /*
    * List Item
-   * 
-   * - PLAT Price - must be big number (price * 1e18)
-   * - currency, price - must be encoded
-   * - price - should be passed as string to avoid JS issues with large ints
   **/
   async onListItem() {
     const from = this.dom.list.from.value;
