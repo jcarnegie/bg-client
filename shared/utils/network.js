@@ -1,11 +1,11 @@
 import bluebird from 'bluebird';
 
-import topupABI from '@/shared/contracts/topup';
-import bitGuildTokenABI from '@/shared/contracts/token';
-import oracleABI from '@/shared/contracts/oracle';
-import ERC721ABI from '@/shared/contracts/ERC721';
-import marketplaceABI from '@/shared/contracts/marketplace';
-import bitizensIGOABI from '@/shared/contracts/bitizensIGOABI';
+import topupABI from '@/shared/contracts/BGTopup/abi.json';
+import bitGuildTokenABI from '@/shared/contracts/BGToken/abi.json';
+import oracleABI from '@/shared/contracts/BGOracle/abi.json';
+import ERC721ABI from '@/shared/contracts/ERC721/abi.json';
+import marketplaceABI from '@/shared/contracts/BGMarketplace/abi.json';
+import bitizensIGOABI from '@/shared/contracts/BitizensIGO/abi.json';
 
 
 export const networkIdToNameMap = {

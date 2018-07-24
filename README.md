@@ -10,16 +10,16 @@ Marketplace
   x - Search feature - not doing
   x - Sort feature
   yong - Display for game with no items for sale (done)
-  yong - Modals for anonymous user interactions
-  yong - Polish Sell modal
-  yong - Hook up buy workflows
+  yong - Modals for anonymous user interactions (done)
+  yong - Polish Sell modal (done)
+  yong - Hook up buy workflows (done)
   x - shain - Reduce flashy loading on game filter click
   x - shain - Remove text select from filters and cards
   shain - Polish filter collapse experience
-  yong - make categories smaller height
-  yong - add border between desktop games filters and market
-  yong - center marketplace empty placeholder (centered in market section), put at top
-  shain - add en translations to en.json
+  yong - make categories smaller height (done)
+  yong - add border between desktop games filters and market (done)
+  yong - center marketplace empty placeholder (centered in market section), put at top (done)
+  yong - add en translations to en.json (done)
 
 Inventory
   shain - Apollo user change - switch inventory to new user

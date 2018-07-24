@@ -41,11 +41,10 @@ export default class ItemPopup extends Component {
     onSubmit: () => {},
   }
 
-  state = { sellPrice: '0 PLAT' };
+  state = { sellPrice: '' };
 
   onSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
     this.props.onSubmit(this.state);
     this.props.onHide();
   }
@@ -209,6 +208,7 @@ export default class ItemPopup extends Component {
           .buy form .itemInfo h2 {
             float: left;
             width: 80%;
+            padding-bottom: 15px;
           }
           .buy form .itemInfo .itemPrice{
             float: left;
@@ -239,7 +239,7 @@ export default class ItemPopup extends Component {
           .buy form .sellBlock {
             float: left;
             width: 100%;
-            height: 40px;
+            height: 70px;
           }
           .buy form .sell-input {
             float: left;
@@ -247,24 +247,25 @@ export default class ItemPopup extends Component {
             height: 100%;
             position: relative;
             left: 9%;
-            height: 60px;
+            height: 50px;
             border: none;
             border-bottom: 1px solid black;
             background-color: #F3F4FA;
           }
-          .buy  form .btn-block-sell {
+          .buy form .btn-block-sell {
             float: right;
-            width: 40%;
-            position: relative;
+            width: 38%;
             margin: 0;
-            left: 0%;
-            height: 60px;
+            height: 50px;
+            margin-right: 175px;
+            line-height: 0px;
           }
           .buy form .sell-text {
             float: left;
             width: 51%;
             text-align: left;
             position: relative;
+            font-weight: 500;
             left: 9%;
           }
           .buy form .sell-disclaimer {
@@ -273,7 +274,9 @@ export default class ItemPopup extends Component {
             text-align: left;
             position: relative;
             left: 9%;
-            top: 20px;
+            top: -5px;
+            font-size: .8em;
+            margin-top; 10px;
           }
           .buy form .itemInfo .platToken{
             position: relative;
@@ -336,22 +339,24 @@ export default class ItemPopup extends Component {
                 : type === 'sell'
                 ? (<div>
                     <div className="sell-text">
-                      Sell for
+                      <FormattedMessage id="pages.marketplace.sell-for" />
                     </div>
                     <div className="sellBlock">
-                      <input type="text" value={this.state.sellPrice} onChange={::this.handleChange} className="sell-input">
+                      <input type="text" value={this.state.sellPrice} placeholder="0 PLAT" onChange={::this.handleChange} className="sell-input">
                       </input>
                       <Button type="submit" className="btn-block-sell">
-                        Sell this Item
+                        <FormattedMessage id="pages.marketplace.sell-this-item" />
                       </Button>
                     </div>
                     <div className="sell-disclaimer">
-                      BitGuild charges a X% fee on all trades.
-                      You will get XXX PLAT for this price.
+                      <FormattedMessage id="pages.marketplace.bitguild-fee-1" /><strong>10%</strong> <FormattedMessage id="pages.marketplace.bitguild-fee-2" />
+                      <FormattedMessage id="pages.marketplace.bitguild-fee-3" />
+                        <strong>{this.state.sellPrice ? (parseInt(this.state.sellPrice) - (parseInt(this.state.sellPrice) * .05)) : '0'} PLAT </strong>
+                      <FormattedMessage id="pages.marketplace.bitguild-fee-4" />
                     </div>
                   </div>)
                 : <Button type="submit" className="btn-block">
-                    BUY for <img src="/static/images/icons/plat.png" className="platToken" />{' '}PLAT
+                    <FormattedMessage id="pages.marketplace.buy-for" /> <img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice ? item.salePrice : 0} PLAT
                   </Button>
               }
             </Form>

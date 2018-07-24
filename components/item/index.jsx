@@ -13,12 +13,17 @@ import {
   getERC721ConformingContract,
 } from '@/shared/utils/network';
 
+import {
+  listItem,
+  extendItem,
+  withdrawItem,
+} from '@/shared/utils/contracts';
+
+import { USER_SHOW_REGISTER_WORKFLOW } from '@/shared/constants/actions';
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
 import style from '@/shared/constants/style';
 
-// import BGModal from "@/components/modal";
 import Gift from '@/components/popups/gift';
-// import Sell from "@/components/popups/sell";
 import ItemPopup from '@/components/popups/itempopup';
 
 import { featureOn } from '@/shared/utils';
@@ -87,7 +92,7 @@ class Item extends Component {
         `}</style>
         {diff <= 0 ? <FormattedMessage id="global.expired" /> : (
           <>
-            <FormattedMessage id="global.expires-in" /> {days} <FormattedMessage id="global.days" />
+            <FormattedMessage id="pages.marketplace.expires-in" /> {days} {days > 1 ? <FormattedMessage id="pages.marketplace.days" /> : <FormattedMessage id="pages.marketplace.day" />}
           </>
         )}
       </div>
@@ -111,7 +116,7 @@ class Item extends Component {
   renderAttributes() {
     const { item } = this.props;
     const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => typeof Object.values(attr)[0] === 'number' ? Object.values(attr)[1] : Object.values(attr)[0]));
-    // fix duplicate keys
+    // fix duplicate keys -- TODO - what does this mean?
     return (
       <div className="attrs">
         {attributes
@@ -195,7 +200,6 @@ class Item extends Component {
           }
           .item .thumbnail .caption .btn {
             font-size: 11px;
-            text-transform: uppercase;
             line-height: 16px;
             border-radius: 0;
             border: 0;
@@ -265,6 +269,7 @@ class Item extends Component {
   state => ({
     account: state.account,
     network: state.network,
+    user: state.user,
   })
 )
 class MarketplaceItem extends Component {
@@ -282,6 +287,7 @@ class MarketplaceItem extends Component {
       nft: PropTypes.object,
     }),
     maxStats: PropTypes.number,
+    user: PropTypes.object,
   };
 
   state = {
@@ -290,6 +296,10 @@ class MarketplaceItem extends Component {
 
   onShowBuy(e) {
     e.preventDefault();
+    if (!this.props.user.data) {
+      return this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
+    }
+
     this.setState({ buy: true });
   }
 
@@ -299,12 +309,11 @@ class MarketplaceItem extends Component {
   }
 
   onSubmit() {
-    const { network } = this.props;
+    const { network, item } = this.props;
 
     log.info('Instantiating buy transaction...');
-    //hook up here
-    const price = parseInt(this.dom.buy.price.value, 10);
-    const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
+    const price = parseInt(item.salePrice);
+    const tokenId = parseInt(item.tokenId);
     const tokenIdAndGameContract = '1234512345'; // TODO
 
     log.info('tokenId: ', tokenId);
@@ -351,7 +360,7 @@ class MarketplaceItem extends Component {
     return (
       <ButtonGroup justified>
         <Button href="#" onClick={::this.onShowBuy} className="buy">
-          Buy for<img src="/static/images/icons/plat.png" className="platToken" />{item.price ? item.price.plat : 0}
+          <FormattedMessage id="pages.marketplace.buy-for" /><img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice ? item.salePrice : 0} PLAT
           {/* <FormattedMessage id="Buy" /> */}
         </Button>
       </ButtonGroup>
@@ -425,12 +434,11 @@ class InventoryItem extends Component {
 
   onSubmit(type) {
     if (type === 'renew') {
-      const { network, game } = this.props;
+      const { network, game, item } = this.props;
 
       const MarketplaceContract = getMarketplaceContract(network);
-      //replace through props stuff
-      const gameContract = this.dom.extend.gameContract.value;
-      const tokenId = this.dom.extend.tokenId.value;
+      const gameContract = game.contract;
+      const tokenId = parseInt(item.tokenId);
 
       log.info('Extending listing...');
       log.info('MarketplaceContract: ', MarketplaceContract);
@@ -450,12 +458,12 @@ class InventoryItem extends Component {
           }
         });
     } else if (type === 'withdraw') {
-      const { network } = this.props;
+      const { network, game, item } = this.props;
 
       const MarketplaceContract = getMarketplaceContract(network);
       // const listingId = this.dom.withdraw.listingId.value;
-      const gameContract = this.dom.withdraw.gameContract.value;
-      const tokenId = this.dom.withdraw.tokenId.value;
+      const gameContract = game.contract;
+      const tokenId = parseInt(item.tokenId);
 
       /* Withdraw item from marketplace */
       MarketplaceContract.withdrawItem(
@@ -526,7 +534,6 @@ class InventoryItem extends Component {
             height: 45px;
             width: 50%;
             border: 0;
-            text-transform: uppercase;
             font-weight: 100;
             outline: 0;
           }
@@ -548,16 +555,16 @@ class InventoryItem extends Component {
     );
   }
 
-  sellButton(side = 'left', onClick = () => ::this.setState({ modal: 'sell' }), children = <FormattedMessage id="buttons.sell" />) {
+  sellButton(side = 'left', onClick = () => ::this.setState({ modal: 'sell' }), children = <FormattedMessage id="pages.marketplace.sell" />) {
     return this.actionButton(side, onClick, children);
   }
-  giftButton(side = 'right', onClick = () => ::this.setState({ modal: 'gift' }), children = <FormattedMessage id="buttons.gift" />) {
+  giftButton(side = 'right', onClick = () => ::this.setState({ modal: 'gift' }), children = <FormattedMessage id="pages.marketplace.gift" />) {
     return this.actionButton(side, onClick, children);
   }
-  renewButton(side = 'left', onClick = () => ::this.onSubmit('renew'), children = <FormattedMessage id="buttons.renew" />) {
+  renewButton(side = 'left', onClick = () => ::this.onSubmit('renew'), children = <FormattedMessage id="pages.marketplace.renew" />) {
     return this.actionButton(side, onClick, children);
   }
-  withdrawButton(side = 'right', onClick = () => ::this.onSubmit('withdraw'), children = <FormattedMessage id="buttons.withdraw" />) {
+  withdrawButton(side = 'right', onClick = () => ::this.onSubmit('withdraw'), children = <FormattedMessage id="pages.marketplace.withdraw" />) {
     return this.actionButton(side, onClick, children);
   }
 
