@@ -163,7 +163,7 @@ class Web3SandboxPage extends React.Component {
   async onBuyItem() {
     const { network } = this.props;
 
-    const price = parseInt(this.dom.buy.price.value, 10) * 1e18;
+    const price = parseInt(this.dom.buy.price.value, 10);
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
     const contract = this.dom.buy.gameContract.value;
 
@@ -282,4 +282,4 @@ class Web3SandboxPage extends React.Component {
 }
 
 
-export default process.env.NODE_ENV === 'production' ? <div>Not Allowed</div> : Web3SandboxPage;
+export default process.env.DEPLOYED_ENV === 'production' ? <div>Not Allowed</div> : Web3SandboxPage;

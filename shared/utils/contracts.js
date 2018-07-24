@@ -186,7 +186,7 @@ export const withdrawItem = ({
 
   const MarketplaceContract = getMarketplaceContract(network);
 
-  log.info('Extending item listing...');
+  log.info('Withdrawing item from marketplace ...');
   log.info('MarketplaceContract: ', MarketplaceContract);
   log.info('contract: ', contract);
   log.info('tokenId: ', tokenId);

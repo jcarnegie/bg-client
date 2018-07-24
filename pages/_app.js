@@ -8,10 +8,12 @@ import * as log from 'loglevel';
 
 import {
   ApolloProvider,
+  Query,
 } from 'react-apollo';
 
 import {
   client,
+  queries,
 } from '@/shared/utils/apollo';
 
 import {
@@ -34,11 +36,12 @@ import { APP_INIT } from '@/shared/constants/actions';
 const WEB3_ACCOUNT_POLLING_INTERVAL = process.env.NODE_ENV === 'development' ? 1000 : 200;
 
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.DEPLOYED_ENV === 'production') {
   log.setDefaultLevel(log.levels.ERROR);
 } else {
   log.setDefaultLevel(log.levels.INFO);
 }
+
 
 class BGApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
@@ -49,6 +52,10 @@ class BGApp extends App {
     const locals = isServer ? ctx.res.locals : {};
 
     return { pageProps, web3ModalsProps, locals };
+  }
+
+  state = {
+    wallet: null,
   }
 
   componentDidMount() {
@@ -78,15 +85,20 @@ class BGApp extends App {
 
         /* Network has changed */
         if (!network.id || (network.id !== currentNetworkId)) {
+          const currentNetwork = {
+            id: currentNetworkId,
+            name: networkIdToName(currentNetworkId),
+            supported: networkIdIsSupported(currentNetworkId),
+            __typename: 'Network',
+          };
           await client.writeData({
             data: {
-              network: {
-                id: currentNetworkId,
-                name: networkIdToName(currentNetworkId),
-                supported: networkIdIsSupported(currentNetworkId),
-                __typename: 'Network',
-              },
+              network: currentNetwork,
             },
+          });
+          this.setState({
+            network: currentNetwork,
+            wallet: currentWallet,
           });
         }
 
@@ -97,9 +109,11 @@ class BGApp extends App {
               wallet: currentWallet,
             },
           });
-        }
 
-        log.info('network: ', network, 'wallet: ', wallet);
+          this.setState({
+            wallet: currentWallet,
+          });
+        }
       }, WEB3_ACCOUNT_POLLING_INTERVAL),
     });
   }
@@ -118,6 +132,10 @@ class BGApp extends App {
       locals,
     } = this.props;
 
+    const {
+      wallet,
+    } = this.state;
+
     return (
       <Container>
         <GlobalStyles style={style} />
@@ -126,7 +144,12 @@ class BGApp extends App {
             <>
               <ResizeListener />
               <Web3Modals {...web3ModalsProps} />
-              <Component {...pageProps} {...locals} />
+              <Query
+                query={queries.viewUserByWallet}
+                variables={{ wallet }}
+              >
+                {() => <Component {...pageProps} {...locals} />}
+              </Query>
             </>
           </Provider>
         </ApolloProvider>
