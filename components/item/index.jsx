@@ -310,10 +310,14 @@ class MarketplaceItem extends Component {
   }
 
   async onSubmit() {
-    const { network, game, item } = this.props;
-
-    const results = await buyItem({ network: network, price: parseInt(item.salePrice), tokenId: parseInt(item.tokenId), contract: game.contract });
-
+    const { network, game, item, user } = this.props;
+    const results = await buyItem({
+      network,
+      user,
+      item,
+      price: parseInt(item.salePrice),
+      contract: game.contract,
+    });
     log.info('Instantiating buy transaction...');
   }
 
@@ -355,6 +359,7 @@ class MarketplaceItem extends Component {
     account: state.account,
     gas: state.gas,
     network: state.network,
+    user: state.user,
   })
 )
 class InventoryItem extends Component {
@@ -398,11 +403,19 @@ class InventoryItem extends Component {
     if (type === 'renew') {
       const { network, game, item } = this.props;
 
-      const result = await extendItem({ network: network, contract: game.contract, tokenId: parseInt(item.tokenId) });
+      const result = await extendItem({
+        contract: game.contract,
+        network,
+        item,
+      });
     } else if (type === 'withdraw') {
       const { network, game, item } = this.props;
 
-      const result = await withdrawItem({ network: network, contract: game.contract, tokenId: parseInt(item.tokenId) });
+      const result = await withdrawItem({
+        network,
+        contract: game.contract,
+        item,
+      });
     }
   }
 
@@ -411,13 +424,15 @@ class InventoryItem extends Component {
       account,
       network,
       item,
-      game
+      game,
+      user,
     } = this.props;
 
     const result = await listItem({
+      user,
+      item,
       contract: getContractFromGame(game, network),
       to: getMarketplaceContractAddress(network),
-      tokenId: item.tokenId,
       price: parseInt(data.sellPrice),
     });
 

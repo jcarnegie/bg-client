@@ -88,14 +88,23 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onListItem() {
+    const { user } = this.props;
     const contract = this.dom.list.contract.value;
     const to = this.dom.list.to.value;
+    const itemId = this.dom.list.itemId.value;
     const tokenId = this.dom.list.tokenId.value;
     const price = this.dom.list.price.value;
     const currency = this.dom.list.currency.value;
 
     /* Create item listing */
-    const res = await listItem({ contract, to, tokenId, price, currency });
+    const res = await listItem({
+      user,
+      item: { id: itemId, tokenId },
+      contract,
+      to,
+      price,
+      currency,
+    });
     log.info('Sandbox listItem done.', res);
   }
 
@@ -110,6 +119,10 @@ class Web3SandboxPage extends React.Component {
 
         <div>
           <label>to: </label><input ref={c => (this.dom.list.to = c)} /> marketplace: {networkAddressMap.rinkeby.marketplace} (rinkeby)
+        </div>
+
+        <div>
+          <label>itemId: </label><input ref={c => (this.dom.list.itemId = c)} /> ex: 2
         </div>
 
         <div>
@@ -136,9 +149,15 @@ class Web3SandboxPage extends React.Component {
 
     const contract = this.dom.withdraw.gameContract.value;
     const tokenId = this.dom.withdraw.tokenId.value;
+    const itemId = this.dom.withdraw.itemId.value;
+
+    const item = {
+      id: itemId,
+      tokenId,
+    }
 
     /* Withdraw item from marketplace */
-    const res = await withdrawItem({ network, contract, tokenId });
+    const res = await withdrawItem({ network, contract, item });
     log.info('Sandbox withdrawItem: ', res);
   }
 
@@ -149,6 +168,11 @@ class Web3SandboxPage extends React.Component {
         <div>
           <label>gameContract: </label><input ref={c => (this.dom.withdraw.gameContract = c)} />
         </div>
+
+        <div>
+          <label>itemId: </label><input ref={c => (this.dom.withdraw.itemId = c)} />
+        </div>
+
         <div>
           <label>tokenId: </label><input ref={c => (this.dom.withdraw.tokenId = c)} />
         </div>
@@ -161,14 +185,27 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onBuyItem() {
-    const { network } = this.props;
+    const { user, network } = this.props;
 
     const price = parseInt(this.dom.buy.price.value, 10);
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
+    const itemId = parseInt(this.dom.buy.itemId.value, 10);
     const contract = this.dom.buy.gameContract.value;
 
+    const item = {
+      id: itemId, 
+      tokenId, 
+    };
+
     /* Buy item from Marketplace */
-    const res = await buyItem({ network, price, tokenId, contract });
+    const res = await buyItem({
+      user,
+      network,
+      item,
+      price,
+      tokenId,
+      contract,
+    });
     log.info('Sandbox buyItem: ', res);
   }
 
@@ -178,6 +215,9 @@ class Web3SandboxPage extends React.Component {
         <h3>Buy Item from Marketplace</h3>
         <div>
           <label>tokenId: </label><input ref={c => (this.dom.buy.tokenId = c)} />
+        </div>
+        <div>
+          <label>itemId: </label><input ref={c => (this.dom.buy.itemId = c)} />
         </div>
         <div>
           <label>gameContract: </label><input ref={c => (this.dom.buy.gameContract = c)} />
@@ -199,9 +239,15 @@ class Web3SandboxPage extends React.Component {
 
     const contract = this.dom.extend.gameContract.value;
     const tokenId = this.dom.extend.tokenId.value;
+    const itemId = this.dom.extend.itemId.value;
+
+    const item = {
+      id: itemId,
+      tokenId,
+    }
 
     /* Extend item from marketplace */
-    const res = await extendItem({ network, contract, tokenId })
+    const res = await extendItem({ network, contract, item })
     log.info('Sandbox extendItem: ', res);
   }
 
@@ -212,9 +258,15 @@ class Web3SandboxPage extends React.Component {
         <div>
           <label>gameContract: </label><input ref={c => (this.dom.extend.gameContract = c)} />
         </div>
+
         <div>
           <label>tokenId: </label><input ref={c => (this.dom.extend.tokenId = c)} />
         </div>
+
+        <div>
+          <label>itemId: </label><input ref={c => (this.dom.extend.itemId = c)} />
+        </div>
+
 
         <br />
 
