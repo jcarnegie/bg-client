@@ -11,6 +11,7 @@ import {
   getMarketplaceContract,
   getBitGuildTokenContract,
   getERC721ConformingContract,
+  getContractFromGame,
 } from '@/shared/utils/network';
 
 import {
@@ -410,10 +411,16 @@ class InventoryItem extends Component {
     const {
       account,
       network,
-      item
+      item,
+      game,
     } = this.props;
 
-    const result = await listItem({ from: account.wallet, to: getMarketplaceContractAddress(network), tokenId: item.tokenId, price: parseInt(data.sellPrice) });
+    const result = await listItem({
+      contract: getContractFromGame(game, network),
+      to: getMarketplaceContractAddress(network),
+      tokenId: item.tokenId,
+      price: parseInt(data.sellPrice),
+    });
 
     log.info('Beginning sell transaction...');
   }

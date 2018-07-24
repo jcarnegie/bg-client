@@ -88,14 +88,14 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onListItem() {
-    const from = this.dom.list.from.value;
+    const contract = this.dom.list.contract.value;
     const to = this.dom.list.to.value;
     const tokenId = this.dom.list.tokenId.value;
     const price = this.dom.list.price.value;
     const currency = this.dom.list.currency.value;
 
     /* Create item listing */
-    const res = await listItem({ from, to, tokenId, price, currency });
+    const res = await listItem({ contract, to, tokenId, price, currency });
     log.info('Sandbox listItem done.', res);
   }
 
@@ -105,7 +105,7 @@ class Web3SandboxPage extends React.Component {
       <div className="web3-sandbox-card">
         <h3>List Item for Sale</h3>
         <div>
-          <label>from: </label><input ref={c => (this.dom.list.from = c)} /> current user: {account.wallet}
+          <label>contract: </label><input ref={c => (this.dom.list.contract = c)} />
         </div>
 
         <div>
