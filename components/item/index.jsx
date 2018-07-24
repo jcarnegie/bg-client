@@ -411,7 +411,8 @@ class InventoryItem extends Component {
     const {
       account,
       network,
-      item
+      item,
+      game
     } = this.props;
 
     const result = await listItem({
