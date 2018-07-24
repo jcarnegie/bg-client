@@ -144,8 +144,7 @@ class Market extends Component {
       }, 'no-select')}>
         <style jsx>{`
           .filters {
-            flex-basis: 25%;
-            max-width: 282px;
+            min-width: 282px;
             border-right: solid 2px #E1E1E1;
             min-height: calc(100vh - 62px);
           }
@@ -374,7 +373,7 @@ class Market extends Component {
           margin-right: auto;
         }
         .marketplace .empty h2 {
-          font-size: 38px;
+          font-size: 1em;
         }
         .marketplace .empty img {
           height: 220px;
@@ -393,7 +392,7 @@ class Market extends Component {
           height: 100%
         }
         .mobileMarket .empty h2 {
-          font-size: 38px;
+          font-size: 1em;
         }
         .mobileMarket .empty img {
           height: 220px;
