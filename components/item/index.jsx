@@ -118,7 +118,6 @@ class Item extends Component {
   renderAttributes() {
     const { item } = this.props;
     const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => typeof Object.values(attr)[0] === 'number' ? Object.values(attr)[1] : Object.values(attr)[0]));
-    // fix duplicate keys -- TODO - what does this mean?
     return (
       <div className="attrs">
         {attributes
@@ -369,8 +368,8 @@ class InventoryItem extends Component {
       image: PropTypes.string,
       attrs: PropTypes.object,
       presale: PropTypes.bool,
-      // saleExpiration: PropTypes.number,
-      // saleState: PropTypes.string,
+      saleExpiration: PropTypes.number,
+      saleState: PropTypes.string,
     }),
     game: PropTypes.shape({
       nft: PropTypes.object,
