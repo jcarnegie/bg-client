@@ -96,7 +96,7 @@ class Web3SandboxPage extends React.Component {
 
     /* Create item listing */
     const res = await listItem({ from, to, tokenId, price, currency });
-    log.info('Sandbox listItem done.', res)
+    log.info('Sandbox listItem done.', res);
   }
 
   listItemWorkflow() {
