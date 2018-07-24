@@ -12,6 +12,13 @@ import {
   getBitGuildTokenContract,
   getERC721ConformingContract,
 } from '@/shared/utils/network';
+
+import {
+  listItem,
+  extendItem,
+  withdrawItem,
+} from '@/shared/utils/contracts';
+
 import { USER_SHOW_REGISTER_WORKFLOW } from '@/shared/constants/actions';
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
 import style from '@/shared/constants/style';
@@ -195,7 +202,6 @@ class Item extends Component {
           }
           .item .thumbnail .caption .btn {
             font-size: 11px;
-            {/* text-transform: uppercase; */}
             line-height: 16px;
             border-radius: 0;
             border: 0;
