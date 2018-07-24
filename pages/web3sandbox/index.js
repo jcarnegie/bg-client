@@ -15,6 +15,7 @@ import {
 } from '@/shared/utils/network';
 
 import {
+  buyItem,
   listItem,
   extendItem,
   withdrawItem,
@@ -86,9 +87,6 @@ class Web3SandboxPage extends React.Component {
     );
   }
 
-  /*
-   * List Item
-  **/
   async onListItem() {
     const from = this.dom.list.from.value;
     const to = this.dom.list.to.value;
@@ -162,72 +160,16 @@ class Web3SandboxPage extends React.Component {
     );
   }
 
-  /*
-   * Buy Item
-   * 
-   * - PLAT Price - must be big number (price * 1e18)
-   * - gameContractAddress, tokenId - must be encoded
-  **/
-  onBuyItem() {
+  async onBuyItem() {
     const { network } = this.props;
 
-    const currency = parseInt(this.dom.buy.currency.value, 10) || 0;
     const price = parseInt(this.dom.buy.price.value, 10) * 1e18;
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
-    const gameContractAddress = this.dom.buy.gameContract.value;
+    const contract = this.dom.buy.gameContract.value;
 
-
-    if (currency == 1) {
-      console.log('un-implemented for eth');
-      return; // do other stuff for ETH
-    }
-
-    log.info('tokenId: ', tokenId);
-    log.info('price: ', price);
-
-    const BitGuildTokenContract = getBitGuildTokenContract(network);
-    const marketplaceAddress = getMarketplaceContractAddress(network);
-    log.info('BitGuildTokenContract: ', BitGuildTokenContract);
-
-    const dataBuffer = EthABI.rawEncode(['address', 'uint256'], [gameContractAddress, tokenId]);
-    const dataHex = `0x${dataBuffer.toString('hex')}`;
-
-    log.info('gameContractAddress: ', gameContractAddress);
-    log.info('marketplaceAddress: ', marketplaceAddress);
-    log.info('tokenId: ', tokenId);
-    log.info('price: ', price);
-    log.info('currency: ', currency);
-    log.info('dataBuffer: ', dataBuffer);
-    log.info('dataHex: ', dataHex);
-
-    /* Buy item from marketplace - new workflow */
-    BitGuildTokenContract.approveAndCall(
-      marketplaceAddress,
-      price,
-      dataHex,
-      (err, tx) => {
-        if (err) {
-          log.error(err);
-        } else {
-          log.info('Transaction hash: ', tx);
-        }
-      }
-    );
-
-    return;
-    /* Buy item from marketplace */
-    BitGuildTokenContract.approveAndCall(
-      getMarketplaceContractAddress(network),
-      price,
-      listingId,
-      (err, tx) => {
-        if (err) {
-          log.error(err);
-        } else {
-          log.info('Transaction hash: ', tx);
-        }
-      }
-    );
+    /* Buy item from Marketplace */
+    const res = await buyItem({ network, price, tokenId, contract });
+    log.info('Sandbox buyItem: ', res);
   }
 
   buyItemWorkflow() {
@@ -239,9 +181,6 @@ class Web3SandboxPage extends React.Component {
         </div>
         <div>
           <label>gameContract: </label><input ref={c => (this.dom.buy.gameContract = c)} />
-        </div>
-        <div>
-          <label>currency: </label><input ref={c => (this.dom.buy.currency = c)} /> Ex: (0|1) (PLAT|ETH)
         </div>
         <div>
           <label>price: </label><input ref={c => (this.dom.buy.price = c)} />
