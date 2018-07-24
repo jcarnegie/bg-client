@@ -282,4 +282,4 @@ class Web3SandboxPage extends React.Component {
 }
 
 
-export default process.env.NODE_ENV === 'production' ? <div>Not Allowed</div> : Web3SandboxPage;
+export default process.env.DEPLOYED_ENV === 'production' ? <div>Not Allowed</div> : Web3SandboxPage;
