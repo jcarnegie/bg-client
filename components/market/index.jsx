@@ -190,8 +190,6 @@ class Market extends Component {
             font-weight: 300;
             padding-left: 100px;
             height: 65px;
-            {/* position: relative;
-            top: 25px; */}
             padding-top: 20px;
             border-bottom: 1px solid #E1E1E1;
             border-right: 1px solid #E1E1E1;
