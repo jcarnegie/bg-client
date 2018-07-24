@@ -34,11 +34,13 @@ import { APP_INIT } from '@/shared/constants/actions';
 const WEB3_ACCOUNT_POLLING_INTERVAL = process.env.NODE_ENV === 'development' ? 1000 : 200;
 
 
-if (process.env.NODE_ENV === 'production') {
-  log.setDefaultLevel(log.levels.ERROR);
-} else {
-  log.setDefaultLevel(log.levels.INFO);
-}
+// if (process.env.NODE_ENV === 'production') {
+//   log.setDefaultLevel(log.levels.ERROR);
+// } else {
+//   log.setDefaultLevel(log.levels.INFO);
+// }
+
+log.setDefaultLevel(log.levels.INFO);
 
 class BGApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
