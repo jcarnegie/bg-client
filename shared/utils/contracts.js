@@ -3,6 +3,7 @@ import * as log from 'loglevel';
 import {
   getWeb3Wallet,
   getERC721ConformingContract,
+  getMarketplaceContract,
 } from '@/shared/utils/network';
 
 
@@ -61,6 +62,88 @@ export const listItem = ({
     tokenId,
     dataHex,
     (err, tx) => {
+      if (err) {
+        log.error(err);
+        return resolve(err);
+      } else {
+        log.info('Success! Transaction: ', tx);
+        return resolve(tx);
+      }
+    }
+  );
+});
+
+
+/*
+ * extendItem
+ * - network - [redux] network object
+ * - from - Game Contract Address
+ * - tokenId - Item tokenId
+ */
+export const extendItem = ({
+  network,
+  contract,
+  tokenId,
+}) => new Promise((resolve, reject) => {
+  if (!network || !contract || !tokenId) {
+   log.info('extendItem: incorrect parameters.')
+   return reject();
+  }
+
+  const MarketplaceContract = getMarketplaceContract(network);
+
+  log.info('Extending item listing...');
+  log.info('MarketplaceContract: ', MarketplaceContract);
+  log.info('contract: ', contract);
+  log.info('tokenId: ', tokenId);
+  log.info('network: ', network);
+
+  /* Extend item from marketplace */
+  MarketplaceContract.extendItem(
+    contract,
+    tokenId,
+    (err, res) => {
+      if (err) {
+        log.error(err);
+        return resolve(err);
+      } else {
+        log.info('Success! Transaction: ', tx);
+        return resolve(tx);
+      }
+    }
+  );
+});
+
+
+/*
+ * withdrawItem
+ * - network - [redux] network object
+ * - from - Game Contract Address
+ * - tokenId - Item tokenId
+ */
+export const withdrawItem = ({
+  network,
+  contract,
+  tokenId,
+}) => new Promise((resolve, reject) => {
+  if (!network || !contract || !tokenId) {
+   log.info('withdrawItem: incorrect parameters.')
+   return reject();
+  }
+
+  const MarketplaceContract = getMarketplaceContract(network);
+
+  log.info('Extending item listing...');
+  log.info('MarketplaceContract: ', MarketplaceContract);
+  log.info('contract: ', contract);
+  log.info('tokenId: ', tokenId);
+  log.info('network: ', network);
+
+  /* Extend item from marketplace */
+  MarketplaceContract.withdrawItem(
+    contract,
+    tokenId,
+    (err, res) => {
       if (err) {
         log.error(err);
         return resolve(err);

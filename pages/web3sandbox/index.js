@@ -16,6 +16,8 @@ import {
 
 import {
   listItem,
+  extendItem,
+  withdrawItem,
 } from '@/shared/utils/contracts';
 
 import style from '@/shared/constants/style';
@@ -131,25 +133,15 @@ class Web3SandboxPage extends React.Component {
     );
   }
 
-  onWithdrawItem() {
+  async onWithdrawItem() {
     const { network } = this.props;
 
-    const MarketplaceContract = getMarketplaceContract(network);
-    const gameContract = this.dom.withdraw.gameContract.value;
+    const contract = this.dom.withdraw.gameContract.value;
     const tokenId = this.dom.withdraw.tokenId.value;
 
     /* Withdraw item from marketplace */
-    MarketplaceContract.withdrawItem(
-      gameContract,
-      tokenId,
-      (err, res) => {
-        console.log('withdraw');
-        if (err) {
-          console.error(err);
-        } else {
-          console.log('worked!', res);
-        }
-      });
+    const res = await withdrawItem({ network, contract, tokenId });
+    log.info('Sandbox withdrawItem: ', res);
   }
 
   withdrawItemWorkflow() {
@@ -263,30 +255,15 @@ class Web3SandboxPage extends React.Component {
   }
 
 
-  onExtendItem() {
+  async onExtendItem() {
     const { network } = this.props;
 
-    const MarketplaceContract = getMarketplaceContract(network);
-    const gameContract = this.dom.extend.gameContract.value;
+    const contract = this.dom.extend.gameContract.value;
     const tokenId = this.dom.extend.tokenId.value;
 
-    log.info('Extending listing...');
-    log.info('MarketplaceContract: ', MarketplaceContract);
-    log.info('gameContract: ', gameContract);
-    log.info('tokenId: ', tokenId);
-
     /* Extend item from marketplace */
-    MarketplaceContract.extendItem(
-      gameContract,
-      tokenId,
-      (err, res) => {
-        console.log('extend');
-        if (err) {
-          console.error(err);
-        } else {
-          console.log('worked!', res);
-        }
-      });
+    const res = await extendItem({ network, contract, tokenId })
+    log.info('Sandbox extendItem: ', res);
   }
 
   extendItemWorkflow() {
