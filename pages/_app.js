@@ -8,10 +8,12 @@ import * as log from 'loglevel';
 
 import {
   ApolloProvider,
+  Query,
 } from 'react-apollo';
 
 import {
   client,
+  queries,
 } from '@/shared/utils/apollo';
 
 import {
@@ -52,6 +54,10 @@ class BGApp extends App {
     return { pageProps, web3ModalsProps, locals };
   }
 
+  state = {
+    wallet: null,
+  }
+
   componentDidMount() {
     this.props.store.dispatch({ type: APP_INIT });
     const state = this.props.store.getState();
@@ -79,15 +85,20 @@ class BGApp extends App {
 
         /* Network has changed */
         if (!network.id || (network.id !== currentNetworkId)) {
+          const currentNetwork = {
+            id: currentNetworkId,
+            name: networkIdToName(currentNetworkId),
+            supported: networkIdIsSupported(currentNetworkId),
+            __typename: 'Network',
+          };
           await client.writeData({
             data: {
-              network: {
-                id: currentNetworkId,
-                name: networkIdToName(currentNetworkId),
-                supported: networkIdIsSupported(currentNetworkId),
-                __typename: 'Network',
-              },
+              network: currentNetwork,
             },
+          });
+          this.setState({
+            network: currentNetwork,
+            wallet: currentWallet,
           });
         }
 
@@ -98,9 +109,11 @@ class BGApp extends App {
               wallet: currentWallet,
             },
           });
-        }
 
-        log.info('network: ', network, 'wallet: ', wallet);
+          this.setState({
+            wallet: currentWallet,
+          });
+        }
       }, WEB3_ACCOUNT_POLLING_INTERVAL),
     });
   }
@@ -119,6 +132,10 @@ class BGApp extends App {
       locals,
     } = this.props;
 
+    const {
+      wallet,
+    } = this.state;
+
     return (
       <Container>
         <GlobalStyles style={style} />
@@ -127,7 +144,12 @@ class BGApp extends App {
             <>
               <ResizeListener />
               <Web3Modals {...web3ModalsProps} />
-              <Component {...pageProps} {...locals} />
+              <Query
+                query={queries.viewUserByWallet}
+                variables={{ wallet }}
+              >
+                {() => <Component {...pageProps} {...locals} />}
+              </Query>
             </>
           </Provider>
         </ApolloProvider>
