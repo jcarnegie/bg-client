@@ -14,12 +14,15 @@ import {
   getBitGuildTokenContract,
 } from '@/shared/utils/network';
 
+import {
+  listItem,
+} from '@/shared/utils/contracts';
+
 import style from '@/shared/constants/style';
 
 import BGButton from '@/components/bgbutton';
 
 const testGameContractAddress = '0x856c82b392fa4041c3a63b3a8c8a7f258d2f27e0';
-// const marketplaceContractAddress = '0x1062e88cea36123c9913acfda367dc3d7e480b1e';
 
 
 @connect(
@@ -88,44 +91,16 @@ class Web3SandboxPage extends React.Component {
    * - currency, price - must be encoded
    * - price - should be passed as string to avoid JS issues with large ints
   **/
-  onListItem() {
-    const GameContract = getERC721ConformingContract(testGameContractAddress);
-
+  async onListItem() {
     const from = this.dom.list.from.value;
     const to = this.dom.list.to.value;
     const tokenId = this.dom.list.tokenId.value;
-    const price = parseInt(this.dom.list.price.value, 10) * 1e18;;
-    const currency = parseInt(this.dom.list.currency.value, 10);
-    const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currency, price.toString()]);
-    const dataHex = `0x${dataBuffer.toString('hex')}`;
-
-    if (currency == 1) {
-      console.log('un-implemented for eth');
-      return; // do other stuff for ETH
-    }
-
-    log.info('from: ', from);
-    log.info('to: ', to);
-    log.info('tokenId: ', tokenId);
-    log.info('price: ', price);
-    log.info('currency: ', currency);
-    log.info('dataBuffer: ', dataBuffer);
-    log.info('dataHex: ', dataHex);
+    const price = this.dom.list.price.value;
+    const currency = this.dom.list.currency.value;
 
     /* Create item listing */
-    GameContract.safeTransferFrom['address,address,uint256,bytes'](
-      from,
-      to,
-      tokenId,
-      dataHex,
-      (err, tx) => {
-        if (err) {
-          log.error(err);
-        } else {
-          log.info('Success! Transaction: ', tx);
-        }
-      }
-    );
+    const res = await listItem({ from, to, tokenId, price, currency });
+    log.info('Sandbox listItem done.', res)
   }
 
   listItemWorkflow() {
@@ -150,7 +125,7 @@ class Web3SandboxPage extends React.Component {
         </div>
 
         <div>
-          <label>price: </label><input ref={c => (this.dom.list.price = c)} /> ex: 500000000000000000000
+          <label>price: </label><input ref={c => (this.dom.list.price = c)} /> ex: 5000
         </div>
 
         <br />
@@ -348,7 +323,6 @@ class Web3SandboxPage extends React.Component {
         <style jsx>{`
           .web3-sandbox {
             margin: 40px;
-            // display: flex;
             background: ${style.colors.background};
           }
           .key {
