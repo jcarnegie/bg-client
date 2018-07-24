@@ -14,6 +14,7 @@ import {
 } from '@/shared/utils/network';
 
 import {
+  buyItem,
   listItem,
   extendItem,
   withdrawItem,
@@ -312,51 +313,12 @@ class MarketplaceItem extends Component {
     this.setState({ buy: false });
   }
 
-  onSubmit() {
-    const { network, item } = this.props;
+  async onSubmit() {
+    const { network, game, item } = this.props;
+
+    const results = await buyItem({ network: network, price: parseInt(item.salePrice), tokenId: parseInt(item.tokenId), contract: game.contract });
 
     log.info('Instantiating buy transaction...');
-    const price = parseInt(item.salePrice);
-    const tokenId = parseInt(item.tokenId);
-    const tokenIdAndGameContract = '1234512345'; // TODO
-
-    log.info('tokenId: ', tokenId);
-    log.info('price: ', price);
-
-    const BitGuildTokenContract = getBitGuildTokenContract(network);
-    // const MarketplaceContract = getMarketplaceContract(network);
-    log.info('BitGuildTokenContract: ', BitGuildTokenContract);
-
-    /* Buy item from marketplace - new workflow */
-    BitGuildTokenContract.approveAndCall(
-      getMarketplaceContractAddress(network),
-      price,
-      tokenIdAndGameContract,
-      (err, tx) => {
-        if (err) {
-          log.error(err);
-        } else {
-          log.info('Transaction hash: ', tx);
-        }
-      }
-    );
-
-    this.setState({ buy: false });
-
-    return;
-    /* Buy item from marketplace */
-    BitGuildTokenContract.approveAndCall(
-      getMarketplaceContractAddress(network),
-      price,
-      listingId,
-      (err, tx) => {
-        if (err) {
-          log.error(err);
-        } else {
-          log.info('Transaction hash: ', tx);
-        }
-      }
-    );
   }
 
   renderButtons() {
@@ -436,83 +398,28 @@ class InventoryItem extends Component {
     this.setState({ modal: null });
   }
 
-  onSubmit(type) {
+  async onSubmit(type) {
     if (type === 'renew') {
       const { network, game, item } = this.props;
 
-      const MarketplaceContract = getMarketplaceContract(network);
-      const gameContract = game.contract;
-      const tokenId = parseInt(item.tokenId);
-
-      log.info('Extending listing...');
-      log.info('MarketplaceContract: ', MarketplaceContract);
-      log.info('gameContract: ', gameContract);
-      log.info('tokenId: ', tokenId);
-
-      /* Extend item from marketplace */
-      MarketplaceContract.extendItem(
-        gameContract,
-        tokenId,
-        (err, res) => {
-          console.log('extend');
-          if (err) {
-            console.error(err);
-          } else {
-            console.log('worked!', res);
-          }
-        });
+      const result = await extendItem({ network: network, contract: game.contract, tokenId: parseInt(item.tokenId) });
     } else if (type === 'withdraw') {
       const { network, game, item } = this.props;
 
-      const MarketplaceContract = getMarketplaceContract(network);
-      // const listingId = this.dom.withdraw.listingId.value;
-      const gameContract = game.contract;
-      const tokenId = parseInt(item.tokenId);
-
-      /* Withdraw item from marketplace */
-      MarketplaceContract.withdrawItem(
-        gameContract,
-        tokenId,
-        (err, res) => {
-          console.log('withdraw');
-          if (err) {
-            console.error(err);
-          } else {
-            console.log('worked!', res);
-          }
-        });
+      const result = await withdrawItem({ network: network, contract: game.contract, tokenId: parseInt(item.tokenId) });
     }
   }
 
-  onSellSubmit(data) {
+  async onSellSubmit(data) {
     const {
       account,
       network,
-      item,
-      game,
+      item
     } = this.props;
 
-    log.info('Beginning sell transaction...');
-    const GameContract = getERC721ConformingContract(game.contract);
-    const marketplaceContractAddress = getMarketplaceContractAddress(network);
-    const { wallet } = account;
-    const { tokenId } = item;
-    const { sellPrice } = data;
+    const result = await listItem({ from: account.wallet, to: getMarketplaceContractAddress(network), tokenId: item.tokenId, price: parseInt(data.sellPrice) });
 
-    /* Create item listing */
-    GameContract.safeTransferFrom['address,address,uint256,bytes'](
-      wallet,
-      marketplaceContractAddress,
-      tokenId,
-      window.web3.toHex(parseInt(sellPrice)),
-      (err, tx) => {
-        if (err) {
-          log.error(err);
-        } else {
-          log.info('Success! Transaction: ', tx);
-        }
-      }
-    );
+    log.info('Beginning sell transaction...');
   }
 
   renderPresaleButton() {

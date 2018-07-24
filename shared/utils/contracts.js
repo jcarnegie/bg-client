@@ -78,9 +78,9 @@ export const listItem = ({
 /*
  * buyItem
  * - network - [redux] network object
- * - contract - Game Contract Address
  * - price - ex: 1200 PLAT
  * - tokenId - ex: 12
+ * -contract - Game Contract Address
  */
 export const buyItem = ({
   network,
