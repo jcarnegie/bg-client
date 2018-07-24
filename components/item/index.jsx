@@ -461,7 +461,7 @@ class InventoryItem extends Component {
       const MarketplaceContract = getMarketplaceContract(network);
       // const listingId = this.dom.withdraw.listingId.value;
       const gameContract = game.contract;
-      const tokenId = item.tokenId;
+      const tokenId = parseInt(item.tokenId);
 
       /* Withdraw item from marketplace */
       MarketplaceContract.withdrawItem(
