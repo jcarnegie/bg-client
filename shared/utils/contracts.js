@@ -155,7 +155,7 @@ export const extendItem = ({
   MarketplaceContract.extendItem(
     contract,
     tokenId,
-    (err, res) => {
+    (err, tx) => {
       if (err) {
         log.error(err);
         return resolve(err);
@@ -196,7 +196,7 @@ export const withdrawItem = ({
   MarketplaceContract.withdrawItem(
     contract,
     tokenId,
-    (err, res) => {
+    (err, tx) => {
       if (err) {
         log.error(err);
         return resolve(err);

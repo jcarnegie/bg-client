@@ -368,7 +368,7 @@ class InventoryItem extends Component {
       image: PropTypes.string,
       attrs: PropTypes.object,
       presale: PropTypes.bool,
-      saleExpiration: PropTypes.number,
+      saleExpiration: PropTypes.string,
       saleState: PropTypes.string,
     }),
     game: PropTypes.shape({
