@@ -50,6 +50,11 @@ export function networkIdIsSupported(networkId) {
   return Object.keys(networkAddressMap).includes(networkIdToName(networkId));
 }
 
+export function getContractFromGame(game, network) {
+  if (!game || !network.data) return false;
+  return game.nft[network.data.id];
+}
+
 export function web3IsInstalled() {
   return (typeof window !== 'undefined' && window.hasOwnProperty('web3'));
 }

@@ -349,7 +349,7 @@ export default class ItemPopup extends Component {
                       </Button>
                     </div>
                     <div className="sell-disclaimer">
-                      <FormattedMessage id="pages.marketplace.bitguild-fee-1" /><strong>10%</strong> <FormattedMessage id="pages.marketplace.bitguild-fee-2" />
+                      <FormattedMessage id="pages.marketplace.bitguild-fee-1" /><strong>5%</strong> <FormattedMessage id="pages.marketplace.bitguild-fee-2" />
                       <FormattedMessage id="pages.marketplace.bitguild-fee-3" />
                         <strong>{this.state.sellPrice ? (parseInt(this.state.sellPrice) - (parseInt(this.state.sellPrice) * .05)) : '0'} PLAT </strong>
                       <FormattedMessage id="pages.marketplace.bitguild-fee-4" />

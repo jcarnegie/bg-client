@@ -1,4 +1,5 @@
 import * as log from 'loglevel';
+import EthABI from 'ethereumjs-abi/index';
 
 import {
   getWeb3Wallet,
@@ -11,13 +12,13 @@ import {
 
 /*
  * listItem
- * - from - Game Contract Address
+ * - contract - Game Contract Address
  * - to - BGMarketplace Contract Address
  * - price - ex: 1200
  * - currency - (0|1) ... 0: ETH, 1: PLAT ... ex: 0
  */
 export const listItem = ({
-  from,
+  contract,
   to,
   tokenId,
   price,
@@ -30,12 +31,12 @@ export const listItem = ({
     return reject();
   }
 
-  if (!from || !to || !tokenId || !price) {
+  if (!contract || !to || !tokenId || !price) {
    log.info('listItem: incorrect parameters.')
    return reject();
   }
 
-  const GameContract = getERC721ConformingContract(from);
+  const GameContract = getERC721ConformingContract(contract);
 
   const priceBigNum = parseInt(price, 10) * 1e18;;
   const currencyInt = parseInt(currency, 10);
@@ -48,7 +49,7 @@ export const listItem = ({
   }
 
   log.info('userAddress: ', userAddress);
-  log.info('from: ', from);
+  log.info('contract: ', contract);
   log.info('to: ', to);
   log.info('tokenId: ', tokenId);
   log.info('priceBigNum: ', priceBigNum);

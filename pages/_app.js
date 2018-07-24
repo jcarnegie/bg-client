@@ -25,8 +25,6 @@ import {
 import configureStore from '@/client/utils/store';
 
 import ResizeListener from '@/components/resizelistener';
-// import LoadingPage from "@/components/LoadingPage";
-// import ErrorPage from "@/components/ErrorPage";
 import Web3Modals from '@/components/popups/Web3Modals';
 import GlobalStyles from '@/components/GlobalStyles';
 import style from '@/shared/constants/style';
@@ -75,14 +73,11 @@ class BGApp extends App {
         const { data } = await client.query({ query: rootLocalQuery });
         const { network, wallet } = data;
 
-        // getWeb3Wallet()
-
         const currentNetworkId = await asyncGetNetworkId();
         const currentWallet = getWeb3Wallet();
 
         /* Network has changed */
         if (!network.id || (network.id !== currentNetworkId)) {
-          // await client.resetStore();
           await client.writeData({
             data: {
               network: {
@@ -97,7 +92,6 @@ class BGApp extends App {
 
         /* Wallet has changed */
         if (!wallet || wallet !== currentWallet) {
-          // await client.resetStore();
           await client.writeData({
             data: {
               wallet: currentWallet,
@@ -105,7 +99,7 @@ class BGApp extends App {
           });
         }
 
-        console.log('network: ', network, 'wallet: ', wallet);
+        log.info('network: ', network, 'wallet: ', wallet);
       }, WEB3_ACCOUNT_POLLING_INTERVAL),
     });
   }
