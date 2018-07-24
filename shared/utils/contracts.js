@@ -13,7 +13,7 @@ import {
  * listItem
  * - from - Game Contract Address
  * - to - BGMarketplace Contract Address
- * - price - ex: 1200 PLAT
+ * - price - ex: 1200
  * - currency - (0|1) ... 0: ETH, 1: PLAT ... ex: 0
  */
 export const listItem = ({
@@ -79,7 +79,7 @@ export const listItem = ({
  * buyItem
  * - network - [redux] network object
  * - contract - Game Contract Address
- * - price - ex: 1200 PLAT
+ * - price - ex: 1200
  * - tokenId - ex: 12
  */
 export const buyItem = ({
