@@ -24,9 +24,7 @@ import { USER_SHOW_REGISTER_WORKFLOW } from '@/shared/constants/actions';
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
 import style from '@/shared/constants/style';
 
-// import BGModal from "@/components/modal";
 import Gift from '@/components/popups/gift';
-// import Sell from "@/components/popups/sell";
 import ItemPopup from '@/components/popups/itempopup';
 
 import { featureOn } from '@/shared/utils';
@@ -119,7 +117,7 @@ class Item extends Component {
   renderAttributes() {
     const { item } = this.props;
     const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => typeof Object.values(attr)[0] === 'number' ? Object.values(attr)[1] : Object.values(attr)[0]));
-    // fix duplicate keys
+    // fix duplicate keys -- TODO - what does this mean?
     return (
       <div className="attrs">
         {attributes
@@ -290,9 +288,7 @@ class MarketplaceItem extends Component {
       nft: PropTypes.object,
     }),
     maxStats: PropTypes.number,
-    user: PropTypes.shape({
-
-    }),
+    user: PropTypes.object,
   };
 
   state = {
