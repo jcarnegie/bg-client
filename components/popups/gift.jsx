@@ -8,7 +8,7 @@ import BGModal from '@/components/modal';
 import withFormHelper from '@/components/inputs/withFormHelper';
 import InputGroupValidation from '@/components/inputs/input.group.validation';
 import { wallet } from '@/shared/constants/placeholder';
-import nftABI from '@/shared/contracts/ERC721';
+import nftABI from '@/shared/contracts/ERC721/abi.json';
 import { GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD } from '@/shared/constants/actions';
 
 
