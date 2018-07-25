@@ -437,8 +437,7 @@ class Market extends Component {
         {({ loading, error, data }) => {
           if (error) return <DataError />;
 
-          // const { listMarketplaceItems } = data;
-          const listMarketplaceItems = itemList;
+          const { listMarketplaceItems } = data;
 
           const loadingAny = loading || games.loading || user.loading;
 
