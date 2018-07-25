@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import xssFilters from 'xss-filters';
 import React, { Component } from 'react';
+import cx from 'classnames';
 import { path } from 'ramda';
 import { Image } from 'react-bootstrap';
 
@@ -76,7 +77,8 @@ export default class Message extends Component {
     const userWallet = path(['data', 'wallet'], user);
     const messageUserId = path(['sender', 'userId'], message);
     const isMyMessage = Boolean(userWallet && (messageUserId === userWallet));
-    const messageUserNickname = message.messageType === 'admin' ? 'Admin' : path(['sender', 'nickname'], message);
+    const userIsAdmin = message.messageType === 'admin';
+    const messageUserNickname = userIsAdmin ? 'Admin' : path(['sender', 'nickname'], message);
 
     return (
       <div className="message">
@@ -96,6 +98,10 @@ export default class Message extends Component {
             padding: 5px 10px 10px;
             width: 100%;
           }
+          .chat .message .message-box.bg-admin {
+            background-color: #C0C7F7;
+          }
+          .chat .message .message-box.bg-admin.my,
           .chat .message .message-box.my {
             background-color: #6795FF;
           }
@@ -133,24 +139,27 @@ export default class Message extends Component {
         {isMyMessage ? (
           <>
             <div className="message-box-container">
-              <div className="message-box my">
+              <div className={cx({ 'bg-admin': userIsAdmin },'message-box my')}>
                 <div className="body contents">{this.createMessage()}</div>
               </div>
             </div>
             <div className="avatar-right">
-              {this.renderAvatar({ diameter: 18, icon: '/static/images/icons/avatar_my.png' })}
+              {this.renderAvatar({
+                diameter: 18,
+                icon: `/static/images/icons/${userIsAdmin ? 'avatar_bg_admin' : 'avatar'}.png`,
+              })}
             </div>
           </>
         ) : (
           <>
             <div className="avatar-left">
-              {this.renderAvatar({ diameter: 32 })}
+              {this.renderAvatar({ diameter: 32, icon: `/static/images/icons/${userIsAdmin ? 'avatar_bg_admin' : 'avatar'}.png` })}
             </div>
             <div className="message-box-container">
               <div className="header">
                 <div className="nickname">{messageUserNickname}</div>
               </div>
-              <div className="message-box">
+              <div className={cx({ 'bg-admin': userIsAdmin },'message-box')}>
                 <div className="body contents">{this.createMessage()}</div>
               </div>
             </div>
