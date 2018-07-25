@@ -125,13 +125,15 @@ export const buyItem = ({
   const tokenIdInt = parseInt(item.tokenId, 10);
   const userId = parseInt(user.data.id, 10);
   const itemId = parseInt(item.id, 10);
-  const priceBigNum = parseInt(price, 10) * 1e18;;
+  const priceBigNum = parseInt(price, 10) * 1e18;
   const dataBuffer = EthABI.rawEncode(['address', 'uint256'], [contract, tokenIdInt]);
   const dataHex = `0x${dataBuffer.toString('hex')}`;
 
   log.info('BitGuildTokenContract: ', BitGuildTokenContract);
   log.info('marketplaceAddress: ', marketplaceAddress);
   log.info('tokenIdInt: ', tokenIdInt);
+  log.info('contract: ', contract);
+  log.info('price: ', price);
   log.info('priceBigNum: ', priceBigNum);
   log.info('dataBuffer: ', dataBuffer);
   log.info('dataHex: ', dataHex);

@@ -315,8 +315,8 @@ class MarketplaceItem extends Component {
       network,
       user,
       item,
-      price: parseInt(item.salePrice),
-      contract: game.contract,
+      price: parseInt(item.salePrice, 10),
+      contract: getContractFromGame(game, network),
     });
     log.info('Instantiating buy transaction...');
   }
@@ -403,7 +403,7 @@ class InventoryItem extends Component {
       const { network, game, item } = this.props;
 
       const result = await extendItem({
-        contract: game.contract,
+        contract: getContractFromGame(game, network),
         network,
         item,
       });
@@ -412,7 +412,7 @@ class InventoryItem extends Component {
 
       const result = await withdrawItem({
         network,
-        contract: game.contract,
+        contract: getContractFromGame(game, network),
         item,
       });
     }
