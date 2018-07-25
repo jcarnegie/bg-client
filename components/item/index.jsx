@@ -196,7 +196,7 @@ class Item extends Component {
             grid-column-start: 2;
             display: inline-block;
             font-weight: 300;
-            font-size: 1.2em;
+            font-size: 15px;
           }
           .item .thumbnail .caption dl dd:nth-of-type(even)  {
             grid-column-start: 4;
@@ -227,6 +227,7 @@ class Item extends Component {
             width: auto;
             padding: 0px 5px 4px 5px;
             line-height: 16px;
+            margin-top: 4px;
           }
           .item .thumbnail .caption .tx {
             height: 28px;
@@ -255,6 +256,9 @@ class Item extends Component {
             font-size: 15px;
             line-height: 18px;
             cursor: pointer;
+          }
+          .buy-for {
+            vertical-align: middle;
           }
         `}</style>
         <Thumbnail>
@@ -330,7 +334,11 @@ class MarketplaceItem extends Component {
     return (
       <ButtonGroup justified>
         <Button href="#" onClick={::this.onShowBuy} className="buy">
-          <FormattedMessage id="pages.marketplace.buy-for" /><img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice ? item.salePrice : 0} PLAT
+          <span className="buy-for">
+            <FormattedMessage className="buy-for" id="pages.marketplace.buy-for" />
+          </span>
+          <img src="/static/images/icons/plat.png" className="platToken" />
+          <span className="buy-for">{item.salePrice ? item.salePrice : 0} PLAT</span>
         </Button>
       </ButtonGroup>
     );
@@ -468,6 +476,7 @@ class InventoryItem extends Component {
             border: 0;
             font-weight: 100;
             outline: 0;
+            text-transform: uppercase;
           }
           .item-button:hover {
             opacity: 0.9;
@@ -487,10 +496,10 @@ class InventoryItem extends Component {
     );
   }
 
-  sellButton(side = 'left', onClick = () => ::this.setState({ modal: 'sell' }), children = <FormattedMessage id="pages.marketplace.sell" />) {
+  sellButton(side = 'left', onClick = () => ::this.setState({ modal: 'sell' }), children = <FormattedMessage id="global.sell" />) {
     return this.actionButton(side, onClick, children);
   }
-  giftButton(side = 'right', onClick = () => ::this.setState({ modal: 'gift' }), children = <FormattedMessage id="pages.marketplace.gift" />) {
+  giftButton(side = 'right', onClick = () => ::this.setState({ modal: 'gift' }), children = <FormattedMessage id="global.gift" />) {
     return this.actionButton(side, onClick, children);
   }
   renewButton(side = 'left', onClick = () => ::this.onSubmit('renew'), children = <FormattedMessage id="pages.marketplace.renew" />) {
