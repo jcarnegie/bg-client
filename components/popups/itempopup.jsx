@@ -17,6 +17,7 @@ import {
 const notNil = compose(not, isNil);
 @connect(
   state => ({
+    layout: state.layout,
     network: state.network,
     gas: state.gas,
   })
@@ -122,12 +123,13 @@ export default class ItemPopup extends Component {
   }
 
   render() {
-    const { show, onHide, item, type } = this.props;
+    const { show, onHide, item, type, layout } = this.props;
     return (
       <div>
         <style global jsx>{`
           .buy form .btn {
-            font-size: 1.1em;
+            font-size: 1em;
+            padding: 0px !important;
             background-color: #314B88;
             color: #ffffff;
             border: 0;
@@ -136,13 +138,14 @@ export default class ItemPopup extends Component {
             width: 80%;
             position: relative;
             left: 10%;
-            margin-top: 310px;
+            height: 55px;
+            margin-top: 275px;
           }
           .buy.modal-dialog {
             margin: auto;
             position: relative;
-            width: 900px;
-            height: 500px;
+            width: 700px;
+            height: 400px;
           }
           .buy .modal-header {
             border: 0;
@@ -160,13 +163,27 @@ export default class ItemPopup extends Component {
             max-height: 160px;
             min-height: 160px;
           }
+          .buyMobileImage {
+            height: 100%;
+            width: 100%;
+          }
           .buyImage{
             height: 70%;
             width: 70%;
+            margin-top: 20px;
           }
           .buy .modal-content .modal-body form{
             margin: 0px;
             width: 95%;
+          }
+          .buy .modal-content .modal-body {
+            padding: 50px 10px;
+            min-height: 310px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 400px;
           }
           .buy .modal .modal-content h2 {
             font-weight: 500;
@@ -185,11 +202,13 @@ export default class ItemPopup extends Component {
             width: 50%;
             position: relative;
             top: 12px;
+            margin-top: 15px;
           }
           .buy form .itemInfo h2 {
             float: left;
             width: 80%;
-            padding-bottom: 15px;
+            padding-bottom: 10px;
+            font-size: 1.6em;
           }
           .buy form .itemInfo .itemPrice{
             float: left;
@@ -261,7 +280,7 @@ export default class ItemPopup extends Component {
           }
           .buy form .itemInfo .platToken{
             position: relative;
-            bottom: 5px;
+            bottom: 2px;
             height: 30px;
           }
           .buy  button .platToken{
@@ -292,7 +311,7 @@ export default class ItemPopup extends Component {
           <Modal.Body>
             <Form onSubmit={::this.onSubmit}>
               <div className="imageContainer">
-                <img src={item.image} className="buyImage" />
+                <img src={item.image} className={layout.type.mobile ? 'buyMobileImage' : 'buyImage'} />
               </div>
               <div className="itemInfo">
                 <h2>{item.name}</h2>

@@ -167,7 +167,7 @@ class Market extends Component {
         <style global jsx>{`
           .tree-view {}
           .tree-view_item .node {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 500;
             position: relative;
             top: 25%;
@@ -313,7 +313,7 @@ class Market extends Component {
         <style jsx>{`
         .filteredMarket {
           width: 100%;
-          padding: 25px;
+          padding: 0px 25px 25px 25px;
           background-color: #F5F7FB;
         }
         .filteredMobileMarket {
@@ -327,6 +327,7 @@ class Market extends Component {
           font-weight: 500;
           line-height: 70px;
           background-color: #F5F7FB;
+          margin-left: 15px;
         }
         .currentGameMobileFilter {
           height: 80px;
@@ -371,6 +372,7 @@ class Market extends Component {
           justify-content: center;
           margin-left: auto;
           margin-right: auto;
+          margin-top: calc(100vh - 80vh)
         }
         .marketplace .empty h2 {
           font-size: 1em;
