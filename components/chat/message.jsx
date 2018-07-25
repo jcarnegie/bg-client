@@ -79,13 +79,16 @@ export default class Message extends Component {
     const isMyMessage = Boolean(userWallet && (messageUserId === userWallet));
     const userIsAdmin = message.messageType === 'admin';
     const messageUserNickname = userIsAdmin ? 'Admin' : path(['sender', 'nickname'], message);
-
+    // #CADEF7 (color for moderator)
     return (
-      <div className="message">
+      <div className={cx({ my: isMyMessage }, 'message')}>
         <style jsx global>{`
           .chat .message {
             display: flex;
-            margin: 20px 10px 0 10px;
+            margin: 20px 70px 0 10px;
+          }
+          .chat .message.my {
+            margin: 20px 10px 0 70px;
           }
           .chat .message .message-box-container {
             flex-grow: 10;
@@ -93,13 +96,13 @@ export default class Message extends Component {
           }
           .chat .message .message-box {
             background-color: #F3F3F3;
-            border-radius: 10px;
+            border-radius: 20px;
             flex-grow: 10;
-            padding: 5px 10px 10px;
+            padding: 12px;
             width: 100%;
           }
           .chat .message .message-box.bg-admin {
-            background-color: #C0C7F7;
+            background-color: #D2D7F8;
           }
           .chat .message .message-box.bg-admin.my,
           .chat .message .message-box.my {
@@ -107,7 +110,6 @@ export default class Message extends Component {
           }
           .chat .message-box.my .body {
             font-size: 13px;
-            margin-top: 5px;
             color: #FFF;
           }
           .chat .message .header {
@@ -119,11 +121,11 @@ export default class Message extends Component {
           }
           .chat .message .message-box .body {
             font-size: 13px;
-            margin-top: 5px;
             display: block;
           }
           .chat .message .message-box .body .contents {
             overflow-wrap: break-word;
+            vertical-align: top;
           }
           .chat .message .avatar-left {
             align-self: flex-end;
@@ -134,6 +136,10 @@ export default class Message extends Component {
             align-self: flex-end;
             flex-grow: 1;
             margin: 0 0 0 10px;
+          }
+          .chat .message .nickname {
+            font-size: 11px;
+            margin-bottom: -2px;
           }
         `}</style>
         {isMyMessage ? (
