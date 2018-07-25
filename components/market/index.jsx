@@ -103,6 +103,7 @@ class Market extends Component {
       }));
 
       attrs.forEach(attr => {
+        if (!attr.keyLan || (attr.value === null || attr.value === undefined || attr.value === '')) return;
         if (categories.hasOwnProperty(attr.game)) {
           if (!categories[attr.game].hasOwnProperty(attr.keyLan) && !isStat(attr)) {
             categories[attr.game][attr.keyLan] = [attr.value];
