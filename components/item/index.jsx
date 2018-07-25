@@ -319,11 +319,12 @@ class MarketplaceItem extends Component {
 
   async onSubmit() {
     const { network, game, item, user } = this.props;
+
     const results = await buyItem({
       network,
       user,
       item,
-      price: parseInt(item.salePrice, 10),
+      price: parseInt(item.salePrice || 0, 10),
       contract: getContractFromGame(game, network),
     });
     log.info('Instantiating buy transaction...');

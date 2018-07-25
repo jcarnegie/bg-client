@@ -57,8 +57,8 @@ export default class ItemPopup extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const { sellPrice } = this.state;
-    if (!sellPrice || (parseInt(sellPrice) < 1)) {
+    const { sellPrice, type } = this.state;
+    if (type === 'sell' && (!sellPrice || (parseInt(sellPrice) < 1))) {
       return;
     }
     this.props.onSubmit(this.state);
