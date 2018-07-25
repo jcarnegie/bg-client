@@ -21,6 +21,10 @@ import {
   withdrawItem,
 } from '@/shared/utils/contracts';
 
+import {
+  listingIsExpiredForItem,
+} from '@/shared/utils/marketplace';
+
 import { USER_SHOW_REGISTER_WORKFLOW } from '@/shared/constants/actions';
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
 import style from '@/shared/constants/style';
@@ -443,6 +447,7 @@ class InventoryItem extends Component {
       <Button style={{
         color: 'gold',
         backgroundColor: 'rgb(49,75,136)',
+        height: '45px',
         width: '100%',
         focus: 0,
         cursor: 'default',
@@ -540,21 +545,17 @@ class InventoryItem extends Component {
       );
     } else {
       switch (item.saleState) {
-        case 'sold':
-          bottomBar = (
-            <>
-              {this.sellButton()}
-              {this.giftButton()}
-            </>
-          );
-          break;
         case 'listed':
-          bottomBar = (
-            <>
-              {this.renewButton()}
-              {this.withdrawButton()}
-            </>
-          );
+          if (listingIsExpiredForItem(item)) {
+            bottomBar = (
+              <>
+                {this.renewButton()}
+                {this.withdrawButton()}
+              </>
+            );
+          } else {
+            bottomBar = inProgressBar('listed-for-sale');
+          }
           break;
         case 'salepending':
           bottomBar = inProgressBar('sale-in-progress');
@@ -567,6 +568,14 @@ class InventoryItem extends Component {
           break;
         case 'extendpending':
           bottomBar = inProgressBar('withdraw-in-progress');
+          break;
+        case 'sold':
+          bottomBar = (
+            <>
+              {this.sellButton()}
+              {this.giftButton()}
+            </>
+          );
           break;
         default:
           bottomBar = null;

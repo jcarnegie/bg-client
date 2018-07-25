@@ -124,6 +124,7 @@
   "pages": {
     "inventory": {
       "title": "My Items",
+      "listed-for-sale": "Listed for sale",
       "sale-in-progress": "Sale in progress",
       "list-in-progress": "List in progress",
       "extend-in-progress": "Extend in progress",

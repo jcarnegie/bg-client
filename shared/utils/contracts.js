@@ -115,7 +115,7 @@ export const buyItem = ({
   network,
   item,
 }) => new Promise((resolve, reject) => {
-  if (!user || !item || !network || !price || !contract) {
+  if (!user || !item || !network || (!price && price !== 0) || !contract) {
    log.info('buyItem: incorrect parameters.')
    return reject();
   }
@@ -285,7 +285,7 @@ export const getFee = ({
 
   const zeroAddress = window.web3.toHex(0);
 
-  if (false) reject();
+  if (!network || (!price && price !== 0)) reject();
 
   const MarketplaceContract = getMarketplaceContract(network);
 
