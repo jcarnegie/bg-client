@@ -4,9 +4,15 @@ import { Badge, Button, Form, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { compose, filter, isNil, map, not } from 'ramda';
+import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 
 import BGModal from '@/components/modal';
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
+
+import {
+  getFee,
+} from '@/shared/utils/contracts';
+
 
 const notNil = compose(not, isNil);
 @connect(
@@ -41,7 +47,11 @@ export default class ItemPopup extends Component {
     onSubmit: () => {},
   }
 
-  state = { sellPrice: '' };
+  state = {
+    sellPrice: '',
+    feePercentage: null,
+    fee: null,
+  };
 
   onSubmit(e) {
     e.preventDefault();
@@ -52,63 +62,6 @@ export default class ItemPopup extends Component {
   handleChange(e) {
     this.setState({ sellPrice: e.target.value });
   }
-
-  // transfer() {
-    // keeping for example
-    // const contract = window.web3.eth.contract(nftABI).at(game.nft[network.data.id]);
-    // contract.safeTransferFrom(user.data.wallet, formData.wallet, item.tokenId, {
-    //   gas: window.web3.toHex(15e4),
-    //   gasPrice: window.web3.toHex(gas.data.average),
-    // },
-    //   (error, tx) => {
-    //     if (error) {
-    //       dispatch({
-    //         type: GIFT_ADD_ERROR,
-    //       });
-    //       dispatch({
-    //         type: MESSAGE_ADD,
-    //         payload: error,
-    //       });
-    //     } else {
-    //       dispatch({
-    //         type: GIFT_ADD_SUCCESS,
-    //         payload: {
-    //           item: item.tokenId,
-    //           game: game.id,
-    //           tx,
-    //         },
-    //       });
-    //     }
-    //     onHide();
-    //   }
-    // );
-  // };
-
-  // isValid() {
-  // keeping for example
-  //   const {intl, formData} = this.props;
-
-  //   let e;
-  //   let isValid = true;
-  //   for (let i in formData) {
-  //     switch (i) {
-  //       case "wallet":
-  //         if (!window.web3.isAddress(formData[i])) {
-  //           e = document.getElementsByName(i)[0];
-  //           e.parentNode.parentNode.classList.add("has-error");
-  //           e.setCustomValidity(intl.formatMessage({
-  //             id: "fields.wallet.invalid",
-  //           }));
-  //           isValid = false;
-  //         }
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   }
-
-  //   return isValid;
-  // }
 
   renderStats() {
     const { item } = this.props;
@@ -138,6 +91,30 @@ export default class ItemPopup extends Component {
           )}
       </div>
     );
+  }
+
+  async getFeeAsync() {
+    const { network } = this.props;
+    const { sellPrice } = this.state;
+
+    if (!network.data) return;
+
+    let price = sellPrice && parseInt(sellPrice, 10);
+
+    if (!price) price = 0;
+
+    const { feePercentage, fee } = await getFee({ network, price });
+    this.setState({ feePercentage, fee });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.sellPrice !== this.state.sellPrice) {
+      this.getFeeAsync();
+    }
+  }
+
+  componentDidMount() {
+    this.getFeeAsync();
   }
 
   render() {
@@ -349,9 +326,9 @@ export default class ItemPopup extends Component {
                       </Button>
                     </div>
                     <div className="sell-disclaimer">
-                      <FormattedMessage id="pages.marketplace.bitguild-fee-1" /><strong>5%</strong> <FormattedMessage id="pages.marketplace.bitguild-fee-2" />
+                      <FormattedMessage id="pages.marketplace.bitguild-fee-1" /><strong>{this.state.feePercentage}%</strong> <FormattedMessage id="pages.marketplace.bitguild-fee-2" />
                       <FormattedMessage id="pages.marketplace.bitguild-fee-3" />
-                        <strong>{this.state.sellPrice ? (parseInt(this.state.sellPrice) - (parseInt(this.state.sellPrice) * .05)) : '0'} PLAT </strong>
+                        <strong>{(this.state.sellPrice && this.state.fee) ? (parseInt(this.state.sellPrice) - this.state.fee) : '0'} PLAT </strong>
                       <FormattedMessage id="pages.marketplace.bitguild-fee-4" />
                     </div>
                   </div>)

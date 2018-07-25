@@ -64,15 +64,18 @@ function * getAccount() {
       });
 
       const { data } = yield client.query({
+        skip: () => !web3EthWallet,
         query: queries.viewUserByWallet,
         variables: { wallet: web3EthWallet },
       });
 
-      yield client.writeQuery({
-        query: queries.viewUserByWallet,
-        variables: { wallet: web3EthWallet },
-        data,
-      });
+      if (web3EthWallet) {
+        yield client.writeQuery({
+          query: queries.viewUserByWallet,
+          variables: { wallet: web3EthWallet },
+          data,
+        });
+      }
     } else if (userSignedOutBeforeLastTick || userHasNotSignedIn) {
       yield put({
         type: ACCOUNT_LOGGED_OUT,

@@ -137,7 +137,8 @@ class Item extends Component {
       <Col sm={6} md={4} lg={3} className={`item ${className}`}>
         <style jsx global>{`
           .item {
-            max-width: 275px;
+            width: 275px;
+            height: 500px;
           }
           .item .thumbnail {
             padding: 0;
@@ -305,7 +306,6 @@ class MarketplaceItem extends Component {
   }
 
   onHideBuy() {
-    console.log('onhide buy');
     this.setState({ buy: false });
   }
 
@@ -507,17 +507,72 @@ class InventoryItem extends Component {
         </div>
       );
     }
-    const buttons = (item.saleState === 'sold' || !featureOn('marketplace')) ? (
-      <>
-        {this.sellButton()}
-        {this.giftButton()}
-      </>
-    ) : (
-      <>
-        {this.renewButton()}
-        {this.withdrawButton()}
-      </>
+
+    const inProgressBar = txt => (
+      <div className="in-progress-bar">
+        <style jsx>{`
+          .in-progress-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #F68F11;
+            font-size: 0.9em;
+            opacity: 1;
+            height: 45px;
+            width: 100%;
+            border: 0;
+            font-weight: 100;
+            outline: 0;
+            text-transform: uppercase;
+          }
+        `}</style>
+        <FormattedMessage id={`pages.inventory.${txt}`} />
+      </div>
     );
+
+    let bottomBar = null;
+
+    if (!featureOn('marketplace')) {
+      bottomBar = (
+        <>
+          {this.sellButton()}
+          {this.giftButton()}
+        </>
+      );
+    } else {
+      switch (item.saleState) {
+        case 'sold':
+          bottomBar = (
+            <>
+              {this.sellButton()}
+              {this.giftButton()}
+            </>
+          );
+          break;
+        case 'listed':
+          bottomBar = (
+            <>
+              {this.renewButton()}
+              {this.withdrawButton()}
+            </>
+          );
+          break;
+        case 'salepending':
+          bottomBar = inProgressBar('sale-in-progress');
+          break;
+        case 'listpending':
+          bottomBar = inProgressBar('list-in-progress');
+          break;
+        case 'withdrawpending':
+          bottomBar = inProgressBar('extend-in-progress');
+          break;
+        case 'extendpending':
+          bottomBar = inProgressBar('withdraw-in-progress');
+          break;
+        default:
+          bottomBar = null;
+      }
+    }
 
     return (
       <div className="item-button-bar">
@@ -526,7 +581,7 @@ class InventoryItem extends Component {
             width: 100%;
           }
         `}</style>
-        {buttons}
+        {bottomBar}
       </div>
     );
   }
