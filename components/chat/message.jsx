@@ -140,6 +140,7 @@ export default class Message extends Component {
           .chat .message .nickname {
             font-size: 11px;
             margin-bottom: -2px;
+            color: #A2A2A2;
           }
         `}</style>
         {isMyMessage ? (

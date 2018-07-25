@@ -8,7 +8,9 @@
     "all-games": "All Games",
     "about-bitguild": "About BitGuild",
     "coming-soon": "Coming Soon",
-    "play": "Play"
+    "play": "Play",
+    "sell": "Vendre",
+    "gift": "Offrir"
   },
   "components": {
     "switchLanguage": "Choix de la Langue",
@@ -64,8 +66,6 @@
   "buttons": {
     "submit": "Soumettre",
     "register": "S'inscrire",
-    "sell": "Vendre",
-    "gift": "Offrir",
     "convert": "Convertir",
     "install": "Installer MetaMask",
     "send": "Envoyer"
