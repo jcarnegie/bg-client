@@ -27,6 +27,7 @@ import style from '@/shared/constants/style';
 import BGButton from '@/components/bgbutton';
 
 const testGameContractAddress = '0x856c82b392fa4041c3a63b3a8c8a7f258d2f27e0';
+const etherOnlineRinkeby = '0xca68213bce717c256628936a9ea4570f52ab2ed2';
 
 
 @connect(
@@ -83,6 +84,7 @@ class Web3SandboxPage extends React.Component {
           <ul>
             <li>current user: {account.wallet}</li>
             <li>TestGameContractAddress: {testGameContractAddress}</li>
+            <li>etherOnlineRinkeby: {etherOnlineRinkeby}</li>
           </ul>
         </div>
       </div>

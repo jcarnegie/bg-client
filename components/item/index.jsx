@@ -207,10 +207,10 @@ class Item extends Component {
             border: 0;
           }
           .item .thumbnail .caption .btn.buy {
+            height: 45px;
             font-weight: 500;
             color: #ffffff;
             background-color: rgb(49, 75, 136);
-            height: 40px;
             font-size: 14px;
             border-radius: 0px 0px 6px 6px;
           }
@@ -327,7 +327,6 @@ class MarketplaceItem extends Component {
       <ButtonGroup justified>
         <Button href="#" onClick={::this.onShowBuy} className="buy">
           <FormattedMessage id="pages.marketplace.buy-for" /><img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice ? item.salePrice : 0} PLAT
-          {/* <FormattedMessage id="Buy" /> */}
         </Button>
       </ButtonGroup>
     );
