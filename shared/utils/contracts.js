@@ -48,12 +48,10 @@ export const listItem = ({
   const tokenId = parseInt(item.tokenId, 10);
   const itemId = parseInt(item.id, 10);
   const userId = parseInt(user.data.id, 10);
-  const priceBigNum = parseInt(price, 10) * 1e18;;
+  const priceBigNum = parseInt(price, 10) * 1e18;
   const currencyInt = parseInt(currency, 10);
   const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNum.toString()]);
   const dataHex = `0x${dataBuffer.toString('hex')}`;
-
-
 
   if (currencyInt === 1) {
     log.info('listItem: ETH workflow not implemented.');
@@ -263,6 +261,7 @@ export const withdrawItem = ({
     }
   );
 });
+
 
 /*
  * getFee
