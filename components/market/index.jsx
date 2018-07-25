@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Image, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose, Query } from 'react-apollo';
@@ -143,6 +143,7 @@ class Market extends Component {
           .filters {
             min-width: 282px;
             border-right: solid 2px #E1E1E1;
+            margin-right: -1px;
             min-height: calc(100vh - 62px);
           }
           .mobileFilters {
@@ -171,13 +172,12 @@ class Market extends Component {
           .tree-view_item {
             /* immediate child of .tree-view, for styling convenience */
             cursor: pointer;
-            border-bottom: 1px solid #E1E1E1;
-            {/*border-right: 1px solid #E1E1E1;*/}
             padding-left: 20px;
             height: 80px;
+            border-bottom: 1px solid #E1E1E1;
           }
           .treeview-active-item {
-            background-color: rgb(240,240,240);
+            background-color: #D3E0F7;
           }
           .info {
             cursor: pointer;
@@ -185,16 +185,16 @@ class Market extends Component {
             font-weight: 300;
             height: 45px;
             padding: 0 20px 0 100px;
-            {/*border-bottom: 1px solid #E1E1E1;*/}
-            border-bottom: 1px solid #EFEFEF;
             display: flex;
             align-items: center;
+            border-bottom: 1px solid #EFEFEF;
           }
+
           /* style for the children nodes container */
           .tree-view_children {
-            {/*border-bottom: 1px solid #E1E1E1;*/}
-            {/*border-right: 1px solid #E1E1E1;*/}
+            // border-bottom: 1px solid #E1E1E1;
           }
+
           .tree-view_children-collapsed {
             height: 0px;
           }
@@ -371,12 +371,13 @@ class Market extends Component {
           margin-top: calc(100vh - 80vh)
         }
         .marketplace .empty h2 {
-          font-size: 1em;
+          font-size: 1.5em;
         }
         .marketplace .empty img {
-          height: 220px;
-          width: 220px;
+          height: 250px;
+          width: 250px;
           margin: 40px;
+          opacity: 0.9;
         }
         .marketplace .empty p {
           font-size: 28px;

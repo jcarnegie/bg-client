@@ -128,7 +128,7 @@ export default class ItemPopup extends Component {
     return (
       <div>
         <style global jsx>{`
-          .buy form .btn {
+          .buy form .btn-block {
             font-size: 1em;
             padding: 0px !important;
             background-color: #314B88;
@@ -141,6 +141,18 @@ export default class ItemPopup extends Component {
             left: 10%;
             height: 55px;
             margin-top: 275px;
+          }
+          .buy form .mobile-btn-block {
+            font-size: 1em;
+            padding: 0px;
+            background-color: #314B88;
+            color: #ffffff;
+            border: 0;
+            border-radius: 2px;
+            width: 80%;
+            position: relative;
+            top: 10px;
+            height: 40px;
           }
           .buy.modal-dialog {
             margin: auto;
@@ -165,18 +177,19 @@ export default class ItemPopup extends Component {
             min-height: 160px;
           }
           .buyMobileImage {
-            height: 90%;
-            width: 90%;
-            margin-top: 65px;
+            height: 35%;
+            width: 35%;
+            margin-top: -30px;
           }
           .buyImage{
             height: 70%;
             width: 70%;
-            margin-top: 20px;
+            margin-top: 10px;
           }
           .buy .modal-content .modal-body form{
             margin: 0px;
             width: 95%;
+            height: 100%;
           }
           .buy .modal-content .modal-body {
             padding: 50px 10px;
@@ -185,7 +198,7 @@ export default class ItemPopup extends Component {
             justify-content: center;
             align-items: center;
             text-align: center;
-            height: 400px;
+            height: 425px;
           }
           .buy .modal .modal-content h2 {
             font-weight: 500;
@@ -194,6 +207,13 @@ export default class ItemPopup extends Component {
             text-align: left;
             width: 100%;
             margin-bottom: 18px;
+          }
+          .buy .modal-content .mobileItemInfo h2 {
+            font-weight: 500;
+            font-size: 1.6em;
+            margin-top: 10px;
+            text-align: center;
+            width: 100%;
           }
           .buy form .imageContainer {
             float: left;
@@ -204,12 +224,13 @@ export default class ItemPopup extends Component {
             width: 50%;
             position: relative;
             top: 12px;
-            margin-top: 15px;
+          }
+          .buy form .mobileItemInfo {
+            width: 100%;
           }
           .buy form .itemInfo h2 {
             float: left;
             width: 80%;
-            padding-bottom: 10px;
             font-size: 1.6em;
           }
           .buy form .mobileItemName {
@@ -222,38 +243,65 @@ export default class ItemPopup extends Component {
           }
           .buy form .itemInfo .itemPrice{
             float: left;
-            font-size: 1.4em;
-            font-weight: 600;
-            padding-bottom: 15px;
-          }
-          .buy form .itemInfo .mobileItemPrice{
-            float: left;
             font-size: 1.2em;
             font-weight: 600;
-            margin-top: 40px;
+            padding-bottom: 5px;
+          }
+          .buy form .mobileItemInfo .mobileItemPrice{
+            font-size: 1.1em;
+            font-weight: 600;
             padding-bottom: 10px;
           }
           .buy form .itemInfo dl {
             display: grid;
             grid-template-columns: max-content auto;
-            margin: 0 0 20px 0;
+            margin: 0 0 10px 0;
             width: 100%;
           }
-          .buy form .itemInfo .mobileList {
+          .buy form .mobileItemInfo .mobileList {
             display: grid;
-            grid-template-columns: max-content auto;
-            margin: 0 0 20px 0;
-            width: 100%;
+            grid-template-columns: minmax(20%, 0%);
+            margin: 0 0px 15px 30px;
+            width: 80%;
+            columns: 4;
           }
           .buy form .itemInfo dl dt {
+            grid-column-start: 1;
+            display: inline-block;
+            font-weight: 300;
+            font-size: 1em;
+            text-align: left;
+          }
+          .mobileList dt {
             grid-column-start: 1;
             display: inline-block;
             font-weight: 300;
             font-size: 1.1em;
             text-align: left;
           }
+          .mobileList dt:nth-of-type(even) {
+            grid-column-start: 3;
+            display: inline-block;
+            font-weight: 300;
+            font-size: 1em;
+            text-align: left;
+          }
           .buy form .itemInfo dl dd {
             grid-column-start: 2;
+            display: inline-block;
+            font-weight: 300;
+            font-size: 1.1em;
+            width: 90px;
+          }
+          .mobileList dd {
+            grid-column-start: 2;
+            display: inline-block;
+            font-weight: 300;
+            font-size: 1.1em;
+            width: 90px;
+          }
+          .mobileList dd:nth-of-type(even) {
+            grid-column-start: 4;
             display: inline-block;
             font-weight: 300;
             font-size: 1.1em;
@@ -306,6 +354,11 @@ export default class ItemPopup extends Component {
             bottom: 2px;
             height: 30px;
           }
+          .buy form .mobileItemInfo .platToken{
+            position: relative;
+            bottom: 2px;
+            height: 25px;
+          }
           .buy  button .platToken{
             position: relative;
             bottom: 3px;
@@ -318,7 +371,7 @@ export default class ItemPopup extends Component {
           .buy .mobileAttrs {
             float: left;
             width: 80%;
-            column-count: 2;
+            margin-left: 30px;
           }
           .buy .attrs .badge {
             background-color: #E7EDFD;
@@ -331,7 +384,7 @@ export default class ItemPopup extends Component {
             cursor: pointer;
             margin-right: 8px;
             float: left;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
           }
           .buy .mobileAttrs .badge {
             background-color: #E7EDFD;
@@ -339,7 +392,7 @@ export default class ItemPopup extends Component {
             border-radius: 6px;
             color: #6A7CAC;
             font-weight: 300;
-            font-size: 15px;
+            font-size: 13px;
             line-height: 18px;
             cursor: pointer;
             margin-right: 8px;
@@ -351,12 +404,12 @@ export default class ItemPopup extends Component {
           <Modal.Header closeButton />
           <Modal.Body>
             <Form onSubmit={::this.onSubmit}>
-              {layout.type.mobile ? <h2 className="mobileItemName">{item.name}</h2> : null}
+              {layout.type.mobile ? <img src={item.image} className="buyMobileImage" /> : null}
               <div className="imageContainer">
-                <img src={item.image} className={layout.type.mobile ? 'buyMobileImage' : 'buyImage'} />
+                {!layout.type.mobile ? <img src={item.image} className="buyImage" /> : null}
               </div>
-              <div className="itemInfo">
-                {!layout.type.mobile ? <h2>{item.name}</h2> : null}
+              <div className={layout.type.mobile ? 'mobileItemInfo' : 'itemInfo'}>
+                <h2>{item.name}</h2>
                 <div className={layout.type.mobile ? 'mobileItemPrice' : 'itemPrice'}>
                 {
                   type === 'sell'
@@ -397,7 +450,7 @@ export default class ItemPopup extends Component {
                       <FormattedMessage id="pages.marketplace.bitguild-fee-4" />
                     </div>
                   </div>)
-                : <Button type="submit" className="btn-block">
+                : <Button type="submit" className={layout.type.mobile ? 'mobile-btn-block' : 'btn-block'}>
                     <FormattedMessage id="pages.marketplace.buy-for" /> <img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice ? item.salePrice : 0} PLAT
                   </Button>
               }
