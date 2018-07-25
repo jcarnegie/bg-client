@@ -120,15 +120,6 @@ export const buyItem = ({
    return reject();
   }
 
-  console.log('\n\n');
-  console.log('incoming vars: ');
-  console.log('price: ', price);
-  console.log('contract: ', contract);
-  console.log('user: ', user);
-  console.log('network: ', network);
-  console.log('item: ', item);
-  console.log('\n\n');
-
   const BitGuildTokenContract = getBitGuildTokenContract(network);
   const marketplaceAddress = getMarketplaceContractAddress(network);
   const tokenIdInt = parseInt(item.tokenId, 10);
@@ -141,6 +132,8 @@ export const buyItem = ({
   log.info('BitGuildTokenContract: ', BitGuildTokenContract);
   log.info('marketplaceAddress: ', marketplaceAddress);
   log.info('tokenIdInt: ', tokenIdInt);
+  log.info('contract: ', contract);
+  log.info('price: ', price);
   log.info('priceBigNum: ', priceBigNum);
   log.info('dataBuffer: ', dataBuffer);
   log.info('dataHex: ', dataHex);
