@@ -41,6 +41,7 @@ export default class ItemPopup extends Component {
       nft: PropTypes.object,
     }),
     intl: intlShape,
+    layout: PropTypes.shape({}),
   };
 
   static defaultProps = {
@@ -69,9 +70,9 @@ export default class ItemPopup extends Component {
   }
 
   renderStats() {
-    const { item } = this.props;
+    const { item, layout } = this.props;
     return (
-      <dl>
+      <dl className={layout.type.mobile ? 'mobileList' : ''}>
         {map(stat => (
           <Fragment key={stat.keyLan}>
             <dt>{stat.keyLan}<FormattedMessage id="components.colon" /></dt>
@@ -83,10 +84,10 @@ export default class ItemPopup extends Component {
   }
 
   renderAttributes() {
-    const { item } = this.props;
+    const { item, layout } = this.props;
     const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => typeof Object.values(attr)[0] === 'number' ? Object.values(attr)[1] : Object.values(attr)[0]));
     return (
-      <div className="attrs">
+      <div className={layout.type.mobile ? 'mobileAttrs' : 'attrs'}>
         {attributes
           .filter(isValidItemCategory)
           .map(attribute =>
@@ -164,8 +165,9 @@ export default class ItemPopup extends Component {
             min-height: 160px;
           }
           .buyMobileImage {
-            height: 100%;
-            width: 100%;
+            height: 90%;
+            width: 90%;
+            margin-top: 65px;
           }
           .buyImage{
             height: 70%;
@@ -210,13 +212,34 @@ export default class ItemPopup extends Component {
             padding-bottom: 10px;
             font-size: 1.6em;
           }
+          .buy form .mobileItemName {
+            font-weight: 500;
+            font-size: 1.5em;
+            margin-bottom: 0;
+            text-align: center;
+            position: relative;
+            top: 15px;
+          }
           .buy form .itemInfo .itemPrice{
             float: left;
             font-size: 1.4em;
             font-weight: 600;
             padding-bottom: 15px;
           }
+          .buy form .itemInfo .mobileItemPrice{
+            float: left;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-top: 40px;
+            padding-bottom: 10px;
+          }
           .buy form .itemInfo dl {
+            display: grid;
+            grid-template-columns: max-content auto;
+            margin: 0 0 20px 0;
+            width: 100%;
+          }
+          .buy form .itemInfo .mobileList {
             display: grid;
             grid-template-columns: max-content auto;
             margin: 0 0 20px 0;
@@ -292,7 +315,25 @@ export default class ItemPopup extends Component {
             float: left;
             width: 80%;
           }
+          .buy .mobileAttrs {
+            float: left;
+            width: 80%;
+            column-count: 2;
+          }
           .buy .attrs .badge {
+            background-color: #E7EDFD;
+            border: 1px solid #BECFFB;
+            border-radius: 6px;
+            color: #6A7CAC;
+            font-weight: 300;
+            font-size: 15px;
+            line-height: 18px;
+            cursor: pointer;
+            margin-right: 8px;
+            float: left;
+            margin-bottom: 5px;
+          }
+          .buy .mobileAttrs .badge {
             background-color: #E7EDFD;
             border: 1px solid #BECFFB;
             border-radius: 6px;
@@ -310,17 +351,18 @@ export default class ItemPopup extends Component {
           <Modal.Header closeButton />
           <Modal.Body>
             <Form onSubmit={::this.onSubmit}>
+              {layout.type.mobile ? <h2 className="mobileItemName">{item.name}</h2> : null}
               <div className="imageContainer">
                 <img src={item.image} className={layout.type.mobile ? 'buyMobileImage' : 'buyImage'} />
               </div>
               <div className="itemInfo">
-                <h2>{item.name}</h2>
-                <div className="itemPrice">
+                {!layout.type.mobile ? <h2>{item.name}</h2> : null}
+                <div className={layout.type.mobile ? 'mobileItemPrice' : 'itemPrice'}>
                 {
                   type === 'sell'
                   ? null
                   : <>
-                      <img src="/static/images/icons/plat.png" className="platToken" />{' ' + ' '}PLAT
+                      <img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice + ' '}PLAT
                     </>
                 }
                 </div>
