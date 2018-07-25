@@ -31,7 +31,7 @@ import {
 } from '@/client/utils/item';
 import { MarketplaceItem as Item } from '@/components/item';
 
-// import itemList from "./items.test.json";
+import itemList from "./items.test.json";
 
 @injectIntl
 @connect(
@@ -87,24 +87,21 @@ class Market extends Component {
 
   renderFilters(items, games, loading = false) {
     let gameFilters = [];
-
     if (!loading || (games && items)) {
-      for (let i = 0; i < games.length; i++) {
-        gameFilters.push({
-          game: games[i].name,
-          id: games[i].id,
-          collapsed: true,
-          categories: [],
-          imgSource: `/static/images/games/${games[i].slug}/filter.png` || null,
-        });
-      }
+      gameFilters = games.map(({ name, id, slug }) => ({
+        name,
+        id,
+        collapsed: true,
+        categories: [],
+        imgSource: `/static/images/games/${slug}/filter.png` || null,
+      }));
 
+      const categories = {};
       const attrs = flatten(items.map(item => {
         let values = Object.values(item.attrs || {});
         return values.map(value => Object.assign({ game: item.game.id }, value));
       }));
 
-      const categories = {};
       attrs.forEach(attr => {
         if (categories.hasOwnProperty(attr.game)) {
           if (!categories[attr.game].hasOwnProperty(attr.keyLan) && !isStat(attr)) {
@@ -156,7 +153,6 @@ class Market extends Component {
             display: inline-block;
             text-align: center;
             border-bottom: 1px solid #E1E1E1;
-            border-right: 1px solid #E1E1E1;
             height: 50px;
             font-weight: 400;
             line-height: 45px;
@@ -176,7 +172,7 @@ class Market extends Component {
             /* immediate child of .tree-view, for styling convenience */
             cursor: pointer;
             border-bottom: 1px solid #E1E1E1;
-            border-right: 1px solid #E1E1E1;
+            {/*border-right: 1px solid #E1E1E1;*/}
             padding-left: 20px;
             height: 80px;
           }
@@ -185,18 +181,19 @@ class Market extends Component {
           }
           .info {
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 300;
-            padding-left: 100px;
-            height: 65px;
-            padding-top: 20px;
-            border-bottom: 1px solid #E1E1E1;
-            border-right: 1px solid #E1E1E1;
+            height: 45px;
+            padding: 0 20px 0 100px;
+            {/*border-bottom: 1px solid #E1E1E1;*/}
+            border-bottom: 1px solid #EFEFEF;
+            display: flex;
+            align-items: center;
           }
           /* style for the children nodes container */
           .tree-view_children {
-            border-bottom: 1px solid #E1E1E1;
-            border-right: 1px solid #E1E1E1;
+            {/*border-bottom: 1px solid #E1E1E1;*/}
+            {/*border-right: 1px solid #E1E1E1;*/}
           }
           .tree-view_children-collapsed {
             height: 0px;
@@ -228,14 +225,17 @@ class Market extends Component {
             position: relative;
             top: 20%;
           }
-          .tree-view_children .tree-view_game {
+          .tree-view_children .tree-view_image {
             display: none;
           }
-          .tree-view_children .tree-view_item .node{
+          .tree-view_children .tree-view_item .node {
             padding-left: 55px;
             font-weight: 400;
             font-size: 20px;
             top: 30%;
+          }
+          .tree-view_children .tree-view_item .node.category {
+            font-size: 18px;
           }
           .tree-view_children .tree-view_item {
             /* immediate child of .tree-view, for styling convenience */
@@ -243,16 +243,7 @@ class Market extends Component {
             padding-left: 20px;
             height: 65px;
           }
-          /* rotate the triangle to close it */
-          .tree-view_arrow-collapsed {
-            -webkit-transform: rotate(-90deg);
-            -moz-transform: rotate(-90deg);
-            -ms-transform: rotate(-90deg);
-            transform: rotate(-90deg);
-            position: relative;
-            top: 20%;
-          }
-          .tree-view_game {
+          .tree-view_image {
             height: 45px;
             width: 45px;
             display: inline-block;
@@ -266,25 +257,30 @@ class Market extends Component {
           <FormattedMessage id="pages.marketplace.games" />
         </div>
         {(loading && !(games && items)) ? <DataLoading /> : gameFilters.map((node, i) => {
-          const name = node.game;
-          const label = <span className="node">{name}</span>;
+          const { name, id, categories, imgSource } = node;
+          const { gameFilter } = this.state;
+          const gameFilterIsSelected = gameFilter == id;
           return (
             <TreeView
               key={name + '|' + i}
-              nodeLabel={label}
-              defaultCollapsed={true}
-              onClick={() => ::this.handleGameFilter(node.id)}
-              imgSource={node.imgSource}
-              itemClassName={this.state.gameFilter === node.id ? 'treeview-active-item' : ''}
+              nodeLabel={<span className="node">{name}</span>}
+              collapsed={!gameFilterIsSelected}
+              onClick={() => ::this.handleGameFilter(id)}
+              imgSource={imgSource}
+              itemClassName={gameFilterIsSelected ? 'treeview-active-item' : ''}
             >
-              {node.categories.map(category => {
-                const label2 = <span className="node">{category.categoryName}</span>;
+              {categories.map(({ categoryName, subCategories }) => {
                 return (
-                  <TreeView nodeLabel={label2} key={category.categoryName} defaultCollapsed={true} >
+                  <TreeView
+                    defaultCollapsed
+                    nodeLabel={<span className="node category">{categoryName}</span>}
+                    key={categoryName}
+                    chevronSize={20}
+                  >
                   {
-                    category.subCategories.map(subCategory => {
+                    subCategories.map(subCategory => {
                       return (
-                        <div key={subCategory} className="info" onClick={() => ::this.handleSubCategories(subCategory, node.id)}>{subCategory}</div>
+                        <div key={subCategory} className="info" onClick={() => ::this.handleSubCategories(subCategory, id)}>{subCategory}</div>
                       );
                     })
                   }
@@ -440,7 +436,8 @@ class Market extends Component {
         {({ loading, error, data }) => {
           if (error) return <DataError />;
 
-          const { listMarketplaceItems } = data;
+          // const { listMarketplaceItems } = data;
+          const listMarketplaceItems = itemList;
 
           const loadingAny = loading || games.loading || user.loading;
 

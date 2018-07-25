@@ -1,5 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
+import MdChevronRight from 'react-icons/lib/md/chevron-right';
+
+import style from '@/shared/constants/style';
 
 class TreeView extends React.PureComponent {
   static propTypes = {
@@ -8,11 +12,16 @@ class TreeView extends React.PureComponent {
     nodeLabel: PropTypes.node.isRequired,
     className: PropTypes.string,
     imgSource: PropTypes.string,
+    chevronSize: PropTypes.number,
     children: PropTypes.any,
     itemClassName: PropTypes.string,
     childrenClassName: PropTypes.string,
     treeViewClassName: PropTypes.string,
     onClick: PropTypes.func,
+  }
+
+  static defaultProps = {
+    chevronSize: 30,
   }
 
   constructor(props) {
@@ -42,30 +51,79 @@ class TreeView extends React.PureComponent {
       children,
       defaultCollapsed,
       imgSource,
+      chevronSize,
       ...rest
     } = this.props;
 
-    let gameImageClassName = 'tree-view_game';
+    let imageClassName = 'tree-view_image';
     let containerClassName = 'tree-view_children';
     if (collapsed) {
       containerClassName += ' tree-view_children-collapsed';
     }
 
-    const gameImage = (
+    const image = (
       <img
-        className={className + ' ' + gameImageClassName}
+        className={`${className} ${imageClassName}`}
         src={imgSource}
         onClick={this.handleClick}
       />
     );
     return (
-      <div className={'tree-view ' + treeViewClassName}>
-        <div className={'tree-view_item ' + itemClassName}
-          onClick={this.handleClick}>
-          {gameImage}
+      <div
+        className={cx({
+          'tree-view': true,
+          [treeViewClassName]: true,
+          'tree-view-collapsed': collapsed,
+        })}
+      >
+        <style jsx>{`
+          .tree-view_item-children-collapsed {
+            height: 0;
+          }
+
+          .tree-view_item {
+            position: relative;
+            transition: ${style.transition.default};
+          }
+          :global(.tree-view_item > .chevron) {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform-origin: center;
+            transform: translateY(-50%);
+          }
+          :global(.tree-view .transform-down) {
+            transform: translateY(-50%) rotate(90deg);
+            transform-origin: center;
+            transition: ${style.transition.default};
+          }
+        `}</style>
+        <div
+          className={cx({
+            'tree-view_item': true,
+            [itemClassName]: true,
+            'tree-view_item-collapsed': collapsed,
+          })}
+          onClick={this.handleClick}
+        >
+          {image}
           {nodeLabel}
+          <MdChevronRight
+            color="black"
+            height={chevronSize}
+            width={chevronSize}
+            className={cx({
+              'transform-down': !collapsed,
+            }, 'chevron')}
+          />
         </div>
-        <div className={containerClassName + ' ' + childrenClassName}>
+        <div
+          className={cx({
+            [containerClassName]: true,
+            [childrenClassName]: true,
+            'tree-view_item-children-collapsed': collapsed,
+          })}
+        >
           {collapsed ? null : children}
         </div>
       </div>
