@@ -137,7 +137,8 @@ class Item extends Component {
       <Col sm={6} md={4} lg={3} className={`item ${className}`}>
         <style jsx global>{`
           .item {
-            max-width: 275px;
+            width: 275px;
+            height: 500px;
           }
           .item .thumbnail {
             padding: 0;
