@@ -207,3 +207,47 @@ export const withdrawItem = ({
     }
   );
 });
+
+/*
+ * getFee
+ * - network - [redux] network object
+ * - price - Int
+ * - seller - address
+ * - buyer - address
+ * - contract - Game Contract Address
+ */
+export const getFee = ({
+  network,
+  price,
+  buyer = null,
+  seller = null,
+  contract = null,
+}) => new Promise((resolve, reject) => {
+
+  const zeroAddress = window.web3.toHex(0);
+
+  if (false) reject();
+
+  const MarketplaceContract = getMarketplaceContract(network);
+
+
+  /* params: price, buyer, seller, contract */
+  MarketplaceContract.getFee['uint256,address,address,address'](
+    price,
+    (buyer || zeroAddress),
+    (seller || zeroAddress),
+    (contract || zeroAddress),
+    (err, res) => {
+      if (err) {
+        log.error(err);
+        return resolve(err);
+      } else {
+        log.info('Success! Transaction: ', res);
+        const feePercentage = res[0].c[0] / 100;
+        const fee = res[1].c[0];
+        return resolve({feePercentage, fee});
+      }
+    }
+  );
+});
+

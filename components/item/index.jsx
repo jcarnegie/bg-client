@@ -305,7 +305,6 @@ class MarketplaceItem extends Component {
   }
 
   onHideBuy() {
-    console.log('onhide buy');
     this.setState({ buy: false });
   }
 

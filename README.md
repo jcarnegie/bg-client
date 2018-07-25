@@ -9,23 +9,6 @@ General
 Marketplace
   x - Search feature - not doing
   x - Sort feature
-  - Polish filter collapse experience
-
-List of Marketplace translations to get:
-- Marketplace
-- Games
-- On Sale
-- Expires in 7 days
-- Expires in 1 day
-- Expired
-- Buy for 1791 PLAT
-- RENEW
-- WITHDRAW
-- BitGuild charges a 5.0% fee on all trades. You will get 2150 PLAT for this sale.
-- Sell
-- Sell for
-- SELL THIS ITEM
-- ** get official text for from Max: "No items are listed for this game right now, check back later!"
 
 ## Dependencies
 
@@ -61,7 +44,7 @@ yarn test
 ```
 - To watch tests
 ```bash
-yarn test -- --watch
+yarn test --watch
 ```
 
 ## Bundles
