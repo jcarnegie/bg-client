@@ -156,6 +156,8 @@ class Item extends Component {
             margin: auto auto;
             height: 100%;
             width: 100%;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
           }
           .item .thumbnail .caption {
             padding: 0;
@@ -460,6 +462,8 @@ class InventoryItem extends Component {
         width: '100%',
         focus: 0,
         cursor: 'default',
+        borderBottomRightRadius: '6px',
+        borderBottomLeftRadius: '6px',
       }}>PRESALE</Button>
     );
   }
