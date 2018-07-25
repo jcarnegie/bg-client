@@ -19,6 +19,7 @@ import {
   listItem,
   extendItem,
   withdrawItem,
+  getFee,
 } from '@/shared/utils/contracts';
 
 import style from '@/shared/constants/style';
@@ -26,6 +27,7 @@ import style from '@/shared/constants/style';
 import BGButton from '@/components/bgbutton';
 
 const testGameContractAddress = '0x856c82b392fa4041c3a63b3a8c8a7f258d2f27e0';
+const etherOnlineRinkeby = '0xca68213bce717c256628936a9ea4570f52ab2ed2';
 
 
 @connect(
@@ -49,6 +51,7 @@ class Web3SandboxPage extends React.Component {
     withdraw: {},
     extend: {},
     buy: {},
+    fee: {},
   }
 
   addressInfo() {
@@ -81,6 +84,7 @@ class Web3SandboxPage extends React.Component {
           <ul>
             <li>current user: {account.wallet}</li>
             <li>TestGameContractAddress: {testGameContractAddress}</li>
+            <li>etherOnlineRinkeby: {etherOnlineRinkeby}</li>
           </ul>
         </div>
       </div>
@@ -203,7 +207,6 @@ class Web3SandboxPage extends React.Component {
       network,
       item,
       price,
-      tokenId,
       contract,
     });
     log.info('Sandbox buyItem: ', res);
@@ -260,17 +263,62 @@ class Web3SandboxPage extends React.Component {
         </div>
 
         <div>
-          <label>tokenId: </label><input ref={c => (this.dom.extend.tokenId = c)} />
-        </div>
-
-        <div>
           <label>itemId: </label><input ref={c => (this.dom.extend.itemId = c)} />
         </div>
 
+        <div>
+          <label>tokenId: </label><input ref={c => (this.dom.extend.tokenId = c)} />
+        </div>
 
         <br />
 
         <BGButton onClick={() => ::this.onExtendItem()}>Extend Item in Marketplace</BGButton>
+      </div>
+    );
+  }
+
+  async onGetFee() {
+    const { network } = this.props;
+
+    const price = this.dom.fee.price.value;
+    const buyer = this.dom.fee.buyer.value;
+    const seller = this.dom.fee.seller.value;
+    const contract = this.dom.fee.contract.value;
+
+    /* Get fee from marketplace */
+    const res = await getFee({
+      network,
+      price,
+      buyer,
+      seller,
+      contract,
+    })
+    log.info('Sandbox getFee: ', res);
+  }
+
+  getFeeWorkflow() {
+    return (
+      <div className="web3-sandbox-card">
+        <h3>Get fee</h3>
+        <div>
+          <label>price: </label><input ref={c => (this.dom.fee.price = c)} />
+        </div>
+
+        <div>
+          <label>buyer: </label><input ref={c => (this.dom.fee.buyer = c)} />
+        </div>
+
+        <div>
+          <label>seller: </label><input ref={c => (this.dom.fee.seller = c)} />
+        </div>
+
+        <div>
+          <label>contract: </label><input ref={c => (this.dom.fee.contract = c)} />
+        </div>
+
+        <br />
+
+        <BGButton onClick={() => ::this.onGetFee()}>Get fee</BGButton>
       </div>
     );
   }
@@ -323,6 +371,7 @@ class Web3SandboxPage extends React.Component {
           {::this.buyItemWorkflow()}
           {::this.withdrawItemWorkflow()}
           {::this.extendItemWorkflow()}
+          {::this.getFeeWorkflow()}
         </div>
 
         <div className="key">

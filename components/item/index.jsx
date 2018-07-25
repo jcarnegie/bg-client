@@ -21,6 +21,10 @@ import {
   withdrawItem,
 } from '@/shared/utils/contracts';
 
+import {
+  listingIsExpiredForItem,
+} from '@/shared/utils/marketplace';
+
 import { USER_SHOW_REGISTER_WORKFLOW } from '@/shared/constants/actions';
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
 import style from '@/shared/constants/style';
@@ -207,10 +211,10 @@ class Item extends Component {
             border: 0;
           }
           .item .thumbnail .caption .btn.buy {
+            height: 45px;
             font-weight: 500;
             color: #ffffff;
             background-color: rgb(49, 75, 136);
-            height: 40px;
             font-size: 14px;
             border-radius: 0px 0px 6px 6px;
           }
@@ -306,7 +310,6 @@ class MarketplaceItem extends Component {
   }
 
   onHideBuy() {
-    console.log('onhide buy');
     this.setState({ buy: false });
   }
 
@@ -316,8 +319,8 @@ class MarketplaceItem extends Component {
       network,
       user,
       item,
-      price: parseInt(item.salePrice),
-      contract: game.contract,
+      price: parseInt(item.salePrice, 10),
+      contract: getContractFromGame(game, network),
     });
     log.info('Instantiating buy transaction...');
   }
@@ -328,7 +331,6 @@ class MarketplaceItem extends Component {
       <ButtonGroup justified>
         <Button href="#" onClick={::this.onShowBuy} className="buy">
           <FormattedMessage id="pages.marketplace.buy-for" /><img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice ? item.salePrice : 0} PLAT
-          {/* <FormattedMessage id="Buy" /> */}
         </Button>
       </ButtonGroup>
     );
@@ -405,7 +407,7 @@ class InventoryItem extends Component {
       const { network, game, item } = this.props;
 
       const result = await extendItem({
-        contract: game.contract,
+        contract: getContractFromGame(game, network),
         network,
         item,
       });
@@ -414,7 +416,7 @@ class InventoryItem extends Component {
 
       const result = await withdrawItem({
         network,
-        contract: game.contract,
+        contract: getContractFromGame(game, network),
         item,
       });
     }
@@ -445,6 +447,7 @@ class InventoryItem extends Component {
       <Button style={{
         color: 'gold',
         backgroundColor: 'rgb(49,75,136)',
+        height: '45px',
         width: '100%',
         focus: 0,
         cursor: 'default',
@@ -508,17 +511,76 @@ class InventoryItem extends Component {
         </div>
       );
     }
-    const buttons = (item.saleState === 'sold' || !featureOn('marketplace')) ? (
-      <>
-        {this.sellButton()}
-        {this.giftButton()}
-      </>
-    ) : (
-      <>
-        {this.renewButton()}
-        {this.withdrawButton()}
-      </>
+
+    const inProgressBar = txt => (
+      <div className="in-progress-bar">
+        <style jsx>{`
+          .in-progress-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #F68F11;
+            font-size: 0.9em;
+            opacity: 1;
+            height: 45px;
+            width: 100%;
+            border: 0;
+            font-weight: 100;
+            outline: 0;
+            text-transform: uppercase;
+          }
+        `}</style>
+        <FormattedMessage id={`pages.inventory.${txt}`} />
+      </div>
     );
+
+    let bottomBar = null;
+
+    if (!featureOn('marketplace')) {
+      bottomBar = (
+        <>
+          {this.sellButton()}
+          {this.giftButton()}
+        </>
+      );
+    } else {
+      switch (item.saleState) {
+        case 'listed':
+          if (listingIsExpiredForItem(item)) {
+            bottomBar = (
+              <>
+                {this.renewButton()}
+                {this.withdrawButton()}
+              </>
+            );
+          } else {
+            bottomBar = inProgressBar('listed-for-sale');
+          }
+          break;
+        case 'salepending':
+          bottomBar = inProgressBar('sale-in-progress');
+          break;
+        case 'listpending':
+          bottomBar = inProgressBar('list-in-progress');
+          break;
+        case 'withdrawpending':
+          bottomBar = inProgressBar('extend-in-progress');
+          break;
+        case 'extendpending':
+          bottomBar = inProgressBar('withdraw-in-progress');
+          break;
+        case 'sold':
+          bottomBar = (
+            <>
+              {this.sellButton()}
+              {this.giftButton()}
+            </>
+          );
+          break;
+        default:
+          bottomBar = null;
+      }
+    }
 
     return (
       <div className="item-button-bar">
@@ -527,7 +589,7 @@ class InventoryItem extends Component {
             width: 100%;
           }
         `}</style>
-        {buttons}
+        {bottomBar}
       </div>
     );
   }

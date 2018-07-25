@@ -48,12 +48,11 @@ export const listItem = ({
   const tokenId = parseInt(item.tokenId, 10);
   const itemId = parseInt(item.id, 10);
   const userId = parseInt(user.data.id, 10);
-  const priceBigNum = parseInt(price, 10) * 1e18;;
+  const priceBigNum = parseInt(price, 10) * 1e18;
   const currencyInt = parseInt(currency, 10);
-  const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNum.toString()]);
+  const priceBigNumString = priceBigNum.toLocaleString('fullwide', { useGrouping: false });
+  const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNumString]);
   const dataHex = `0x${dataBuffer.toString('hex')}`;
-
-
 
   if (currencyInt === 1) {
     log.info('listItem: ETH workflow not implemented.');
@@ -65,6 +64,7 @@ export const listItem = ({
   log.info('to: ', to);
   log.info('item.tokenId: ', item.tokenId);
   log.info('priceBigNum: ', priceBigNum);
+  log.info('priceBigNumString: ', priceBigNumString);
   log.info('currencyInt: ', currencyInt);
   log.info('dataBuffer: ', dataBuffer);
   log.info('dataHex: ', dataHex);
@@ -115,7 +115,7 @@ export const buyItem = ({
   network,
   item,
 }) => new Promise((resolve, reject) => {
-  if (!user || !item || !network || !price || !contract) {
+  if (!user || !item || !network || (!price && price !== 0) || !contract) {
    log.info('buyItem: incorrect parameters.')
    return reject();
   }
@@ -125,13 +125,15 @@ export const buyItem = ({
   const tokenIdInt = parseInt(item.tokenId, 10);
   const userId = parseInt(user.data.id, 10);
   const itemId = parseInt(item.id, 10);
-  const priceBigNum = parseInt(price, 10) * 1e18;;
+  const priceBigNum = parseInt(price, 10) * 1e18;
   const dataBuffer = EthABI.rawEncode(['address', 'uint256'], [contract, tokenIdInt]);
   const dataHex = `0x${dataBuffer.toString('hex')}`;
 
   log.info('BitGuildTokenContract: ', BitGuildTokenContract);
   log.info('marketplaceAddress: ', marketplaceAddress);
   log.info('tokenIdInt: ', tokenIdInt);
+  log.info('contract: ', contract);
+  log.info('price: ', price);
   log.info('priceBigNum: ', priceBigNum);
   log.info('dataBuffer: ', dataBuffer);
   log.info('dataHex: ', dataHex);
@@ -263,3 +265,48 @@ export const withdrawItem = ({
     }
   );
 });
+
+
+/*
+ * getFee
+ * - network - [redux] network object
+ * - price - Int
+ * - seller - address
+ * - buyer - address
+ * - contract - Game Contract Address
+ */
+export const getFee = ({
+  network,
+  price,
+  buyer = null,
+  seller = null,
+  contract = null,
+}) => new Promise((resolve, reject) => {
+
+  const zeroAddress = window.web3.toHex(0);
+
+  if (!network || (!price && price !== 0)) reject();
+
+  const MarketplaceContract = getMarketplaceContract(network);
+
+
+  /* params: price, buyer, seller, contract */
+  MarketplaceContract.getFee['uint256,address,address,address'](
+    price,
+    (buyer || zeroAddress),
+    (seller || zeroAddress),
+    (contract || zeroAddress),
+    (err, res) => {
+      if (err) {
+        log.error(err);
+        return resolve(err);
+      } else {
+        log.info('Success! Transaction: ', res);
+        const feePercentage = res[0].c[0] / 100;
+        const fee = res[1].c[0];
+        return resolve({feePercentage, fee});
+      }
+    }
+  );
+});
+
