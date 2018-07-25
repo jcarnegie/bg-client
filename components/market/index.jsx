@@ -31,7 +31,7 @@ import {
 } from '@/client/utils/item';
 import { MarketplaceItem as Item } from '@/components/item';
 
-import itemList from "./items.test.json";
+// import itemList from "./items.test.json";
 
 @injectIntl
 @connect(
