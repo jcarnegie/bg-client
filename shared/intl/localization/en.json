@@ -13,7 +13,9 @@
     "coming-soon": "Coming Soon",
     "play": "Play",
     "sell-for": "Sell for",
-    "sell-this-item": "Sell this item"
+    "sell-this-item": "Sell this item",
+    "sell": "Sell",
+    "gift": "Gift"
   },
   "components": {
     "switchLanguage": "Switch Language",
@@ -74,8 +76,6 @@
     "submit": "Submit",
     "register": "Register",
     "login": "Login",
-    "sell": "Sell",
-    "gift": "Gift",
     "convert": "Purchase",
     "install": "Install MetaMask",
     "renew": "renew",
