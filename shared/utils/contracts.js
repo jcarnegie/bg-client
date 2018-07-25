@@ -120,12 +120,21 @@ export const buyItem = ({
    return reject();
   }
 
+  console.log('\n\n');
+  console.log('incoming vars: ');
+  console.log('price: ', price);
+  console.log('contract: ', contract);
+  console.log('user: ', user);
+  console.log('network: ', network);
+  console.log('item: ', item);
+  console.log('\n\n');
+
   const BitGuildTokenContract = getBitGuildTokenContract(network);
   const marketplaceAddress = getMarketplaceContractAddress(network);
   const tokenIdInt = parseInt(item.tokenId, 10);
   const userId = parseInt(user.data.id, 10);
   const itemId = parseInt(item.id, 10);
-  const priceBigNum = parseInt(price, 10) * 1e18;;
+  const priceBigNum = parseInt(price, 10) * 1e18;
   const dataBuffer = EthABI.rawEncode(['address', 'uint256'], [contract, tokenIdInt]);
   const dataHex = `0x${dataBuffer.toString('hex')}`;
 

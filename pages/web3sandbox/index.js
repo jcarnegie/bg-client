@@ -207,7 +207,6 @@ class Web3SandboxPage extends React.Component {
       network,
       item,
       price,
-      tokenId,
       contract,
     });
     log.info('Sandbox buyItem: ', res);
@@ -264,13 +263,12 @@ class Web3SandboxPage extends React.Component {
         </div>
 
         <div>
-          <label>tokenId: </label><input ref={c => (this.dom.extend.tokenId = c)} />
-        </div>
-
-        <div>
           <label>itemId: </label><input ref={c => (this.dom.extend.itemId = c)} />
         </div>
 
+        <div>
+          <label>tokenId: </label><input ref={c => (this.dom.extend.tokenId = c)} />
+        </div>
 
         <br />
 
