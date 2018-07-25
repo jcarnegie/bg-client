@@ -141,8 +141,6 @@
       "day": "day",
       "renew": "RENEW",
       "withdraw": "WITHDRAW",
-      "gift": "GIFT",
-      "sell": "SELL",
       "sell-for": "Sell for",
       "sell-this-item": "SELL THIS ITEM",
       "bitguild-fee-1": "BitGuild charges a ",
@@ -150,7 +148,7 @@
       "bitguild-fee-3": "You will get ",
       "bitguild-fee-4": "for this sale",
       "buy-for": "BUY FOR ",
-      "empty": "There are no marketplace items with these categories!"
+      "empty": "No items are listed for this game right now, check back later!"
     },
     "faq": {
       "title": "FAQ",
