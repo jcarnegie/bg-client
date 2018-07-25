@@ -19,6 +19,7 @@ import {
   listItem,
   extendItem,
   withdrawItem,
+  getFee,
 } from '@/shared/utils/contracts';
 
 import style from '@/shared/constants/style';
@@ -49,6 +50,7 @@ class Web3SandboxPage extends React.Component {
     withdraw: {},
     extend: {},
     buy: {},
+    fee: {},
   }
 
   addressInfo() {
@@ -275,6 +277,52 @@ class Web3SandboxPage extends React.Component {
     );
   }
 
+  async onGetFee() {
+    const { network } = this.props;
+
+    const price = this.dom.fee.price.value;
+    const buyer = this.dom.fee.buyer.value;
+    const seller = this.dom.fee.seller.value;
+    const contract = this.dom.fee.contract.value;
+
+    /* Get fee from marketplace */
+    const res = await getFee({
+      network,
+      price,
+      buyer,
+      seller,
+      contract,
+    })
+    log.info('Sandbox getFee: ', res);
+  }
+
+  getFeeWorkflow() {
+    return (
+      <div className="web3-sandbox-card">
+        <h3>Get fee</h3>
+        <div>
+          <label>price: </label><input ref={c => (this.dom.fee.price = c)} />
+        </div>
+
+        <div>
+          <label>buyer: </label><input ref={c => (this.dom.fee.buyer = c)} />
+        </div>
+
+        <div>
+          <label>seller: </label><input ref={c => (this.dom.fee.seller = c)} />
+        </div>
+
+        <div>
+          <label>contract: </label><input ref={c => (this.dom.fee.contract = c)} />
+        </div>
+
+        <br />
+
+        <BGButton onClick={() => ::this.onGetFee()}>Get fee</BGButton>
+      </div>
+    );
+  }
+
 
   componentDidMount() {
     window.EthABI = EthABI;
@@ -323,6 +371,7 @@ class Web3SandboxPage extends React.Component {
           {::this.buyItemWorkflow()}
           {::this.withdrawItemWorkflow()}
           {::this.extendItemWorkflow()}
+          {::this.getFeeWorkflow()}
         </div>
 
         <div className="key">
