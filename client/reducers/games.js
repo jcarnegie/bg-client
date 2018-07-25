@@ -48,6 +48,11 @@ const games = {
       slug: 'cryptodungeons',
       description: '',
     },
+    {
+      name: 'Blockchain Cuties',
+      slug: 'blockchaincuties',
+      description: '',
+    },
   ],
 };
 
