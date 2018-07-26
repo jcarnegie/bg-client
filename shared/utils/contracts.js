@@ -58,6 +58,8 @@ export const dataHexForContractAndTokenId = ({ contract, tokenId }) => {
  * - to - BGMarketplace Contract Address
  * - user - [redux] user object
  * - item - [redux] item object
+ * - network - [redux] network object
+ * - marketPlaceContractAddress - optional
  */
 export const listItem = ({
   contract,
@@ -66,6 +68,8 @@ export const listItem = ({
   to,
   user,
   item,
+  network = null,
+  marketPlaceContractAddress = null,
 }) => new Promise((resolve, reject) => {
   const userAddress = getWeb3Wallet();
 
@@ -88,8 +92,7 @@ export const listItem = ({
   const dataHex = dataHexForCurrencyAndPrice({ currency: currencyInt, price });
 
   if (currencyInt === 1) {
-    log.info('listItem: ETH workflow not implemented.');
-    return reject(); // do other stuff for ETH
+    log.info('listItem: ETH workflow...');
   }
 
   log.info('userAddress: ', userAddress);
@@ -110,7 +113,7 @@ export const listItem = ({
     (err, tx) => {
       if (err) {
         log.error(err);
-        return resolve(err);
+        return reject(err);
       } else {
         log.info('Success! Transaction: ', tx);
         client.mutate({
@@ -179,7 +182,7 @@ export const buyItem = ({
     (err, tx) => {
       if (err) {
         log.error(err);
-        return resolve(err);
+        return reject(err);
       } else {
         log.info('Success! Transaction: ', tx);
         client.mutate({
@@ -194,6 +197,64 @@ export const buyItem = ({
       }
     }
   );
+});
+
+
+/*
+ * buyItemWithEther
+ * - contract - Game Contract Address
+ * - price - ex: 1200
+ * - user - [redux] user object
+ * - network - [redux] network object
+ * - item - [redux] item object
+ * - marketPlaceContractAddress - optional
+ */
+export const buyItemWithEther = ({
+  price,
+  contract,
+  user,
+  network,
+  item,
+  marketPlaceContractAddress = null,
+}) => new Promise((resolve, reject) => {
+  if (!user || !item || !network || (!price && price !== 0) || !contract) {
+   log.info('buyItemWithEther: incorrect parameters.')
+   return reject();
+  }
+
+  const marketplaceAddress = marketPlaceContractAddress || getMarketplaceContractAddress(network);
+  const MarketplaceContract = marketPlaceContractAddress || getMarketplaceContract(network);
+  const tokenIdInt = parseInt(item.tokenId, 10);
+  const userId = parseInt(user.data.id, 10);
+  const itemId = parseInt(item.id, 10);
+
+  log.info('marketplaceAddress: ', marketplaceAddress);
+  log.info('tokenIdInt: ', tokenIdInt);
+  log.info('contract: ', contract);
+  log.info('price: ', price);
+
+  /* Buy item from marketplace */
+  MarketplaceContract.buyWithETH(contract, tokenIdInt, {
+    from: getWeb3Wallet(),
+    // gas: gasValue,
+    value: window.web3.toWei(parseFloat(price, 10)),
+  }, (err, res) => {
+    if (err) {
+      log.info(err);
+      return reject(err);
+    } else {
+      log.info('Success! tx: ', res);
+      client.mutate({
+        mutation: mutations.purchaseItem,
+        variables: {
+          userId,
+          itemId,
+          salePurchaseTxnHash: tx,
+        }
+      });
+      return resolve(tx);
+    }
+  });
 });
 
 
@@ -234,7 +295,7 @@ export const extendItem = ({
     (err, tx) => {
       if (err) {
         log.error(err);
-        return resolve(err);
+        return reject(err);
       } else {
         log.info('Success! Transaction: ', tx);
         client.mutate({
@@ -287,7 +348,7 @@ export const withdrawItem = ({
     (err, tx) => {
       if (err) {
         log.error(err);
-        return resolve(err);
+        return reject(err);
       } else {
         log.info('Success! Transaction: ', tx);
         client.mutate({
@@ -338,7 +399,7 @@ export const getFee = ({
     (err, res) => {
       if (err) {
         log.error(err);
-        return resolve(err);
+        return reject(err);
       } else {
         log.info('Success! Transaction: ', res);
         const feePercentage = res[0].c[0] / 100;
