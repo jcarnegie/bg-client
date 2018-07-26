@@ -170,12 +170,11 @@ class Market extends Component {
             font-size: 1.0em;
             font-weight: 500;
             position: relative;
-            top: 25%;
           }
 
           .tree-view_item {
             display: flex;
-            justify-content: center;
+            align-items: center;
           }
 
           .tree-view_item {
@@ -202,41 +201,12 @@ class Market extends Component {
           .tree-view_children-collapsed {
             height: 0px;
           }
-          .tree-view_arrow {
-            cursor: pointer;
-            margin-right: 6px;
-            display: inline-block;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            height: 25px;
-            width: 25px;
-            background-color: #bbb;
-            border-radius: 50%;
-            border: 1px solid black;
-            position: relative;
-            top: 5px;
-            position: relative;
-            top: 20%;
-          }
-          .tree-view_arrow:after {
-            width: 25px;
-            background-color: #bbb;
-            border-radius: 50%;
-            display: inline-block;
-            border: 1px solid black;
-            position: relative;
-            top: 20%;
-          }
           .tree-view_children .tree-view_image {
             display: none;
           }
           .tree-view_children .tree-view_item .node {
-            padding-left: 55px;
             font-weight: 400;
             font-size: 1.1em;
-            top: 30%;
           }
           .tree-view_children .tree-view_item .node.category {
             font-size: 0.9em;
@@ -252,7 +222,6 @@ class Market extends Component {
             width: 35px;
             display: inline-block;
             position: relative;
-            top: 20%;
             margin-right: 10px;
           }
         `}
@@ -442,6 +411,7 @@ class Market extends Component {
           if (error) return <DataError />;
 
           const { listMarketplaceItems } = data;
+          // const listMarketplaceItems = itemList;
 
           const loadingAny = loading || games.loading || user.loading;
 
