@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Badge, Button, ButtonGroup, Col, Thumbnail } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { compose, filter, isNil, map, not } from 'ramda';
+import { compose, filter, isNil, map, not, path } from 'ramda';
 import { connect } from 'react-redux';
 import * as log from 'loglevel';
 
@@ -36,7 +36,27 @@ import { featureOn } from '@/shared/utils';
 
 const notNil = compose(not, isNil);
 
-
+const inProgressBar = txt => (
+  <div className="in-progress-bar">
+    <style jsx>{`
+          .in-progress-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #F68F11;
+            font-size: 0.9em;
+            opacity: 1;
+            height: 45px;
+            width: 100%;
+            border: 0;
+            font-weight: 100;
+            outline: 0;
+            text-transform: uppercase;
+          }
+        `}</style>
+    <FormattedMessage id={`pages.inventory.${txt}`} />
+  </div>
+);
 @injectIntl
 class Item extends Component {
   static propTypes = {
@@ -333,16 +353,20 @@ class MarketplaceItem extends Component {
   }
 
   renderButtons() {
-    const { item } = this.props;
+    const { item, user } = this.props;
+    const lastOwner = path(['lastOwner', 'id'], item);
+    const userID = path(['data', 'id'], user);
     return (
       <ButtonGroup justified>
-        <Button href="#" onClick={::this.onShowBuy} className="buy">
+        {lastOwner === userID ? inProgressBar('listed-for-sale')
+        : <Button href="#" onClick={::this.onShowBuy} className="buy">
           <span className="buy-for">
             <FormattedMessage className="buy-for" id="pages.marketplace.buy-for" />
           </span>
           <img src="/static/images/icons/plat.png" className="platToken" />
           <span className="buy-for">{item.salePrice ? item.salePrice : 0} PLAT</span>
         </Button>
+        }
       </ButtonGroup>
     );
   }
@@ -442,17 +466,15 @@ class InventoryItem extends Component {
       user,
     } = this.props;
 
-    if (parseFloat(data.sellPrice) < 10000000) {
-      log.info('Beginning sell transaction...');
+    log.info('Beginning sell transaction...');
 
-      const result = await listItem({
-        user,
-        item,
-        contract: getContractFromGame(game, network),
-        to: getMarketplaceContractAddress(network),
-        price: parseFloat(data.sellPrice),
-      });
-    }
+    const result = await listItem({
+      user,
+      item,
+      contract: getContractFromGame(game, network),
+      to: getMarketplaceContractAddress(network),
+      price: parseFloat(data.sellPrice),
+    });
   }
 
   renderPresaleButton() {
@@ -527,28 +549,6 @@ class InventoryItem extends Component {
         </div>
       );
     }
-
-    const inProgressBar = txt => (
-      <div className="in-progress-bar">
-        <style jsx>{`
-          .in-progress-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #F68F11;
-            font-size: 0.9em;
-            opacity: 1;
-            height: 45px;
-            width: 100%;
-            border: 0;
-            font-weight: 100;
-            outline: 0;
-            text-transform: uppercase;
-          }
-        `}</style>
-        <FormattedMessage id={`pages.inventory.${txt}`} />
-      </div>
-    );
 
     let bottomBar = null;
 

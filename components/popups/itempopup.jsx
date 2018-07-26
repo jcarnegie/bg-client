@@ -44,6 +44,12 @@ export default class ItemPopup extends Component {
     layout: PropTypes.shape({}),
   };
 
+  constructor(props) {
+    super(props);
+    // create a ref to store the textInput DOM element
+    this.priceInput = React.createRef();
+  }
+
   static defaultProps = {
     onHide: () => {},
     onSubmit: () => {},
@@ -57,16 +63,34 @@ export default class ItemPopup extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const { sellPrice, type } = this.state;
-    if (type === 'sell' && (!sellPrice || (parseInt(sellPrice) < 1))) {
-      return;
+    const { sellPrice } = this.state;
+    const { type } = this.props;
+    if (type === 'sell' && (!sellPrice || (parseInt(sellPrice) < 1 || parseInt(sellPrice) > 10000000 || sellPrice === ''))) {
+      if (!sellPrice || sellPrice === '') {
+        this.setState({ sellPrice: 'Please enter a value' });
+        this.priceInput.current.className = 'sell-input-error';
+      } else if (parseInt(sellPrice) < 1) {
+        this.setState({ sellPrice: 'Please enter a value above 0' });
+        this.priceInput.current.className = 'sell-input-error';
+      } else if (parseInt(sellPrice) > 10000000) {
+        this.setState({ sellPrice: 'Please enter a value less than 10M' });
+        this.priceInput.current.className = 'sell-input-error';
+      }
+    } else {
+      this.props.onSubmit(this.state);
+      this.props.onHide();
     }
-    this.props.onSubmit(this.state);
-    this.props.onHide();
   }
 
   handleChange(e) {
     this.setState({ sellPrice: e.target.value });
+  }
+
+  handleError() {
+    if (this.state.sellPrice === 'Please enter a value' || this.state.sellPrice === 'Please enter a value above 0' || this.state.sellPrice === 'Please enter a value less than 10M') {
+      this.setState({ sellPrice: '' });
+      this.priceInput.current.className = 'sell-input';
+    }
   }
 
   renderStats() {
@@ -333,17 +357,32 @@ export default class ItemPopup extends Component {
             width: 100%;
             height: 70px;
           }
+          .buy form .sell-input-error {
+            float: left;
+            width: 37%;
+            height: 100%;
+            position: relative;
+            left: 7.5%;
+            height: 50px;
+            border: none;
+            border-bottom: 1px solid #D0021B;
+            background-color: #FED6D3;
+            font-size: .9em;
+            color: #D0021B;
+            padding-left: 10px;
+          }
           .buy form .sell-input {
             float: left;
             width: 37%;
             height: 100%;
             position: relative;
-            left: 9%;
+            left: 7.5%;
             height: 50px;
             border: none;
             border-bottom: 1px solid black;
             background-color: #F3F4FA;
             font-size: .9em;
+            padding-left: 10px;
           }
            .sell form .sell-input {
             float: left;
@@ -362,7 +401,7 @@ export default class ItemPopup extends Component {
             width: 38%;
             margin: 0;
             height: 50px;
-            margin-right: 75px;
+            margin-right: 50px;
             line-height: 0px;
             font-size: 1em;
           }
@@ -381,7 +420,7 @@ export default class ItemPopup extends Component {
             text-align: left;
             position: relative;
             font-weight: 500;
-            left: 9%;
+            left: 7.5%;
             margin-right: 45px;
             font-size: .9em;
           }
@@ -398,7 +437,7 @@ export default class ItemPopup extends Component {
             width: 100%;
             text-align: left;
             position: relative;
-            left: 9%;
+            left: 7.5%;
             top: -10px;
             font-size: .7em;
             margin-top; 10px;
@@ -507,7 +546,7 @@ export default class ItemPopup extends Component {
                       <FormattedMessage id="pages.marketplace.sell-for" />
                     </div>
                     <div className="sellBlock">
-                      <input type="text" value={this.state.sellPrice} placeholder="0 PLAT" onChange={::this.handleChange} className="sell-input">
+                      <input ref={this.priceInput} type="text" value={this.state.sellPrice} placeholder="0 PLAT" onChange={::this.handleChange} onClick={::this.handleError} className="sell-input">
                       </input>
                       {layout.type.mobile ? null
                       : <Button type="submit" className="btn-block-sell">
