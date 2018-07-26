@@ -169,7 +169,7 @@ class Item extends Component {
             font-size: 1.1em;
             font-weight: 500;
             background-color: #F4F6F9;
-            padding: 10px 15px 5px 15px;
+            padding: 10px 15px 3px 15px;
             margin: 0;
           }
           .item .thumbnail .caption dl {
@@ -177,7 +177,7 @@ class Item extends Component {
             display: grid;
             grid-template-columns: minmax(0%, 30%);
             background-color: #F4F6F9;
-            padding: 5px 15px 5px 15px;
+            padding: 5px 15px 3px 15px;
             margin: 0;
             columns: 4;
             min-height: 52px;
@@ -241,11 +241,8 @@ class Item extends Component {
           }
           .item .thumbnail .caption .attrs {
             background-color: #F4F6F9;
-            padding: 5px 0px 10px 15px;
-          }
-          .item .thumbnail .caption .attrs {
-            background-color: #F4F6F9;
-            min-height: 77px;
+            min-height: 75px;
+            padding: 5px 0px 8px 15px;
           }
           .item .thumbnail .caption .attrs .badge {
             margin-right: 8px;
