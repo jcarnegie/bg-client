@@ -1,4 +1,4 @@
 {
   "bitizens_presale": ["local", "dev", "staging", "production"],
-  "marketplace": ["local", "dev", "staging"]
+  "marketplace": ["local", "dev", "staging", "production"]
 }

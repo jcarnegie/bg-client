@@ -107,10 +107,6 @@ export default class Balance extends Component {
 
   balances() {
     const { balanceETH, balancePLAT } = this.state;
-
-    if (!Number.isFinite(balanceETH.data) || !Number.isFinite(balancePLAT.data)) {
-      return null;
-    }
     return (
       <span className="balance-text">
         <style jsx>{`
@@ -134,10 +130,10 @@ export default class Balance extends Component {
           }
         `}</style>
         <div>
-          {this.props.balanceETH.isLoading ? this.textLoading() : <span className="balance-value">{balanceETH.data.toFixed(2)} ETH</span>}
+          {!Number.isFinite(balanceETH.data) || this.props.balanceETH.isLoading ? this.textLoading() : <span className="balance-value">{balanceETH.data.toFixed(2)} ETH</span>}
         </div>
         <div>
-          {this.props.balancePLAT.isLoading ? this.textLoading() : <span className="balance-value">{balancePLAT.data.toFixed(0)} PLAT</span>}
+          {!Number.isFinite(balancePLAT.data) || this.props.balancePLAT.isLoading ? this.textLoading() : <span className="balance-value">{balancePLAT.data.toFixed(0)} PLAT</span>}
         </div>
       </span>
     );

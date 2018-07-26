@@ -21,6 +21,8 @@ class RegisterButton extends Component {
     dispatch: PropTypes.func,
   }
 
+  state = {}
+
   renderButtonWithText(text) {
     const { dispatch, user } = this.props;
     return (
@@ -60,8 +62,16 @@ class RegisterButton extends Component {
     );
   }
 
+  componentDidMount() {
+    /* Delay Hack to prevent flicker of register button on initial render */
+    this.setState({ timeout: setTimeout(() => this.setState({ timeout: null }), 2000) });
+  }
+
   render() {
     const { account, network, user } = this.props;
+
+    /* Delay Hack to prevent flicker of register button on initial render */
+    if (this.state.timeout) return null;
 
     /* Render null if loading */
     if (user.isLoading || network.isLoading) return null;
