@@ -100,10 +100,10 @@ export default class ItemPopup extends Component {
   }
 
   async getFeeAsync() {
-    const { network } = this.props;
+    const { network, show } = this.props;
     const { sellPrice } = this.state;
     console.log('getFeeAsync');
-    if (!network.data) return;
+    if (!show || !network.data) return;
 
     let price = sellPrice && parseInt(sellPrice, 10);
 

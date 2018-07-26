@@ -247,7 +247,7 @@ class Presale extends Component {
               <h3><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.name`} /></h3>
             </Col>
             <Col xs={12}>
-              <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/banner.jpg`} className="presale-purchase-set-image" />
+              <Image responsive src={`/static/images/games/${this.props.slug}/presale/${set.id}/banner.jpg`} className="presale-purchase-set-image" />
             </Col>
             <Col xs={12}>
               <p><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.description`} /></p>
@@ -261,7 +261,7 @@ class Presale extends Component {
             onClick={() => ::this.purchase(set)}
             title={<FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.name`} />}
             subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}</>}
-            itemImage={<Image responsive src={`/static/images/games/${this.props.slug}/presale/${set.id}/thumbnail.jpg`} />}
+          itemImage={<Image responsive src={remainingForSet === 0 ? '/static/images/games/bitizens/presale/sold.png' : `/static/images/games/${this.props.slug}/presale/${set.id}/thumbnail.jpg`} />}
             setDetails={
               set.tokenId !== 20 ? itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>) : null
             }

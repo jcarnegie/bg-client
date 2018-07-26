@@ -258,6 +258,9 @@ class Item extends Component {
             font-size: 15px;
             line-height: 18px;
             cursor: pointer;
+            max-width: 110px;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .buy-for {
             vertical-align: middle;
