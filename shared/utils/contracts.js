@@ -223,7 +223,7 @@ export const buyItemWithEther = ({
   }
 
   const marketplaceAddress = marketPlaceContractAddress || getMarketplaceContractAddress(network);
-  const MarketplaceContract = marketPlaceContractAddress || getMarketplaceContract(network);
+  const MarketplaceContract = getMarketplaceContract(network, marketPlaceContractAddress);
   const tokenIdInt = parseInt(item.tokenId, 10);
   const userId = parseInt(user.data.id, 10);
   const itemId = parseInt(item.id, 10);
@@ -238,12 +238,12 @@ export const buyItemWithEther = ({
     from: getWeb3Wallet(),
     // gas: gasValue,
     value: window.web3.toWei(parseFloat(price, 10)),
-  }, (err, res) => {
+  }, (err, tx) => {
     if (err) {
       log.info(err);
       return reject(err);
     } else {
-      log.info('Success! tx: ', res);
+      log.info('Success! tx: ', tx);
       client.mutate({
         mutation: mutations.purchaseItem,
         variables: {
