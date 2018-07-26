@@ -139,10 +139,10 @@ export default class ItemPopup extends Component {
             width: 80%;
             position: relative;
             left: 10%;
-            height: 55px;
-            margin-top: 275px;
+            height: 50px;
+            margin-top: 260px;
           }
-          .buy form .mobile-btn-block {
+          .mobile-btn-block {
             font-size: 1em;
             padding: 0px;
             background-color: #314B88;
@@ -177,14 +177,14 @@ export default class ItemPopup extends Component {
             min-height: 160px;
           }
           .buyMobileImage {
-            height: 35%;
-            width: 35%;
+            {/* height: 35%;
+            width: 35%; */}
             margin-top: -30px;
           }
           .buyImage{
             height: 70%;
             width: 70%;
-            margin-top: 10px;
+            margin-bottom: 15px;
           }
           .buy .modal-content .modal-body form{
             margin: 0px;
@@ -198,17 +198,25 @@ export default class ItemPopup extends Component {
             justify-content: center;
             align-items: center;
             text-align: center;
-            height: 425px;
+            height: 430px;
           }
-          .buy .modal .modal-content h2 {
+          .buy .modal-content h2 {
             font-weight: 500;
-            font-size: 2em;
+            font-size: 1.8em;
             margin-top: 0;
-            text-align: left;
+            text-align: center;
             width: 100%;
-            margin-bottom: 18px;
+            margin-bottom: 15px;
           }
-          .buy .modal-content .mobileItemInfo h2 {
+          .sell .modal-content h2 {
+            font-weight: 500;
+            font-size: 1.8em;
+            margin-top: 0;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 5px;
+          }
+          .mobileItemInfo h2 {
             font-weight: 500;
             font-size: 1.6em;
             margin-top: 10px;
@@ -225,7 +233,7 @@ export default class ItemPopup extends Component {
             position: relative;
             top: 12px;
           }
-          .buy form .mobileItemInfo {
+          .mobileItemInfo {
             width: 100%;
           }
           .buy form .itemInfo h2 {
@@ -233,7 +241,7 @@ export default class ItemPopup extends Component {
             width: 80%;
             font-size: 1.6em;
           }
-          .buy form .mobileItemName {
+          .mobileItemName {
             font-weight: 500;
             font-size: 1.5em;
             margin-bottom: 0;
@@ -247,7 +255,7 @@ export default class ItemPopup extends Component {
             font-weight: 600;
             padding-bottom: 5px;
           }
-          .buy form .mobileItemInfo .mobileItemPrice{
+          .mobileItemInfo .mobileItemPrice{
             font-size: 1.1em;
             font-weight: 600;
             padding-bottom: 10px;
@@ -258,53 +266,63 @@ export default class ItemPopup extends Component {
             margin: 0 0 10px 0;
             width: 100%;
           }
-          .buy form .mobileItemInfo .mobileList {
+          .mobileItemInfo .mobileList {
             display: grid;
             grid-template-columns: minmax(20%, 0%);
-            margin: 0 0px 15px 30px;
+            margin: 0 15px 15px auto;
             width: 80%;
             columns: 4;
+            justify-content: center;
+          }
+         .sell .mobileItemInfo .mobileList {
+            display: grid;
+            grid-template-columns: minmax(20%,0%);
+            margin: 0px 0px 10px 10px;
+            width: 100%;
+            -webkit-columns: 4;
+            columns: 4;
+            justify-content: center;
           }
           .buy form .itemInfo dl dt {
             grid-column-start: 1;
             display: inline-block;
             font-weight: 300;
-            font-size: 1em;
+            font-size: .8em;
             text-align: left;
           }
           .mobileList dt {
             grid-column-start: 1;
             display: inline-block;
             font-weight: 300;
-            font-size: 1.1em;
+            font-size: .9em;
             text-align: left;
           }
           .mobileList dt:nth-of-type(even) {
             grid-column-start: 3;
             display: inline-block;
             font-weight: 300;
-            font-size: 1em;
+            font-size: .9em;
             text-align: left;
           }
           .buy form .itemInfo dl dd {
             grid-column-start: 2;
             display: inline-block;
             font-weight: 300;
-            font-size: 1.1em;
+            font-size: .8em;
             width: 90px;
           }
           .mobileList dd {
             grid-column-start: 2;
             display: inline-block;
             font-weight: 300;
-            font-size: 1.1em;
+            font-size: .9em;
             width: 90px;
           }
           .mobileList dd:nth-of-type(even) {
             grid-column-start: 4;
             display: inline-block;
             font-weight: 300;
-            font-size: 1.1em;
+            font-size: .9em;
             width: 90px;
           }
           .buy form .sellBlock {
@@ -322,14 +340,37 @@ export default class ItemPopup extends Component {
             border: none;
             border-bottom: 1px solid black;
             background-color: #F3F4FA;
+            font-size: .9em;
+          }
+           .sell form .sell-input {
+            float: left;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            height: 50px;
+            border: none;
+            border-bottom: 1px solid black;
+            background-color: #F3F4FA;
+            margin-bottom: 10px;
+            font-size: .9em;
           }
           .buy form .btn-block-sell {
             float: right;
             width: 38%;
             margin: 0;
             height: 50px;
-            margin-right: 175px;
+            margin-right: 75px;
             line-height: 0px;
+            font-size: 1em;
+          }
+          .sell form .btn-block-sell {
+            float: right;
+            width: 100%;
+            margin: 0;
+            height: 50px;
+            margin-right: 0px;
+            line-height: 0px;
+            font-size: 1em;
           }
           .buy form .sell-text {
             float: left;
@@ -338,16 +379,36 @@ export default class ItemPopup extends Component {
             position: relative;
             font-weight: 500;
             left: 9%;
+            margin-right: 45px;
+            font-size: .9em;
+          }
+          .sell form .sell-text {
+            float: left;
+            width: 100%
+            text-align: left;
+            position: relative;
+            font-weight: 500;
+            font-size: .9em;
           }
           .buy form .sell-disclaimer {
             float: left;
-            width: 37%;
+            width: 100%;
             text-align: left;
             position: relative;
             left: 9%;
+            top: -10px;
+            font-size: .7em;
+            margin-top; 10px;
+          }
+          .sell form .sell-disclaimer {
+            float: left;
+            width: 100%;
+            text-align: left;
+            position: relative;
             top: -5px;
             font-size: .8em;
             margin-top; 10px;
+            margin-bottom: 10px;
           }
           .buy form .itemInfo .platToken{
             position: relative;
@@ -368,10 +429,17 @@ export default class ItemPopup extends Component {
             float: left;
             width: 80%;
           }
-          .buy .mobileAttrs {
+          .mobileAttrs {
             float: left;
             width: 80%;
             margin-left: 30px;
+          }
+          .sell .mobileAttrs {
+            margin-bottom: 10px;
+            float: left;
+            width: 100%;
+            margin-left: 0px;
+            justify-content: center;
           }
           .buy .attrs .badge {
             background-color: #E7EDFD;
@@ -379,28 +447,27 @@ export default class ItemPopup extends Component {
             border-radius: 6px;
             color: #6A7CAC;
             font-weight: 300;
-            font-size: 15px;
+            font-size: .8em;
             line-height: 18px;
             cursor: pointer;
             margin-right: 8px;
-            float: left;
             margin-bottom: 10px;
+            float: left;
           }
-          .buy .mobileAttrs .badge {
+          .mobileAttrs .badge {
             background-color: #E7EDFD;
             border: 1px solid #BECFFB;
             border-radius: 6px;
             color: #6A7CAC;
             font-weight: 300;
-            font-size: 13px;
+            font-size: .75em
             line-height: 18px;
             cursor: pointer;
             margin-right: 8px;
-            float: left;
             margin-bottom: 5px;
           }
         `}</style>
-        <BGModal show={show} dialogClassName="buy" onHide={onHide} backdropClassName="semi">
+        <BGModal show={show} dialogClassName={type === 'sell' && layout.type.mobile ? 'sell' : 'buy'} onHide={onHide} backdropClassName="semi">
           <Modal.Header closeButton />
           <Modal.Body>
             <Form onSubmit={::this.onSubmit}>
@@ -439,9 +506,11 @@ export default class ItemPopup extends Component {
                     <div className="sellBlock">
                       <input type="text" value={this.state.sellPrice} placeholder="0 PLAT" onChange={::this.handleChange} className="sell-input">
                       </input>
-                      <Button type="submit" className="btn-block-sell">
-                        <FormattedMessage id="pages.marketplace.sell-this-item" />
+                      {layout.type.mobile ? null
+                      : <Button type="submit" className="btn-block-sell">
+                          <FormattedMessage id="pages.marketplace.sell-this-item" />
                       </Button>
+                      }
                     </div>
                     <div className="sell-disclaimer">
                       <FormattedMessage id="pages.marketplace.bitguild-fee-1" /><strong>{this.state.feePercentage}%</strong> <FormattedMessage id="pages.marketplace.bitguild-fee-2" />
@@ -449,6 +518,11 @@ export default class ItemPopup extends Component {
                         <strong>{(this.state.sellPrice && this.state.fee) ? (parseInt(this.state.sellPrice) - this.state.fee) : '0'} PLAT </strong>
                       <FormattedMessage id="pages.marketplace.bitguild-fee-4" />
                     </div>
+                    {!layout.type.mobile ? null
+                      : <Button type="submit" className="btn-block-sell">
+                          <FormattedMessage id="pages.marketplace.sell-this-item" />
+                      </Button>
+                    }
                   </div>)
                 : <Button type="submit" className={layout.type.mobile ? 'mobile-btn-block' : 'btn-block'}>
                     <FormattedMessage id="pages.marketplace.buy-for" /> <img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice ? item.salePrice : 0} PLAT

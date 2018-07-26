@@ -278,36 +278,36 @@ class Market extends Component {
 
     const filteredGame = visibleGames.find(game => parseInt(game.id, 10) === parseInt(this.state.gameFilter, 10));
     return (
-      <div className={this.state.mobile ? 'filteredMobileMarket' : 'filteredMarket'}>
+      <div className={this.state.mobile ? 'filtered-mobile-market' : 'filtered-market'}>
         <style jsx>{`
-        .filteredMarket {
+        .filtered-market {
           width: 100%;
           padding: 0px 25px 25px 25px;
           background-color: #F5F7FB;
         }
-        .filteredMobileMarket {
+        .filtered-mobile-market {
           width: 70%;
           margin: 0 auto;
           background-color: #F5F7FB;
         }
-        .currentGameFilter {
+        .current-game-filter {
           height: 80px;
-          font-size: 28px;
+          font-size: 1.6em;
           font-weight: 500;
           line-height: 70px;
           background-color: #F5F7FB;
           margin-left: 15px;
         }
-        .currentGameMobileFilter {
+        .current-mobile-game-filter {
           height: 80px;
-          font-size: 28px;
+          font-size: 1.6em;
           font-weight: 500;
           line-height: 70px;
           background-color: #F5F7FB;
           text-align: center;
         }
       `}</style>
-        <div className={this.state.mobile ? 'currentGameMobileFilter' : 'currentGameFilter'}>
+        <div className={this.state.mobile ? 'current-mobile-game-filter' : 'current-game-filter'}>
           {filteredGame ? filteredGame.name : 'Items'}
         </div>
         {visibleGames.map(game =>
@@ -355,7 +355,7 @@ class Market extends Component {
         .marketplace .empty p {
           font-size: 28px;
         }
-        .mobileMarket .empty {
+        .mobile-market .empty {
           display: flex;
           text-align: center;
           align-items: center;
@@ -363,15 +363,15 @@ class Market extends Component {
           justify-content: center;
           height: 100%
         }
-        .mobileMarket .empty h2 {
+        .mobile-market .empty h2 {
           font-size: 1em;
         }
-        .mobileMarket .empty img {
+        .mobile-market .empty img {
           height: 220px;
           width: 220px;
           margin: 40px;
         }
-        .mobileMarket .empty p {
+        .mobile-market .empty p {
           font-size: 28px;
         }
         `}</style>
@@ -416,12 +416,12 @@ class Market extends Component {
           const loadingAny = loading || games.loading || user.loading;
 
           return (
-            <div className={this.state.mobile ? 'mobileMarket' : 'marketplace'}>
+            <div className={this.state.mobile ? 'mobile-market' : 'marketplace'}>
               <style jsx>{`
               .marketplace {
                 display: flex;
               }
-              .mobileMarket{
+              .mobile-market{
                 display: flex;
                 flex-direction: column;
               }
