@@ -16,6 +16,7 @@ import {
 
 import {
   buyItem,
+  buyItemWithEther,
   listItem,
   extendItem,
   withdrawItem,
@@ -60,6 +61,7 @@ class Web3SandboxPage extends React.Component {
     withdraw: {},
     extend: {},
     buy: {},
+    buyWithEther: {},
     fee: {},
   }
 
@@ -101,7 +103,7 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onListItem() {
-    const { user } = this.props;
+    const { user, network } = this.props;
     const contract = this.dom.list.contract.value;
     const to = this.dom.list.to.value;
     const itemId = this.dom.list.itemId.value;
@@ -117,6 +119,7 @@ class Web3SandboxPage extends React.Component {
       to,
       price,
       currency,
+      network,
     });
     log.info('Sandbox listItem done.', res);
   }
@@ -145,7 +148,7 @@ class Web3SandboxPage extends React.Component {
           <label>price: </label><input ref={c => (this.dom.list.price = c)} onChange={() => this.setState({listPrice: this.dom.list.price.value})}  /> ex: 5000
         </div>
         <br />
-        dataHex: {dataHexForCurrencyAndPrice({ currency: this.state.listCurrency, price: this.state.listPrice})}
+        <p>dataHex: {dataHexForCurrencyAndPrice({ currency: this.state.listCurrency, price: this.state.listPrice})}</p>
         <BGButton onClick={() => ::this.onListItem()}>List Item for Sale</BGButton>
       </div>
     );
@@ -252,8 +255,61 @@ class Web3SandboxPage extends React.Component {
           <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.buy.marketPlaceContractAddress = c)} /> optional
         </div>
         <br />
-        dataHex: {dataHexForContractAndTokenId({ contract: this.state.buyContractAddress, tokenId: this.state.buyTokenId})}
+        <p>dataHex: {dataHexForContractAndTokenId({ contract: this.state.buyContractAddress, tokenId: this.state.buyTokenId})}</p>
         <BGButton onClick={() => ::this.onBuyItem()}>Buy Item from Marketplace</BGButton>
+      </div>
+    );
+  }
+
+  async onBuyItemWithEther() {
+    const { user, network } = this.props;
+
+    const price = parseFloat(this.dom.buyWithEther.price.value, 10);
+    const tokenId = parseInt(this.dom.buyWithEther.tokenId.value, 10);
+    const itemId = parseInt(this.dom.buyWithEther.itemId.value, 10);
+    const contract = this.dom.buyWithEther.gameContract.value;
+    const marketPlaceContractAddress = this.dom.buyWithEther.marketPlaceContractAddress.value;
+
+    const item = {
+      id: itemId, 
+      tokenId, 
+    };
+  
+    /* Buy item from Marketplace */
+    const res = await buyItemWithEther({
+      user,
+      network,
+      item,
+      price,
+      contract,
+      marketPlaceContractAddress,
+    });
+    log.info('Sandbox buyItem: ', res);
+  }
+
+  buyItemWithEtherWorkflow() {
+    return (
+      <div className="web3-sandbox-card">
+        <h3>Buy Item from Marketplace (with Ether)</h3>
+        <div className="web3-sandbox-card-row">
+          <label>tokenId: </label>
+          <input ref={c => (this.dom.buyWithEther.tokenId = c)} />
+        </div>
+        <div className="web3-sandbox-card-row">
+          <label>itemId: </label><input ref={c => (this.dom.buyWithEther.itemId = c)} />
+        </div>
+        <div className="web3-sandbox-card-row">
+          <label>gameContract: </label>
+          <input ref={c => (this.dom.buyWithEther.gameContract = c)} />
+        </div>
+        <div className="web3-sandbox-card-row">
+          <label>price: </label><input ref={c => (this.dom.buyWithEther.price = c)} />
+        </div>
+        <div className="web3-sandbox-card-row">
+          <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.buyWithEther.marketPlaceContractAddress = c)} /> optional
+        </div>
+        <br />
+        <BGButton onClick={() => ::this.onBuyItemWithEther()}>Buy Item from Marketplace (with Ether)</BGButton>
       </div>
     );
   }
@@ -367,12 +423,12 @@ class Web3SandboxPage extends React.Component {
             font-size: 12px;
           }
           .key {
-            width: calc(40% - 20px);
+            width: calc(30% - 20px);
             float: right;
             margin-left: 20px;
           }
           .workflows {
-            width: 60%;
+            width: 70%;
             float: left;
           }
         `}</style>
@@ -405,6 +461,7 @@ class Web3SandboxPage extends React.Component {
         <div className="workflows">
           {::this.listItemWorkflow()}
           {::this.buyItemWorkflow()}
+          {::this.buyItemWithEtherWorkflow()}
           {::this.withdrawItemWorkflow()}
           {::this.extendItemWorkflow()}
           {::this.getFeeWorkflow()}

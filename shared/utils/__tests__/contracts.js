@@ -8,13 +8,17 @@ import {
   dataHexForContractAndTokenId,
 } from '@/shared/utils/contracts';
 
+const testContractAddress = '';
+
 
 describe('MarketplaceContract', () => {
   test.skip('dataHexForCurrencyAndPrice', () => {
-    expect(false).toBe(true);
+    expect(dataHexForCurrencyAndPrice({ currency: 0, price: 1000 })).toBe(true);
+    expect(dataHexForCurrencyAndPrice({ currency: 1, price: 0 )).toBe(true);
   });
   test.skip('dataHexForContractAndTokenId', () => {
-    expect(false).toBe(true);
+    expect(dataHexForContractAndTokenId({ contract: testContractAddress, tokenId: 1 })).toBe(true);
+    expect(dataHexForContractAndTokenId({ contract: '', tokenId: 0 })).toBe(true);
   });
   test.skip('listItem', () => {
     expect(false).toBe(true);

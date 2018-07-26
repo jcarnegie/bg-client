@@ -5,6 +5,7 @@
     "plat": 6000
   },
   "tokenId": 5960,
+  "saleState": "listpending",
   "name": "Samurai Helm",
   "description": "",
   "image": "https://ether.online/v1/mz41.png",
@@ -43,6 +44,7 @@
     "plat": 6000
   },
   "tokenId": 10321,
+  "saleState": "salepending",
   "name": "Demon Blade",
   "description": "",
   "image": "https://ether.online/v1/wq21.png",
@@ -77,6 +79,7 @@
     "plat": 6000
   },
   "tokenId": 10895,
+  "saleState": "salepending",
   "name": "Paladin Armor",
   "description": "",
   "image": "https://ether.online/v1/yf51.png",
@@ -111,6 +114,7 @@
     "plat": 6000
   },
   "tokenId": 10898,
+  "saleState": "salepending",
   "name": "Demon Helm",
   "description": "",
   "image": "https://ether.online/v1/mz22.png",
@@ -145,6 +149,7 @@
     "plat": 6000
   },
   "tokenId": 10899,
+  "saleState": "withdrawpending",
   "name": "Demon Helm",
   "description": "",
   "image": "https://ether.online/v1/mz21.png",
@@ -179,6 +184,7 @@
     "plat": 6000
   },
   "tokenId": 10924,
+  "saleState": "extendpending",
   "name": "Demon Boots",
   "description": "",
   "image": "https://ether.online/v1/xz22.png",
@@ -213,6 +219,7 @@
     "plat": 6000
   },
   "tokenId": 13459,
+  "saleState": "sold",
   "name": "Knight Boots",
   "description": "",
   "image": "https://ether.online/v1/xz34.png",
@@ -247,6 +254,7 @@
     "plat": 6000
   },
   "tokenId": 13525,
+  "saleState": "sold",
   "name": "Raging Tiger",
   "description": "",
   "image": "https://ether.online/v1/pet3.png",
@@ -289,6 +297,7 @@
     "plat": 6000
   },
   "tokenId": 14989,
+  "saleState": "sold",
   "name": "Knight Leggings",
   "description": "",
   "image": "https://ether.online/v1/kz32.png",
@@ -323,6 +332,7 @@
     "plat": 6000
   },
   "tokenId": 14990,
+  "saleState": "sold",
   "name": "Knight Helm",
   "description": "",
   "image": "https://ether.online/v1/mz31.png",
@@ -357,6 +367,7 @@
     "plat": 6000
   },
   "tokenId": 14991,
+  "saleState": "sold",
   "name": "Paladin Armor",
   "description": "",
   "image": "https://ether.online/v1/yf54.png",
@@ -391,6 +402,7 @@
     "plat": 6000
   },
   "tokenId": 14992,
+  "saleState": "sold",
   "name": "Demon Armor",
   "description": "",
   "image": "https://ether.online/v1/yf21.png",
@@ -425,6 +437,7 @@
     "plat": 6000
   },
   "tokenId": 14993,
+  "saleState": "sold",
   "name": "Samurai Pants",
   "description": "",
   "image": "https://ether.online/v1/kz44.png",
@@ -459,6 +472,7 @@
     "plat": 6000
   },
   "tokenId": 14994,
+  "saleState": "listed",
   "name": "Samurai Boots",
   "description": "",
   "image": "https://ether.online/v1/xz42.png",
@@ -493,6 +507,7 @@
     "plat": 6000
   },
   "tokenId": 14995,
+  "saleState": "sold",
   "name": "Archmage Pants",
   "description": "",
   "image": "https://ether.online/v1/kz13.png",
@@ -527,6 +542,7 @@
     "plat": 6000
   },
   "tokenId": 14996,
+  "saleState": "sold",
   "name": "Paladin Helm",
   "description": "",
   "image": "https://ether.online/v1/mz51.png",
@@ -561,6 +577,7 @@
     "plat": 6000
   },
   "tokenId": 14997,
+  "saleState": "sold",
   "name": "Paladin Sword",
   "description": "",
   "image": "https://ether.online/v1/wq51.png",
@@ -595,6 +612,7 @@
     "plat": 6000
   },
   "tokenId": 14998,
+  "saleState": "listpending",
   "name": "Samurai Pants",
   "description": "",
   "image": "https://ether.online/v1/kz41.png",
@@ -629,6 +647,7 @@
     "plat": 6000
   },
   "tokenId": 14999,
+  "saleState": "listpending",
   "name": "Paladin Helm",
   "description": "",
   "image": "https://ether.online/v1/mz52.png",
@@ -663,6 +682,7 @@
     "plat": 6000
   },
   "tokenId": 34586,
+  "saleState": "listpending",
   "name": "Demon Boots",
   "description": "",
   "image": "https://ether.online/v1/xz21.png",
