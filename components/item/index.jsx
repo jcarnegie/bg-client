@@ -329,7 +329,7 @@ class MarketplaceItem extends Component {
       network,
       user,
       item,
-      price: parseInt(item.salePrice || 0, 10),
+      price: parseFloat(item.salePrice || 0, 10),
       contract: getContractFromGame(game, network),
     });
     log.info('Instantiating buy transaction...');
@@ -450,7 +450,7 @@ class InventoryItem extends Component {
       item,
       contract: getContractFromGame(game, network),
       to: getMarketplaceContractAddress(network),
-      price: parseInt(data.sellPrice),
+      price: parseFloat(data.sellPrice),
     });
 
     log.info('Beginning sell transaction...');

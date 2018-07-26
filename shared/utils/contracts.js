@@ -48,7 +48,7 @@ export const listItem = ({
   const tokenId = parseInt(item.tokenId, 10);
   const itemId = parseInt(item.id, 10);
   const userId = parseInt(user.data.id, 10);
-  const priceBigNum = parseInt(price, 10) * 1e18;
+  const priceBigNum = parseFloat(price, 10) * 1e18;
   const currencyInt = parseInt(currency, 10);
   const priceBigNumString = priceBigNum.toLocaleString('fullwide', { useGrouping: false });
   const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNumString]);
@@ -129,7 +129,7 @@ export const buyItem = ({
   const tokenIdInt = parseInt(item.tokenId, 10);
   const userId = parseInt(user.data.id, 10);
   const itemId = parseInt(item.id, 10);
-  const priceBigNum = parseInt(price, 10) * 1e18;
+  const priceBigNum = parseFloat(price, 10) * 1e18;
   const dataBuffer = EthABI.rawEncode(['address', 'uint256'], [contract, tokenIdInt]);
   const dataHex = `0x${dataBuffer.toString('hex')}`;
 

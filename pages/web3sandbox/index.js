@@ -30,6 +30,26 @@ const testGameContractAddress = '0x856c82b392fa4041c3a63b3a8c8a7f258d2f27e0';
 const etherOnlineRinkeby = '0xca68213bce717c256628936a9ea4570f52ab2ed2';
 
 
+const dataHexForList = (currency, price) => {
+  price = parseFloat(price, 10) * 1e18;
+  const currencyInt = parseInt(currency, 10);
+  const priceBigNumString = price.toLocaleString('fullwide', { useGrouping: false });
+  const listDataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNumString]);
+  console.log('dataHexList price: ', price);
+  console.log('dataHexList priceBigNumString: ', priceBigNumString);
+  console.log('dataHexList currency: ', currency);
+  return `0x${listDataBuffer.toString('hex')}`;
+}
+
+const dataHexForBuy = (contractAddress, tokenId) => {
+  const tokenIdInt = parseInt(tokenId, 10);
+  const buyDataBuffer = EthABI.rawEncode(['address', 'uint256'], [contractAddress, tokenIdInt]);
+  console.log('dataHexBuy contractAddress: ', contractAddress);
+  console.log('dataHexBuy tokenIdInt: ', tokenIdInt);
+  return `0x${buyDataBuffer.toString('hex')}`;
+}
+
+
 @connect(
   state => ({
     gas: state.gas,
@@ -44,6 +64,13 @@ class Web3SandboxPage extends React.Component {
     network: PropTypes.object,
     user: PropTypes.object,
     gas: PropTypes.object,
+  }
+
+  state = {
+    listCurrency: 0,
+    listPrice: 0,
+    buyTokenId: 0,
+    buyContractAddress: '',
   }
 
   dom = {
@@ -130,14 +157,13 @@ class Web3SandboxPage extends React.Component {
           <label>tokenId: </label><input ref={c => (this.dom.list.tokenId = c)} /> ex: 1
         </div>
         <div className="web3-sandbox-card-row">
-          <label>currency: </label><input ref={c => (this.dom.list.currency = c)} /> ex: (0|1) - 0: PLAT, 1: ETH
+          <label>currency: </label><input ref={c => (this.dom.list.currency = c)} onChange={() => this.setState({listCurrency: this.dom.list.currency.value})} /> ex: (0|1) - 0: PLAT, 1: ETH
         </div>
         <div className="web3-sandbox-card-row">
-          <label>price: </label><input ref={c => (this.dom.list.price = c)} /> ex: 5000
+          <label>price: </label><input ref={c => (this.dom.list.price = c)} onChange={() => this.setState({listPrice: this.dom.list.price.value})}  /> ex: 5000
         </div>
-
         <br />
-
+        dataHex: {dataHexForList(this.state.listCurrency, this.state.listPrice)}
         <BGButton onClick={() => ::this.onListItem()}>List Item for Sale</BGButton>
       </div>
     );
@@ -192,7 +218,7 @@ class Web3SandboxPage extends React.Component {
   async onBuyItem() {
     const { user, network } = this.props;
 
-    const price = parseInt(this.dom.buy.price.value, 10);
+    const price = parseFloat(this.dom.buy.price.value, 10);
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
     const itemId = parseInt(this.dom.buy.itemId.value, 10);
     const contract = this.dom.buy.gameContract.value;
@@ -222,13 +248,17 @@ class Web3SandboxPage extends React.Component {
       <div className="web3-sandbox-card">
         <h3>Buy Item from Marketplace</h3>
         <div className="web3-sandbox-card-row">
-          <label>tokenId: </label><input ref={c => (this.dom.buy.tokenId = c)} />
+          <label>tokenId: </label>
+          <input ref={c => (this.dom.buy.tokenId = c)} onChange={
+            () => this.setState({ buyTokenId: this.dom.buy.tokenId.value })}
+          />
         </div>
         <div className="web3-sandbox-card-row">
           <label>itemId: </label><input ref={c => (this.dom.buy.itemId = c)} />
         </div>
         <div className="web3-sandbox-card-row">
-          <label>gameContract: </label><input ref={c => (this.dom.buy.gameContract = c)} />
+          <label>gameContract: </label>
+          <input ref={c => (this.dom.buy.gameContract = c)} onChange={() => this.setState({ buyContractAddress: this.dom.buy.gameContract.value })} />
         </div>
         <div className="web3-sandbox-card-row">
           <label>price: </label><input ref={c => (this.dom.buy.price = c)} />
@@ -240,7 +270,7 @@ class Web3SandboxPage extends React.Component {
           <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.buy.marketPlaceContractAddress = c)} /> optional
         </div>
         <br />
-
+        dataHex: {dataHexForBuy(this.state.buyContractAddress, this.state.buyTokenId)}
         <BGButton onClick={() => ::this.onBuyItem()}>Buy Item from Marketplace</BGButton>
       </div>
     );
