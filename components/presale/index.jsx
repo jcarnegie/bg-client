@@ -261,7 +261,7 @@ class Presale extends Component {
             onClick={() => ::this.purchase(set)}
             title={<FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.name`} />}
             subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}</>}
-          itemImage={<Image responsive src={remainingForSet === 0 ? '/static/images/games/bitizens/presale/sold.png' : `/static/images/games/${this.props.slug}/presale/${set.id}/thumbnail.jpg`} />}
+            itemImage={<Image responsive src={remainingForSet === 0 ? `/static/images/games/${this.props.slug}/presale/sold.png` : `/static/images/games/${this.props.slug}/presale/${set.id}/thumbnail.jpg`} />}
             setDetails={
               set.tokenId !== 20 ? itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>) : null
             }

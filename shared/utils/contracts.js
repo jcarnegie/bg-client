@@ -107,6 +107,8 @@ export const listItem = ({
  * - user - [redux] user object
  * - network - [redux] network object
  * - item - [redux] item object
+ * - bitGuildTokenContractAddress - optional
+ * - marketPlaceContractAddress - optional
  */
 export const buyItem = ({
   price,
@@ -114,14 +116,16 @@ export const buyItem = ({
   user,
   network,
   item,
+  bitGuildTokenContractAddress = null,
+  marketPlaceContractAddress = null,
 }) => new Promise((resolve, reject) => {
   if (!user || !item || !network || (!price && price !== 0) || !contract) {
    log.info('buyItem: incorrect parameters.')
    return reject();
   }
 
-  const BitGuildTokenContract = getBitGuildTokenContract(network);
-  const marketplaceAddress = getMarketplaceContractAddress(network);
+  const BitGuildTokenContract = bitGuildTokenContractAddress || getBitGuildTokenContract(network);
+  const marketplaceAddress = marketPlaceContractAddress || getMarketplaceContractAddress(network);
   const tokenIdInt = parseInt(item.tokenId, 10);
   const userId = parseInt(user.data.id, 10);
   const itemId = parseInt(item.id, 10);
@@ -169,18 +173,20 @@ export const buyItem = ({
  * - contract - Game Contract Address
  * - network - [redux] network object
  * - item - [redux] item object
+ * - marketPlaceContractAddress - optional
  */
 export const extendItem = ({
   contract,
   network,
   item,
+  marketPlaceContractAddress = null,
 }) => new Promise((resolve, reject) => {
   if (!network || !contract || !item) {
    log.info('extendItem: incorrect parameters.')
    return reject();
   }
 
-  const MarketplaceContract = getMarketplaceContract(network);
+  const MarketplaceContract = marketPlaceContractAddress || getMarketplaceContract(network);
 
   const itemId = parseInt(item.id, 10);
   const tokenId = parseInt(item.tokenId, 10);
@@ -221,18 +227,20 @@ export const extendItem = ({
  * - contract - Game Contract Address
  * - network - [redux] network object
  * - item - [redux] item object
+ * - marketPlaceContractAddress - optional
  */
 export const withdrawItem = ({
   contract,
   network,
   item,
+  marketPlaceContractAddress = null,
 }) => new Promise((resolve, reject) => {
   if (!network || !contract || !item) {
    log.info('withdrawItem: incorrect parameters.')
    return reject();
   }
 
-  const MarketplaceContract = getMarketplaceContract(network);
+  const MarketplaceContract = marketPlaceContractAddress || getMarketplaceContract(network);
 
   const itemId = parseInt(item.id, 10);
   const tokenId = parseInt(item.tokenId, 10);
@@ -274,6 +282,7 @@ export const withdrawItem = ({
  * - seller - address
  * - buyer - address
  * - contract - Game Contract Address
+ * - marketPlaceContractAddress - optional
  */
 export const getFee = ({
   network,
@@ -281,13 +290,14 @@ export const getFee = ({
   buyer = null,
   seller = null,
   contract = null,
+  marketPlaceContractAddress = null,
 }) => new Promise((resolve, reject) => {
 
   const zeroAddress = window.web3.toHex(0);
 
   if (!network || (!price && price !== 0)) reject();
 
-  const MarketplaceContract = getMarketplaceContract(network);
+  const MarketplaceContract = marketPlaceContractAddress || getMarketplaceContract(network);
 
 
   /* params: price, buyer, seller, contract */

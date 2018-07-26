@@ -120,23 +120,18 @@ class Web3SandboxPage extends React.Component {
         <div>
           <label>contract: </label><input ref={c => (this.dom.list.contract = c)} />
         </div>
-
         <div>
           <label>to: </label><input ref={c => (this.dom.list.to = c)} /> marketplace: {networkAddressMap.rinkeby.marketplace} (rinkeby)
         </div>
-
         <div>
           <label>itemId: </label><input ref={c => (this.dom.list.itemId = c)} /> ex: 2
         </div>
-
         <div>
           <label>tokenId: </label><input ref={c => (this.dom.list.tokenId = c)} /> ex: 1
         </div>
-
         <div>
           <label>currency: </label><input ref={c => (this.dom.list.currency = c)} /> ex: (0|1) - 0: PLAT, 1: ETH
         </div>
-
         <div>
           <label>price: </label><input ref={c => (this.dom.list.price = c)} /> ex: 5000
         </div>
@@ -154,6 +149,7 @@ class Web3SandboxPage extends React.Component {
     const contract = this.dom.withdraw.gameContract.value;
     const tokenId = this.dom.withdraw.tokenId.value;
     const itemId = this.dom.withdraw.itemId.value;
+    const marketPlaceContractAddress = this.dom.withdraw.marketPlaceContractAddress.value;
 
     const item = {
       id: itemId,
@@ -161,7 +157,12 @@ class Web3SandboxPage extends React.Component {
     }
 
     /* Withdraw item from marketplace */
-    const res = await withdrawItem({ network, contract, item });
+    const res = await withdrawItem({
+      network,
+      contract,
+      item,
+      marketPlaceContractAddress,
+    });
     log.info('Sandbox withdrawItem: ', res);
   }
 
@@ -172,15 +173,15 @@ class Web3SandboxPage extends React.Component {
         <div>
           <label>gameContract: </label><input ref={c => (this.dom.withdraw.gameContract = c)} />
         </div>
-
         <div>
           <label>itemId: </label><input ref={c => (this.dom.withdraw.itemId = c)} />
         </div>
-
         <div>
           <label>tokenId: </label><input ref={c => (this.dom.withdraw.tokenId = c)} />
         </div>
-
+        <div>
+          <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.withdraw.marketPlaceContractAddress = c)} /> optional
+        </div>
         <br />
 
         <BGButton onClick={() => ::this.onWithdrawItem()}>Withdraw Item from Marketplace</BGButton>
@@ -195,6 +196,8 @@ class Web3SandboxPage extends React.Component {
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
     const itemId = parseInt(this.dom.buy.itemId.value, 10);
     const contract = this.dom.buy.gameContract.value;
+    const bitGuildTokenContractAddress = this.dom.buy.bitGuildTokenContractAddress.value;
+    const marketPlaceContractAddress = this.dom.buy.marketPlaceContractAddress.value;
 
     const item = {
       id: itemId, 
@@ -208,6 +211,8 @@ class Web3SandboxPage extends React.Component {
       item,
       price,
       contract,
+      bitGuildTokenContractAddress,
+      marketPlaceContractAddress,
     });
     log.info('Sandbox buyItem: ', res);
   }
@@ -228,7 +233,12 @@ class Web3SandboxPage extends React.Component {
         <div>
           <label>price: </label><input ref={c => (this.dom.buy.price = c)} />
         </div>
-
+        <div>
+          <label>bitGuildTokenContractAddress: </label><input ref={c => (this.dom.buy.bitGuildTokenContractAddress = c)} />
+        </div>
+        <div>
+          <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.buy.marketPlaceContractAddress = c)} /> optional
+        </div>
         <br />
 
         <BGButton onClick={() => ::this.onBuyItem()}>Buy Item from Marketplace</BGButton>
@@ -243,6 +253,7 @@ class Web3SandboxPage extends React.Component {
     const contract = this.dom.extend.gameContract.value;
     const tokenId = this.dom.extend.tokenId.value;
     const itemId = this.dom.extend.itemId.value;
+    const marketPlaceContractAddress = this.dom.extend.marketPlaceContractAddress.value;
 
     const item = {
       id: itemId,
@@ -250,7 +261,12 @@ class Web3SandboxPage extends React.Component {
     }
 
     /* Extend item from marketplace */
-    const res = await extendItem({ network, contract, item })
+    const res = await extendItem({
+      network,
+      contract,
+      item,
+      marketPlaceContractAddress,
+    })
     log.info('Sandbox extendItem: ', res);
   }
 
@@ -261,15 +277,15 @@ class Web3SandboxPage extends React.Component {
         <div>
           <label>gameContract: </label><input ref={c => (this.dom.extend.gameContract = c)} />
         </div>
-
         <div>
           <label>itemId: </label><input ref={c => (this.dom.extend.itemId = c)} />
         </div>
-
         <div>
           <label>tokenId: </label><input ref={c => (this.dom.extend.tokenId = c)} />
         </div>
-
+        <div>
+          <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.extend.marketPlaceContractAddress = c)} /> optional
+        </div>
         <br />
 
         <BGButton onClick={() => ::this.onExtendItem()}>Extend Item in Marketplace</BGButton>
@@ -303,17 +319,17 @@ class Web3SandboxPage extends React.Component {
         <div>
           <label>price: </label><input ref={c => (this.dom.fee.price = c)} />
         </div>
-
         <div>
           <label>buyer: </label><input ref={c => (this.dom.fee.buyer = c)} />
         </div>
-
         <div>
           <label>seller: </label><input ref={c => (this.dom.fee.seller = c)} />
         </div>
-
         <div>
           <label>contract: </label><input ref={c => (this.dom.fee.contract = c)} />
+        </div>
+        <div>
+          <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.fee.marketPlaceContractAddress = c)} /> optional
         </div>
 
         <br />
