@@ -405,8 +405,6 @@ class Market extends Component {
 
     return (
       <Query
-        fetchPolicy="no-cache"
-        pollInterval={POLL_INTERVAL}
         query={queries.listMarketplaceItems}
         variables={{
           userId: (viewUserByWallet) ? viewUserByWallet.id : null,
