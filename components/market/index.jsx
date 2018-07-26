@@ -88,9 +88,7 @@ class Market extends Component {
 
   renderFilters(items, games, loading = false) {
     let gameFilters = [];
-    if (!items) return null;
-    if (!games) return null;
-    if (loading) return <DataLoading />;
+
     if (!loading || (games && items)) {
       gameFilters = games.map(({ name, id, slug }) => ({
         name,
@@ -271,7 +269,7 @@ class Market extends Component {
         )}
       </div>
     );
-  }
+ }
 
   renderMarket(items, games, loading = false) {
     return (!loading && items && items.length && games && games.length) ? this.renderItems(items, games) : this.renderEmpty();
@@ -398,7 +396,6 @@ class Market extends Component {
     const { games, user } = this.props;
 
     if (!games || !user) return <DataLoading />;
-    if (games.loading || user.loading) return <DataLoading />;
     if (games.error) return <div>Error!</div>;
 
     let { listGames } = games;
@@ -436,7 +433,7 @@ class Market extends Component {
             `}</style>
               {this.flexStyle()}
               {this.renderFilters(listMarketplaceItems, listGames, loadingAny)}
-              {(!loadingAny || (listMarketplaceItems && listGames)) ? this.renderMarket(listMarketplaceItems, listGames) : null}
+              {this.renderMarket(listMarketplaceItems, listGames)}
             </div>
           );
         }}
