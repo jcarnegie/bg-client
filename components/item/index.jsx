@@ -442,15 +442,17 @@ class InventoryItem extends Component {
       user,
     } = this.props;
 
-    const result = await listItem({
-      user,
-      item,
-      contract: getContractFromGame(game, network),
-      to: getMarketplaceContractAddress(network),
-      price: parseFloat(data.sellPrice),
-    });
+    if (parseFloat(data.sellPrice) < 10000000) {
+      log.info('Beginning sell transaction...');
 
-    log.info('Beginning sell transaction...');
+      const result = await listItem({
+        user,
+        item,
+        contract: getContractFromGame(game, network),
+        to: getMarketplaceContractAddress(network),
+        price: parseFloat(data.sellPrice),
+      });
+    }
   }
 
   renderPresaleButton() {

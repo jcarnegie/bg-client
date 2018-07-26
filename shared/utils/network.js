@@ -95,8 +95,8 @@ export function getOracleContract(network) {
   return window.web3.eth.contract(oracleABI).at(getOracleContractAddress(network));
 }
 
-export function getMarketplaceContract(network) {
-  return window.web3.eth.contract(marketplaceABI).at(getMarketplaceContractAddress(network));
+export function getMarketplaceContract(network, address = null) {
+  return window.web3.eth.contract(marketplaceABI).at(address || getMarketplaceContractAddress(network));
 }
 
 export function getBitizensIGOContract(network) {
