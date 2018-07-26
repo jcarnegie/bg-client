@@ -20,6 +20,8 @@ import {
   extendItem,
   withdrawItem,
   getFee,
+  dataHexForCurrencyAndPrice,
+  dataHexForContractAndTokenId,
 } from '@/shared/utils/contracts';
 
 import style from '@/shared/constants/style';
@@ -28,26 +30,6 @@ import BGButton from '@/components/bgbutton';
 
 const testGameContractAddress = '0x856c82b392fa4041c3a63b3a8c8a7f258d2f27e0';
 const etherOnlineRinkeby = '0xca68213bce717c256628936a9ea4570f52ab2ed2';
-
-
-const dataHexForList = (currency, price) => {
-  price = parseFloat(price, 10) * 1e18;
-  const currencyInt = parseInt(currency, 10);
-  const priceBigNumString = price.toLocaleString('fullwide', { useGrouping: false });
-  const listDataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNumString]);
-  console.log('dataHexList price: ', price);
-  console.log('dataHexList priceBigNumString: ', priceBigNumString);
-  console.log('dataHexList currency: ', currency);
-  return `0x${listDataBuffer.toString('hex')}`;
-}
-
-const dataHexForBuy = (contractAddress, tokenId) => {
-  const tokenIdInt = parseInt(tokenId, 10);
-  const buyDataBuffer = EthABI.rawEncode(['address', 'uint256'], [contractAddress, tokenIdInt]);
-  console.log('dataHexBuy contractAddress: ', contractAddress);
-  console.log('dataHexBuy tokenIdInt: ', tokenIdInt);
-  return `0x${buyDataBuffer.toString('hex')}`;
-}
 
 
 @connect(
@@ -163,7 +145,7 @@ class Web3SandboxPage extends React.Component {
           <label>price: </label><input ref={c => (this.dom.list.price = c)} onChange={() => this.setState({listPrice: this.dom.list.price.value})}  /> ex: 5000
         </div>
         <br />
-        dataHex: {dataHexForList(this.state.listCurrency, this.state.listPrice)}
+        dataHex: {dataHexForCurrencyAndPrice({ currency: this.state.listCurrency, price: this.state.listPrice})}
         <BGButton onClick={() => ::this.onListItem()}>List Item for Sale</BGButton>
       </div>
     );
@@ -270,7 +252,7 @@ class Web3SandboxPage extends React.Component {
           <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.buy.marketPlaceContractAddress = c)} /> optional
         </div>
         <br />
-        dataHex: {dataHexForBuy(this.state.buyContractAddress, this.state.buyTokenId)}
+        dataHex: {dataHexForContractAndTokenId({ contract: this.state.buyContractAddress, tokenId: this.state.buyTokenId})}
         <BGButton onClick={() => ::this.onBuyItem()}>Buy Item from Marketplace</BGButton>
       </div>
     );

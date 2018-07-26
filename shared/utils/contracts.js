@@ -16,6 +16,41 @@ import {
 
 
 /*
+ * dataHexForCurrencyAndPrice
+ * - currency - (0|1) ... 0: ETH, 1: PLAT ... ex: 0
+ * - price - ex: 1200
+ */
+export const dataHexForCurrencyAndPrice = ({ currency, price }) => {
+  if (currency === undefined || price === undefined) return null;
+  if (currency === null || price === null) return null;
+  price = parseFloat(price, 10) * 1e18;
+  const currencyInt = parseInt(currency, 10);
+  const priceBigNumString = price.toLocaleString('fullwide', { useGrouping: false });
+  const listDataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNumString]);
+  log.info('dataHexForCurrencyAndPrice price: ', price);
+  log.info('dataHexForCurrencyAndPrice priceBigNumString: ', priceBigNumString);
+  log.info('dataHexForCurrencyAndPrice currency: ', currency);
+  return `0x${listDataBuffer.toString('hex')}`;
+}
+
+
+/*
+ * dataHexForContractAndTokenId
+ * - contract - String
+ * - tokenId - ex: 12
+ */
+export const dataHexForContractAndTokenId = ({ contract, tokenId }) => {
+  if (contract === undefined || tokenId === undefined) return null;
+  if (contract === null || tokenId === null) return null;
+  const tokenIdInt = parseInt(tokenId, 10);
+  const buyDataBuffer = EthABI.rawEncode(['address', 'uint256'], [contract, tokenIdInt]);
+  log.info('dataHexBuy contract: ', contract);
+  log.info('dataHexBuy tokenIdInt: ', tokenIdInt);
+  return `0x${buyDataBuffer.toString('hex')}`;
+}
+
+
+/*
  * listItem
  * - contract - Game Contract Address
  * - price - ex: 1200
@@ -48,11 +83,9 @@ export const listItem = ({
   const tokenId = parseInt(item.tokenId, 10);
   const itemId = parseInt(item.id, 10);
   const userId = parseInt(user.data.id, 10);
-  const priceBigNum = parseFloat(price, 10) * 1e18;
   const currencyInt = parseInt(currency, 10);
-  const priceBigNumString = priceBigNum.toLocaleString('fullwide', { useGrouping: false });
-  const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNumString]);
-  const dataHex = `0x${dataBuffer.toString('hex')}`;
+
+  const dataHex = dataHexForCurrencyAndPrice({ currency: currencyInt, price });
 
   if (currencyInt === 1) {
     log.info('listItem: ETH workflow not implemented.');
@@ -63,10 +96,7 @@ export const listItem = ({
   log.info('contract: ', contract);
   log.info('to: ', to);
   log.info('item.tokenId: ', item.tokenId);
-  log.info('priceBigNum: ', priceBigNum);
-  log.info('priceBigNumString: ', priceBigNumString);
   log.info('currencyInt: ', currencyInt);
-  log.info('dataBuffer: ', dataBuffer);
   log.info('dataHex: ', dataHex);
   log.info('user: ', user);
   log.info('item: ', item);
@@ -130,8 +160,8 @@ export const buyItem = ({
   const userId = parseInt(user.data.id, 10);
   const itemId = parseInt(item.id, 10);
   const priceBigNum = parseFloat(price, 10) * 1e18;
-  const dataBuffer = EthABI.rawEncode(['address', 'uint256'], [contract, tokenIdInt]);
-  const dataHex = `0x${dataBuffer.toString('hex')}`;
+
+  const dataHex = dataHexForContractAndTokenId({ contract, tokenId: tokenIdInt });
 
   log.info('BitGuildTokenContract: ', BitGuildTokenContract);
   log.info('marketplaceAddress: ', marketplaceAddress);
@@ -139,7 +169,6 @@ export const buyItem = ({
   log.info('contract: ', contract);
   log.info('price: ', price);
   log.info('priceBigNum: ', priceBigNum);
-  log.info('dataBuffer: ', dataBuffer);
   log.info('dataHex: ', dataHex);
 
   /* Buy item from marketplace */
