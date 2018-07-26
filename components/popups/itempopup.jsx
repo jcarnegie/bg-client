@@ -249,11 +249,14 @@ export default class ItemPopup extends Component {
             position: relative;
             top: 15px;
           }
-          .buy form .itemInfo .itemPrice{
+          .buy form .itemInfo .itemPrice {
             float: left;
             font-size: 1.2em;
             font-weight: 600;
             padding-bottom: 5px;
+          }
+          .buy form .itemInfo .itemPrice img {
+            margin-right: 10px;
           }
           .mobileItemInfo .mobileItemPrice{
             font-size: 1.1em;
