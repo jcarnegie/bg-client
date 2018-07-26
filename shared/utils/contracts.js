@@ -44,8 +44,8 @@ export const dataHexForContractAndTokenId = ({ contract, tokenId }) => {
   if (contract === null || tokenId === null) return null;
   const tokenIdInt = parseInt(tokenId, 10);
   const buyDataBuffer = EthABI.rawEncode(['address', 'uint256'], [contract, tokenIdInt]);
-  log.info('dataHexBuy contract: ', contract);
-  log.info('dataHexBuy tokenIdInt: ', tokenIdInt);
+  log.info('dataHexForContractAndTokenId contract: ', contract);
+  log.info('dataHexForContractAndTokenId tokenIdInt: ', tokenIdInt);
   return `0x${buyDataBuffer.toString('hex')}`;
 }
 
