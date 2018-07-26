@@ -140,7 +140,6 @@ export const listItem = ({
  * - user - [redux] user object
  * - network - [redux] network object
  * - item - [redux] item object
- * - bitGuildTokenContractAddress - optional
  * - marketPlaceContractAddress - optional
  */
 export const buyItem = ({
@@ -149,7 +148,6 @@ export const buyItem = ({
   user,
   network,
   item,
-  bitGuildTokenContractAddress = null,
   marketPlaceContractAddress = null,
 }) => new Promise((resolve, reject) => {
   if (!user || !item || !network || (!price && price !== 0) || !contract) {
@@ -157,7 +155,7 @@ export const buyItem = ({
    return reject();
   }
 
-  const BitGuildTokenContract = bitGuildTokenContractAddress || getBitGuildTokenContract(network);
+  const BitGuildTokenContract = getBitGuildTokenContract(network);
   const marketplaceAddress = marketPlaceContractAddress || getMarketplaceContractAddress(network);
   const tokenIdInt = parseInt(item.tokenId, 10);
   const userId = parseInt(user.data.id, 10);
@@ -377,6 +375,7 @@ export const withdrawItem = ({
 export const getFee = ({
   network,
   price,
+  currency = null,
   buyer = null,
   seller = null,
   contract = null,
@@ -391,8 +390,9 @@ export const getFee = ({
 
 
   /* params: price, buyer, seller, contract */
-  MarketplaceContract.getFee['uint256,address,address,address'](
+  MarketplaceContract.getFee(
     price,
+    (currency || zeroAddress),
     (buyer || zeroAddress),
     (seller || zeroAddress),
     (contract || zeroAddress),

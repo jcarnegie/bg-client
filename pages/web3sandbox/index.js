@@ -207,7 +207,6 @@ class Web3SandboxPage extends React.Component {
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
     const itemId = parseInt(this.dom.buy.itemId.value, 10);
     const contract = this.dom.buy.gameContract.value;
-    const bitGuildTokenContractAddress = this.dom.buy.bitGuildTokenContractAddress.value;
     const marketPlaceContractAddress = this.dom.buy.marketPlaceContractAddress.value;
 
     const item = {
@@ -222,7 +221,6 @@ class Web3SandboxPage extends React.Component {
       item,
       price,
       contract,
-      bitGuildTokenContractAddress,
       marketPlaceContractAddress,
     });
     log.info('Sandbox buyItem: ', res);
@@ -247,9 +245,6 @@ class Web3SandboxPage extends React.Component {
         </div>
         <div className="web3-sandbox-card-row">
           <label>price: </label><input ref={c => (this.dom.buy.price = c)} />
-        </div>
-        <div className="web3-sandbox-card-row">
-          <label>bitGuildTokenContractAddress: </label><input ref={c => (this.dom.buy.bitGuildTokenContractAddress = c)} />
         </div>
         <div className="web3-sandbox-card-row">
           <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.buy.marketPlaceContractAddress = c)} /> optional
@@ -368,11 +363,13 @@ class Web3SandboxPage extends React.Component {
     const buyer = this.dom.fee.buyer.value;
     const seller = this.dom.fee.seller.value;
     const contract = this.dom.fee.contract.value;
+    const currency = this.dom.fee.currency.value;
 
     /* Get fee from marketplace */
     const res = await getFee({
       network,
       price,
+      currency,
       buyer,
       seller,
       contract,
@@ -386,6 +383,9 @@ class Web3SandboxPage extends React.Component {
         <h3>Get fee</h3>
         <div className="web3-sandbox-card-row">
           <label>price: </label><input ref={c => (this.dom.fee.price = c)} />
+        </div>
+        <div className="web3-sandbox-card-row">
+          <label>currency: </label><input ref={c => (this.dom.fee.currency = c)} />
         </div>
         <div className="web3-sandbox-card-row">
           <label>buyer: </label><input ref={c => (this.dom.fee.buyer = c)} />

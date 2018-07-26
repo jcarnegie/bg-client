@@ -195,11 +195,11 @@ class Market extends Component {
             cursor: pointer;
             font-size: 0.8em;
             font-weight: 300;
-            height: 35px;
+            height: 45px;
             padding: 0 20px 0 100px;
             display: flex;
             align-items: center;
-            border-bottom: 1px solid #EFEFEF;
+            border-bottom: 1px solid #E1E1E1;
           }
 
           .tree-view_children-collapsed {
@@ -214,6 +214,7 @@ class Market extends Component {
           }
           .tree-view_children .tree-view_item .node.category {
             font-size: 0.9em;
+            padding-left: 45px;
           }
           .tree-view_children .tree-view_item {
             /* immediate child of .tree-view, for styling convenience */
@@ -252,7 +253,7 @@ class Market extends Component {
                     defaultCollapsed
                     nodeLabel={<span className="node category">{categoryName}</span>}
                     key={categoryName}
-                    chevronSize={20}
+                    chevronSize={15}
                   >
                   {
                     subCategories.map(subCategory => {

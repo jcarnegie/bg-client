@@ -15,20 +15,6 @@
     },
     {
       "constant": true,
-      "inputs": [],
-      "name": "allowWithdrawBeforeExpiry",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
       "inputs": [
         {
           "name": "",
@@ -464,29 +450,10 @@
         {
           "name": "_price",
           "type": "uint256"
-        }
-      ],
-      "name": "getFee",
-      "outputs": [
-        {
-          "name": "percent",
-          "type": "uint256"
         },
         {
-          "name": "fee",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_price",
-          "type": "uint256"
+          "name": "_currency",
+          "type": "address"
         },
         {
           "name": "_buyer",
@@ -619,7 +586,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_contract",
+          "name": "_token",
           "type": "address"
         },
         {
@@ -654,20 +621,6 @@
         }
       ],
       "name": "receiveApproval",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_allow",
-          "type": "bool"
-        }
-      ],
-      "name": "updateAllowWithdrawBeforeExpiry",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
