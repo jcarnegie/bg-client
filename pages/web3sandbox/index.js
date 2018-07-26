@@ -20,6 +20,8 @@ import {
   extendItem,
   withdrawItem,
   getFee,
+  dataHexForCurrencyAndPrice,
+  dataHexForContractAndTokenId,
 } from '@/shared/utils/contracts';
 
 import style from '@/shared/constants/style';
@@ -44,6 +46,13 @@ class Web3SandboxPage extends React.Component {
     network: PropTypes.object,
     user: PropTypes.object,
     gas: PropTypes.object,
+  }
+
+  state = {
+    listCurrency: 0,
+    listPrice: 0,
+    buyTokenId: 0,
+    buyContractAddress: '',
   }
 
   dom = {
@@ -117,32 +126,26 @@ class Web3SandboxPage extends React.Component {
     return (
       <div className="web3-sandbox-card">
         <h3>List Item for Sale</h3>
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>contract: </label><input ref={c => (this.dom.list.contract = c)} />
         </div>
-
-        <div>
-          <label>to: </label><input ref={c => (this.dom.list.to = c)} /> marketplace: {networkAddressMap.rinkeby.marketplace} (rinkeby)
+        <div className="web3-sandbox-card-row">
+          <label>to: </label><input ref={c => (this.dom.list.to = c)} /> mktplce: {networkAddressMap.rinkeby.marketplace} (rinkeby)
         </div>
-
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>itemId: </label><input ref={c => (this.dom.list.itemId = c)} /> ex: 2
         </div>
-
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>tokenId: </label><input ref={c => (this.dom.list.tokenId = c)} /> ex: 1
         </div>
-
-        <div>
-          <label>currency: </label><input ref={c => (this.dom.list.currency = c)} /> ex: (0|1) - 0: PLAT, 1: ETH
+        <div className="web3-sandbox-card-row">
+          <label>currency: </label><input ref={c => (this.dom.list.currency = c)} onChange={() => this.setState({listCurrency: this.dom.list.currency.value})} /> ex: (0|1) - 0: PLAT, 1: ETH
         </div>
-
-        <div>
-          <label>price: </label><input ref={c => (this.dom.list.price = c)} /> ex: 5000
+        <div className="web3-sandbox-card-row">
+          <label>price: </label><input ref={c => (this.dom.list.price = c)} onChange={() => this.setState({listPrice: this.dom.list.price.value})}  /> ex: 5000
         </div>
-
         <br />
-
+        dataHex: {dataHexForCurrencyAndPrice({ currency: this.state.listCurrency, price: this.state.listPrice})}
         <BGButton onClick={() => ::this.onListItem()}>List Item for Sale</BGButton>
       </div>
     );
@@ -154,6 +157,7 @@ class Web3SandboxPage extends React.Component {
     const contract = this.dom.withdraw.gameContract.value;
     const tokenId = this.dom.withdraw.tokenId.value;
     const itemId = this.dom.withdraw.itemId.value;
+    const marketPlaceContractAddress = this.dom.withdraw.marketPlaceContractAddress.value;
 
     const item = {
       id: itemId,
@@ -161,7 +165,12 @@ class Web3SandboxPage extends React.Component {
     }
 
     /* Withdraw item from marketplace */
-    const res = await withdrawItem({ network, contract, item });
+    const res = await withdrawItem({
+      network,
+      contract,
+      item,
+      marketPlaceContractAddress,
+    });
     log.info('Sandbox withdrawItem: ', res);
   }
 
@@ -169,18 +178,18 @@ class Web3SandboxPage extends React.Component {
     return (
       <div className="web3-sandbox-card">
         <h3>Withdraw Item from Marketplace</h3>
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>gameContract: </label><input ref={c => (this.dom.withdraw.gameContract = c)} />
         </div>
-
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>itemId: </label><input ref={c => (this.dom.withdraw.itemId = c)} />
         </div>
-
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>tokenId: </label><input ref={c => (this.dom.withdraw.tokenId = c)} />
         </div>
-
+        <div className="web3-sandbox-card-row">
+          <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.withdraw.marketPlaceContractAddress = c)} /> optional
+        </div>
         <br />
 
         <BGButton onClick={() => ::this.onWithdrawItem()}>Withdraw Item from Marketplace</BGButton>
@@ -191,10 +200,12 @@ class Web3SandboxPage extends React.Component {
   async onBuyItem() {
     const { user, network } = this.props;
 
-    const price = parseInt(this.dom.buy.price.value, 10);
+    const price = parseFloat(this.dom.buy.price.value, 10);
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
     const itemId = parseInt(this.dom.buy.itemId.value, 10);
     const contract = this.dom.buy.gameContract.value;
+    const bitGuildTokenContractAddress = this.dom.buy.bitGuildTokenContractAddress.value;
+    const marketPlaceContractAddress = this.dom.buy.marketPlaceContractAddress.value;
 
     const item = {
       id: itemId, 
@@ -208,6 +219,8 @@ class Web3SandboxPage extends React.Component {
       item,
       price,
       contract,
+      bitGuildTokenContractAddress,
+      marketPlaceContractAddress,
     });
     log.info('Sandbox buyItem: ', res);
   }
@@ -216,21 +229,30 @@ class Web3SandboxPage extends React.Component {
     return (
       <div className="web3-sandbox-card">
         <h3>Buy Item from Marketplace</h3>
-        <div>
-          <label>tokenId: </label><input ref={c => (this.dom.buy.tokenId = c)} />
+        <div className="web3-sandbox-card-row">
+          <label>tokenId: </label>
+          <input ref={c => (this.dom.buy.tokenId = c)} onChange={
+            () => this.setState({ buyTokenId: this.dom.buy.tokenId.value })}
+          />
         </div>
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>itemId: </label><input ref={c => (this.dom.buy.itemId = c)} />
         </div>
-        <div>
-          <label>gameContract: </label><input ref={c => (this.dom.buy.gameContract = c)} />
+        <div className="web3-sandbox-card-row">
+          <label>gameContract: </label>
+          <input ref={c => (this.dom.buy.gameContract = c)} onChange={() => this.setState({ buyContractAddress: this.dom.buy.gameContract.value })} />
         </div>
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>price: </label><input ref={c => (this.dom.buy.price = c)} />
         </div>
-
+        <div className="web3-sandbox-card-row">
+          <label>bitGuildTokenContractAddress: </label><input ref={c => (this.dom.buy.bitGuildTokenContractAddress = c)} />
+        </div>
+        <div className="web3-sandbox-card-row">
+          <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.buy.marketPlaceContractAddress = c)} /> optional
+        </div>
         <br />
-
+        dataHex: {dataHexForContractAndTokenId({ contract: this.state.buyContractAddress, tokenId: this.state.buyTokenId})}
         <BGButton onClick={() => ::this.onBuyItem()}>Buy Item from Marketplace</BGButton>
       </div>
     );
@@ -243,6 +265,7 @@ class Web3SandboxPage extends React.Component {
     const contract = this.dom.extend.gameContract.value;
     const tokenId = this.dom.extend.tokenId.value;
     const itemId = this.dom.extend.itemId.value;
+    const marketPlaceContractAddress = this.dom.extend.marketPlaceContractAddress.value;
 
     const item = {
       id: itemId,
@@ -250,7 +273,12 @@ class Web3SandboxPage extends React.Component {
     }
 
     /* Extend item from marketplace */
-    const res = await extendItem({ network, contract, item })
+    const res = await extendItem({
+      network,
+      contract,
+      item,
+      marketPlaceContractAddress,
+    })
     log.info('Sandbox extendItem: ', res);
   }
 
@@ -258,18 +286,18 @@ class Web3SandboxPage extends React.Component {
     return (
       <div className="web3-sandbox-card">
         <h3>Extend Item in Marketplace</h3>
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>gameContract: </label><input ref={c => (this.dom.extend.gameContract = c)} />
         </div>
-
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>itemId: </label><input ref={c => (this.dom.extend.itemId = c)} />
         </div>
-
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>tokenId: </label><input ref={c => (this.dom.extend.tokenId = c)} />
         </div>
-
+        <div className="web3-sandbox-card-row">
+          <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.extend.marketPlaceContractAddress = c)} /> optional
+        </div>
         <br />
 
         <BGButton onClick={() => ::this.onExtendItem()}>Extend Item in Marketplace</BGButton>
@@ -300,20 +328,20 @@ class Web3SandboxPage extends React.Component {
     return (
       <div className="web3-sandbox-card">
         <h3>Get fee</h3>
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>price: </label><input ref={c => (this.dom.fee.price = c)} />
         </div>
-
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>buyer: </label><input ref={c => (this.dom.fee.buyer = c)} />
         </div>
-
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>seller: </label><input ref={c => (this.dom.fee.seller = c)} />
         </div>
-
-        <div>
+        <div className="web3-sandbox-card-row">
           <label>contract: </label><input ref={c => (this.dom.fee.contract = c)} />
+        </div>
+        <div className="web3-sandbox-card-row">
+          <label>marketPlaceContractAddress: </label><input ref={c => (this.dom.fee.marketPlaceContractAddress = c)} /> optional
         </div>
 
         <br />
@@ -336,6 +364,7 @@ class Web3SandboxPage extends React.Component {
           .web3-sandbox {
             margin: 40px;
             background: ${style.colors.background};
+            font-size: 12px;
           }
           .key {
             width: calc(40% - 20px);
@@ -349,7 +378,10 @@ class Web3SandboxPage extends React.Component {
         `}</style>
         <style jsx global>{`
           .web3-sandbox label {
-            min-width: 150px;
+            min-width: 170px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin: 0;
           }
           .web3-sandbox input {
             min-width: 250px;
@@ -362,6 +394,10 @@ class Web3SandboxPage extends React.Component {
           }
           .web3-sandbox .web3-sandbox-card h3 {
             margin: 0 0 20px 0;
+          }
+          .web3-sandbox-card-row {
+            display: flex;
+            align-items: center;
           }
         `}</style>
         <h1>Web3 Sandbox</h1>

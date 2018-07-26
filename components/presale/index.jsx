@@ -247,7 +247,7 @@ class Presale extends Component {
               <h3><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.name`} /></h3>
             </Col>
             <Col xs={12}>
-              <Image responsive src={`/static/images/games/bitizens/presale/${set.id}/banner.jpg`} className="presale-purchase-set-image" />
+              <Image responsive src={`/static/images/games/${this.props.slug}/presale/${set.id}/banner.jpg`} className="presale-purchase-set-image" />
             </Col>
             <Col xs={12}>
               <p><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.description`} /></p>

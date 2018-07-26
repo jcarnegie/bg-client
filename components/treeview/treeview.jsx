@@ -21,7 +21,7 @@ class TreeView extends React.PureComponent {
   }
 
   static defaultProps = {
-    chevronSize: 30,
+    chevronSize: 20,
   }
 
   constructor(props) {

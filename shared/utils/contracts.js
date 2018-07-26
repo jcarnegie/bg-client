@@ -16,6 +16,41 @@ import {
 
 
 /*
+ * dataHexForCurrencyAndPrice
+ * - currency - (0|1) ... 0: ETH, 1: PLAT ... ex: 0
+ * - price - ex: 1200
+ */
+export const dataHexForCurrencyAndPrice = ({ currency, price }) => {
+  if (currency === undefined || price === undefined) return null;
+  if (currency === null || price === null) return null;
+  price = parseFloat(price, 10) * 1e18;
+  const currencyInt = parseInt(currency, 10);
+  const priceBigNumString = price.toLocaleString('fullwide', { useGrouping: false });
+  const listDataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNumString]);
+  log.info('dataHexForCurrencyAndPrice price: ', price);
+  log.info('dataHexForCurrencyAndPrice priceBigNumString: ', priceBigNumString);
+  log.info('dataHexForCurrencyAndPrice currency: ', currency);
+  return `0x${listDataBuffer.toString('hex')}`;
+}
+
+
+/*
+ * dataHexForContractAndTokenId
+ * - contract - String
+ * - tokenId - ex: 12
+ */
+export const dataHexForContractAndTokenId = ({ contract, tokenId }) => {
+  if (contract === undefined || tokenId === undefined) return null;
+  if (contract === null || tokenId === null) return null;
+  const tokenIdInt = parseInt(tokenId, 10);
+  const buyDataBuffer = EthABI.rawEncode(['address', 'uint256'], [contract, tokenIdInt]);
+  log.info('dataHexBuy contract: ', contract);
+  log.info('dataHexBuy tokenIdInt: ', tokenIdInt);
+  return `0x${buyDataBuffer.toString('hex')}`;
+}
+
+
+/*
  * listItem
  * - contract - Game Contract Address
  * - price - ex: 1200
@@ -48,11 +83,9 @@ export const listItem = ({
   const tokenId = parseInt(item.tokenId, 10);
   const itemId = parseInt(item.id, 10);
   const userId = parseInt(user.data.id, 10);
-  const priceBigNum = parseInt(price, 10) * 1e18;
   const currencyInt = parseInt(currency, 10);
-  const priceBigNumString = priceBigNum.toLocaleString('fullwide', { useGrouping: false });
-  const dataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNumString]);
-  const dataHex = `0x${dataBuffer.toString('hex')}`;
+
+  const dataHex = dataHexForCurrencyAndPrice({ currency: currencyInt, price });
 
   if (currencyInt === 1) {
     log.info('listItem: ETH workflow not implemented.');
@@ -63,10 +96,7 @@ export const listItem = ({
   log.info('contract: ', contract);
   log.info('to: ', to);
   log.info('item.tokenId: ', item.tokenId);
-  log.info('priceBigNum: ', priceBigNum);
-  log.info('priceBigNumString: ', priceBigNumString);
   log.info('currencyInt: ', currencyInt);
-  log.info('dataBuffer: ', dataBuffer);
   log.info('dataHex: ', dataHex);
   log.info('user: ', user);
   log.info('item: ', item);
@@ -107,6 +137,8 @@ export const listItem = ({
  * - user - [redux] user object
  * - network - [redux] network object
  * - item - [redux] item object
+ * - bitGuildTokenContractAddress - optional
+ * - marketPlaceContractAddress - optional
  */
 export const buyItem = ({
   price,
@@ -114,20 +146,22 @@ export const buyItem = ({
   user,
   network,
   item,
+  bitGuildTokenContractAddress = null,
+  marketPlaceContractAddress = null,
 }) => new Promise((resolve, reject) => {
   if (!user || !item || !network || (!price && price !== 0) || !contract) {
    log.info('buyItem: incorrect parameters.')
    return reject();
   }
 
-  const BitGuildTokenContract = getBitGuildTokenContract(network);
-  const marketplaceAddress = getMarketplaceContractAddress(network);
+  const BitGuildTokenContract = bitGuildTokenContractAddress || getBitGuildTokenContract(network);
+  const marketplaceAddress = marketPlaceContractAddress || getMarketplaceContractAddress(network);
   const tokenIdInt = parseInt(item.tokenId, 10);
   const userId = parseInt(user.data.id, 10);
   const itemId = parseInt(item.id, 10);
-  const priceBigNum = parseInt(price, 10) * 1e18;
-  const dataBuffer = EthABI.rawEncode(['address', 'uint256'], [contract, tokenIdInt]);
-  const dataHex = `0x${dataBuffer.toString('hex')}`;
+  const priceBigNum = parseFloat(price, 10) * 1e18;
+
+  const dataHex = dataHexForContractAndTokenId({ contract, tokenId: tokenIdInt });
 
   log.info('BitGuildTokenContract: ', BitGuildTokenContract);
   log.info('marketplaceAddress: ', marketplaceAddress);
@@ -135,7 +169,6 @@ export const buyItem = ({
   log.info('contract: ', contract);
   log.info('price: ', price);
   log.info('priceBigNum: ', priceBigNum);
-  log.info('dataBuffer: ', dataBuffer);
   log.info('dataHex: ', dataHex);
 
   /* Buy item from marketplace */
@@ -169,18 +202,20 @@ export const buyItem = ({
  * - contract - Game Contract Address
  * - network - [redux] network object
  * - item - [redux] item object
+ * - marketPlaceContractAddress - optional
  */
 export const extendItem = ({
   contract,
   network,
   item,
+  marketPlaceContractAddress = null,
 }) => new Promise((resolve, reject) => {
   if (!network || !contract || !item) {
    log.info('extendItem: incorrect parameters.')
    return reject();
   }
 
-  const MarketplaceContract = getMarketplaceContract(network);
+  const MarketplaceContract = marketPlaceContractAddress || getMarketplaceContract(network);
 
   const itemId = parseInt(item.id, 10);
   const tokenId = parseInt(item.tokenId, 10);
@@ -221,18 +256,20 @@ export const extendItem = ({
  * - contract - Game Contract Address
  * - network - [redux] network object
  * - item - [redux] item object
+ * - marketPlaceContractAddress - optional
  */
 export const withdrawItem = ({
   contract,
   network,
   item,
+  marketPlaceContractAddress = null,
 }) => new Promise((resolve, reject) => {
   if (!network || !contract || !item) {
    log.info('withdrawItem: incorrect parameters.')
    return reject();
   }
 
-  const MarketplaceContract = getMarketplaceContract(network);
+  const MarketplaceContract = marketPlaceContractAddress || getMarketplaceContract(network);
 
   const itemId = parseInt(item.id, 10);
   const tokenId = parseInt(item.tokenId, 10);
@@ -274,6 +311,7 @@ export const withdrawItem = ({
  * - seller - address
  * - buyer - address
  * - contract - Game Contract Address
+ * - marketPlaceContractAddress - optional
  */
 export const getFee = ({
   network,
@@ -281,13 +319,14 @@ export const getFee = ({
   buyer = null,
   seller = null,
   contract = null,
+  marketPlaceContractAddress = null,
 }) => new Promise((resolve, reject) => {
 
   const zeroAddress = window.web3.toHex(0);
 
   if (!network || (!price && price !== 0)) reject();
 
-  const MarketplaceContract = getMarketplaceContract(network);
+  const MarketplaceContract = marketPlaceContractAddress || getMarketplaceContract(network);
 
 
   /* params: price, buyer, seller, contract */

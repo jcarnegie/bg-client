@@ -142,7 +142,7 @@ class Market extends Component {
       }, 'no-select')}>
         <style jsx>{`
           .filters {
-            min-width: 282px;
+            min-width: 250px;
             border-right: solid 2px #E1E1E1;
             margin-right: -1px;
             min-height: calc(100vh - 62px);
@@ -158,23 +158,30 @@ class Market extends Component {
             height: 50px;
             font-weight: 400;
             line-height: 45px;
-            font-size: 1.2em;
+            font-size: 0.9em;
+            text-transform: uppercase;
           }
         `}
         </style>
         <style global jsx>{`
           .tree-view {}
+
           .tree-view_item .node {
-            font-size: 20px;
+            font-size: 1.0em;
             font-weight: 500;
             position: relative;
-            top: 25%;
           }
+
+          .tree-view_item {
+            display: flex;
+            align-items: center;
+          }
+
           .tree-view_item {
             /* immediate child of .tree-view, for styling convenience */
             cursor: pointer;
             padding-left: 20px;
-            height: 80px;
+            height: 50px;
             border-bottom: 1px solid #E1E1E1;
           }
           .treeview-active-item {
@@ -182,74 +189,39 @@ class Market extends Component {
           }
           .info {
             cursor: pointer;
-            font-size: 16px;
+            font-size: 0.8em;
             font-weight: 300;
-            height: 45px;
+            height: 35px;
             padding: 0 20px 0 100px;
             display: flex;
             align-items: center;
             border-bottom: 1px solid #EFEFEF;
           }
 
-          /* style for the children nodes container */
-          .tree-view_children {
-            // border-bottom: 1px solid #E1E1E1;
-          }
-
           .tree-view_children-collapsed {
             height: 0px;
-          }
-          .tree-view_arrow {
-            cursor: pointer;
-            margin-right: 6px;
-            display: inline-block;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            height: 25px;
-            width: 25px;
-            background-color: #bbb;
-            border-radius: 50%;
-            border: 1px solid black;
-            position: relative;
-            top: 5px;
-            position: relative;
-            top: 20%;
-          }
-          .tree-view_arrow:after {
-            width: 25px;
-            background-color: #bbb;
-            border-radius: 50%;
-            display: inline-block;
-            border: 1px solid black;
-            position: relative;
-            top: 20%;
           }
           .tree-view_children .tree-view_image {
             display: none;
           }
           .tree-view_children .tree-view_item .node {
-            padding-left: 55px;
             font-weight: 400;
-            font-size: 20px;
-            top: 30%;
+            font-size: 1.1em;
           }
           .tree-view_children .tree-view_item .node.category {
-            font-size: 18px;
+            font-size: 0.9em;
           }
           .tree-view_children .tree-view_item {
             /* immediate child of .tree-view, for styling convenience */
             cursor: pointer;
             padding-left: 20px;
-            height: 65px;
+            height: 45px;
           }
           .tree-view_image {
-            height: 45px;
-            width: 45px;
+            height: 35px;
+            width: 35px;
             display: inline-block;
             position: relative;
-            top: 20%;
             margin-right: 10px;
           }
         `}
@@ -439,6 +411,7 @@ class Market extends Component {
           if (error) return <DataError />;
 
           const { listMarketplaceItems } = data;
+          // const listMarketplaceItems = itemList;
 
           const loadingAny = loading || games.loading || user.loading;
 

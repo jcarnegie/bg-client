@@ -24,6 +24,10 @@
     "defence": {
       "keyLan": "Defense",
       "value": 38
+    },
+    "otherthing": {
+      "keyLan": "LongNameHere Superlong Supersupersupersuper long long long",
+      "value": 3812431234
     }
   },
   "presale": false,
@@ -31,7 +35,7 @@
   "game": {
     "id": "1"
   },
-  "categories": ["Samurai", "Common", "Head", 38]
+  "categories": ["Samurai", "Common", "Head", 38, "veryveryverylongcategory"]
 }, {
   "lan": "en",
   "price": {
