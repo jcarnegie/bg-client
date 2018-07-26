@@ -4,10 +4,18 @@ import {
   extendItem,
   withdrawItem,
   getFee,
+  dataHexForCurrencyAndPrice,
+  dataHexForContractAndTokenId,
 } from '@/shared/utils/contracts';
 
 
 describe('MarketplaceContract', () => {
+  test.skip('dataHexForCurrencyAndPrice', () => {
+    expect(false).toBe(true);
+  });
+  test.skip('dataHexForContractAndTokenId', () => {
+    expect(false).toBe(true);
+  });
   test.skip('listItem', () => {
     expect(false).toBe(true);
   });
