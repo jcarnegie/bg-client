@@ -22,6 +22,7 @@ import {
   queries,
   listGamesQuery,
   viewUserByWalletQuery,
+  POLL_INTERVAL,
 } from '@/shared/utils/apollo';
 
 import {
@@ -87,6 +88,9 @@ class Market extends Component {
 
   renderFilters(items, games, loading = false) {
     let gameFilters = [];
+    if (!items) return null;
+    if (!games) return null;
+    if (loading) return <DataLoading />;
     if (!loading || (games && items)) {
       gameFilters = games.map(({ name, id, slug }) => ({
         name,
@@ -269,7 +273,7 @@ class Market extends Component {
   }
 
   renderMarket(items, games, loading = false) {
-    return (items && items.length) ? this.renderItems(items, games) : this.renderEmpty();
+    return (!loading && items && items.length && games && games.length) ? this.renderItems(items, games) : this.renderEmpty();
   }
 
   renderItems(items, games) {
@@ -400,13 +404,18 @@ class Market extends Component {
     let { viewUserByWallet } = user;
 
     return (
-      <Query query={queries.listMarketplaceItems} variables={{
-        userId: (viewUserByWallet) ? viewUserByWallet.id : null,
-        language: (viewUserByWallet) ? viewUserByWallet.language : null,
-        gameId: this.state.gameFilter,
-        sort: null,
-        categories: this.state.categories,
-      }}>
+      <Query
+        fetchPolicy="no-cache"
+        pollInterval={POLL_INTERVAL}
+        query={queries.listMarketplaceItems}
+        variables={{
+          userId: (viewUserByWallet) ? viewUserByWallet.id : null,
+          language: (viewUserByWallet) ? viewUserByWallet.language : null,
+          gameId: this.state.gameFilter,
+          sort: null,
+          categories: this.state.categories,
+        }}
+      >
         {({ loading, error, data }) => {
           if (error) return <DataError />;
 

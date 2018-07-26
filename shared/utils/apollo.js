@@ -7,6 +7,8 @@ if (typeof global !== 'undefined') {
   global.fetch = require('node-fetch');
 }
 
+export const POLL_INTERVAL = 30000;
+
 export const uri = (process.env.NODE_ENV === 'development' ? 'http://localhost:7000' : '') + '/api/';
 
 
@@ -148,6 +150,8 @@ export const listItemsQuery = graphql(queries.listItems, {
         language: user.language,
         userId: user.id,
       },
+      pollInterval: POLL_INTERVAL,
+      fetchPolicy: 'no-cache',
     });
   },
 });
