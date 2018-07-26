@@ -91,6 +91,7 @@ class TreeView extends React.PureComponent {
             top: 50%;
             transform-origin: center;
             transform: translateY(-50%);
+            transition: ${style.transition.default};
           }
           :global(.tree-view .transform-down) {
             transform: translateY(-50%) rotate(90deg);
