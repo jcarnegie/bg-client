@@ -352,13 +352,77 @@ class MarketplaceItem extends Component {
     log.info('Instantiating buy transaction...');
   }
 
+  async onSubmitSwitch(type) {
+    if (type === 'renew') {
+      const { network, game, item } = this.props;
+
+      const result = await extendItem({
+        contract: getContractFromGame(game, network),
+        network,
+        item,
+      });
+    } else if (type === 'withdraw') {
+      const { network, game, item } = this.props;
+
+      const result = await withdrawItem({
+        network,
+        contract: getContractFromGame(game, network),
+        item,
+      });
+    }
+  }
+
+  actionButton(side = 'left', onClick = () => { }, children) {
+    return (
+      <button onClick={onClick} className={`item-button item-button-${side}`}>
+        <style jsx>{`
+          .item-button {
+            color: white;
+            font-size: 0.9em;
+            opacity: 1;
+            height: 45px;
+            width: 50%;
+            border: 0;
+            font-weight: 100;
+            outline: 0;
+            text-transform: uppercase;
+          }
+          .item-button:hover {
+            opacity: 0.9;
+            color: white;
+          }
+          .item-button-left, .item-button-left:hover, .item-button-left:focus {
+            border-bottom-left-radius: 6px;
+            background-color: rgb(59, 90, 149);
+          }
+          .item-button-right, .item-button-right:hover, .item-button-right:focus {
+            background-color: rgb(80, 130, 206);
+            border-bottom-right-radius: 6px;
+          }
+        `}</style>
+        {children}
+      </button>
+    );
+  }
+
+  renewButton(side = 'left', onClick = () => ::this.onSubmitSwitch('renew'), children = <FormattedMessage id="pages.marketplace.renew" />) {
+    return this.actionButton(side, onClick, children);
+  }
+  withdrawButton(side = 'right', onClick = () => ::this.onSubmitSwitch('withdraw'), children = <FormattedMessage id="pages.marketplace.withdraw" />) {
+    return this.actionButton(side, onClick, children);
+  }
+
   renderButtons() {
     const { item, user } = this.props;
     const lastOwner = path(['lastOwner', 'id'], item);
     const userID = path(['data', 'id'], user);
     return (
       <ButtonGroup justified>
-        {lastOwner === userID ? inProgressBar('listed-for-sale')
+        {lastOwner === userID
+          ? <>
+              {this.renewButton()}
+              {this.withdrawButton()}
+            </>
         : <Button href="#" onClick={::this.onShowBuy} className="buy">
           <span className="buy-for">
             <FormattedMessage className="buy-for" id="pages.marketplace.buy-for" />
