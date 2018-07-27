@@ -103,7 +103,7 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onListItem() {
-    const { user, network } = this.props;
+    const { gas, user, network } = this.props;
     const contract = this.dom.list.contract.value;
     const to = this.dom.list.to.value;
     const itemId = this.dom.list.itemId.value;
@@ -120,6 +120,7 @@ class Web3SandboxPage extends React.Component {
       price,
       currency,
       network,
+      gas,
     });
     log.info('Sandbox listItem done.', res);
   }
@@ -155,7 +156,7 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onWithdrawItem() {
-    const { network } = this.props;
+    const { network, gas } = this.props;
 
     const contract = this.dom.withdraw.gameContract.value;
     const tokenId = this.dom.withdraw.tokenId.value;
@@ -173,6 +174,7 @@ class Web3SandboxPage extends React.Component {
       contract,
       item,
       marketPlaceContractAddress,
+      gas,
     });
     log.info('Sandbox withdrawItem: ', res);
   }
@@ -201,7 +203,7 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onBuyItem() {
-    const { user, network } = this.props;
+    const { user, network, gas } = this.props;
 
     const price = parseFloat(this.dom.buy.price.value, 10);
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
@@ -222,6 +224,7 @@ class Web3SandboxPage extends React.Component {
       price,
       contract,
       marketPlaceContractAddress,
+      gas,
     });
     log.info('Sandbox buyItem: ', res);
   }
@@ -257,7 +260,7 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onBuyItemWithEther() {
-    const { user, network } = this.props;
+    const { gas, user, network } = this.props;
 
     const price = parseFloat(this.dom.buyWithEther.price.value, 10);
     const tokenId = parseInt(this.dom.buyWithEther.tokenId.value, 10);
@@ -278,6 +281,7 @@ class Web3SandboxPage extends React.Component {
       price,
       contract,
       marketPlaceContractAddress,
+      gas,
     });
     log.info('Sandbox buyItem: ', res);
   }
@@ -311,7 +315,7 @@ class Web3SandboxPage extends React.Component {
 
 
   async onExtendItem() {
-    const { network } = this.props;
+    const { gas, network } = this.props;
 
     const contract = this.dom.extend.gameContract.value;
     const tokenId = this.dom.extend.tokenId.value;
@@ -329,6 +333,7 @@ class Web3SandboxPage extends React.Component {
       contract,
       item,
       marketPlaceContractAddress,
+      gas,
     })
     log.info('Sandbox extendItem: ', res);
   }

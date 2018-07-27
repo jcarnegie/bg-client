@@ -59,6 +59,7 @@ export default class GiftPopup extends Component {
     dispatch({
       type: GIFT_ADD_LOADING,
     });
+    /* TODO - move to shared/utils/contracts.js */
     const contract = window.web3.eth.contract(nftABI).at(game.nft[network.data.id]);
     contract.safeTransferFrom(user.data.wallet, formData.wallet, item.tokenId, {
         gas: window.web3.toHex(15e4),

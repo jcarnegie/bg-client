@@ -14,52 +14,86 @@ import {
   getBitGuildTokenContract,
 } from '@/shared/utils/network';
 
+import {
+  ETH2WEI,
+  MAX_GAS_HEX,
+  DEFAULT_GAS_PRICE,
+  gasOptionsFromGasAndSpeed,
+} from '@/shared/utils/txn';
+
 
 /*
  * dataHexForCurrencyAndPrice
- * - currency - (0|1) ... 0: ETH, 1: PLAT ... ex: 0
- * - price - ex: 1200
+ *
+ * - @param {Object} options
+ * - - @option: currency - (0|1) ... 0: ETH, 1: PLAT ... ex: 0
+ * - - @option: price - ex: 1200
  */
 export const dataHexForCurrencyAndPrice = ({ currency, price }) => {
   if (currency === undefined || price === undefined) return null;
   if (currency === null || price === null) return null;
-  price = parseFloat(price, 10) * 1e18;
+  price = parseFloat(price, 10) * ETH2WEI;
   const currencyInt = parseInt(currency, 10);
   const priceBigNumString = price.toLocaleString('fullwide', { useGrouping: false });
   const listDataBuffer = EthABI.rawEncode(['uint256', 'uint256'], [currencyInt, priceBigNumString]);
-  log.info('dataHexForCurrencyAndPrice price: ', price);
-  log.info('dataHexForCurrencyAndPrice priceBigNumString: ', priceBigNumString);
-  log.info('dataHexForCurrencyAndPrice currency: ', currency);
+  log.trace('dataHexForCurrencyAndPrice price: ', price);
+  log.trace('dataHexForCurrencyAndPrice priceBigNumString: ', priceBigNumString);
+  log.trace('dataHexForCurrencyAndPrice currency: ', currency);
   return `0x${listDataBuffer.toString('hex')}`;
 }
 
 
 /*
  * dataHexForContractAndTokenId
- * - contract - String
- * - tokenId - ex: 12
+ *
+ * - @param {Object} options
+ * - - @option: contract - String
+ * - - @option: tokenId - ex: 12
  */
 export const dataHexForContractAndTokenId = ({ contract, tokenId }) => {
   if (contract === undefined || tokenId === undefined) return null;
   if (contract === null || tokenId === null) return null;
   const tokenIdInt = parseInt(tokenId, 10);
   const buyDataBuffer = EthABI.rawEncode(['address', 'uint256'], [contract, tokenIdInt]);
-  log.info('dataHexForContractAndTokenId contract: ', contract);
-  log.info('dataHexForContractAndTokenId tokenIdInt: ', tokenIdInt);
+  log.trace('dataHexForContractAndTokenId contract: ', contract);
+  log.trace('dataHexForContractAndTokenId tokenIdInt: ', tokenIdInt);
   return `0x${buyDataBuffer.toString('hex')}`;
 }
 
 
+/* Too slow to estimate */
+// gasPrice = await new Promise((resolve, reject) => {
+//   GameContract.safeTransferFrom['address,address,uint256,bytes'].estimateGas(
+//     userAddress,
+//     to,
+//     tokenId,
+//     dataHex,
+//     (err, estGasPrice) => {
+//       if (err) {
+//         log.error(err);
+//         log.error(`Using a default gasPrice: ${DEFAULT_GAS_PRICE}`);
+//         return reject(DEFAULT_GAS_PRICE);
+//       } else {
+//         log.info('Success! gasPrice', estGasPrice);
+//         return resolve(estGasPrice);
+//       }
+//     }
+//   )
+// });
+
+
 /*
  * listItem
- * - contract - Game Contract Address
- * - price - ex: 1200
- * - currency - (0|1) ... 0: ETH, 1: PLAT ... ex: 0
- * - to - BGMarketplace Contract Address
- * - user - [redux] user object
- * - item - [redux] item object
- * - network - [redux] network object
- * - marketPlaceContractAddress - optional
+ *
+ * - @param {Object} options
+ * - - @option: contract - Game Contract Address
+ * - - @option: price - ex: 1200
+ * - - @option: currency - (0|1) ... 0: ETH, 1: PLAT ... ex: 0
+ * - - @option: to - BGMarketplace Contract Address
+ * - - @option: user - [redux] user object
+ * - - @option: item - [redux] item object
+ * - - @option: network - [redux] network object
+ * - - @option: marketPlaceContractAddress - optional
  */
 export const listItem = ({
   contract,
@@ -69,8 +103,10 @@ export const listItem = ({
   user,
   item,
   network = null,
+  gas = null,
+  gasSpeed = 'fast',
   marketPlaceContractAddress = null,
-}) => new Promise((resolve, reject) => {
+}) => new Promise(async (resolve, reject) => {
   const userAddress = getWeb3Wallet();
 
   if (!userAddress) {
@@ -91,6 +127,8 @@ export const listItem = ({
 
   const dataHex = dataHexForCurrencyAndPrice({ currency: currencyInt, price });
 
+  const options = {...gasOptionsFromGasAndSpeed(gas, gasSpeed)};
+
   if (currencyInt === 1) {
     log.info('listItem: ETH workflow...');
   }
@@ -98,11 +136,13 @@ export const listItem = ({
   log.info('userAddress: ', userAddress);
   log.info('contract: ', contract);
   log.info('to: ', to);
-  log.info('item.tokenId: ', item.tokenId);
   log.info('currencyInt: ', currencyInt);
   log.info('dataHex: ', dataHex);
   log.info('user: ', user);
   log.info('item: ', item);
+  log.info('gas: ', gas);
+  log.info('gasSpeed: ', gasSpeed);
+  log.info('options: ', options);
 
   /* Create item listing */
   GameContract.safeTransferFrom['address,address,uint256,bytes'](
@@ -110,6 +150,7 @@ export const listItem = ({
     to,
     tokenId,
     dataHex,
+    options,
     (err, tx) => {
       if (err) {
         log.error(err);
@@ -135,12 +176,14 @@ export const listItem = ({
 
 /*
  * buyItem
- * - contract - Game Contract Address
- * - price - ex: 1200
- * - user - [redux] user object
- * - network - [redux] network object
- * - item - [redux] item object
- * - marketPlaceContractAddress - optional
+ *
+ * - @param {Object} options
+ * - - @option: contract - Game Contract Address
+ * - - @option: price - ex: 1200
+ * - - @option: user - [redux] user object
+ * - - @option: network - [redux] network object
+ * - - @option: item - [redux] item object
+ * - - @option: marketPlaceContractAddress - optional
  */
 export const buyItem = ({
   price,
@@ -149,6 +192,8 @@ export const buyItem = ({
   network,
   item,
   marketPlaceContractAddress = null,
+  gas = null,
+  gasSpeed = 'fast',
 }) => new Promise((resolve, reject) => {
   if (!user || !item || !network || (!price && price !== 0) || !contract) {
    log.info('buyItem: incorrect parameters.')
@@ -160,9 +205,11 @@ export const buyItem = ({
   const tokenIdInt = parseInt(item.tokenId, 10);
   const userId = parseInt(user.data.id, 10);
   const itemId = parseInt(item.id, 10);
-  const priceBigNum = parseFloat(price, 10) * 1e18;
+  const priceBigNum = parseFloat(price, 10) * ETH2WEI;
 
   const dataHex = dataHexForContractAndTokenId({ contract, tokenId: tokenIdInt });
+
+  const options = {...gasOptionsFromGasAndSpeed(gas, gasSpeed)};
 
   log.info('BitGuildTokenContract: ', BitGuildTokenContract);
   log.info('marketplaceAddress: ', marketplaceAddress);
@@ -170,13 +217,16 @@ export const buyItem = ({
   log.info('contract: ', contract);
   log.info('price: ', price);
   log.info('priceBigNum: ', priceBigNum);
-  log.info('dataHex: ', dataHex);
+  log.info('gas: ', gas);
+  log.info('gasSpeed: ', gasSpeed);
+  log.info('options: ', options);
 
   /* Buy item from marketplace */
   BitGuildTokenContract.approveAndCall(
     marketplaceAddress,
     priceBigNum,
     dataHex,
+    options,
     (err, tx) => {
       if (err) {
         log.error(err);
@@ -200,12 +250,14 @@ export const buyItem = ({
 
 /*
  * buyItemWithEther
- * - contract - Game Contract Address
- * - price - ex: 1200
- * - user - [redux] user object
- * - network - [redux] network object
- * - item - [redux] item object
- * - marketPlaceContractAddress - optional
+ *
+ * - @param {Object} options
+ * - - @option: contract - Game Contract Address
+ * - - @option: price - ex: 1200
+ * - - @option: user - [redux] user object
+ * - - @option: network - [redux] network object
+ * - - @option: item - [redux] item object
+ * - - @option: marketPlaceContractAddress - optional
  */
 export const buyItemWithEther = ({
   price,
@@ -214,6 +266,8 @@ export const buyItemWithEther = ({
   network,
   item,
   marketPlaceContractAddress = null,
+  gas = null,
+  gasSpeed = 'fast',
 }) => new Promise((resolve, reject) => {
   if (!user || !item || !network || (!price && price !== 0) || !contract) {
    log.info('buyItemWithEther: incorrect parameters.')
@@ -223,51 +277,67 @@ export const buyItemWithEther = ({
   const marketplaceAddress = marketPlaceContractAddress || getMarketplaceContractAddress(network);
   const MarketplaceContract = getMarketplaceContract(network, marketPlaceContractAddress);
   const tokenIdInt = parseInt(item.tokenId, 10);
+  const priceFloat = parseFloat(price, 10);
   const userId = parseInt(user.data.id, 10);
   const itemId = parseInt(item.id, 10);
+
+  const options = {
+    from: getWeb3Wallet(),
+    value: priceFloat,
+    ...gasOptionsFromGasAndSpeed(gas, gasSpeed)
+  };
 
   log.info('marketplaceAddress: ', marketplaceAddress);
   log.info('tokenIdInt: ', tokenIdInt);
   log.info('contract: ', contract);
   log.info('price: ', price);
+  log.info('priceFloat: ', priceFloat);
+  log.info('gas: ', gas);
+  log.info('gasSpeed: ', gasSpeed);
+  log.info('options: ', options);
 
   /* Buy item from marketplace */
-  MarketplaceContract.buyWithETH(contract, tokenIdInt, {
-    from: getWeb3Wallet(),
-    // gas: gasValue,
-    value: window.web3.toWei(parseFloat(price, 10)),
-  }, (err, tx) => {
-    if (err) {
-      log.info(err);
-      return reject(err);
-    } else {
-      log.info('Success! tx: ', tx);
-      client.mutate({
-        mutation: mutations.purchaseItem,
-        variables: {
-          userId,
-          itemId,
-          salePurchaseTxnHash: tx,
-        }
-      });
-      return resolve(tx);
+  MarketplaceContract.buyWithETH(
+    contract,
+    tokenIdInt,
+    options,
+    (err, tx) => {
+      if (err) {
+        log.info(err);
+        return reject(err);
+      } else {
+        log.info('Success! tx: ', tx);
+        client.mutate({
+          mutation: mutations.purchaseItem,
+          variables: {
+            userId,
+            itemId,
+            salePurchaseTxnHash: tx,
+          }
+        });
+        return resolve(tx);
+      }
     }
-  });
+  );
 });
 
 
 /*
  * extendItem
- * - contract - Game Contract Address
- * - network - [redux] network object
- * - item - [redux] item object
- * - marketPlaceContractAddress - optional
+ *
+ * - @param {Object} options
+ * - - @option: contract - Game Contract Address
+ * - - @option: network - [redux] network object
+ * - - @option: item - [redux] item object
+ * - - @option: marketPlaceContractAddress - optional
  */
 export const extendItem = ({
   contract,
   network,
   item,
   marketPlaceContractAddress = null,
+  gas = null,
+  gasSpeed = 'fast',
 }) => new Promise((resolve, reject) => {
   if (!network || !contract || !item) {
    log.info('extendItem: incorrect parameters.')
@@ -278,18 +348,22 @@ export const extendItem = ({
 
   const itemId = parseInt(item.id, 10);
   const tokenId = parseInt(item.tokenId, 10);
+  const options = {...gasOptionsFromGasAndSpeed(gas, gasSpeed)};
 
   log.info('Extending item listing...');
   log.info('MarketplaceContract: ', MarketplaceContract);
   log.info('contract: ', contract);
   log.info('itemId: ', itemId);
   log.info('tokenId: ', tokenId);
-  log.info('network: ', network);
+  log.info('gas: ', gas);
+  log.info('gasSpeed: ', gasSpeed);
+  log.info('options: ', options);
 
   /* Extend item from marketplace */
   MarketplaceContract.extendItem(
     contract,
     tokenId,
+    options,
     (err, tx) => {
       if (err) {
         log.error(err);
@@ -312,16 +386,20 @@ export const extendItem = ({
 
 /*
  * withdrawItem
- * - contract - Game Contract Address
- * - network - [redux] network object
- * - item - [redux] item object
- * - marketPlaceContractAddress - optional
+ *
+ * - @param {Object} options
+ * - - @option: contract - Game Contract Address
+ * - - @option: network - [redux] network object
+ * - - @option: item - [redux] item object
+ * - - @option: marketPlaceContractAddress - optional
  */
 export const withdrawItem = ({
   contract,
   network,
   item,
   marketPlaceContractAddress = null,
+  gas = null,
+  gasSpeed = 'fast',
 }) => new Promise((resolve, reject) => {
   if (!network || !contract || !item) {
    log.info('withdrawItem: incorrect parameters.')
@@ -332,17 +410,22 @@ export const withdrawItem = ({
 
   const itemId = parseInt(item.id, 10);
   const tokenId = parseInt(item.tokenId, 10);
+  const options = {...gasOptionsFromGasAndSpeed(gas, gasSpeed)};
 
   log.info('Withdrawing item from marketplace ...');
   log.info('MarketplaceContract: ', MarketplaceContract);
   log.info('contract: ', contract);
   log.info('itemId: ', itemId);
-  log.info('network: ', network); 
+  log.info('network: ', network);
+  log.info('gas: ', gas);
+  log.info('gasSpeed: ', gasSpeed);
+  log.info('options: ', options);
 
   /* Extend item from marketplace */
   MarketplaceContract.withdrawItem(
     contract,
     tokenId,
+    options,
     (err, tx) => {
       if (err) {
         log.error(err);
@@ -365,12 +448,14 @@ export const withdrawItem = ({
 
 /*
  * getFee
- * - network - [redux] network object
- * - price - Int
- * - seller - address
- * - buyer - address
- * - contract - Game Contract Address
- * - marketPlaceContractAddress - optional
+ *
+ * - @param {Object} options
+ * - - @option: network - [redux] network object
+ * - - @option: price - Int
+ * - - @option: seller - address
+ * - - @option: buyer - address
+ * - - @option: contract - Game Contract Address
+ * - - @option: marketPlaceContractAddress - optional
  */
 export const getFee = ({
   network,
@@ -387,7 +472,6 @@ export const getFee = ({
   if (!network || (!price && price !== 0)) reject();
 
   const MarketplaceContract = marketPlaceContractAddress || getMarketplaceContract(network);
-
 
   /* params: price, buyer, seller, contract */
   MarketplaceContract.getFee(
