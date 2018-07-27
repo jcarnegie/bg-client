@@ -53,6 +53,11 @@ const games = {
       slug: 'blockchaincuties',
       description: '',
     },
+    {
+      name: 'Pixo Arena',
+      slug: 'pixoarena',
+      description: '',
+    },
   ],
 };
 
