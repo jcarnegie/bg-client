@@ -38,6 +38,10 @@ class Game extends Component {
 
     try {
       url = game.viewGameBySlug.url + (game.viewGameBySlug.url.includes('?') ? '&' : '?') + queryString.stringify(query);
+      if (process.env.DEPLOYED !== 'production' && game.viewGameBySlug.stagingUrl) {
+        url = game.viewGameBySlug.stagingUrl + (game.viewGameBySlug.stagingUrl.includes('?') ? '&' : '?') + queryString.stringify(query);
+      }
+      log.info(`game URL: ${url}`);
     } catch (err) {
       log.error('Unable to parse url for game.');
       return 'Error';

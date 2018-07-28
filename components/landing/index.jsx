@@ -112,21 +112,10 @@ class GameList extends Component {
           }
         `}</style>
         <Col>
-          <Carousel interval={null} className="hero-carousel" defaultActiveIndex={1}>
+          <Carousel interval={null} className="hero-carousel" defaultActiveIndex={2}>
             {games.data.map((game, idx) => {
               // TODO - database flags for game states (active|presale|development)
               // TODO - bitizens is coming soon, will need to update when launches
-              if (game.slug === 'bitizens') {
-                return (
-                  <Carousel.Item key={idx}>
-                    <div
-                      className="carousel-image"
-                      style={{ backgroundImage: 'url(/static/images/games/bitizens/presale/header.jpg)' }}
-                      onClick={() => Router.push({ pathname: '/presale', query: { slug: game.slug } }, `/presale/${game.slug}`)}
-                    />
-                  </Carousel.Item>
-                );
-              }
               return (
                 <Carousel.Item key={idx} onClick={() => ::this.navigateToGame(game.slug)}>
                   <div className="carousel-image" style={{ backgroundImage: `url(/static/images/games/${game.slug}/banner.jpg)` }} />

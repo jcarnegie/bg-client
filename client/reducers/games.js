@@ -7,6 +7,11 @@ const games = {
   /* TODO - Add descriptions, use database? */
   active: [
     {
+      name: 'Bitizens',
+      slug: 'bitizens',
+      description: '',
+    },
+    {
       name: 'Ether Online',
       slug: 'ether.online',
       description: '',
@@ -18,11 +23,6 @@ const games = {
     },
   ],
   comingSoon: [
-    {
-      name: 'Bitizens',
-      slug: 'bitizens',
-      description: '',
-    },
     {
       name: 'Axie Infinity',
       slug: 'axie',
