@@ -75,6 +75,7 @@ class Item extends Component {
     maxStats: PropTypes.number,
     buttons: PropTypes.any,
     className: PropTypes.string,
+    handler: PropTypes.func,
   };
 
   static defaultProps = {
@@ -140,14 +141,13 @@ class Item extends Component {
   }
 
   renderAttributes() {
-    const { item } = this.props;
+    const { item, handler } = this.props;
     const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => typeof Object.values(attr)[0] === 'number' ? Object.values(attr)[1] : Object.values(attr)[0]));
     return (
       <div className="attrs">
         {attributes
           .filter(isValidItemCategory)
-          .map(attribute =>
-            <Badge key={'item' + attribute}>
+          .map(attribute => <Badge key={'item' + attribute} onClick={() => handler(attribute)}>
               {attribute}
             </Badge>
           )}
@@ -320,6 +320,7 @@ class MarketplaceItem extends Component {
     }),
     maxStats: PropTypes.number,
     user: PropTypes.object,
+    handler: PropTypes.func,
   };
 
   state = {
@@ -450,7 +451,8 @@ class MarketplaceItem extends Component {
         <Item
           item={item}
           buttons={::this.renderButtons()}
-        />
+          handler={::this.props.handler}
+      />
       </>
     );
   }
@@ -626,16 +628,10 @@ class InventoryItem extends Component {
     } else {
       switch (item.saleState) {
         case 'listed':
-          if (listingIsExpiredForItem(item)) {
-            bottomBar = (
-              <>
-                {this.renewButton()}
-                {this.withdrawButton()}
-              </>
-            );
-          } else {
-            bottomBar = inProgressBar('listed-for-sale');
-          }
+          bottomBar = (<>
+                        {this.renewButton()}
+                        {this.withdrawButton()}
+                      </>);
           break;
         case 'salepending':
           bottomBar = inProgressBar('sale-in-progress');

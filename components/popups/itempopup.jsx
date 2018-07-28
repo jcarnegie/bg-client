@@ -491,7 +491,6 @@ export default class ItemPopup extends Component {
             font-weight: 300;
             font-size: .8em;
             line-height: 18px;
-            cursor: pointer;
             margin-right: 8px;
             margin-bottom: 10px;
             float: left;
@@ -504,7 +503,6 @@ export default class ItemPopup extends Component {
             font-weight: 300;
             font-size: .75em
             line-height: 18px;
-            cursor: pointer;
             margin-right: 8px;
             margin-bottom: 5px;
           }

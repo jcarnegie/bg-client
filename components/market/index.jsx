@@ -321,13 +321,13 @@ class Market extends Component {
   }
 
   renderItem(game, items) {
-		const maxStats = calcMaxItemsStats(items);
+    const maxStats = calcMaxItemsStats(items);
     return (
       <Fragment key={game.id}>
         <Row className="flex-row">
           {items.filter(item => Object.keys(this.state.gameFilter).includes(item.game.id) ? this.state.gameFilter[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
             .map(item =>
-              <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} />
+              <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} handler={::this.handleSubCategories}/>
           )}
         </Row>
       </Fragment>
