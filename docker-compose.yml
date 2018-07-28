@@ -27,8 +27,27 @@ services:
             PG_PASS: password
             PG_DB: postgres
             WS_GETH_SERVER: ws://docker.for.mac.localhost:8546
+            MARKETPLACE_CONTRACT_ADDR: 0x627a61ffc925306e76d0c8cc23e3434d9c203b32
+            ETH_NETWORK: 4
         depends_on:
             - postgres
+    itemsync:
+        build:
+            context: ../ItemsSync
+            args:
+                NODE_ENV: development
+        command: yarnpkg run dev
+        environment:
+            NODE_ENV: development
+            WS_GETH_SERVER: ws://docker.for.mac.localhost:8546
+            ETH_NETWORK: 4
+            MARKETPLACE_CONTRACT_ADDR: 0x627a61ffc925306e76d0c8cc23e3434d9c203b32
+        volumes:
+            - ../ItemsSync:/app
+            - /app/node_modules
+        depends_on:
+            - postgres
+            - api
     web:
         build:
             context: .
@@ -60,3 +79,4 @@ services:
         depends_on:
             - postgres
             - api
+            - itemsync

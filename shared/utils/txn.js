@@ -1,3 +1,4 @@
+import * as log from 'loglevel';
 import { path } from 'ramda';
 
 import {
@@ -43,6 +44,7 @@ export const gasOptionsFromGasAndSpeed = (gas, speed = 'fast') => {
   if (!gasData) { log.error(`Using a default gasPrice: ${DEFAULT_GAS_PRICE}`); }
   return {
     gas: MAX_GAS_HEX,
-    gasPrice: window.web3.toHex(gasData ? gasData[speed] : DEFAULT_GAS_PRICE),
-  }
+    // gasPrice: window.web3.toHex(gasData ? gasData[speed] : DEFAULT_GAS_PRICE),
+    gasPrice: DEFAULT_GAS_PRICE,
+  };
 };

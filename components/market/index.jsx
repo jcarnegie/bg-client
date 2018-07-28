@@ -86,6 +86,12 @@ class Market extends Component {
     }
   }
 
+  handleBuy(refetch) {
+    return (item, results) => {
+      setTimeout(refetch, 2000);
+    };
+  }
+
   renderFilters(items, games, loading = false) {
     let gameFilters = [];
 
@@ -271,11 +277,11 @@ class Market extends Component {
     );
  }
 
-  renderMarket(items, games, loading = false) {
-    return (!loading && items && items.length && games && games.length) ? this.renderItems(items, games) : this.renderEmpty();
+  renderMarket(items, games, refetch, loading = false) {
+    return (!loading && items && items.length && games && games.length) ? this.renderItems(items, games, refetch) : this.renderEmpty();
   }
 
-  renderItems(items, games) {
+  renderItems(items, games, refetch) {
     const gameIdsWithItems = uniq(map(path(['game', 'id']), items));
     const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games);
 
@@ -314,20 +320,20 @@ class Market extends Component {
           {filteredGame ? filteredGame.name : 'Items'}
         </div>
         {visibleGames.map(game =>
-          this.renderItem(game, items.filter(item => item.game.id === game.id))
+          this.renderItem(game, items.filter(item => item.game.id === game.id), refetch)
         )}
       </div>
     );
   }
 
-  renderItem(game, items) {
+  renderItem(game, items, refetch) {
     const maxStats = calcMaxItemsStats(items);
     return (
       <Fragment key={game.id}>
         <Row className="flex-row">
           {items.filter(item => Object.keys(this.state.gameFilter).includes(item.game.id) ? this.state.gameFilter[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
             .map(item =>
-              <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} handler={::this.handleSubCategories}/>
+              <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} handler={::this.handleSubCategories} onBuy={::this.handleBuy(refetch)} />
           )}
         </Row>
       </Fragment>
@@ -412,7 +418,7 @@ class Market extends Component {
           categories: this.state.categories,
         }}
       >
-        {({ loading, error, data }) => {
+        {({ loading, error, data, refetch }) => {
           if (error) return <DataError />;
 
           const { listMarketplaceItems } = data;
@@ -433,7 +439,7 @@ class Market extends Component {
             `}</style>
               {this.flexStyle()}
               {this.renderFilters(listMarketplaceItems, listGames, loadingAny)}
-              {this.renderMarket(listMarketplaceItems, listGames)}
+              {this.renderMarket(listMarketplaceItems, listGames, refetch)}
             </div>
           );
         }}

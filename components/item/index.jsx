@@ -341,7 +341,7 @@ class MarketplaceItem extends Component {
   }
 
   async onSubmit() {
-    const { network, game, item, user } = this.props;
+    const { network, game, item, user, onBuy } = this.props;
 
     const results = await buyItem({
       network,
@@ -351,6 +351,7 @@ class MarketplaceItem extends Component {
       contract: getContractFromGame(game, network),
     });
     log.info('Instantiating buy transaction...');
+    if (onBuy) onBuy(item, results);
   }
 
   async onSubmitSwitch(type) {
@@ -487,6 +488,8 @@ class InventoryItem extends Component {
     gifts: PropTypes.shape({
       data: PropTypes.array,
     }),
+    onSell: PropTypes.func,
+    onBuy: PropTypes.func,
   };
 
   static defaultProps = {
@@ -530,6 +533,7 @@ class InventoryItem extends Component {
       item,
       game,
       user,
+      onSell,
     } = this.props;
 
     log.info('Beginning sell transaction...');
@@ -541,6 +545,8 @@ class InventoryItem extends Component {
       to: getMarketplaceContractAddress(network),
       price: parseFloat(data.sellPrice),
     });
+
+    if (onSell) onSell(item, result);
   }
 
   renderPresaleButton() {

@@ -148,6 +148,7 @@ export const listItemsQuery = graphql(queries.listItems, {
         language: user.language,
         userId: user.id,
       },
+      pollInterval: 30000,
     });
   },
 });

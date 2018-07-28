@@ -127,7 +127,8 @@ export const listItem = ({
 
   const dataHex = dataHexForCurrencyAndPrice({ currency: currencyInt, price });
 
-  const options = {...gasOptionsFromGasAndSpeed(gas, gasSpeed)};
+  // const options = {...gasOptionsFromGasAndSpeed(gas, gasSpeed)};
+  const options = {};
 
   if (currencyInt === 1) {
     log.info('listItem: ETH workflow...');
@@ -209,7 +210,8 @@ export const buyItem = ({
 
   const dataHex = dataHexForContractAndTokenId({ contract, tokenId: tokenIdInt });
 
-  const options = {...gasOptionsFromGasAndSpeed(gas, gasSpeed)};
+  // const options = {...gasOptionsFromGasAndSpeed(gas, gasSpeed)};
+  const options = {};
 
   log.info('BitGuildTokenContract: ', BitGuildTokenContract);
   log.info('marketplaceAddress: ', marketplaceAddress);
@@ -284,7 +286,7 @@ export const buyItemWithEther = ({
   const options = {
     from: getWeb3Wallet(),
     value: priceFloat,
-    ...gasOptionsFromGasAndSpeed(gas, gasSpeed)
+    // ...gasOptionsFromGasAndSpeed(gas, gasSpeed)
   };
 
   log.info('marketplaceAddress: ', marketplaceAddress);
@@ -340,7 +342,7 @@ export const extendItem = ({
   gasSpeed = 'fast',
 }) => new Promise((resolve, reject) => {
   if (!network || !contract || !item) {
-   log.info('extendItem: incorrect parameters.')
+   log.info('extendItem: incorrect parameters.');
    return reject();
   }
 
@@ -348,7 +350,8 @@ export const extendItem = ({
 
   const itemId = parseInt(item.id, 10);
   const tokenId = parseInt(item.tokenId, 10);
-  const options = {...gasOptionsFromGasAndSpeed(gas, gasSpeed)};
+  // const options = {...gasOptionsFromGasAndSpeed(gas, gasSpeed)};
+  const options = {};
 
   log.info('Extending item listing...');
   log.info('MarketplaceContract: ', MarketplaceContract);

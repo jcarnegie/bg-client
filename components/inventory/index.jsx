@@ -64,7 +64,12 @@ class Inventory extends Component {
 				},
 			});
 		};
-	}
+  }
+
+  onSell(item, listItemResult) {
+    const { items } = this.props;
+    setTimeout(::items.refetch, 3000);
+  }
 
 	onSelect(key) {
 		if (key === 1) {
@@ -125,10 +130,11 @@ class Inventory extends Component {
     const maxStats = calcMaxItemsStats(items);
     const itemsToRender = items.filter(item => Object.keys(this.state.filters).includes(item.game.id) ? this.state.filters[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
       .map(item => (
-         type === undefined ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
-        : type === 'onsale' && item.saleState === 'listed'
-        ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
-        : null
+         type === undefined
+          ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} onSell={::this.onSell} />
+          : type === 'onsale' && item.saleState === 'listed'
+            ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} onSell={::this.onSell} />
+            : null
       ));
     return (
       <Fragment key={game.id}>
