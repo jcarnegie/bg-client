@@ -38,7 +38,7 @@ class Game extends Component {
 
     try {
       url = game.viewGameBySlug.url + (game.viewGameBySlug.url.includes('?') ? '&' : '?') + queryString.stringify(query);
-      if (process.env.DEPLOYED !== 'production' && game.viewGameBySlug.stagingUrl) {
+      if (process.env.DEPLOYED_ENV !== 'production' && game.viewGameBySlug.stagingUrl) {
         url = game.viewGameBySlug.stagingUrl + (game.viewGameBySlug.stagingUrl.includes('?') ? '&' : '?') + queryString.stringify(query);
       }
       log.info(`game URL: ${url}`);
