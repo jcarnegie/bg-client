@@ -15,10 +15,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/BitGuildPlatform/CrowdsaleModules.git"
+    "url": "https://github.com/BitGuildPlatform/PortalClient.git"
   },
   "bugs": {
-    "url": "https://github.com/BitGuildPlatform/CrowdsaleModules/issues"
+    "url": "https://github.com/BitGuildPlatform/PortalClient/issues"
   },
   "license": "closed",
   "dependencies": {

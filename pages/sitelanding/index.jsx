@@ -1,18 +1,18 @@
 import { DesktopLayout, MobileLayout } from '@/components/layouts';
-import GameLanding from '@/components/GameLanding';
+import Landing from '@/components/landing';
 import Chat from '@/components/chat';
 
 
-const GameLandingPage = props => (
+const SiteLandingPage = props => (
   <>
     <MobileLayout
-      main={<GameLanding {...props} />}
+      main={<Landing {...props} />}
     />
     <DesktopLayout
-      main={<GameLanding {...props} />}
+      main={<Landing {...props} />}
       aside={<Chat {...props} />}
     />
   </>
 );
 
-export default GameLandingPage;
+export default SiteLandingPage;

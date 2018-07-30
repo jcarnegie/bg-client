@@ -32,6 +32,7 @@ export const desktop = {
 
 export const boxShadow = {
   default: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+  dark: '0 0 12px rgba(0,0,0,0.70)',
   wide: '0 0 15px rgba(0,0,0,0.12)',
   hover: '0 2px 4px rgba(0,0,0,0.18), 0 1px 8px rgba(0,0,0,0.24)',
 };
