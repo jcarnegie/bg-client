@@ -1,9 +1,6 @@
+/* eslint-disable key-spacing */
 import * as log from 'loglevel';
 import { path } from 'ramda';
-
-import {
-  web3IsInstalled,
-} from '@/shared/utils/network';
 
 export const ETH_UNIT_MAP = {
   'wei':          '1',
@@ -32,19 +29,15 @@ export const ETH_UNIT_MAP = {
   'tether':       '1000000000000000000000000000000',
 };
 
-const HEX_15e4 = web3IsInstalled() ? web3.toHex(6e5) : '0x3d090';
-export const MAX_GAS_HEX = HEX_15e4;
 
 export const ETH2WEI = Number(ETH_UNIT_MAP.ether);
 
-export const DEFAULT_GAS_PRICE = 1000000;
+export const DEFAULT_GAS_PRICE = 2700000000;
 
 export const gasOptionsFromGasAndSpeed = (gas, speed = 'fast') => {
-  const gasData = path(['data'] , gas);
+  const gasData = path(['data'], gas);
   if (!gasData) { log.error(`Using a default gasPrice: ${DEFAULT_GAS_PRICE}`); }
   return {
-    gas: MAX_GAS_HEX,
-    // gasPrice: window.web3.toHex(gasData ? gasData[speed] : DEFAULT_GAS_PRICE),
-    gasPrice: DEFAULT_GAS_PRICE,
+    gasPrice: window.web3.toHex(gasData ? gasData[speed] : DEFAULT_GAS_PRICE),
   };
 };
