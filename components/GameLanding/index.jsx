@@ -57,6 +57,10 @@ class GameList extends Component {
     );
   }
 
+  navigateToPresale(slug) {
+    Router.push({ pathname: '/presale', query: { slug } }, `/presale/${slug}`);
+  }
+
   backgroundSections() {
     return (
       <div className="background-sections">
@@ -143,12 +147,12 @@ class GameList extends Component {
             .game-landing-background-launchpad {
               position: absolute;
               right: 50px;
-              top: 3700px;
-              height: 900px;
+              top: 3720px;
+              height: 850px;
             }
 
             .landing-background-dark {
-              height: 900px;
+              height: 600px;
               background: rgb(29, 54, 63);
             }
           `}</style>
@@ -334,6 +338,7 @@ class GameList extends Component {
           .content-section.limited-presale-items img {
             max-width: 50%;
             max-height: 500px;
+            cursor: pointer;
           }
           .content-section.limited-presale-items img:nth-child(odd) {
             transform: translateY(-10%);
@@ -363,7 +368,7 @@ class GameList extends Component {
         `}</style>
         <section className="content-section play-now">
           <p>Create & customize your personal 3D Bitizen, and  discover what Bitropolis has to offer. Take your first steps in a new social blockchain experience today!</p>
-          <button>PLAY NOW</button>
+          <button onClick={() => ::this.navigateToGame('bitizens')}>PLAY NOW</button>
         </section>
         <section className="content-section single-title bitizen-features">
           <h2>BITIZEN FEATURES</h2>
@@ -396,14 +401,14 @@ class GameList extends Component {
           <h2>LIMITED PRE-SALE ITEMS</h2>
         </section>
         <section className="content-section limited-presale-items">
-          <img src={'/static/images/games/bitizens/landing/wilds.png'} />
-          <img src={'/static/images/games/bitizens/landing/skies.png'} />
-          <img src={'/static/images/games/bitizens/landing/seas.png'} />
-          <img src={'/static/images/games/bitizens/landing/cyberspace.png'} />
+          <img src={'/static/images/games/bitizens/landing/wilds.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
+          <img src={'/static/images/games/bitizens/landing/skies.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
+          <img src={'/static/images/games/bitizens/landing/seas.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
+          <img src={'/static/images/games/bitizens/landing/cyberspace.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
         </section>
         <section className="content-section limited-presale-text">
           <p>We&apos;re offering you a change to secure some unique, limited-run items! These fancy outfits are only obtainable during the pre-sale, and will not be available for direct purchase ever again once the pre-sale concludes!</p>
-          <button>SEE PRE-SALE</button>
+          <button onClick={() => ::this.navigateToPresale('bitizens')}>SEE PRE-SALE</button>
         </section>
       </div>
     );
@@ -418,9 +423,6 @@ class GameList extends Component {
             position: relative;
           }
         `}</style>
-      {/* <div onClick={() => Router.push({ pathname: '/presale', query: { slug } }, `/presale/${slug}`)}>
-        <FormattedMessage id={`pages.presale.${slug}.title`} />
-      </div> */}
         {::this.backgroundSections()}
         {::this.content()}
       </div>
