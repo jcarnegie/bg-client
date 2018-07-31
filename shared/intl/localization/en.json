@@ -122,6 +122,33 @@
     }
   },
   "pages": {
+<<<<<<< HEAD
+=======
+    "bugbounty": {
+      "title": "Bug Bounty",
+      "hey-bitizens": "Hey Bitizen!",
+      "info": "Are you a curious developer looking to learn more about smart contracts? Or maybe you are a well versed engineer with smart contract experience? Either way, we’re inviting you to participate in our bug bounty program and help us make our products rock solid, and our contracts ironclad.",
+      "conditions-header": "Conditions:",
+      "conditions-1": "The program covers only bugs in any of our smart contracts for Marketplace and Bitizens.",
+      "conditions-2": "At the moment, those contracts are written in Solidity for Ethereum blockchain so the program targets this ecosystem only.",
+      "conditions-3": "Whoever reports the bug first, gets the reward (see the submission process below). Github issue date will be used as proof.",
+      "rewards-header": "Rewards and bug categories:",
+      "rewards-info-1": "Severity 0 - User funds or items are at risk of having unauthorized access by another user.",
+      "rewards-reward-1": "Reward: 10 ETH + 800,000 PLAT",
+      "rewards-info-2": "Severity 1 - User state (equipped items, placed orders, etc) is risk of being changed by unauthorized user.",
+      "rewards-reward-2": "Reward: 6 ETH + 600,000 PLAT",
+      "rewards-info-3": "Severity 2 - BitGuild funds/items/state is at risk of being changed by unauthorized user.",
+      "rewards-reward-3": "Reward: 3 ETH + 300,000 PLAT",
+      "rewards-info-4": "Severity 3 - Any major bug in the product logic that significantly changes its behavior.",
+      "rewards-reward-4": "Reward: 50,000 PLAT",
+      "report-header": "To submit a report, please do the following:",
+      "report-1": "Create a github issue in the relevant repo (see the links above).",
+      "report-2": "Fill this <strong><a href='https://docs.google.com/forms/d/1oCHiiXUB5zxMCq_F31p2Na0BtImp0glnBfAC3hW5kfo/edit'>Google Form</a></strong>.",
+      "processing": "We will acknowledge receival of your submission within <strong> 72 hours </strong>, and we’ll commit to validating the report, giving you our conclusion within <strong> 10 days </strong>.",
+      "looking-forward": "We are looking forward to hearing from you!",
+      "team": "BitGuild Team"
+    },
+>>>>>>> a78d550... Sets up bounty page for desktop.
     "inventory": {
       "title": "My Items",
       "listed-for-sale": "Listed for sale",
