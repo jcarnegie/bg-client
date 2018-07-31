@@ -130,6 +130,7 @@ class Presale extends Component {
       interval: setInterval(::this.getQtyOfItemsRemaining, 5000),
     });
     setInterval(::this.ticker, 1000);
+    window.scroll(0, 0);
   }
 
   ticker() {
