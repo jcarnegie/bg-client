@@ -77,6 +77,7 @@ class GameList extends Component {
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
           }
 
           .game-landing-background-section-ocean {
@@ -157,7 +158,7 @@ class GameList extends Component {
         `}</style>
 
         <section className="game-landing-background-section">
-          <div className="game-landing-background-section-banner" />
+          <div className="game-landing-background-section-banner" onClick={() => ::this.navigateToGame('bitizens')} />
         </section>
         <img className="game-landing-background-boy-and-girl" src={'/static/images/games/bitizens/landing/boy_and_girl.png'} />
         <section className="game-landing-background-section game-landing-background-section-ocean">
@@ -182,7 +183,7 @@ class GameList extends Component {
         <style jsx>{`
           .content-sections-wrapper {
             position: absolute;
-            top: 0;
+            top: 688px;
             right: 0;
             left: 0;
             bottom: 0;
@@ -212,7 +213,6 @@ class GameList extends Component {
           }
 
           .content-section.play-now {
-            margin-top: 688px;
             background-color: rgb(244, 142, 92);
             color: white;
             height: 135px;
@@ -420,6 +420,9 @@ class GameList extends Component {
           .game-landing-background-section {
             width: 100%;
           }
+          .game-landing-background-section:nth-child(1) {
+            cursor: pointer;
+          }
           .game-landing-background-section:nth-child(1) .game-landing-background-section-banner {
             width: 100%;
             position: relative;
@@ -430,6 +433,7 @@ class GameList extends Component {
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
           }
 
           .game-landing-background-section-ocean {
@@ -510,7 +514,7 @@ class GameList extends Component {
         `}</style>
 
         <section className="game-landing-background-section">
-          <div className="game-landing-background-section-banner" />
+          <div className="game-landing-background-section-banner" onClick={() => ::this.navigateToGame('bitizens')} />
         </section>
         <img className="game-landing-background-boy-and-girl" src={'/static/images/games/bitizens/landing/boy_and_girl.png'} />
         <section className="game-landing-background-section game-landing-background-section-ocean">
@@ -535,7 +539,7 @@ class GameList extends Component {
         <style jsx>{`
           .content-sections-wrapper {
             position: absolute;
-            top: 0;
+            top: 688px;
             right: 0;
             left: 0;
             bottom: 0;
@@ -567,7 +571,6 @@ class GameList extends Component {
           }
 
           .content-section.play-now {
-            margin-top: 688px;
             background-color: rgb(244, 142, 92);
             color: white;
             height: 200px;
@@ -731,7 +734,6 @@ class GameList extends Component {
             min-width: 150px;
           }*/}
         `}</style>
-        {/*<button onClick={() => ::this.navigateToGame('bitizens')} className="header-play-now-button">PLAY NOW</button>*/}
         <section className="content-section play-now">
           <p>Create & customize your personal 3D Bitizen, and  discover what Bitropolis has to offer. Take your first steps in a new social blockchain experience today!</p>
           <button onClick={() => ::this.navigateToGame('bitizens')}>PLAY NOW</button>
