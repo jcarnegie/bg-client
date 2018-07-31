@@ -34,6 +34,7 @@ export default class Bugbounty extends Component {
           margin: 60px auto 0 auto;
           margin-bottom: 40px;
           display: block;
+          width: 80%;
         }
         .bug-bounty strong {
           font-weight: 600;
