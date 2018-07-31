@@ -82,7 +82,7 @@ class Market extends Component {
         });
       }
     } else {
-      const categories = this.state.categories || [];
+      const categories = this.state.categories ? Array.from(this.state.categories) : [];
       categories.push(subCategory);
       this.setState({ categories });
     }
@@ -431,7 +431,10 @@ class Market extends Component {
           language: (viewUserByWallet) ? viewUserByWallet.language : null,
           gameId: this.state.gameFilter,
           sort: null,
-          categories: this.state.categories,
+          categories: (!this.listMarketplaceItems) ? []
+            : !this.listMarketplaceItems.length > 0 ? []
+            : this.listMarketplaceItems[0].game.id !== this.state.gameFilter ? []
+            : this.state.categories,
         }}
       >
         {({ loading, error, data, refetch }) => {
