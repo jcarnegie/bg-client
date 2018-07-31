@@ -10,6 +10,7 @@ module.exports = {
     'js',
     'jsx',
     'json',
+    'node', /* Load scrypt properly, for web3 */
   ],
   moduleDirectories: [
     'node_modules',

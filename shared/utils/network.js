@@ -40,18 +40,6 @@ export function networkIdToName(id) {
   return networkIdToNameMap[id];
 }
 
-// export function networkOrMain(network) {
-//   return (network && network.data) ? network : (
-//     {
-//       data: {
-//         name: networkIdToNameMap['1'],
-//         id: '1',
-//         available: true,
-//       },
-//     }
-//   );
-// }
-
 export function networkIsSupported(network) {
   if (!network || !network.data) return false;
   return Object.keys(networkAddressMap).includes(network.data.name);
