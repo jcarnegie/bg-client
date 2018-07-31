@@ -69,20 +69,22 @@ class Market extends Component {
   handleSubCategories(subCategory) {
     if (this.state.categories && this.state.categories.includes(subCategory)) {
       let index = this.state.categories.indexOf(subCategory);
-      this.state.categories.splice(index, 1);
-      this.setState({
-        categories: null
-      });
-    } else {
-      if (this.state.categories) {
+      let resetCategories = Array.from(this.state.categories);
+
+      if (this.state.categories.length === 0) {
         this.setState({
-          categories: null
+          categories: null,
         });
       } else {
-        const categories = this.state.categories || [];
-        categories.push(subCategory);
-        this.setState({ categories });
+        resetCategories.splice(index, 1);
+        this.setState({
+          categories: resetCategories,
+        });
       }
+    } else {
+      const categories = this.state.categories || [];
+      categories.push(subCategory);
+      this.setState({ categories });
     }
   }
 
@@ -205,7 +207,17 @@ class Market extends Component {
             align-items: center;
             border-bottom: 1px solid #E1E1E1;
           }
-
+          .info-active {
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 300;
+            height: 45px;
+            padding: 0 20px 0 100px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #E1E1E1;
+            background-color: #D3E0F7;
+          }
           .tree-view_children-collapsed {
             height: 0px;
           }
@@ -262,7 +274,12 @@ class Market extends Component {
                   {
                     subCategories.map(subCategory => {
                       return (
-                        <div key={subCategory} className="info" onClick={() => ::this.handleSubCategories(subCategory, id)}>{subCategory}</div>
+                        <div key={subCategory}
+                        className={`${this.state.categories === null
+                        ? 'info'
+                        : this.state.categories.includes(subCategory)
+                        ? 'info-active' : 'info'}`}
+                        onClick={() => ::this.handleSubCategories(subCategory, id)}>{subCategory}</div>
                       );
                     })
                   }
