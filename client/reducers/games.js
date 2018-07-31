@@ -39,8 +39,8 @@ const games = {
       description: '',
     },
     {
-      name: 'Cryptage',
-      slug: 'cryptage',
+      name: 'Cryptage Origins',
+      slug: 'cryptageorigins',
       description: '',
     },
     {
