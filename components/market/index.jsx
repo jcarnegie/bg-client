@@ -394,7 +394,6 @@ class Market extends Component {
     );
   }
 
-
   render() {
     if (this.state.mobile !== this.props.layout.type.mobile) {
       this.setState({ mobile: this.props.layout.type.mobile });
@@ -422,7 +421,12 @@ class Market extends Component {
           if (error) return <DataError />;
 
           const { listMarketplaceItems } = data;
-          // const listMarketplaceItems = itemList;
+
+          if (!this.listMarketplaceItems || this.listMarketplaceItems.length === 0) {
+            this.listMarketplaceItems = listMarketplaceItems;
+          } else if (this.listMarketplaceItems[0].game.id !== this.state.gameFilter) {
+            this.listMarketplaceItems = listMarketplaceItems;
+          }
 
           const loadingAny = loading || games.loading || user.loading;
 
@@ -438,7 +442,7 @@ class Market extends Component {
               }
             `}</style>
               {this.flexStyle()}
-              {this.renderFilters(listMarketplaceItems, listGames, loadingAny)}
+              {this.renderFilters(this.listMarketplaceItems, listGames, loadingAny)}
               {this.renderMarket(listMarketplaceItems, listGames, refetch)}
             </div>
           );

@@ -8,7 +8,7 @@ import {
 const balance = {
   isLoading: false,
   success: false,
-  data: null,
+  data: 0,
 };
 
 export default function updateBalancePLAT(state = balance, action) {

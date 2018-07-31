@@ -237,7 +237,7 @@ class Item extends Component {
             font-weight: 500;
             color: #ffffff;
             background-color: rgb(49, 75, 136);
-            font-size: 14px;
+            font-size: 13px;
             border-radius: 0px 0px 6px 6px;
           }
           .item .thumbnail .caption .btn.buy:hover {
@@ -245,11 +245,16 @@ class Item extends Component {
           }
           .item .thumbnail .platToken {
             display: inline-block;
-            height: 25px;
+            height: 20px;
             width: auto;
             padding: 0px 5px 4px 5px;
             line-height: 16px;
             margin-top: 4px;
+          }
+          .renew-token {
+            display: inline-block;
+            height: 15px;
+            width: auto;
           }
           .item .thumbnail .caption .tx {
             height: 28px;
@@ -281,6 +286,20 @@ class Item extends Component {
           }
           .buy-for {
             vertical-align: middle;
+          }
+          .renew-price-block {
+            display: block;
+            position: relative;
+            bottom: 1px;
+          }
+          .renew-price {
+            display: inline-block;
+            position: relative;
+            top: 1px;
+            font-size: 12px;
+          }
+          .renew-block {
+            font-size: 13px;
           }
         `}</style>
         <Thumbnail>
@@ -380,7 +399,7 @@ class MarketplaceItem extends Component {
         <style jsx>{`
           .item-button {
             color: white;
-            font-size: 0.9em;
+            font-size: 13px;
             opacity: 1;
             height: 45px;
             width: 50%;
@@ -407,8 +426,20 @@ class MarketplaceItem extends Component {
     );
   }
 
-  renewButton(side = 'left', onClick = () => ::this.onSubmitSwitch('renew'), children = <FormattedMessage id="pages.marketplace.renew" />) {
-    return this.actionButton(side, onClick, children);
+  renewButton(salePrice) {
+    const side = 'left';
+    const children = (
+       <span className="renew-block">
+        <FormattedMessage id="pages.marketplace.renew" />
+        <span className="renew-price-block">
+          <img src="/static/images/icons/plat.png" className="renew-token" />
+          <span className="renew-price">
+            {salePrice}
+          </span>
+        </span>
+      </span>
+    );
+    return this.actionButton(side, () => ::this.onSubmit('renew'), children);
   }
   withdrawButton(side = 'right', onClick = () => ::this.onSubmitSwitch('withdraw'), children = <FormattedMessage id="pages.marketplace.withdraw" />) {
     return this.actionButton(side, onClick, children);
@@ -420,11 +451,17 @@ class MarketplaceItem extends Component {
     const userID = path(['data', 'id'], user);
     return (
       <ButtonGroup justified>
+        <style jsx>{`
+          .item-button-bar {
+            width: 100%;
+            display: flex;
+          }
+        `}</style>
         {lastOwner === userID
-          ? <>
-              {this.renewButton()}
+          ? <div className="item-button-bar">
+              {this.renewButton(item.salePrice)}
               {this.withdrawButton()}
-            </>
+            </div>
         : <Button href="#" onClick={::this.onShowBuy} className="buy">
           <span className="buy-for">
             <FormattedMessage className="buy-for" id="pages.marketplace.buy-for" />
@@ -570,7 +607,7 @@ class InventoryItem extends Component {
         <style jsx>{`
           .item-button {
             color: white;
-            font-size: 0.9em;
+            font-size: 13px;
             opacity: 1;
             height: 45px;
             width: 50%;
@@ -603,8 +640,20 @@ class InventoryItem extends Component {
   giftButton(side = 'right', onClick = () => ::this.setState({ modal: 'gift' }), children = <FormattedMessage id="global.gift" />) {
     return this.actionButton(side, onClick, children);
   }
-  renewButton(side = 'left', onClick = () => ::this.onSubmit('renew'), children = <FormattedMessage id="pages.marketplace.renew" />) {
-    return this.actionButton(side, onClick, children);
+  renewButton(salePrice) {
+    const side = 'left';
+    const children = (
+      <span className="renew-block">
+        <FormattedMessage id="pages.marketplace.renew" />
+        <span className="renew-price-block">
+          <img src="/static/images/icons/plat.png" className="renew-token" />
+          <span className="renew-price">
+            {salePrice}
+          </span>
+        </span>
+      </span>
+    );
+    return this.actionButton(side, () => ::this.onSubmit('renew'), children);
   }
   withdrawButton(side = 'right', onClick = () => ::this.onSubmit('withdraw'), children = <FormattedMessage id="pages.marketplace.withdraw" />) {
     return this.actionButton(side, onClick, children);
@@ -613,7 +662,6 @@ class InventoryItem extends Component {
   renderButtons() {
     const { gifts, item, game } = this.props;
     const gift = gifts.data && gifts.data.find(gift => gift.item === item.tokenId && gift.game === game.id);
-
     if (gift) {
       return (
         <div className="tx">
@@ -635,7 +683,7 @@ class InventoryItem extends Component {
       switch (item.saleState) {
         case 'listed':
           bottomBar = (<>
-                        {this.renewButton()}
+                        {this.renewButton(item.salePrice)}
                         {this.withdrawButton()}
                       </>);
           break;
@@ -669,6 +717,7 @@ class InventoryItem extends Component {
         <style jsx>{`
           .item-button-bar {
             width: 100%;
+            display: flex;
           }
         `}</style>
         {bottomBar}
