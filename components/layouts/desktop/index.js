@@ -59,10 +59,13 @@ class DesktopLayout extends React.Component {
     const props = Object.assign({}, this.props);
     delete props.dispatch;
 
+    let offsetRight = '0';
+    if (aside) offsetRight = asideRightCollapsed ? asideRightCollapsedWidth.toString() : asideRightWidth.toString();
+
     return (
       <Desktop {...props}>
         <Header />
-        <Main offsetRight={asideRightCollapsed ? asideRightCollapsedWidth.toString() : asideRightWidth.toString()}>
+        <Main offsetRight={offsetRight}>
           {this.props.main}
         </Main>
         {aside}
