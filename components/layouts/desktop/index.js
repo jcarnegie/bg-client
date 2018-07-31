@@ -21,6 +21,7 @@ class DesktopLayout extends React.Component {
     aside: PropTypes.any,
     dispatch: PropTypes.func,
     layout: PropTypes.object,
+    layoutOverrides: PropTypes.object,
     children: PropTypes.any,
   }
 
@@ -28,14 +29,25 @@ class DesktopLayout extends React.Component {
     aside: null,
     main: null,
     children: null,
+    layoutOverrides: {},
   }
 
   render() {
-    const {
+    let {
       asideRightCollapsed,
       asideRightWidth,
       asideRightCollapsedWidth,
     } = this.props.layout;
+
+    const {
+      asideRightCollapsedOverride,
+      asideRightWidthOverride,
+      asideRightCollapsedWidthOverride,
+    } = this.props.layoutOverrides;
+
+    if (asideRightCollapsedOverride) asideRightCollapsed = asideRightCollapsedOverride;
+    if (asideRightWidthOverride >= 0) asideRightWidth = asideRightWidthOverride;
+    if (asideRightCollapsedWidthOverride >= 0) asideRightCollapsedWidth = asideRightCollapsedWidthOverride;
 
     const aside = this.props.aside ? (
       <Aside offsetTop={style.header.height}>
@@ -50,7 +62,7 @@ class DesktopLayout extends React.Component {
     return (
       <Desktop {...props}>
         <Header />
-        <Main offsetRight={asideRightCollapsed ? asideRightCollapsedWidth : asideRightWidth}>
+        <Main offsetRight={asideRightCollapsed ? asideRightCollapsedWidth.toString() : asideRightWidth.toString()}>
           {this.props.main}
         </Main>
         {aside}
