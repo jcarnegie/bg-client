@@ -9,7 +9,7 @@ export default class Footer extends Component {
         <style jsx global>{`
           .footer {
             position: relative;
-            height: 100px;
+            height: 130px;
             width: calc(100% - 285px);
             display: flex;
             f
@@ -45,14 +45,17 @@ export default class Footer extends Component {
           .footer .players-footer {
             min-width: 20%;
             max-width: 30%;
+            margin-top: 30px;
           }
           .footer .developer-footer {
             min-width: 25%;
             max-width: 35%;
+            margin-top: 30px;
           }
           .footer .social-footer {
             min-width: 20%;
             max-width: 30%;
+            margin-top: 30px;
           }
           .footer .social-footer span {
             display: block;
