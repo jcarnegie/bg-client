@@ -84,7 +84,7 @@ export default class Bugbounty extends Component {
 
         <ul>
           <lh><FormattedMessage id="pages.bugbounty.conditions-header" /></lh>
-          <li><FormattedMessage id="pages.bugbounty.conditions-1" /></li>
+          <li><FormattedHTMLMessage id="pages.bugbounty.conditions-1" /></li>
           <li><FormattedMessage id="pages.bugbounty.conditions-2" /></li>
           <li><FormattedMessage id="pages.bugbounty.conditions-3" /></li>
         </ul>

@@ -1,0 +1,111 @@
+import React, { Component } from 'react';
+import Link from 'next/link';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+
+export default class Footer extends Component {
+  render() {
+    return (
+      <div className="footer">
+        <style jsx global>{`
+          .footer {
+            position: relative;
+            height: 100px;
+            width: calc(100% - 285px);
+            display: flex;
+            f
+          }
+          .footer img {
+            display: inline-block;
+            height: 60px;
+            width: 60px;
+            float: left;
+            margin-right: 15px;
+            margin-left: 30px;
+          }
+          .footer-text-block {
+            display: inline-block;
+          }
+          .footer-text-block h2 {
+            font-weight: 600;
+            font-size: 16px;
+            margin: 0;
+            text-transform: uppercase;
+          }
+          .social-footer h2 {
+            font-weight: 600;
+            font-size: 16px;
+            margin: 3px 0 15px 0;
+            text-transform: uppercase;
+          }
+          .footer-text-block span {
+            display: block;
+            font-size: 16px;
+            margin-top: 3px;
+          }
+          .footer .players-footer {
+            min-width: 20%;
+            max-width: 30%;
+          }
+          .footer .developer-footer {
+            min-width: 25%;
+            max-width: 35%;
+          }
+          .footer .social-footer {
+            min-width: 20%;
+            max-width: 30%;
+          }
+          .footer .social-footer span {
+            display: block;
+          }
+          .social-icons {
+            width: 80%;
+            display: flex;
+            justify-content: space-between;
+          }
+          .footer .social-icons img {
+            height: 25px;
+            width: 25px;
+            justify-content: space-between;
+            margin: 0;
+          }
+        `}</style>
+        <div className="players-footer">
+          <img src="/static/images/icons/players.png" />
+          <div className="footer-text-block">
+            <h2><FormattedMessage id="components.footer.for-players" /></h2>
+            <FormattedHTMLMessage id="components.footer.faq" />
+            <FormattedHTMLMessage id="components.footer.feedback" />
+          </div>
+        </div>
+        <div className="developer-footer">
+          <img src="/static/images/icons/developers.png" />
+          <div className="footer-text-block">
+            <h2><FormattedMessage id="components.footer.for-developers" /></h2>
+            <FormattedHTMLMessage id="components.footer.bug-bounty" />
+            <FormattedHTMLMessage id="components.footer.portal-sdk" />
+            </div>
+        </div>
+        <div className="social-footer">
+          <h2><FormattedMessage id="components.footer.join" /></h2>
+          <div className="social-icons">
+            <a href="https://www.facebook.com/BitGuildPLAT">
+              <img src="/static/images/icons/facebook.png" />
+            </a>
+            <a href="https://twitter.com/BitGuildPLAT">
+              <img src="/static/images/icons/twitter.png" />
+            </a>
+            <a href="https://discord.gg/pPC2frB ">
+              <img src="/static/images/icons/discord.png" />
+            </a>
+            <a href="https://www.reddit.com/r/BitGuild/">
+              <img src="/static/images/icons/reddit.png" />
+            </a>
+            <a href="https://medium.com/the-notice-board">
+              <img src="/static/images/icons/medium.png"/>
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}

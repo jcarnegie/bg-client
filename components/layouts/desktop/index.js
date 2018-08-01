@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Header from '@/components/header/desktop';
+import Footer from '@/components/footer/desktop';
 import Main from '@/components/layouts/main';
 import Aside from '@/components/layouts/aside';
 import { Desktop } from '@/components/responsive';
@@ -67,6 +68,7 @@ class DesktopLayout extends React.Component {
         </Main>
         {aside}
         {this.props.children}
+        <Footer />
       </Desktop>
     );
   }
