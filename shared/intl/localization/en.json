@@ -33,7 +33,16 @@
       "marketplace": "Marketplace Beta",
       "exchange": "Exchange",
       "community": "Community",
-      "presale": "Presale"
+      "presale": "IGO"
+    },
+    "footer": {
+      "for-players": "For Players",
+      "faq": "<a href='/faq'>FAQ</a>",
+      "feedback": "<a href='https://docs.google.com/forms/d/1xDavZE4wBlceRDuxQDgroBO5lfrEL4Y4nsM8BfCH1AU/edit'>Feedback</a>",
+      "for-developers": "For Developers",
+      "bug-bounty": "<a href='/bounty'>Bug Bounty</a>",
+      "portal-sdk": "<a href='/static/sdk/BitGuildPortalSDK_v0.1.js' download>Portal SDK</a>",
+      "join": "Join the BitGuild Community"
     },
     "loader": {
       "loading": "loading"
@@ -128,7 +137,7 @@
       "hey-bitizens": "Hey Bitizen!",
       "info": "Are you a curious developer looking to learn more about smart contracts? Or maybe you are a well versed engineer with smart contract experience? Either way, we’re inviting you to participate in our bug bounty program and help us make our products rock solid, and our contracts ironclad.",
       "conditions-header": "Conditions:",
-      "conditions-1": "The program covers only bugs in any of our smart contracts for Marketplace and Bitizens.",
+      "conditions-1": "The program covers only bugs in any of our smart contracts for <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/marketplace'>Marketplace</a> and <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/bitizens'>Bitizens</a>.",
       "conditions-2": "At the moment, those contracts are written in Solidity for Ethereum blockchain so the program targets this ecosystem only.",
       "conditions-3": "Whoever reports the bug first, gets the reward (see the submission process below). Github issue date will be used as proof.",
       "rewards-header": "Rewards and bug categories:",
