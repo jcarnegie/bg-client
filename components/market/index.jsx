@@ -22,7 +22,6 @@ import {
   queries,
   listGamesQuery,
   viewUserByWalletQuery,
-  POLL_INTERVAL,
 } from '@/shared/utils/apollo';
 
 import {
@@ -48,6 +47,7 @@ class Market extends Component {
     games: PropTypes.object,
     game: PropTypes.object,
     user: PropTypes.object,
+    layout: PropTypes.object,
     lastLocation: PropTypes.shape({
       pathname: PropTypes.string,
     }),
@@ -97,8 +97,12 @@ class Market extends Component {
   renderFilters(items, games, loading = false) {
     let gameFilters = [];
 
+    if (!games || !items) return null;
+
     if (!loading || (games && items)) {
-      gameFilters = games.map(({ name, id, slug }) => ({
+      const gamesWithItemsForSale = games.filter(game => (game.itemsForSaleCount > 0));
+      if (gamesWithItemsForSale.length === 0) return null;
+      gameFilters = gamesWithItemsForSale.map(({ name, id, slug }) => ({
         name,
         id,
         collapsed: true,
@@ -145,6 +149,7 @@ class Market extends Component {
         }
       });
     }
+
     return (
       <div className={cx({
         mobileFilters: this.state.mobile,
@@ -253,7 +258,7 @@ class Market extends Component {
         {(loading && !(games && items)) ? <DataLoading /> : gameFilters.map((node, i) => {
           const { name, id, categories, imgSource } = node;
           const { gameFilter } = this.state;
-          const gameFilterIsSelected = gameFilter == id;
+          const gameFilterIsSelected = gameFilter.toString() === id.toString();
           return (
             <TreeView
               key={name + '|' + i}
