@@ -60,9 +60,21 @@ class Item extends Component {
 
     const msInOneDay = 24 * 60 * 60 * 1000;
     const expirationDate = new Date(saleExpiration);
-    const today = new Date();
-    const diff = expirationDate - today;
-    const days = Math.round(diff / msInOneDay);
+    const now = new Date();
+    const daysDiff = (expirationDate / msInOneDay) - (now / msInOneDay);
+    const days = Math.round(daysDiff);
+
+    let msg;
+
+    if (daysDiff <= 0) {
+      msg = <FormattedMessage id="global.expired" />;
+    } else if (daysDiff < 1) {
+      msg = <FormattedMessage id="pages.marketplace.expires-today" />;
+    } else if (daysDiff < 2) {
+      msg = <><FormattedMessage id="pages.marketplace.expires-in" /> 1 <FormattedMessage id="pages.global.day" /></>;
+    } else {
+      msg = <><FormattedMessage id="pages.marketplace.expires-in" /> {days} <FormattedMessage id="pages.global.days" /></>;
+    }
 
     return (
       <div className="expiry-banner">
@@ -77,11 +89,7 @@ class Item extends Component {
             letter-spacing: 1px;
           }
         `}</style>
-        {diff <= 0 ? <FormattedMessage id="global.expired" /> : (
-          <>
-            <FormattedMessage id="pages.marketplace.expires-in" /> {days} {days > 1 ? <FormattedMessage id="pages.marketplace.days" /> : <FormattedMessage id="pages.marketplace.day" />}
-          </>
-        )}
+        {msg}
       </div>
     );
   }

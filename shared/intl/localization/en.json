@@ -1,6 +1,7 @@
 {
   "global": {
     "about": "About",
+    "day": "day",
     "days": "days",
     "description": "Pre-Sale",
     "expired": "Expired",
@@ -175,6 +176,7 @@
       "title": "Marketplace",
       "games": "Games",
       "expires-in": "Expires in ",
+      "expires-today": "Expires today",
       "days": "days",
       "day": "day",
       "listed-for": "Listed for ",
