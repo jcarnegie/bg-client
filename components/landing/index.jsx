@@ -258,76 +258,6 @@ class GameList extends Component {
     );
   }
 
-  footer() {
-    return (
-      <div className="bg-footer">
-        <style jsx>{`
-          .bg-footer {
-            display: flex;
-            flex-direction: column;
-            padding: 15px 0;
-            font-size: 0.8em;
-          }
-          :global(.bg-footer-questions, .bg-footer-socialmedia) {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            padding: 5px 0;
-          }
-          :global(.bg-footer-socialmedia a) {
-            margin: 0 10px;
-          }
-          :global(.bg-footer-questions span, .bg-footer-questions a) {
-            margin: 0 4px;
-          }
-          :global(.socialmedia a) {
-            margin: 0 10px;
-            max-width: 30%;
-            cursor: pointer;
-          }
-        `}</style>
-        <div className="bg-footer-questions">
-          <FormattedMessage id="pages.games.explore.questions" />
-          <Link href="/faq">
-            <a>
-              <FormattedMessage id="pages.games.explore.faq" />
-            </a>
-          </Link>
-        </div>
-        <div className="bg-footer-socialmedia">
-          <a href="https://www.facebook.com/bitguildplat/" target="_blank" rel="noopener noreferrer" onClick={() => {
-            this.props.analytics.ga.event({
-              category: 'Site Interaction',
-              action: 'Page Visit',
-              label: 'Facebook',
-            });
-          }}>
-            <Image height={28} width={28} src="/static/images/icons/facebook.png" />
-          </a>
-          <a href="https://twitter.com/bitguildplat" target="_blank" rel="noopener noreferrer" onClick={() => {
-            this.props.analytics.ga.event({
-              category: 'Site Interaction',
-              action: 'Page Visit',
-              label: 'Twitter',
-            });
-          }}>
-            <Image height={28} width={28} src="/static/images/icons/twitter.png" />
-          </a>
-          <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer" onClick={() => {
-            this.props.analytics.ga.event({
-              category: 'Site Interaction',
-              action: 'Page Visit',
-              label: 'Discord',
-            });
-          }}>
-            <Image height={28} width={28} src="/static/images/icons/discord.png" />
-          </a>
-        </div>
-      </div>
-    );
-  }
-
   render() {
     return (
       <Grid fluid>
@@ -360,11 +290,6 @@ class GameList extends Component {
           </Col>
         </Row>
 
-        <Row>
-          <Col>
-            {::this.footer()}
-          </Col>
-        </Row>
       </Grid>
     );
   }

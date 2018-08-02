@@ -9,10 +9,10 @@ export default class Footer extends Component {
         <style jsx global>{`
           .footer {
             position: relative;
-            height: 100px;
+            height: 130px;
             width: calc(100% - 285px);
             display: flex;
-            f
+            border-top: solid 2px #E1E1E1;
           }
           .footer img {
             display: inline-block;
@@ -20,7 +20,6 @@ export default class Footer extends Component {
             width: 60px;
             float: left;
             margin-right: 15px;
-            margin-left: 30px;
           }
           .footer-text-block {
             display: inline-block;
@@ -36,6 +35,7 @@ export default class Footer extends Component {
             font-size: 16px;
             margin: 3px 0 15px 0;
             text-transform: uppercase;
+            width: 235px;
           }
           .footer-text-block span {
             display: block;
@@ -43,22 +43,23 @@ export default class Footer extends Component {
             margin-top: 3px;
           }
           .footer .players-footer {
-            min-width: 20%;
-            max-width: 30%;
+            min-width: 25%;
+            margin-top: 30px;
+            margin-left: 45px;
           }
           .footer .developer-footer {
-            min-width: 25%;
+            min-width: 30%;
             max-width: 35%;
+            margin-top: 30px;
           }
           .footer .social-footer {
-            min-width: 20%;
-            max-width: 30%;
+            margin-top: 30px;
           }
           .footer .social-footer span {
             display: block;
           }
           .social-icons {
-            width: 80%;
+            width: 235px;
             display: flex;
             justify-content: space-between;
           }
