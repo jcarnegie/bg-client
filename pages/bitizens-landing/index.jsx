@@ -1,6 +1,5 @@
 import { DesktopLayout, MobileLayout } from '@/components/layouts';
 import GameLanding from '@/components/GameLanding';
-import Chat from '@/components/chat';
 
 
 const GameLandingPage = props => {
@@ -11,7 +10,6 @@ const GameLandingPage = props => {
       />
       <DesktopLayout
         main={<GameLanding {...props} />}
-        layoutOverrides={{ asideRightCollapsedOverride: true, asideRightWidthOverride: 0, asideRightCollapsedWidthOverride: 0 }}
       />
     </>
   );
