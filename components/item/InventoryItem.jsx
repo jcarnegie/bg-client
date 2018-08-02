@@ -168,7 +168,13 @@ class InventoryItem extends ItemBase {
   render() {
     const { item, game } = this.props;
     return (
-      <div>
+      <div className="inventory-item">
+        <style jsx>{`
+          .inventory-item {
+            display: inline-block;
+            margin: 0 10px;
+          }
+        `}</style>
         <Gift
           show={this.state.modal === 'gift'}
           item={item} game={game} onHide={::this.onHideModal} />
