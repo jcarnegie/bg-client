@@ -24,13 +24,15 @@ class MobileLayout extends Component {
 
     return (
       <Mobile {...props}>
-        <Header />
-        <Main>
-          {props.main}
-        </Main>
-        <MenuDrawer show={props.layout.showMenu} />
-        <ChatDrawer show={props.layout.chatMobileShow} />
-        {props.children}
+        <div className="mobile-wrapper">
+          <Header />
+          <Main>
+            {props.main}
+          </Main>
+          <MenuDrawer show={props.layout.showMenu} />
+          <ChatDrawer show={props.layout.chatMobileShow} />
+          {props.children}
+        </div>
         <Footer />
       </Mobile>
     );

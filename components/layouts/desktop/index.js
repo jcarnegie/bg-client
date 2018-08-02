@@ -53,12 +53,14 @@ class DesktopLayout extends React.Component {
 
     return (
       <Desktop {...props}>
-        <Header />
-        <Main offsetRight={offsetRight}>
-          {this.props.main}
-        </Main>
-        {aside}
-        {this.props.children}
+        <div className="wrapper">
+          <Header />
+          <Main offsetRight={offsetRight}>
+            {this.props.main}
+          </Main>
+          {aside}
+          {this.props.children}
+        </div>
         <Footer />
       </Desktop>
     );

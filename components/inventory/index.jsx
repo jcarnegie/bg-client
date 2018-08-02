@@ -12,7 +12,6 @@ import {
   map,
   path,
   uniq,
-  isEmpty,
 } from 'ramda';
 import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
 import { compose } from 'react-apollo';
@@ -24,8 +23,6 @@ import {
   listItemsQuery,
 } from '@/shared/utils/apollo';
 
-import { featureOn } from '@/shared/utils';
-
 import {
   calcMaxItemsStats,
   isValidItemCategory,
@@ -35,7 +32,7 @@ import {
 import DataLoading from '@/components/DataLoading';
 import DataError from '@/components/DataError';
 
-import { InventoryItem as Item } from '@/components/item';
+import { InventoryItem } from '@/components/item';
 
 
 @injectIntl
@@ -131,9 +128,9 @@ class Inventory extends Component {
     const itemsToRender = items.filter(item => Object.keys(this.state.filters).includes(item.game.id) ? this.state.filters[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
       .map(item => (
          type === undefined
-          ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} onSell={::this.onSell} />
+          ? <InventoryItem key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} onSell={::this.onSell} />
           : type === 'onsale' && item.saleState === 'listed'
-            ? <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} onSell={::this.onSell} />
+            ? <InventoryItem key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} onSell={::this.onSell} />
             : null
       ));
     return (
@@ -142,7 +139,7 @@ class Inventory extends Component {
           {this.renderCategories(game, categories)}
         </div>
         <h3>{game.name}</h3>
-        <Row className="flex-row">
+        <Row>
           {itemsToRender}
         </Row>
       </Fragment>
@@ -154,7 +151,7 @@ class Inventory extends Component {
     const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games);
     const itemsByGameId = {};
 
-    games.forEach(game => itemsByGameId[game.id] = items.filter(item => item.game.id === game.id))
+    games.forEach(game => (itemsByGameId[game.id] = items.filter(item => item.game.id === game.id)));
 
     return (
       <>
@@ -173,16 +170,15 @@ class Inventory extends Component {
               {this.renderTab(game, itemsByGameId[game.id])}
             </Tab>
           )}
-          {featureOn('marketplace') ? (
+          {
             <Tab eventKey={2} title={<FormattedMessage id="pages.inventory.on-sale" />}>
               {visibleGames.map(game =>
                 (
-                  itemsByGameId[game.id].some(item => item.saleState === 'listed') ?
-                  this.renderTab(game, itemsByGameId[game.id], 'onsale') : null
+                  itemsByGameId[game.id].some(item => item.saleState === 'listed')
+                  ? this.renderTab(game, itemsByGameId[game.id], 'onsale') : null
                 )
               )}
             </Tab>
-            ) : null
           }
         </Tabs>
       </>
@@ -210,7 +206,6 @@ class Inventory extends Component {
     return (
 			<div className="inventory">
 				{this.indexStyle()}
-				{this.flexStyle()}
 				{::this.renderInventory()}
 			</div>
 		);
@@ -275,25 +270,6 @@ class Inventory extends Component {
         }
         .inventory .empty p {
           font-size: 28px;
-        }
-      `}</style>
-    );
-  }
-
-  flexStyle() {
-    return (
-      <style jsx global>{`
-        .flex-row {
-          display: flex;
-          flex-wrap: wrap;
-        }
-        .flex-row > [class*='col-'] {
-          display: flex
-          flex-direction: column;
-        }
-        .flex-row:after,
-        .flex-row:before {
-          display: flex;
         }
       `}</style>
     );

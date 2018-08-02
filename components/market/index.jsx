@@ -29,9 +29,10 @@ import {
   // isValidItemCategory,
   isStat,
 } from '@/client/utils/item';
-import { MarketplaceItem as Item } from '@/components/item';
+import { MarketplaceItem } from '@/components/item';
 
-// import itemList from "./items.test.json";
+// import itemList from './items.test.json';
+
 
 @injectIntl
 @connect(
@@ -297,68 +298,97 @@ class Market extends Component {
         )}
       </div>
     );
- }
-
-  renderMarket(items, games, refetch, loading = false) {
-    return (!loading && items && items.length && games && games.length) ? this.renderItems(items, games, refetch) : this.renderEmpty();
   }
 
-  renderItems(items, games, refetch) {
+  renderItemGrid(items, games, refetch, loading = false) {
+    if (loading) return <DataLoading />;
+    if (!(items && items.length && games && games.length)) return this.renderEmpty();
+
     const gameIdsWithItems = uniq(map(path(['game', 'id']), items));
     const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games);
 
     const filteredGame = visibleGames.find(game => parseInt(game.id, 10) === parseInt(this.state.gameFilter, 10));
+
+    let sortedItems = Array.from(items);
+    if (sortedItems) {
+      sortedItems.sort(function(a, b) {
+        return new Date(a.saleExpiration) - new Date(b.saleExpiration);
+      });
+    }
     return (
       <div className={this.state.mobile ? 'filtered-mobile-market' : 'filtered-market'}>
         <style jsx>{`
-        .filtered-market {
-          width: 100%;
-          padding: 0px 25px 25px 25px;
-          background-color: #F5F7FB;
-        }
-        .filtered-mobile-market {
-          width: 70%;
-          margin: 0 auto;
-          background-color: #F5F7FB;
-        }
-        .current-game-filter {
-          height: 80px;
-          font-size: 1.6em;
-          font-weight: 500;
-          line-height: 70px;
-          background-color: #F5F7FB;
-          margin-left: 15px;
-        }
-        .current-mobile-game-filter {
-          height: 80px;
-          font-size: 1.6em;
-          font-weight: 500;
-          line-height: 70px;
-          background-color: #F5F7FB;
-          text-align: center;
-        }
-      `}</style>
+          .filtered-market {
+            width: 100%;
+            padding: 0 0 25px 50px;
+            background-color: #F5F7FB;
+          }
+          .filtered-mobile-market {
+            width: 100%;
+            margin: 0 auto;
+            background-color: #F5F7FB;
+            text-align: center;
+          }
+          .current-game-filter {
+            height: 80px;
+            font-size: 1.6em;
+            font-weight: 500;
+            line-height: 70px;
+            background-color: #F5F7FB;
+          }
+          .current-mobile-game-filter {
+            height: 80px;
+            font-size: 1.6em;
+            font-weight: 500;
+            line-height: 70px;
+            background-color: #F5F7FB;
+            text-align: center;
+          }
+        `}</style>
         <div className={this.state.mobile ? 'current-mobile-game-filter' : 'current-game-filter'}>
           {filteredGame ? filteredGame.name : 'Items'}
         </div>
-        {visibleGames.map(game =>
-          this.renderItem(game, items.filter(item => item.game.id === game.id), refetch)
-        )}
+        <div className="inventory-items">
+          {visibleGames.map(game =>
+            this.renderItems(game, items.filter(item => item.game.id === game.id), refetch)
+          )}
+        </div>
       </div>
     );
   }
 
-  renderItem(game, items, refetch) {
+  renderItems(game, items, refetch) {
+    const { mobile } = this.props.layout.type;
     const maxStats = calcMaxItemsStats(items);
-    return (
-      <Fragment key={game.id}>
-        <Row className="flex-row">
-          {items.filter(item => Object.keys(this.state.gameFilter).includes(item.game.id) ? this.state.gameFilter[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
-            .map(item =>
-              <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} handler={::this.handleSubCategories} onBuy={::this.handleBuy(refetch)} />
-          )}
-        </Row>
-      </Fragment>
+    return items.filter(item => Object.keys(this.state.gameFilter).includes(item.game.id) ? this.state.gameFilter[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
+      .map(item => (
+        <div
+          className={cx({
+            'item-wrapper-desktop': !mobile,
+            'item-wrapper-mobile': mobile,
+          })}
+          key={item.tokenId}
+        >
+          <style jsx>{`
+            .item-wrapper-desktop {
+              display: inline-block;
+              margin: 0 20px 0 0;
+            }
+            .item-wrapper-mobile {
+              display: inline-block;
+              margin: 0 20px;
+            }
+          `}</style>
+          <MarketplaceItem
+            key={item.tokenId}
+            item={item}
+            game={game}
+            maxStats={maxStats}
+            handler={::this.handleSubCategories}
+            onBuy={::this.handleBuy(refetch)}
+          />
+        </div>
+      )
     );
   }
 
@@ -446,6 +476,7 @@ class Market extends Component {
           if (error) return <DataError />;
 
           const { listMarketplaceItems } = data;
+          // const listMarketplaceItems = itemList;
 
           if (!this.listMarketplaceItems || this.listMarketplaceItems.length === 0) {
             this.listMarketplaceItems = listMarketplaceItems;
@@ -461,41 +492,19 @@ class Market extends Component {
               .marketplace {
                 display: flex;
               }
-              .mobile-market{
+              .mobile-market {
                 display: flex;
                 flex-direction: column;
               }
             `}</style>
-              {this.flexStyle()}
               {this.renderFilters(this.listMarketplaceItems, listGames, loadingAny)}
-              {this.renderMarket(listMarketplaceItems, listGames, refetch)}
+              {this.renderItemGrid(listMarketplaceItems, listGames, refetch, loadingAny)}
             </div>
           );
         }}
       </Query>
     );
   };
-
-  flexStyle() {
-    return (
-      <style jsx global>{`
-        .flex-row {
-          display: flex;
-          flex-wrap: wrap;
-          width: 100%;
-          margin: 0;
-        }
-        .flex-row > [class*='col-'] {
-          display: flex;
-          flex-direction: column;
-        }
-        .flex-row:after,
-        .flex-row:before {
-          display: flex;
-        }
-      `}</style>
-    );
-  }
 };
 
 export default compose(

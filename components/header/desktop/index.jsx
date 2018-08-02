@@ -12,7 +12,6 @@ import ActiveLink from '@/components/activelink';
 import Language from '@/components/language';
 import Balance from '@/components/balance';
 import User from '@/components/user';
-import FeatureFlag from '@/components/featureflag';
 
 
 @injectIntl
@@ -90,15 +89,13 @@ export default class Header extends Component {
         >
           <span className="navigation-link"><FormattedMessage id="components.menu.inventory" /></span>
         </ActiveLink>
-        <FeatureFlag flag="marketplace">
-          <ActiveLink
-            href="/marketplace"
-            activeStyle={activeNavigationLinkStyle}
-            style={defaultNavigationLinkStyle}
-          >
-            <span className="navigation-link"><FormattedMessage id="components.menu.marketplace" /></span>
-          </ActiveLink>
-        </FeatureFlag>
+        <ActiveLink
+          href="/marketplace"
+          activeStyle={activeNavigationLinkStyle}
+          style={defaultNavigationLinkStyle}
+        >
+          <span className="navigation-link"><FormattedMessage id="components.menu.marketplace" /></span>
+        </ActiveLink>
         <ActiveLink
           href="/presale/bitizens"
           activeStyle={activeNavigationLinkStyle}

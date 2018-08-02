@@ -22,7 +22,7 @@ const BugBountyPage = props => {
         main={<div className="bg-bounty">
           <style jsx>{`
             .bg-bounty {
-              padding: 40px 10%;
+              padding: 40px 10% 60px 10%;
               background-color: #F3F8FF;
             }
           `}</style>

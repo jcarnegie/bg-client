@@ -92,10 +92,10 @@ class BGGrid extends PureComponent {
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
-            justify-content: ${mobile ? 'space-evenly' : 'start'};
+            justify-content: ${mobile ? 'space-evenly' : 'center'};
           }
           :global(.bg-grid-wrapper .bg-grid > *) {
-            margin: ${mobile ? '10px 5px' : '20px'};
+            margin: ${mobile ? '5px 0px' : '20px'};
             z-index: 2;
           }
           .underlay {

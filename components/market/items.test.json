@@ -1,48 +1,12 @@
 [{
   "lan": "en",
-  "price":{
-    "eth": 1,
-    "plat": 6000
-  },
-  "tokenId": 5960,
-  "saleState": "listpending",
-  "name": "Samurai Helm",
-  "description": "",
-  "image": "https://ether.online/v1/mz41.png",
-  "attrs": {
-    "set": {
-      "keyLan": "Sets",
-      "value": "Samurai"
-    },
-    "rarity": {
-      "keyLan": "Rarity",
-      "value": "Common"
-    },
-    "type": {
-      "keyLan": "Type",
-      "value": "Head"
-    },
-    "defence": {
-      "keyLan": "Defense",
-      "value": 38
-    },
-    "otherthing": {
-      "keyLan": "LongNameHere Superlong Supersupersupersuper long long long",
-      "value": 3812431234
-    }
-  },
-  "presale": false,
-  "data": {},
-  "game": {
-    "id": "1"
-  },
-  "categories": ["Samurai", "Common", "Head", 38, "veryveryverylongcategory"]
-}, {
-  "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 1,
   "tokenId": 10321,
   "saleState": "salepending",
   "name": "Demon Blade",
@@ -74,10 +38,13 @@
   "categories": ["Demon", "Common", "Hand", "67 - 384"]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 500000,
   "tokenId": 10895,
   "saleState": "salepending",
   "name": "Paladin Armor",
@@ -109,10 +76,13 @@
   "categories": ["Paladin", "Common", "Body", 575]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 100,
   "tokenId": 10898,
   "saleState": "salepending",
   "name": "Demon Helm",
@@ -144,10 +114,13 @@
   "categories": ["Demon", "Uncommon", "Head", 79]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 10899,
   "saleState": "withdrawpending",
   "name": "Demon Helm",
@@ -179,10 +152,13 @@
   "categories": ["Demon", "Common", "Head", 35]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 10924,
   "saleState": "extendpending",
   "name": "Demon Boots",
@@ -214,10 +190,13 @@
   "categories": ["Demon", "Uncommon", "Feet", 714]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 13459,
   "saleState": "sold",
   "name": "Knight Boots",
@@ -249,10 +228,13 @@
   "categories": ["Knight", "Epic", "Feet", 2020]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 13525,
   "saleState": "sold",
   "name": "Raging Tiger",
@@ -292,10 +274,13 @@
   "categories": ["Legendary", "Pets", "+20%", "+10%"]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 14989,
   "saleState": "sold",
   "name": "Knight Leggings",
@@ -327,10 +312,13 @@
   "categories": ["Knight", "Uncommon", "Legs", 114]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 14990,
   "saleState": "sold",
   "name": "Knight Helm",
@@ -362,10 +350,13 @@
   "categories": ["Knight", "Common", "Head", 38]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 14991,
   "saleState": "sold",
   "name": "Paladin Armor",
@@ -397,10 +388,13 @@
   "categories": ["Paladin", "Epic", "Body", 2736]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 14992,
   "saleState": "sold",
   "name": "Demon Armor",
@@ -432,10 +426,13 @@
   "categories": ["Demon", "Common", "Body", 547]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 14993,
   "saleState": "sold",
   "name": "Samurai Pants",
@@ -467,10 +464,13 @@
   "categories": ["Samurai", "Epic", "Legs", 324]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 14994,
   "saleState": "listed",
   "name": "Samurai Boots",
@@ -502,10 +502,13 @@
   "categories": ["Samurai", "Uncommon", "Feet", 848]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 14995,
   "saleState": "sold",
   "name": "Archmage Pants",
@@ -537,10 +540,13 @@
   "categories": ["Archmage", "Rare", "Legs", 204]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 14996,
   "saleState": "sold",
   "name": "Paladin Helm",
@@ -572,10 +578,13 @@
   "categories": ["Paladin", "Common", "Head", 38]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 14997,
   "saleState": "sold",
   "name": "Paladin Sword",
@@ -607,10 +616,12 @@
   "categories": ["Paladin", "Common", "Hand", "68 - 387"]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 8981,
   "tokenId": 14998,
   "saleState": "listpending",
   "name": "Samurai Pants",
@@ -642,10 +653,13 @@
   "categories": ["Samurai", "Common", "Legs", 57]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 40000,
   "tokenId": 14999,
   "saleState": "listpending",
   "name": "Paladin Helm",
@@ -677,10 +691,13 @@
   "categories": ["Paladin", "Uncommon", "Head", 79]
 }, {
   "lan": "en",
+  "saleExpiration": "Fri Aug 10 2018",
+  "saleState": "listed",
   "price": {
     "eth": 1,
     "plat": 6000
   },
+  "salePrice": 40000,
   "tokenId": 34586,
   "saleState": "listpending",
   "name": "Demon Boots",

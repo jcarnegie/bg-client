@@ -249,11 +249,6 @@ class GameList extends Component {
             </Col>
           </Col>
         </Row>
-        {/* Divider
-        <Row style={{width: "100%", margin: "10px 20px"}}>
-          <Col xs={12} sm={6} style={{borderBottom: "1px solid #3B5998"}}><div /></Col>
-        </Row>
-        */}
       </BGGrid>
     );
   }
@@ -289,7 +284,6 @@ class GameList extends Component {
             {::this.aboutBitGuild()}
           </Col>
         </Row>
-
       </Grid>
     );
   }
