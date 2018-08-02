@@ -20,7 +20,7 @@ export default class Footer extends Component {
             width: 60px;
             float: left;
             margin-right: 15px;
-            margin-left: 30px;
+            margin-left: 45px;
           }
           .footer-text-block {
             display: inline-block;
