@@ -36,6 +36,7 @@ export default class Footer extends Component {
             font-size: 16px;
             margin: 3px 0 15px 0;
             text-transform: uppercase;
+            width: 235px;
           }
           .footer-text-block span {
             display: block;
@@ -56,12 +57,13 @@ export default class Footer extends Component {
             min-width: 20%;
             max-width: 30%;
             margin-top: 30px;
+            padding-left: 45px;
           }
           .footer .social-footer span {
             display: block;
           }
           .social-icons {
-            width: 80%;
+            width: 235px;
             display: flex;
             justify-content: space-between;
           }
