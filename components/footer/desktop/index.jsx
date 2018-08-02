@@ -20,7 +20,6 @@ export default class Footer extends Component {
             width: 60px;
             float: left;
             margin-right: 15px;
-            margin-left: 45px;
           }
           .footer-text-block {
             display: inline-block;
@@ -44,20 +43,17 @@ export default class Footer extends Component {
             margin-top: 3px;
           }
           .footer .players-footer {
-            min-width: 20%;
-            max-width: 30%;
+            min-width: 25%;
             margin-top: 30px;
+            margin-left: 45px;
           }
           .footer .developer-footer {
-            min-width: 25%;
+            min-width: 30%;
             max-width: 35%;
             margin-top: 30px;
           }
           .footer .social-footer {
-            min-width: 20%;
-            max-width: 30%;
             margin-top: 30px;
-            padding-left: 45px;
           }
           .footer .social-footer span {
             display: block;
