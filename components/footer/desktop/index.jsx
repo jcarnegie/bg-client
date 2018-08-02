@@ -12,7 +12,7 @@ export default class Footer extends Component {
             height: 130px;
             width: calc(100% - 285px);
             display: flex;
-            f
+            border-top: solid 2px #E1E1E1;
           }
           .footer img {
             display: inline-block;
