@@ -10,7 +10,7 @@ const ActiveLink = ({ children, router = Router, href, style, activeStyle, class
   };
 
   return (
-    <a href={href} onClick={handleClick} style={router.pathname.indexOf(href) !== -1 ? allStyle : style} className={className}>
+    <a href={href} onClick={handleClick} style={router.asPath.indexOf(href) !== -1 ? allStyle : style} className={className}>
       {children}
     </a>
   );

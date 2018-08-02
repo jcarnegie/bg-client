@@ -23,10 +23,21 @@ function GlobalStyles({ style }) {
           color: ${style.colors.text};
           background: ${style.colors.background};
         }
+        .wrapper {
+          min-height: 100%;
+          margin-bottom: -130px;
+          padding-bottom: 130px;
+          min-height: calc(100vh - 62px);
+        }
+        .mobile-wrapper {
+          min-height: 100%;
+          margin-bottom: -200px;
+          padding-bottom: 200px;
+          min-height: calc(100vh - 62px);
+        }
         h1 {
           font-size: 2.6em;
         }
-
         h2 {
           font-size: 1.7em;
         }

@@ -130,7 +130,7 @@ export default class Chat extends Component {
               border-left: solid 1px #C2C3D2;
               display: flex;
               flex-direction: column;
-              height: calc(100vh - 62px);
+              height: calc(100vh + 68px);
             }
             .chat .wrapper .list {
               flex-grow: 1;
