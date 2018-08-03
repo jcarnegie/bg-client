@@ -71,9 +71,9 @@ class Item extends Component {
     } else if (daysDiff < 1) {
       msg = <FormattedMessage id="pages.marketplace.expires-today" />;
     } else if (daysDiff < 2) {
-      msg = <><FormattedMessage id="pages.marketplace.expires-in" /> 1 <FormattedMessage id="pages.global.day" /></>;
+      msg = <><FormattedMessage id="pages.marketplace.expires-in" /> 1 <FormattedMessage id="global.day" /></>;
     } else {
-      msg = <><FormattedMessage id="pages.marketplace.expires-in" /> {days} <FormattedMessage id="pages.global.days" /></>;
+      msg = <><FormattedMessage id="pages.marketplace.expires-in" /> {days} <FormattedMessage id="global.days" /></>;
     }
 
     return (
