@@ -42,7 +42,20 @@ class Item extends Component {
     let { saleExpiration, saleState } = this.props.item;
 
     if (saleState !== 'listed') {
-      return null;
+      return (
+        <div className="expiry-banner-null">
+          <style jsx>{`
+          :global(.expiry-banner-null) {
+            width: 100%;
+            height: 16px;
+            padding: 1px 16px;
+            background-color: #F4F6F9;
+          }
+        `}</style>
+            <>
+            </>
+        </div>
+      );
     }
 
     const msInOneDay = 24 * 60 * 60 * 1000;
@@ -59,8 +72,8 @@ class Item extends Component {
             height: 16px;
             color: white;
             background: linear-gradient(to right, #5989F8, #8BC8FF);
-            font-size: 10px;
-            padding: 3px 25px;
+            font-size: 11px;
+            padding: 1px 16px;
             letter-spacing: 1px;
           }
         `}</style>
@@ -73,11 +86,51 @@ class Item extends Component {
     );
   }
 
+  priceBanner() {
+    let { salePrice, saleState } = this.props.item;
+
+    if (saleState !== 'listed') {
+      return (
+        <div className="price-banner-null">
+          <style jsx>{`
+            :global(.price-banner-null) {
+              width: 100%;
+              height: 16px;
+              background: #F4F6F9;
+              padding: 1px 16px;
+            }
+          `}</style>
+          <>
+          </>
+        </div>
+      );
+    }
+
+    return (
+      <div className="price-banner">
+        <style jsx>{`
+          :global(.price-banner) {
+            width: 100%;
+            height: 16px;
+            color: #6E85B4;
+            background: #E6EDF6;
+            font-size: 11px;
+            padding: 1px 16px;
+            letter-spacing: 1px;
+          }
+        `}</style>
+        <>
+          <FormattedMessage id="pages.marketplace.listed-for" /> {salePrice} PLAT
+        </>
+      </div>
+    );
+  }
+
   renderStats() {
     const { item } = this.props;
     return (
       <dl>
-        {itemStats(item).slice(0, 1).map(stat => (
+        {itemStats(item).slice(0, 2).map(stat => (
           <Fragment key={stat.keyLan}>
             <dt>{stat.keyLan}<FormattedMessage id="components.colon" /></dt>
             <dd>{stat.value}</dd>
@@ -90,7 +143,7 @@ class Item extends Component {
   renderAttributes() {
     const { item, handler } = this.props;
     const attributes = filter(notNil, Object.values(item.attrs || []).map(attr => {
-      return typeof Object.values(attr)[1] === 'number' ? null : Object.values(attr)[1];
+      return typeof Object.values(attr)[1] === 'number' ? null : Object.values(attr)[0];
     }));
     const badges = attributes
       .filter(isValidItemCategory)
@@ -104,7 +157,7 @@ class Item extends Component {
           .attrs {
             overflow: hidden;
             background-color: #F4F6F9;
-            padding: 5px 0 10px 15px;
+            padding: 5px 0 7px 15px;
             display: flex;
             align-items: flex-start;
             font-size: 0.9em;
@@ -122,7 +175,7 @@ class Item extends Component {
             min-width: 45px;
             overflow: hidden;
             text-overflow: ellipsis;
-            padding: 2px;
+            padding: 0px;
           }
         `}</style>
         {badges}
@@ -165,22 +218,22 @@ class Item extends Component {
             font-size: 0.9em;
             font-weight: 500;
             background-color: #F4F6F9;
-            padding: 10px 15px 3px 15px;
+            padding: 5px 15px 3px 15px;
             margin: 0;
           }
           .item .thumbnail .caption dl,
           .item .thumbnail .caption dl dt,
           .item .thumbnail .caption dl dd {
-            font-size: 0.9em;
+            font-size: 0.85em;
           }
           .item .thumbnail .caption dl {
             display: grid;
             grid-template-columns: minmax(0%, 30%);
             column-gap: 5px;
             background-color: #F4F6F9;
-            padding: 5px 15px 3px 15px;
+            padding: 0px 15px 0px 15px;
             margin: 0;
-            columns: 4;
+            columns: 2;
             min-height: 30px;
           }
           .item .thumbnail .caption dl dt {
@@ -188,21 +241,10 @@ class Item extends Component {
             display: inline-block;
             font-weight: 300;
           }
-          .item .thumbnail .caption dl dt:nth-of-type(even) {
-            grid-column-start: 3;
-            display: inline-block;
-            font-weight: 300;
-          }
           .item .thumbnail .caption dl dd {
             grid-column-start: 2;
             display: inline-block;
             font-weight: 300;
-          }
-          .item .thumbnail .caption dl dd:nth-of-type(even)  {
-            grid-column-start: 4;
-            display: inline-block;
-            font-weight: 500;
-            margin-left: 5px;
           }
           .item .thumbnail .caption .btn {
             font-size: 11px;
@@ -252,6 +294,7 @@ class Item extends Component {
           <h4>{item.name}</h4>
           {this.renderStats()}
           {this.renderAttributes()}
+          {this.priceBanner()}
           {this.props.buttons ? this.props.buttons : null}
         </Thumbnail>
       </div>
