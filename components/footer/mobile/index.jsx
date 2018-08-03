@@ -66,7 +66,7 @@ export default class Footer extends Component {
             text-align: center;
           }
           .mobile-social-icons {
-            width: 60%;
+            width: 235px;
             margin: auto;
             display: flex;
             justify-content: space-between;
