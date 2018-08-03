@@ -18,11 +18,6 @@ const typeDefs = `
     supported: Boolean
   }
 
-  type Mutation {
-    updateNetwork(id: Int!, available: Boolean!, name: String!, supported: Boolean!): Network
-    // updateWallet(wallet: String!): Wallet
-  }
-
   type Query {
     wallet: String
     network: [Network]
@@ -41,22 +36,7 @@ export const client = new ApolloClient({
         __typename: "Network",
       },
     },
-    resolvers: {
-      Mutation: {
-        updateNetwork: (_, {id, name, supported}, {cache}) => {
-          cache.writeData({
-            data: {
-              network: {id, name, supported},
-            },
-          });
-          return null;
-        },
-        updateWallet: (_, {wallet}, {cache}) => {
-          cache.writeData({data: {wallet}});
-          return null;
-        },
-      },
-    },
+    resolvers: {},
     typeDefs,
   },
 });
@@ -100,7 +80,7 @@ export const queries = {
       }
     }
   `,
-  listGames: gql`{ listGames { id name slug url stagingUrl api nft contract itemsForSaleCount } }`,
+  listGames: gql`{ listGames { id name slug url stagingUrl api nft itemsForSaleCount } }`,
   viewUserByWallet: gql`
     query viewUserByWallet($wallet: String!) {
       viewUserByWallet(wallet: $wallet) {
@@ -111,7 +91,7 @@ export const queries = {
   viewGameBySlug: gql`
     query viewGameBySlug($slug: String!) {
       viewGameBySlug(slug: $slug) {
-        id name slug url stagingUrl api nft contract
+        id name slug url stagingUrl api nft
       }
     }
   `,
