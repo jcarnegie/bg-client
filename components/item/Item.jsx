@@ -76,18 +76,6 @@ class Item extends Component {
       msg = <><FormattedMessage id="pages.marketplace.expires-in" /> {days} <FormattedMessage id="pages.global.days" /></>;
     }
 
-    let msg;
-
-    if (diff <= 0) {
-      msg = <FormattedMessage id="global.expired" />;
-    } else if (diff < 1) {
-      msg = <FormattedMessage id="pages.marketplace.expires-today" />;
-    } else if (diff < 2) {
-      msg = <><FormattedMessage id="pages.marketplace.expires-in" /> 1 <FormattedMessage id="pages.global.day" /></>;
-    } else {
-      msg = <><FormattedMessage id="pages.marketplace.expires-in" /> {days} <FormattedMessage id="pages.global.days" /></>;
-    }
-
     return (
       <div className="expiry-banner">
         <style jsx>{`
