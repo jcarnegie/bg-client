@@ -84,15 +84,24 @@ class MenuDrawer extends Component {
           >
             <FormattedMessage id="components.menu.inventory" />
           </ActiveLink>
-          <FeatureFlag flag="marketplace">
-            <ActiveLink
-              href="/marketplace"
-              style={menuLinkDefaultStyle}
-              activeStyle={menuLinkActiveStyle}
-            >
-              <FormattedMessage id="components.menu.marketplace" />
-            </ActiveLink>
-          </FeatureFlag>
+          <ActiveLink
+            href="/marketplace"
+            style={menuLinkDefaultStyle}
+            activeStyle={menuLinkActiveStyle}
+          >
+            <FormattedMessage id="components.menu.marketplace" />
+          </ActiveLink>
+          <ActiveLink
+            href={{
+              pathname: '/presale',
+              query: { slug: 'bitizens' }
+            }}
+            as="/presale/bitizens"
+            style={menuLinkDefaultStyle}
+            activeStyle={menuLinkActiveStyle}
+          >
+            <FormattedMessage id="components.menu.presale" />
+          </ActiveLink>
         </div>
 
         <div className="balance-mobile">

@@ -97,7 +97,11 @@ export default class Header extends Component {
           <span className="navigation-link"><FormattedMessage id="components.menu.marketplace" /></span>
         </ActiveLink>
         <ActiveLink
-          href="/presale/bitizens"
+          href={{
+            pathname: '/presale',
+            query: { slug: 'bitizens' }
+          }}
+          as="/presale/bitizens"
           activeStyle={activeNavigationLinkStyle}
           style={Object.assign({}, defaultNavigationLinkStyle, { marginLeft: 0 })}
         >
