@@ -169,6 +169,7 @@ class Item extends Component {
             display: flex;
             align-items: flex-start;
             font-size: 0.9em;
+            height: 32px;
           }
           :global(.item .thumbnail .caption .attrs .badge) {
             margin-right: 8px;
