@@ -124,8 +124,8 @@ class InventoryItem extends ItemBase {
       case 'listed':
         bottomBar = (
           <>
-            {this.extendButton({ salePrice: item.salePrice })}
-            {this.withdrawButton({})}
+            {this.extendButton({ side: 'left', salePrice: item.salePrice })}
+            {this.withdrawButton({ side: 'right' })}
           </>
         );
         break;
@@ -142,12 +142,16 @@ class InventoryItem extends ItemBase {
         bottomBar = this.inProgressBar('withdraw-in-progress');
         break;
       case 'sold':
-        bottomBar = (
-          <>
-            {this.sellButton({ onClick: () => ::this.setState({ modal: 'sell' }) })}
-            {this.giftButton({ onClick: () => ::this.setState({ modal: 'gift' }) })}
-          </>
-        );
+        if (game.listed) {
+          bottomBar = (
+            <>
+              {this.sellButton({ side: 'left', onClick: () => ::this.setState({ modal: 'sell' }) })}
+              {this.giftButton({ side: 'right', onClick: () => ::this.setState({ modal: 'gift' }) })}
+            </>
+          );
+        } else {
+          bottomBar = (<>{this.giftButton({ onClick: () => ::this.setState({ modal: 'gift' }) })}</>);
+        }
         break;
       default:
         bottomBar = null;

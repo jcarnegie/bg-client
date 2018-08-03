@@ -31,7 +31,11 @@ class ItemBase extends React.Component {
     });
   }
 
-  actionButton(side = 'left', onClick = () => {}, children) {
+  /*
+   * @param side {String} (left|right|center)
+   * - TODO - render a bar conditionally based on number of buttons
+   */
+  actionButton(side = 'full', onClick = () => {}, children) {
     return (
       <button onClick={onClick} className={`item-button item-button-${side}`}>
         <style jsx>{`
@@ -49,6 +53,12 @@ class ItemBase extends React.Component {
           .item-button:hover {
             opacity: 0.9;
             color: white;
+          }
+          .item-button-full, .item-button-full:hover, .item-button-full:focus {
+            width: 100%;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            background-color: rgb(59, 90, 149);
           }
           .item-button-left, .item-button-left:hover, .item-button-left:focus {
             border-bottom-left-radius: 6px;
@@ -89,19 +99,19 @@ class ItemBase extends React.Component {
     );
   }
 
-  extendButton({ side = 'left', salePrice, onClick = () => ::this.extend() }) {
+  extendButton({ side, salePrice, onClick = () => ::this.extend() }) {
     return ::this.actionButton(side, onClick, <FormattedMessage id="pages.marketplace.renew" />);
   };
 
-  withdrawButton({ side = 'right', onClick = () => ::this.withdraw() }) {
+  withdrawButton({ side, onClick = () => ::this.withdraw() }) {
     return ::this.actionButton(side, onClick, <FormattedMessage id="pages.marketplace.withdraw" />);
   }
 
-  sellButton({ side = 'left', onClick = () => {} }) {
+  sellButton({ side, onClick = () => {} }) {
     return ::this.actionButton(side, onClick, <FormattedMessage id="global.sell" />);
   }
 
-  giftButton({ side = 'right', onClick = () => {} }) {
+  giftButton({ side, onClick = () => {} }) {
     return ::this.actionButton(side, onClick, <FormattedMessage id="global.gift" />);
   }
 

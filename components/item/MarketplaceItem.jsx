@@ -91,8 +91,8 @@ class MarketplaceItem extends ItemBase {
 
     const extendAndWithdrawButtons = (
       <div className="item-button-bar">
-        {this.extendButton({ salePrice: item.salePrice })}
-        {this.withdrawButton({})}
+        {this.extendButton({ side: 'left', salePrice: item.salePrice })}
+        {this.withdrawButton({ side: 'right' })}
       </div>
     );
 
