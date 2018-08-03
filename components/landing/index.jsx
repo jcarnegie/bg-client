@@ -112,7 +112,7 @@ class GameList extends Component {
           }
         `}</style>
         <Col>
-          <Carousel interval={null} className="hero-carousel" defaultActiveIndex={2}>
+          <Carousel interval={null} className="hero-carousel" defaultActiveIndex={0}>
             {games.active.map((game, idx) => {
               // TODO - database flags for game states (active|presale|development)
               // TODO - bitizens is coming soon, will need to update when launches
