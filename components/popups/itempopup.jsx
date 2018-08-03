@@ -59,6 +59,7 @@ export default class ItemPopup extends Component {
     sellPrice: '',
     feePercentage: '5',
     fee: 0,
+    userGetsAmount: 0,
   };
 
   onSubmit(e) {
@@ -83,7 +84,7 @@ export default class ItemPopup extends Component {
   }
 
   handleChange(e) {
-    this.setState({ sellPrice: e.target.value });
+    this.setState({ sellPrice: (Math.abs(parseInt(e.target.value, 10)) || '') });
   }
 
   handleError() {
@@ -134,7 +135,8 @@ export default class ItemPopup extends Component {
     if (!price) price = 0;
 
     const { feePercentage, fee } = await getFee({ network, price });
-    this.setState({ feePercentage, fee });
+    const userGetsAmount = price - fee;
+    this.setState({ feePercentage, fee, userGetsAmount });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -149,8 +151,6 @@ export default class ItemPopup extends Component {
 
   render() {
     const { show, onHide, item, type, layout } = this.props;
-    const fee = (parseInt(this.state.sellPrice) - this.state.fee);
-    console.log('fee: ', fee);
     return (
       <div className="bgmodal-wrapper">
         <style global jsx>{`
@@ -560,7 +560,7 @@ export default class ItemPopup extends Component {
                     <div className="sell-disclaimer">
                       <FormattedMessage id="pages.marketplace.bitguild-fee-1" /><strong>{this.state.feePercentage}%</strong> <FormattedMessage id="pages.marketplace.bitguild-fee-2" />
                       <FormattedMessage id="pages.marketplace.bitguild-fee-3" />
-                        <strong>{(this.state.sellPrice && this.state.fee) ? fee : '0'} PLAT </strong>
+                        <strong>{this.state.userGetsAmount} PLAT </strong>
                       <FormattedMessage id="pages.marketplace.bitguild-fee-4" />
                     </div>
                     {!layout.type.mobile ? null
