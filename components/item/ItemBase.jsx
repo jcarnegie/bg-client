@@ -74,9 +74,9 @@ class ItemBase extends React.Component {
             align-items: center;
             justify-content: center;
             color: #F68F11;
-            font-size: 0.9em;
+            font-size: 0.8em;
             opacity: 1;
-            height: 45px;
+            height: 30px;
             width: 100%;
             border: 0;
             font-weight: 100;
@@ -90,28 +90,7 @@ class ItemBase extends React.Component {
   }
 
   extendButton({ side = 'left', salePrice, onClick = () => ::this.extend() }) {
-    const children = (
-       <span className="renew-block">
-         <style jsx>{`
-          .renew-block {
-            font-size: 13px;
-          }
-          .renew-price-block {
-            display: block;
-            position: relative;
-            bottom: 1px;
-          }
-          .renew-price {
-            display: inline-block;
-            position: relative;
-            top: 1px;
-            font-size: 12px;
-          }
-        `}</style>
-        <FormattedMessage id="pages.marketplace.renew" />
-      </span>
-    );
-    return ::this.actionButton(side, onClick, children);
+    return ::this.actionButton(side, onClick, <FormattedMessage id="pages.marketplace.renew" />);
   };
 
   withdrawButton({ side = 'right', onClick = () => ::this.withdraw() }) {
