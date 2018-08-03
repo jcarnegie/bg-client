@@ -16,6 +16,9 @@ import { CREATE_USER, MESSAGE_ADD } from '@/shared/constants/actions';
 import { enabledLanguages } from '@/shared/constants/language';
 import InputGroupValidation from '@/components/inputs/input.group.validation';
 
+import {
+  client,
+} from '@/shared/utils/apollo';
 
 @withFormHelper
 @injectIntl
@@ -142,6 +145,7 @@ export default class RegisterPopup extends Component {
             type: CREATE_USER,
             payload: formData,
           });
+          client.resetStore();
         } else {
           dispatch({
             type: MESSAGE_ADD,
