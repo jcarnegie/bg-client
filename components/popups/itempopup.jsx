@@ -57,7 +57,7 @@ export default class ItemPopup extends Component {
 
   state = {
     sellPrice: '',
-    feePercentage: '5%',
+    feePercentage: '5',
     fee: 0,
   };
 
