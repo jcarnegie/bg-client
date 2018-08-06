@@ -196,17 +196,24 @@ class GameList extends Component {
   comingSoon() {
     const { mobile } = this.props.layout.type;
     return (
-      <BGGrid
-        title={<FormattedMessage id="global.coming-soon"></FormattedMessage>}
-        titleIconSrc="/static/images/icons/coming_soon.png"
-        backgroundImage={'linear-gradient(#DFECFE 50%, #DFECFE calc(100% - 100px), white 100px)'}
-        backgroundImageStats={{
-          colors: ['#DFECFE', '#DFECFE', 'white'],
-          gap: (mobile ? '60px' : '100px'),
-        }}
-      >
-        {this.props.games.comingSoon.map((game, k) => <BGGameCard key={k} game={game} />)}
-      </BGGrid>
+      <span className="coming-soon">
+        <style jsx>{`
+          :global(.coming-soon .bg-game-card-wrapper) {
+            cursor: default !important;
+          }
+        `}</style>
+        <BGGrid
+          title={<FormattedMessage id="global.coming-soon"></FormattedMessage>}
+          titleIconSrc="/static/images/icons/coming_soon.png"
+          backgroundImage={'linear-gradient(#DFECFE 50%, #DFECFE calc(100% - 100px), white 100px)'}
+          backgroundImageStats={{
+            colors: ['#DFECFE', '#DFECFE', 'white'],
+            gap: (mobile ? '60px' : '100px'),
+          }}
+        >
+          {this.props.games.comingSoon.map((game, k) => <BGGameCard key={k} game={game} />)}
+        </BGGrid>
+      </span>
     );
   }
 
