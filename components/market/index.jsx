@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Image, Row } from 'react-bootstrap';
+import { Image, Row, DropdownButton, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose, Query } from 'react-apollo';
 import {
@@ -59,6 +59,8 @@ class Market extends Component {
     mobile: this.props.layout.type.mobile,
     gameFilter: '1',
     categories: null,
+    itemsSort: [['saleExpiration', 'ASC']],
+    itemsSortTitle: 'Newest',
   }
 
   handleGameFilter(gameFilter) {
@@ -342,11 +344,34 @@ class Market extends Component {
             font-weight: 500;
             line-height: 70px;
             background-color: #F5F7FB;
-            text-align: center;
+          }
+          :global(.current-game-filter .dropdown, .current-mobile-game-filter .dropdown) {
+            float: right;
+            margin: 25px 50px 0 0;
+          }
+          :global(.current-game-filter .sort-dropdown, .current-mobile-game-filter .sort-dropdown) {
+            border: 0;
+            background: transparent !important; /* Boostrap override */
+            background-color: transparent !important; /* Boostrap override */
+            box-shadow: none !important; /* Boostrap override */
           }
         `}</style>
         <div className={this.state.mobile ? 'current-mobile-game-filter' : 'current-game-filter'}>
-          {filteredGame ? filteredGame.name : 'Items'}
+          <span>{filteredGame ? filteredGame.name : 'Items'}</span>
+          <DropdownButton title={this.state.itemsSortTitle} className="sort-dropdown" id="marketplace-sort-dropdown">
+            <MenuItem eventKey="1" onSelect={(key, evt) => ::this.setState({
+              itemsSort: [['saleExpiration', 'ASC']],
+              itemsSortTitle: 'Newest',
+            })}>Newest</MenuItem>
+            <MenuItem eventKey="3" onSelect={(key, evt) => ::this.setState({
+              itemsSort: [['salePrice', 'ASC']],
+              itemsSortTitle: 'Price: Low to High',
+            })}>Price: Low to High</MenuItem>
+            <MenuItem eventKey="4" onSelect={(key, evt) => ::this.setState({
+              itemsSort: [['salePrice', 'DESC']],
+              itemsSortTitle: 'Price: High to Low',
+            })}>Price: High to Low</MenuItem>
+          </DropdownButton>
         </div>
         <div className="inventory-items">
           {visibleGames.map(game =>
@@ -465,7 +490,7 @@ class Market extends Component {
           userId: (viewUserByWallet) ? viewUserByWallet.id : null,
           language: (viewUserByWallet) ? viewUserByWallet.language : null,
           gameId: this.state.gameFilter,
-          sort: null,
+          sort: this.state.itemsSort,
           categories: (!this.listMarketplaceItems) ? []
             : !this.listMarketplaceItems.length > 0 ? []
             : this.listMarketplaceItems[0].game.id !== this.state.gameFilter ? []
