@@ -27,7 +27,7 @@ export default class SandBox extends Component {
 
   render() {
     return (
-      <Row>
+      <div>
         <style jsx global>{`
           .sandbox iframe {
             height: calc(100vh - ${style.header.height});
@@ -40,7 +40,7 @@ export default class SandBox extends Component {
           <Init />
           {this.renderIframe(this.props.query)}
         </Col>
-      </Row>
+      </div>
     );
   }
 }
