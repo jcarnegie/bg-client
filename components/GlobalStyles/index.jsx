@@ -113,7 +113,7 @@ function GlobalStyles({ style }) {
           font-weight: 500;
           font-size: 35px;
           margin-top: 0;
-          text-align: left;
+          text-align: center;
         }
         .modal .modal-content p {
           font-size: 15px;

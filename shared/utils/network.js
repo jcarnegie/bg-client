@@ -1,4 +1,5 @@
 import bluebird from 'bluebird';
+import * as log from 'loglevel';
 
 import topupABI from '@/shared/contracts/BGTopup/abi.json';
 import bitGuildTokenABI from '@/shared/contracts/BGToken/abi.json';
@@ -10,7 +11,7 @@ import bitizensIGOABI from '@/shared/contracts/BitizensIGO/abi.json';
 
 export const networkIdToNameMap = {
   '1': 'main',
-  '2': 'kovan',
+  '42': 'kovan', /* Not a typo, MetaMask resolves the Kovan id to '42' */
   '3': 'ropsten',
   '4': 'rinkeby',
 };
@@ -64,22 +65,42 @@ export function getWeb3Wallet() {
 }
 
 export function getOracleContractAddress(network) {
+  if (!networkIsSupported(network)) {
+    log.warn('Network is not supported. network: ', network);
+    return null;
+  }
   return networkAddressMap[network.data.name].oracle;
 }
 
 export function getBitGuildTokenContractAddress(network) {
+  if (!networkIsSupported(network)) {
+    log.warn('Network is not supported. network: ', network);
+    return null;
+  }
   return networkAddressMap[network.data.name].token;
 }
 
 export function getMarketplaceContractAddress(network) {
+  if (!networkIsSupported(network)) {
+    log.warn('Network is not supported. network: ', network);
+    return null;
+  }
   return networkAddressMap[network.data.name].marketplace;
 }
 
 export function getTopupContractAddress(network) {
+  if (!networkIsSupported(network)) {
+    log.warn('Network is not supported. network: ', network);
+    return null;
+  }
   return networkAddressMap[network.data.name].topup;
 }
 
 export function getBitizensIGOContractAddress(network) {
+  if (!networkIsSupported(network)) {
+    log.warn('Network is not supported. network: ', network);
+    return null;
+  }
   return networkAddressMap[network.data.name].bitizensIGO;
 }
 
