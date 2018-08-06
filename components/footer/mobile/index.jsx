@@ -99,19 +99,19 @@ export default class Footer extends Component {
         <div className="social-footer">
           <h2><FormattedMessage id="components.footer.join" /></h2>
           <div className="mobile-social-icons">
-            <a href="https://www.facebook.com/BitGuildPLAT">
+            <a href="https://www.facebook.com/BitGuildPLAT" target="_blank" rel="noopener noreferrer">
               <img src="/static/images/icons/facebook.png" />
             </a>
-            <a href="https://twitter.com/BitGuildPLAT">
+            <a href="https://twitter.com/BitGuildPLAT" target="_blank" rel="noopener noreferrer">
               <img src="/static/images/icons/twitter.png" />
             </a>
-            <a href="https://discord.gg/pPC2frB ">
+            <a href="https://discord.gg/pPC2frB " target="_blank" rel="noopener noreferrer">
               <img src="/static/images/icons/discord.png" />
             </a>
-            <a href="https://www.reddit.com/r/BitGuild/">
+            <a href="https://www.reddit.com/r/BitGuild/" target="_blank" rel="noopener noreferrer">
               <img src="/static/images/icons/reddit.png" />
             </a>
-            <a href="https://medium.com/the-notice-board">
+            <a href="https://medium.com/the-notice-board" target="_blank" rel="noopener noreferrer">
               <img src="/static/images/icons/medium.png" />
             </a>
           </div>
