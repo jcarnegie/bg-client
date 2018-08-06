@@ -140,7 +140,7 @@ class MarketplaceItem extends ItemBase {
   }
 
   render() {
-    const { item, game } = this.props;
+    const { item, game, user } = this.props;
     return (
       <>
         <ItemPopup
@@ -153,6 +153,7 @@ class MarketplaceItem extends ItemBase {
         />
         <Item
           item={item}
+          user={user}
           buttons={::this.renderButtons()}
           handler={::this.props.handler}
         />

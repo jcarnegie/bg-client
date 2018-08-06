@@ -76,7 +76,7 @@ export const queries = {
   listItems: gql`
     query listItems($userId: ID!, $language: String!) {
       listItems(userId: $userId, language: $language) {
-        id presale lan tokenId image name description attrs saleExpiration salePrice saleState categories game { id }
+        id presale lan tokenId image name description attrs saleExpiration salePrice saleState lastOwner {id} categories game { id }
       }
     }
   `,

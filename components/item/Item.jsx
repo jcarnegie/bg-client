@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Badge, Thumbnail } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { compose, filter, isNil, not } from 'ramda';
+import { compose, filter, isNil, not, path } from 'ramda';
 
 
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
@@ -96,40 +96,38 @@ class Item extends Component {
 
   priceBanner() {
     let { salePrice, saleState } = this.props.item;
+    const { user } = this.props;
+    const userId = path(['data', 'id'], user);
+    const lastOwner = path(['lastOwner', 'id'], this.props.item);
 
-    if (saleState !== 'listed') {
-      return (
-        <div className="price-banner-null">
-          <style jsx>{`
-            :global(.price-banner-null) {
-              width: 100%;
-              height: 16px;
-              background: #F4F6F9;
-              padding: 1px 16px;
-            }
-          `}</style>
-          <>
-          </>
-        </div>
-      );
-    }
+    let listedFor = (
+      <>
+        <FormattedMessage id="pages.marketplace.listed-for" /> { salePrice } PLAT
+      </>
+    );
 
     return (
-      <div className="price-banner">
+      <div className={((lastOwner && userId) && (lastOwner === userId) && saleState === 'listed') ? 'price-banner' : 'price-banner-null'}>
         <style jsx>{`
           :global(.price-banner) {
             width: 100%;
             height: 16px;
             color: #6E85B4;
             background: #E6EDF6;
-            font-size: 11px;
             padding: 1px 16px;
+            font-size: 11px;
             letter-spacing: 1px;
+            display: inline-block;
+          }
+          :global(.price-banner-null) {
+            width: 100%;
+            height: 16px;
+            background: #F4F6F9;
+            padding: 1px 16px;
+            display: inline-block;
           }
         `}</style>
-        <>
-          <FormattedMessage id="pages.marketplace.listed-for" /> {salePrice} PLAT
-        </>
+        {((lastOwner && userId) && (lastOwner === userId) && saleState === 'listed') ? listedFor : <></>}
       </div>
     );
   }

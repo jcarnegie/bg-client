@@ -171,7 +171,7 @@ class InventoryItem extends ItemBase {
   }
 
   render() {
-    const { item, game } = this.props;
+    const { item, game, user } = this.props;
     return (
       <div className="inventory-item">
         <style jsx>{`
@@ -207,6 +207,7 @@ class InventoryItem extends ItemBase {
         />
         <Item
           item={item}
+          user={user}
           buttons={item.presale ? ::this.renderPresaleButton() : ::this.renderButtons()}
         />
       </div>

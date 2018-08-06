@@ -311,12 +311,6 @@ class Market extends Component {
 
     const filteredGame = visibleGames.find(game => parseInt(game.id, 10) === parseInt(this.state.gameFilter, 10));
 
-    let sortedItems = Array.from(items);
-    if (sortedItems) {
-      sortedItems.sort(function(a, b) {
-        return new Date(a.saleExpiration) - new Date(b.saleExpiration);
-      });
-    }
     return (
       <div className={this.state.mobile ? 'filtered-mobile-market' : 'filtered-market'}>
         <style jsx>{`
