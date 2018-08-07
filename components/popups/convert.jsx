@@ -4,6 +4,16 @@ import { Button, Form, Glyphicon, Modal, Grid, Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
+import {
+  localQueries,
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
 import BGModal from '@/components/modal';
 import withFormHelper from '@/components/inputs/withFormHelper';
 
@@ -24,13 +34,10 @@ function precisionRound(number, precision) {
 @connect(
   state => ({
     analytics: state.analytics,
-    gas: state.gas,
     rate: state.rate,
-    user: state.user,
-    network: state.network,
   })
 )
-export default class ConvertPopup extends Component {
+class ConvertPopup extends Component {
   static propTypes = {
     analytics: PropTypes.object,
     show: PropTypes.bool,
@@ -40,8 +47,6 @@ export default class ConvertPopup extends Component {
     setState: PropTypes.func,
     formData: PropTypes.object,
     user: PropTypes.object,
-    network: PropTypes.object,
-    gas: PropTypes.object,
   };
 
   state = {};
@@ -82,12 +87,13 @@ export default class ConvertPopup extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const { network, user, gas, dispatch, formData } = this.props;
+    const { dispatch, formData } = this.props;
+    const { gas, network } = this.props.data;
     getTopupContract(network).buyTokens({
         value: window.web3.toWei(precisionRound(formData.eth, 6), 'ether'),
-        from: user.data.wallet,
+        from: user.viewUserByWallet.wallet,
         gas: window.web3.toHex(15e4),
-        gasPrice: window.web3.toHex(gas.data.average),
+        gasPrice: window.web3.toHex(gas.average),
       },
       error => {
         if (error) {
@@ -214,3 +220,9 @@ export default class ConvertPopup extends Component {
     );
   }
 }
+
+
+export default compose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root),
+)(ConvertPopup);

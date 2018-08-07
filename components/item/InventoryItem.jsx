@@ -7,9 +7,19 @@ import { connect } from 'react-redux';
 import * as log from 'loglevel';
 
 import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
+import {
   getMarketplaceContractAddress,
   getContractFromGame,
 } from '@/shared/utils/network';
+
+import {
+  localQueries,
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
 
 import {
   listItem,
@@ -26,17 +36,8 @@ import Item from './Item';
 import ItemBase from './ItemBase';
 
 @injectIntl
-@connect(
-  state => ({
-    gas: state.gas,
-    network: state.network,
-    user: state.user,
-  })
-)
 class InventoryItem extends ItemBase {
   static propTypes = {
-    gas: PropTypes.object,
-    network: PropTypes.object,
     item: PropTypes.shape({
       game: PropTypes.object,
       name: PropTypes.string,
@@ -73,17 +74,17 @@ class InventoryItem extends ItemBase {
 
   async onSellSubmit(data) {
     const {
-      network,
       item,
       game,
       user,
       onSell,
     } = this.props;
 
-    log.info('Beginning sell transaction...');
+    const { network } = this.props.data;
 
+    log.info('Beginning sell transaction...');
     const result = await listItem({
-      user,
+      user: user.viewUserByWallet,
       item,
       contract: getContractFromGame(game, network),
       to: getMarketplaceContractAddress(network),
@@ -216,4 +217,7 @@ class InventoryItem extends ItemBase {
 }
 
 
-export default InventoryItem;
+export default compose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root),
+)(InventoryItem);

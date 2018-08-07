@@ -1,10 +1,20 @@
-import React, { Component } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import React from 'react';
+import { ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { path } from 'ramda';
-import { connect } from 'react-redux';
 import * as log from 'loglevel';
+
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
+import {
+  localQueries,
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
 
 import {
   getContractFromGame,
@@ -12,8 +22,6 @@ import {
 
 import {
   buyItem,
-  extendItem,
-  withdrawItem,
 } from '@/shared/utils/contracts';
 
 import { USER_SHOW_REGISTER_WORKFLOW } from '@/shared/constants/actions';
@@ -26,18 +34,9 @@ import ItemBase from './ItemBase';
 
 
 @injectIntl
-@connect(
-  state => ({
-    account: state.account,
-    network: state.network,
-    user: state.user,
-  })
-)
 class MarketplaceItem extends ItemBase {
   static propTypes = {
     dispatch: PropTypes.func,
-    account: PropTypes.object,
-    network: PropTypes.object,
     item: PropTypes.shape({
       game: PropTypes.object,
       name: PropTypes.string,
@@ -59,7 +58,7 @@ class MarketplaceItem extends ItemBase {
 
   onShowBuy(e) {
     e.preventDefault();
-    if (!this.props.user.data) {
+    if (!this.props.user.viewUserByWallet) {
       return this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
     }
 
@@ -71,11 +70,12 @@ class MarketplaceItem extends ItemBase {
   }
 
   async onSubmit() {
-    const { network, game, item, user, onBuy } = this.props;
+    const { data, game, item, user, onBuy } = this.props;
+    const { network } = data;
 
     const results = await buyItem({
       network,
-      user,
+      user: user.viewUserByWallet,
       item,
       price: parseFloat(item.salePrice || 0, 10),
       contract: getContractFromGame(game, network),
@@ -87,7 +87,7 @@ class MarketplaceItem extends ItemBase {
   renderButtons() {
     const { item, user } = this.props;
     const lastOwner = path(['lastOwner', 'id'], item);
-    const userId = path(['data', 'id'], user);
+    const userId = path(['viewUserByWallet', 'id'], user);
 
     const extendAndWithdrawButtons = (
       <div className="item-button-bar">
@@ -163,4 +163,7 @@ class MarketplaceItem extends ItemBase {
 }
 
 
-export default MarketplaceItem;
+export default compose(
+  graphql(localQueries.root),
+  viewUserByWalletQuery
+)(MarketplaceItem);

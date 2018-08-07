@@ -4,7 +4,15 @@ import * as log from 'loglevel';
 
 import EthABI from 'ethereumjs-abi/index';
 
-import { connect } from 'react-redux';
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
+import {
+  localQueries,
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
 
 import {
   networkAddressMap,
@@ -33,22 +41,7 @@ const testGameContractAddress = '0x856c82b392fa4041c3a63b3a8c8a7f258d2f27e0';
 const etherOnlineRinkeby = '0xca68213bce717c256628936a9ea4570f52ab2ed2';
 
 
-@connect(
-  state => ({
-    gas: state.gas,
-    network: state.network,
-    account: state.account,
-    user: state.user,
-  })
-)
 class Web3SandboxPage extends React.Component {
-  static propTypes = {
-    account: PropTypes.object,
-    network: PropTypes.object,
-    user: PropTypes.object,
-    gas: PropTypes.object,
-  }
-
   state = {
     listCurrency: 0,
     listPrice: 0,
@@ -66,14 +59,14 @@ class Web3SandboxPage extends React.Component {
   }
 
   addressInfo() {
-    const { account } = this.props;
+    const { wallet } = this.props.data;
     return (
       <div className="web3-sandbox-card">
         <h3>Addresses</h3>
         <div>
           <h6>User</h6>
           <ul>
-            <li><strong>Wallet:</strong> {account.wallet}</li>
+            <li><strong>Wallet:</strong> {wallet}</li>
           </ul>
         </div>
         <div>
@@ -103,7 +96,8 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onListItem() {
-    const { gas, user, network } = this.props;
+    const { user } = this.props;
+    const { gas, user, network } = this.props.data;
     const contract = this.dom.list.contract.value;
     const to = this.dom.list.to.value;
     const itemId = this.dom.list.itemId.value;
@@ -113,7 +107,7 @@ class Web3SandboxPage extends React.Component {
 
     /* Create item listing */
     const res = await listItem({
-      user,
+      user: user.viewUserByWallet,
       item: { id: itemId, tokenId },
       contract,
       to,
@@ -155,7 +149,7 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onWithdrawItem() {
-    const { network, gas } = this.props;
+    const { network, gas } = this.props.data;
 
     const contract = this.dom.withdraw.gameContract.value;
     const tokenId = this.dom.withdraw.tokenId.value;
@@ -202,7 +196,8 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onBuyItem() {
-    const { user, network, gas } = this.props;
+    const { user } = this.props;
+    const { user, network, gas } = this.props.data;
 
     const price = parseFloat(this.dom.buy.price.value, 10);
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
@@ -217,7 +212,7 @@ class Web3SandboxPage extends React.Component {
 
     /* Buy item from Marketplace */
     const res = await buyItem({
-      user,
+      user: user.viewUserByWallet,
       network,
       item,
       price,
@@ -259,7 +254,8 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onBuyItemWithEther() {
-    const { gas, user, network } = this.props;
+    const { user } = this.props;
+    const { gas, network } = this.props.data;
 
     const price = parseFloat(this.dom.buyWithEther.price.value, 10);
     const tokenId = parseInt(this.dom.buyWithEther.tokenId.value, 10);
@@ -274,7 +270,7 @@ class Web3SandboxPage extends React.Component {
 
     /* Buy item from Marketplace */
     const res = await buyItemWithEther({
-      user,
+      user: user.viewUserByWallet,
       network,
       item,
       price,
@@ -314,7 +310,7 @@ class Web3SandboxPage extends React.Component {
 
 
   async onExtendItem() {
-    const { gas, network } = this.props;
+    const { gas, network } = this.props.data;
 
     const contract = this.dom.extend.gameContract.value;
     const tokenId = this.dom.extend.tokenId.value;
@@ -361,7 +357,7 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onGetFee() {
-    const { network } = this.props;
+    const { network } = this.props.data;
 
     const price = this.dom.fee.price.value;
     const buyer = this.dom.fee.buyer.value;
@@ -480,4 +476,7 @@ class Web3SandboxPage extends React.Component {
 }
 
 
-export default process.env.DEPLOYED_ENV === 'production' ? <div>Not Allowed</div> : Web3SandboxPage;
+export default process.env.DEPLOYED_ENV === 'production' ? <div>Not Allowed</div> : compose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root),
+)(Web3SandboxPage);

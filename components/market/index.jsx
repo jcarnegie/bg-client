@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Image, Row, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Image, DropdownButton, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose, Query } from 'react-apollo';
 import {

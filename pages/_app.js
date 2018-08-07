@@ -14,6 +14,8 @@ import {
 import {
   client,
   queries,
+  localQueries,
+  mutations,
 } from '@/shared/utils/apollo';
 
 import {
@@ -70,14 +72,7 @@ class BGApp extends App {
       interval: window.setInterval(async() => {
         if (!web3IsInstalled()) return;
 
-        const rootLocalQuery = gql`{
-          network @client {
-            id name supported
-          }
-          wallet @client
-        }`;
-
-        const { data } = await client.query({ query: rootLocalQuery });
+        const { data } = await client.query({ query: localQueries.root });
         const { network, wallet } = data;
 
         const currentNetworkId = await asyncGetNetworkId();
@@ -89,11 +84,12 @@ class BGApp extends App {
             id: currentNetworkId,
             name: networkIdToName(currentNetworkId),
             supported: networkIdIsSupported(currentNetworkId),
-            __typename: 'Network',
+            available: true,
           };
-          await client.writeData({
-            data: {
-              network: currentNetwork,
+          await client.mutate({
+            mutation: mutations.updateNetwork,
+            variables: {
+              ...currentNetwork,
             },
           });
           this.setState({

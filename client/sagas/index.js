@@ -7,7 +7,6 @@ import sendBirdSaga from './sendbird';
 import userSaga from './user';
 import gameSaga from './game';
 import inventorySaga from './inventory';
-import gasSaga from './gas';
 
 export default function * rootSaga() {
   yield all([
@@ -15,7 +14,6 @@ export default function * rootSaga() {
     bootstrapSaga(),
     chatSaga(),
     gameSaga(),
-    gasSaga(),
     inventorySaga(),
     networkSaga(),
     sendBirdSaga(),

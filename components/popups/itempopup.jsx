@@ -6,6 +6,16 @@ import { FormattedMessage, intlShape } from 'react-intl';
 import { compose, filter, isNil, map, not } from 'ramda';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 
+import {
+  compose as apolloCompose,
+  graphql,
+} from 'react-apollo';
+
+import {
+  localQueries,
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
 import BGModal from '@/components/modal';
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
 
@@ -18,17 +28,12 @@ const notNil = compose(not, isNil);
 @connect(
   state => ({
     layout: state.layout,
-    network: state.network,
-    gas: state.gas,
   })
 )
-
-export default class ItemPopup extends Component {
+class ItemPopup extends Component {
   static propTypes = {
     type: PropTypes.string,
     show: PropTypes.bool,
-    network: PropTypes.object,
-    gas: PropTypes.object,
     formData: PropTypes.object,
     onChange: PropTypes.func,
     onHide: PropTypes.func,
@@ -125,10 +130,11 @@ export default class ItemPopup extends Component {
   }
 
   async getFeeAsync() {
-    const { network, show } = this.props;
+    const { data, show } = this.props;
+    const { network } = data;
     const { sellPrice } = this.state;
 
-    if (!show || !network.data) return;
+    if (!show || !network) return;
 
     let price = sellPrice && parseInt(sellPrice, 10);
 
@@ -580,3 +586,8 @@ export default class ItemPopup extends Component {
     );
   }
 }
+
+export default apolloCompose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root),
+)(ItemPopup);

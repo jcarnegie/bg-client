@@ -4,6 +4,16 @@ import { Button, Form, Modal, Thumbnail } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
+import {
+  localQueries,
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
 import BGModal from '@/components/modal';
 import withFormHelper from '@/components/inputs/withFormHelper';
 import InputGroupValidation from '@/components/inputs/input.group.validation';
@@ -14,19 +24,10 @@ import { GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD } from 
 
 @injectIntl
 @withFormHelper
-@connect(
-  state => ({
-    user: state.user,
-    network: state.network,
-    gas: state.gas,
-  })
-)
-export default class GiftPopup extends Component {
+class GiftPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
     user: PropTypes.object,
-    network: PropTypes.object,
-    gas: PropTypes.object,
     formData: PropTypes.object,
     onChange: PropTypes.func,
     onHide: PropTypes.func,
@@ -54,14 +55,14 @@ export default class GiftPopup extends Component {
   }
 
   transfer() {
-    const { network, gas, user, item, game, onHide, dispatch, formData } = this.props;
-
+    const { data, user, item, game, onHide, dispatch, formData } = this.props;
+    const { gas, network } = data;
     dispatch({
       type: GIFT_ADD_LOADING,
     });
     /* TODO - move to shared/utils/contracts.js */
     const contract = window.web3.eth.contract(nftABI).at(game.nft[network.data.id]);
-    contract.safeTransferFrom(user.data.wallet, formData.wallet, item.tokenId, {
+    contract.safeTransferFrom(user.viewUserByWallet.wallet, formData.wallet, item.tokenId, {
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(gas.data.average),
       },
@@ -165,3 +166,9 @@ export default class GiftPopup extends Component {
     );
   }
 }
+
+
+export default compose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root),
+)(GiftPopup);

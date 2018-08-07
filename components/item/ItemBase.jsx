@@ -14,7 +14,8 @@ import {
 
 class ItemBase extends React.Component {
   async withdraw() {
-    const { network, game, item } = this.props;
+    const { data, game, item } = this.props;
+    const { network } = this.props.data;
     await withdrawItem({
       contract: getContractFromGame(game, network),
       network,
@@ -23,7 +24,8 @@ class ItemBase extends React.Component {
   }
 
   async extend() {
-    const { network, game, item } = this.props;
+    const { data, game, item } = this.props;
+    const { network } = this.props.data;
     await extendItem({
       contract: getContractFromGame(game, network),
       network,

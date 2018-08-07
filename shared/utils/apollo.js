@@ -5,10 +5,14 @@ import * as log from 'loglevel';
 
 if (typeof global !== 'undefined') {
   global.fetch = require('node-fetch');
+} else {
+  const fetch = require('isomorphic-fetch');
 }
 
+export const ETH_GAS_STATION_ENDPOINT = 'https://ethgasstation.info/json/ethgasAPI.json';
 export const uri = (process.env.NODE_ENV === 'development' ? 'http://localhost:7000' : '') + '/api/';
 
+const toGwei = value => (Number(window.web3.toWei(value / 10, 'shannon')) + 1000000000); // gwei
 
 const typeDefs = `
   type Network {
@@ -18,9 +22,21 @@ const typeDefs = `
     supported: Boolean
   }
 
+  type Gas {
+    average: Int,
+    fast: Int,
+    fastest: Int,
+  }
+
+  type Mutation {
+    updateNetwork(id: Int!, available: Boolean!, name: String!, supported: Boolean!) Network
+    updateGas(average: Int!, fast: Int!, fastest: Int!) Gas
+  }
+
   type Query {
     wallet: String
     network: [Network]
+    gas: Gas
   }
 `;
 
@@ -33,15 +49,53 @@ export const client = new ApolloClient({
         id: null,
         name: null,
         supported: null,
-        __typename: "Network",
+        __typename: 'Network',
+      },
+      gas: {
+        average: 8,
+        fast: 16,
+        fastest: 30,
+        __typename: 'Gas',
       },
     },
-    resolvers: {},
+    resolvers: {
+      Mutation: {
+        updateNetwork: async (_, variables, { cache, getCacheKey }) => {
+          log.info(`Setting network to ${variables.name} with id ${variables.id}.`);
+          await cache.writeData({
+            data: {
+              network: {
+                ...variables,
+                __typename: 'Network',
+              },
+            },
+          });
+          const gasStationResponse = await fetch(ETH_GAS_STATION_ENDPOINT).then(res => res.json());
+          log.info(`Fetched gas from ${ETH_GAS_STATION_ENDPOINT}`);
+          await cache.writeData({
+            data: {
+              gas: {
+                average: toGwei(gasStationResponse.average),
+                fast: toGwei(gasStationResponse.fast),
+                fastest: toGwei(gasStationResponse.fastest),
+                __typename: 'Gas',
+              },
+            },
+          });
+          return null;
+        },
+      },
+    },
     typeDefs,
   },
 });
 
 export const mutations = {
+  updateNetwork: gql`
+    mutation updateNetwork($id: Int!, $available: Boolean!, $name: String!, $supported: Boolean!) {
+      updateNetwork(id: $id, available: $available, name: $name, supported: $supported) @client
+    }
+  `,
   listItemForSale: gql`
     mutation listItemForSale ($userId: Int!, $itemId: Int!, $saleListingId: Int!, $saleTxnHash: String!, $salePrice: Int!) {
       listItemForSale(userId: $userId, itemId: $itemId, saleListingId: $saleListingId, saleTxnHash: $saleTxnHash, salePrice: $salePrice) {
@@ -103,6 +157,28 @@ export const queries = {
     }
   `,
 };
+
+export const localQueries = {
+  root: gql`{
+    network @client {
+      id name supported
+    }
+    wallet @client
+    gas @client {
+      average fast fastest
+    }
+  }`,
+  gas: gql`{
+    gas @client {
+      average fast fastest
+    }
+  }`,
+  network: gql`{
+    network @client {
+      id name supported
+    }
+  }`,
+}
 
 export const viewUserByWalletQuery = graphql(queries.viewUserByWallet, {
   name: 'user',
