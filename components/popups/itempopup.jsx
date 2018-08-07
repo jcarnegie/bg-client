@@ -4,7 +4,6 @@ import { Badge, Button, Form, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { compose, filter, isNil, map, not } from 'ramda';
-import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 
 import {
   compose as apolloCompose,
@@ -65,6 +64,7 @@ class ItemPopup extends Component {
     feePercentage: '5',
     fee: 0,
     userGetsAmount: 0,
+    wallet: '',
   };
 
   onSubmit(e) {
@@ -90,6 +90,10 @@ class ItemPopup extends Component {
 
   handleChange(e) {
     this.setState({ sellPrice: (Math.abs(parseInt(e.target.value, 10)) || '') });
+  }
+
+  handleWalletChange(e) {
+    this.setState({ wallet: e.target.value.toString().trim() });
   }
 
   handleError() {
@@ -127,6 +131,79 @@ class ItemPopup extends Component {
           )}
       </div>
     );
+  }
+
+  renderModalButtons() {
+    const { item, type, layout } = this.props;
+
+   if (type === 'sell') {
+      return (
+        <div>
+          <div className="sell-text">
+            <FormattedMessage id="pages.marketplace.sell-for" />
+          </div>
+          <div className="sellBlock">
+            <input
+              ref={this.priceInput}
+              type="text" value={this.state.sellPrice}
+              placeholder="0 PLAT"
+              onChange={::this.handleChange}
+              onClick={::this.handleError}
+              className="sell-input"
+            />
+            {
+              layout.type.mobile
+              ? null
+              : <Button type="submit" className="btn-block-sell">
+                  <FormattedMessage id="pages.marketplace.sell-this-item" />
+                </Button>
+            }
+          </div>
+          <div className="sell-disclaimer">
+            <FormattedMessage id="pages.marketplace.bitguild-fee-1" /><strong>{this.state.feePercentage}%</strong>
+            <FormattedMessage id="pages.marketplace.bitguild-fee-2" />
+            <FormattedMessage id="pages.marketplace.bitguild-fee-3" />
+            <strong>{this.state.userGetsAmount} PLAT </strong>
+            <FormattedMessage id="pages.marketplace.bitguild-fee-4" />
+          </div>
+          {
+            !layout.type.mobile
+            ? null
+            : <Button type="submit" className="btn-block-sell">
+                <FormattedMessage id="pages.marketplace.sell-this-item" />
+              </Button>
+          }
+        </div>
+      );
+    } else if (type === 'gift') {
+      return (
+        <>
+          <span className="wallet-address-label">
+            <FormattedMessage id="fields.wallet.label" />
+          </span>
+          <input
+            type="text"
+            name="wallet"
+            placeholder="0x1a2c3d…"
+            onChange={::this.handleWalletChange}
+            maxLength="42"
+            minLength="42"
+            className="gift-input"
+          />
+          <Button type="submit" className="btn-block gift">
+            <FormattedMessage id="buttons.send" />
+          </Button>
+        </>
+      );
+    } else {
+      return (
+        <Button type="submit" className={layout.type.mobile ? 'mobile-btn-block' : 'btn-block'}>
+          <FormattedMessage id="pages.marketplace.buy-for" />
+          <img src="/static/images/icons/plat.png" className="platToken" />
+          {item.salePrice ? item.salePrice : 0} PLAT
+        </Button>
+      );
+    }
   }
 
   async getFeeAsync() {
@@ -177,6 +254,10 @@ class ItemPopup extends Component {
             height: 50px;
             margin-top: 260px;
           }
+          .btn-block.gift {
+            margin-top: 0px !important;
+            text-transform: uppercase;
+          }
           .mobile-btn-block {
             font-size: 1em;
             padding: 0px;
@@ -219,7 +300,6 @@ class ItemPopup extends Component {
           .buyImage{
             height: 70%;
             width: 70%;
-            margin-bottom: 15px;
           }
           .buy .modal-content .modal-body form{
             margin: 0px;
@@ -233,13 +313,13 @@ class ItemPopup extends Component {
             justify-content: center;
             align-items: center;
             text-align: center;
-            height: 430px;
+            height: 440px;
           }
           .buy .modal-content h2 {
             font-weight: 500;
             font-size: 1.8em;
             margin-top: 0;
-            text-align: center;
+            text-align: left;
             width: 100%;
             margin-bottom: 15px;
           }
@@ -433,7 +513,7 @@ class ItemPopup extends Component {
             font-weight: 500;
             left: 7.5%;
             margin-right: 45px;
-            font-size: .9em;
+            font-size: .7em;
           }
           .sell form .sell-text {
             float: left;
@@ -517,6 +597,25 @@ class ItemPopup extends Component {
             margin-right: 8px;
             margin-bottom: 5px;
           }
+          .gift-input {
+            width: 80%;
+            height: 50px;
+            border: none;
+            border-bottom: 1px solid black;
+            background-color: #F3F4FA;
+            font-size: .9em;
+            padding-left: 10px;
+            margin-bottom: 10px;
+          }
+          .wallet-address-label {
+            display: inline-block;
+            width: 80%;
+            text-align: left;
+            font-weight: 500;
+            font-size: .7em;
+            position: relative;
+            bottom: 5px;
+          }
         `}</style>
         <BGModal show={show} dialogClassName={type === 'sell' && layout.type.mobile ? 'sell' : 'buy'} onHide={onHide} backdropClassName="semi">
           <Modal.Header closeButton />
@@ -530,7 +629,7 @@ class ItemPopup extends Component {
                 <h2>{item.name}</h2>
                 <div className={layout.type.mobile ? 'mobileItemPrice' : 'itemPrice'}>
                 {
-                  type === 'sell'
+                  type !== 'buy'
                   ? null
                   : <>
                       <img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice + ' '}PLAT
@@ -540,45 +639,7 @@ class ItemPopup extends Component {
                 {this.renderStats()}
                 {this.renderAttributes()}
               </div>
-              {
-                type === 'renew'
-                ? <Button type="submit" className="btn-block">
-                  Renew Marketplace Expiration
-                  </Button>
-                : type === 'withdraw'
-                ? <Button type="submit" className="btn-block">
-                    Withdraw from Marketplace
-                  </Button>
-                : type === 'sell'
-                ? (<div>
-                    <div className="sell-text">
-                      <FormattedMessage id="pages.marketplace.sell-for" />
-                    </div>
-                    <div className="sellBlock">
-                      <input ref={this.priceInput} type="text" value={this.state.sellPrice} placeholder="0 PLAT" onChange={::this.handleChange} onClick={::this.handleError} className="sell-input">
-                      </input>
-                      {layout.type.mobile ? null
-                      : <Button type="submit" className="btn-block-sell">
-                          <FormattedMessage id="pages.marketplace.sell-this-item" />
-                      </Button>
-                      }
-                    </div>
-                    <div className="sell-disclaimer">
-                      <FormattedMessage id="pages.marketplace.bitguild-fee-1" /><strong>{this.state.feePercentage}%</strong> <FormattedMessage id="pages.marketplace.bitguild-fee-2" />
-                      <FormattedMessage id="pages.marketplace.bitguild-fee-3" />
-                        <strong>{this.state.userGetsAmount} PLAT </strong>
-                      <FormattedMessage id="pages.marketplace.bitguild-fee-4" />
-                    </div>
-                    {!layout.type.mobile ? null
-                      : <Button type="submit" className="btn-block-sell">
-                          <FormattedMessage id="pages.marketplace.sell-this-item" />
-                      </Button>
-                    }
-                  </div>)
-                : <Button type="submit" className={layout.type.mobile ? 'mobile-btn-block' : 'btn-block'}>
-                    <FormattedMessage id="pages.marketplace.buy-for" /> <img src="/static/images/icons/plat.png" className="platToken" />{item.salePrice ? item.salePrice : 0} PLAT
-                  </Button>
-              }
+              {this.renderModalButtons()}
             </Form>
           </Modal.Body>
         </BGModal>

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import * as log from 'loglevel';
+import nftABI from '@/shared/contracts/ERC721/abi.json';
 
 import {
   compose,
@@ -23,13 +25,14 @@ import {
   listItem,
 } from '@/shared/utils/contracts';
 
-import style from '@/shared/constants/style';
+import { GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD } from '@/shared/constants/actions';
 
-import Gift from '@/components/popups/gift';
+import style from '@/shared/constants/style';
 import ItemPopup from '@/components/popups/itempopup';
 
 import Item from './Item';
 import ItemBase from './ItemBase';
+@connect()
 
 @injectIntl
 class InventoryItem extends ItemBase {
@@ -88,6 +91,65 @@ class InventoryItem extends ItemBase {
     });
 
     if (onSell) onSell(item, result);
+  }
+
+  isValid(wallet) {
+    const { intl } = this.props;
+
+    let e;
+    let isValid = true;
+
+    if (!window.web3.isAddress(wallet)) {
+      e.parentNode.parentNode.classList.add('has-error');
+      e.setCustomValidity(intl.formatMessage({
+        id: 'fields.wallet.invalid',
+      }));
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  async onGiftSubmit(data) {
+    const {
+      user,
+      item,
+      game,
+      dispatch
+    } = this.props;
+
+    if (this.isValid(data.wallet)) {
+      dispatch({
+        type: GIFT_ADD_LOADING,
+      });
+      /* TODO - move to shared/utils/contracts.js */
+      const contract = window.web3.eth.contract(nftABI).at(game.nft[this.props.data.network.id]);
+      contract.safeTransferFrom(user.viewUserByWallet.wallet, data.wallet, item.tokenId, {
+        gas: window.web3.toHex(15e4),
+        gasPrice: window.web3.toHex(this.props.data.gas.average),
+      },
+        (error, tx) => {
+          if (error) {
+            dispatch({
+              type: GIFT_ADD_ERROR,
+            });
+            dispatch({
+              type: MESSAGE_ADD,
+              payload: error,
+            });
+          } else {
+            dispatch({
+              type: GIFT_ADD_SUCCESS,
+              payload: {
+                item: item.tokenId,
+                game: game.id,
+                tx,
+              },
+            });
+          }
+        }
+      );
+    }
   }
 
   renderPresaleButton() {
@@ -177,9 +239,14 @@ class InventoryItem extends ItemBase {
             margin: 0 10px;
           }
         `}</style>
-        <Gift
+        <ItemPopup
           show={this.state.modal === 'gift'}
-          item={item} game={game} onHide={::this.onHideModal} />
+          type="gift"
+          item={item}
+          game={game}
+          onHide={::this.onHideModal}
+          onSubmit={::this.onGiftSubmit}
+        />
         <ItemPopup
           show={this.state.modal === 'sell'}
           type="sell"
@@ -187,20 +254,6 @@ class InventoryItem extends ItemBase {
           game={game}
           onHide={::this.onHideModal}
           onSubmit={::this.onSellSubmit}
-        />
-        <ItemPopup
-          show={this.state.modal === 'renew'}
-          type="renew"
-          item={item}
-          game={game}
-          onHide={::this.onHideModal}
-        />
-        <ItemPopup
-          show={this.state.modal === 'withdraw'}
-          type="withdraw"
-          item={item}
-          game={game}
-          onHide={::this.onHideModal}
         />
         <Item
           item={item}
