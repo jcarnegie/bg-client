@@ -4,6 +4,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 import MdAddCircle from 'react-icons/lib/md/add-circle';
+import {
+  compose,
+} from 'react-apollo';
+
+import {
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
 
 import Convert from '@/components/popups/convert';
 
@@ -13,13 +20,12 @@ import { USER_SHOW_REGISTER_WORKFLOW, SHOW_CONVERT_MODAL } from '@/shared/consta
 @connect(
   state => ({
     rate: state.rate,
-    user: state.user,
     layout: state.layout,
     balanceETH: state.balanceETH,
     balancePLAT: state.balancePLAT,
   })
 )
-export default class Balance extends Component {
+class Balance extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     layout: PropTypes.object,
@@ -53,7 +59,7 @@ export default class Balance extends Component {
 
   onClick(e) {
     e.preventDefault();
-    if (!this.props.user.data) {
+    if (!this.props.user.viewUserByWallet) {
       return this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
     }
 
@@ -158,3 +164,8 @@ export default class Balance extends Component {
     );
   }
 }
+
+
+export default compose(
+  viewUserByWalletQuery,
+)(Balance);

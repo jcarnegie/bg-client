@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import {
-  buyItem,
   extendItem,
   withdrawItem,
 } from '@/shared/utils/contracts';
@@ -13,8 +13,20 @@ import {
 
 
 class ItemBase extends React.Component {
+  static propTypes = {
+    data: PropTypes.object,
+    game: PropTypes.object,
+    item: PropTypes.object,
+  }
+
+  static defaultProps = {
+    data: {},
+    game: {},
+    item: {},
+  }
+
   async withdraw() {
-    const { data, game, item } = this.props;
+    const { game, item } = this.props;
     const { network } = this.props.data;
     await withdrawItem({
       contract: getContractFromGame(game, network),
@@ -24,7 +36,7 @@ class ItemBase extends React.Component {
   }
 
   async extend() {
-    const { data, game, item } = this.props;
+    const { game, item } = this.props;
     const { network } = this.props.data;
     await extendItem({
       contract: getContractFromGame(game, network),

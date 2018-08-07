@@ -9,6 +9,10 @@ import marketplaceABI from '@/shared/contracts/BGMarketplace/abi.json';
 import bitizensIGOABI from '@/shared/contracts/BitizensIGO/abi.json';
 
 
+export const apolloToReduxNetworkShape = network => {
+  return (!network || !network.data) ? { data: (network || {}) } : network;
+};
+
 export const networkIdToNameMap = {
   '1': 'main',
   '42': 'kovan', /* Not a typo, MetaMask resolves the Kovan id to '42' */
@@ -42,6 +46,7 @@ export function networkIdToName(id) {
 }
 
 export function networkIsSupported(network) {
+  network = apolloToReduxNetworkShape(network);
   if (!network || !network.data) return false;
   return Object.keys(networkAddressMap).includes(network.data.name);
 }
@@ -52,6 +57,7 @@ export function networkIdIsSupported(networkId) {
 }
 
 export function getContractFromGame(game, network) {
+  network = apolloToReduxNetworkShape(network);
   if (!game || !network.data) return false;
   return game.nft[network.data.id];
 }
@@ -65,6 +71,7 @@ export function getWeb3Wallet() {
 }
 
 export function getOracleContractAddress(network) {
+  network = apolloToReduxNetworkShape(network);
   if (!networkIsSupported(network)) {
     log.warn('Network is not supported. network: ', network);
     return null;
@@ -73,6 +80,7 @@ export function getOracleContractAddress(network) {
 }
 
 export function getBitGuildTokenContractAddress(network) {
+  network = apolloToReduxNetworkShape(network);
   if (!networkIsSupported(network)) {
     log.warn('Network is not supported. network: ', network);
     return null;
@@ -81,6 +89,7 @@ export function getBitGuildTokenContractAddress(network) {
 }
 
 export function getMarketplaceContractAddress(network) {
+  network = apolloToReduxNetworkShape(network);
   if (!networkIsSupported(network)) {
     log.warn('Network is not supported. network: ', network);
     return null;
@@ -89,6 +98,7 @@ export function getMarketplaceContractAddress(network) {
 }
 
 export function getTopupContractAddress(network) {
+  network = apolloToReduxNetworkShape(network);
   if (!networkIsSupported(network)) {
     log.warn('Network is not supported. network: ', network);
     return null;
@@ -97,6 +107,7 @@ export function getTopupContractAddress(network) {
 }
 
 export function getBitizensIGOContractAddress(network) {
+  network = apolloToReduxNetworkShape(network);
   if (!networkIsSupported(network)) {
     log.warn('Network is not supported. network: ', network);
     return null;
@@ -105,22 +116,27 @@ export function getBitizensIGOContractAddress(network) {
 }
 
 export function getTopupContract(network) {
+  network = apolloToReduxNetworkShape(network);
   return window.web3.eth.contract(topupABI).at(getTopupContractAddress(network));
 }
 
 export function getBitGuildTokenContract(network) {
+  network = apolloToReduxNetworkShape(network);
   return window.web3.eth.contract(bitGuildTokenABI).at(getBitGuildTokenContractAddress(network));
 }
 
 export function getOracleContract(network) {
+  network = apolloToReduxNetworkShape(network);
   return window.web3.eth.contract(oracleABI).at(getOracleContractAddress(network));
 }
 
 export function getMarketplaceContract(network, address = null) {
+  network = apolloToReduxNetworkShape(network);
   return window.web3.eth.contract(marketplaceABI).at(address || getMarketplaceContractAddress(network));
 }
 
 export function getBitizensIGOContract(network) {
+  network = apolloToReduxNetworkShape(network);
   return window.web3.eth.contract(bitizensIGOABI).at(getBitizensIGOContractAddress(network));
 }
 

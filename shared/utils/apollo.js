@@ -1,12 +1,18 @@
 import ApolloClient from 'apollo-boost';
+import bluebird from 'bluebird';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import * as log from 'loglevel';
 
+import {
+  getOracleContract,
+} from '@/shared/utils/network';
+
+
 if (typeof global !== 'undefined') {
   global.fetch = require('node-fetch');
 } else {
-  const fetch = require('isomorphic-fetch');
+  const fetch = require('isomorphic-fetch'); /* eslint-disable-line no-unused-vars */
 }
 
 export const ETH_GAS_STATION_ENDPOINT = 'https://ethgasstation.info/json/ethgasAPI.json';
@@ -35,6 +41,7 @@ const typeDefs = `
 
   type Query {
     wallet: String
+    rate: Number
     network: [Network]
     gas: Gas
   }
@@ -60,16 +67,17 @@ export const client = new ApolloClient({
     },
     resolvers: {
       Mutation: {
-        updateNetwork: async (_, variables, { cache, getCacheKey }) => {
-          log.info(`Setting network to ${variables.name} with id ${variables.id}.`);
+        updateNetwork: async(_, network, { cache, getCacheKey }) => {
+          log.info(`Setting network to ${network.name} with id ${network.id}.`);
           await cache.writeData({
             data: {
               network: {
-                ...variables,
+                ...network,
                 __typename: 'Network',
               },
             },
           });
+
           const gasStationResponse = await fetch(ETH_GAS_STATION_ENDPOINT).then(res => res.json());
           log.info(`Fetched gas from ${ETH_GAS_STATION_ENDPOINT}`);
           await cache.writeData({
@@ -82,6 +90,11 @@ export const client = new ApolloClient({
               },
             },
           });
+          log.info(`Fetched rate from oracle contract on ${network.name} network.`);
+          const ETHPrice = await bluebird.promisify(getOracleContract(network).ETHPrice)();
+          const rate = window.web3.fromWei(ETHPrice, 'ether').toNumber();
+          await cache.writeData({ data: { rate } });
+          log.info(`Set rate to ${rate.toString()}.`);
           return null;
         },
       },
@@ -178,7 +191,7 @@ export const localQueries = {
       id name supported
     }
   }`,
-}
+};
 
 export const viewUserByWalletQuery = graphql(queries.viewUserByWallet, {
   name: 'user',

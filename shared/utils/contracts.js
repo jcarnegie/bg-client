@@ -91,11 +91,11 @@ export const dataHexForContractAndTokenId = ({ contract, tokenId }) => {
  * - - @option: price - ex: 1200
  * - - @option: currency - (0|1) ... 0: ETH, 1: PLAT ... ex: 0
  * - - @option: to - BGMarketplace Contract Address
- * - - @option: user - [redux] user object
- * - - @option: item - [redux] item object
- * - - @option: network - [redux] network object
+ * - - @option: user - [graphql] user object
+ * - - @option: item - [graphql] item object
+ * - - @option: network - [graphql] network object
  * - - @option: marketPlaceContractAddress - optional
- * - - @option: gas - (optional) [redux] gas object
+ * - - @option: gas - (optional) [graphql] gas object
  * - - @option: gasSpeed - (optional) String (average|fast|faster)
  */
 export const listItem = ({
@@ -117,7 +117,7 @@ export const listItem = ({
     return reject(new Error('User wallet not found. web3 login may be required.'));
   }
 
-  if (!user || !user.data || !item || !contract || !to || !item.tokenId || !price || !item.id) {
+  if (!user || !user || !item || !contract || !to || !item.tokenId || !price || !item.id) {
    log.info('listItem: incorrect parameters.');
    return reject(new Error('Incorrect parameters.'));
   }
@@ -125,7 +125,7 @@ export const listItem = ({
   const GameContract = getERC721ConformingContract(contract);
   const tokenId = parseInt(item.tokenId, 10);
   const itemId = parseInt(item.id, 10);
-  const userId = parseInt(user.data.id, 10);
+  const userId = parseInt(user.id, 10);
   const currencyInt = parseInt(currency, 10);
 
   const dataHex = dataHexForCurrencyAndPrice({ currency: currencyInt, price });
@@ -190,11 +190,11 @@ export const listItem = ({
  * - @param {Object} options
  * - - @option: contract - Game Contract Address
  * - - @option: price - ex: 1200
- * - - @option: user - [redux] user object
- * - - @option: network - [redux] network object
- * - - @option: item - [redux] item object
+ * - - @option: user - [graphql] user object
+ * - - @option: network - [graphql] network object
+ * - - @option: item - [graphql] item object
  * - - @option: marketPlaceContractAddress - optional
- * - - @option: gas - (optional) [redux] gas object
+ * - - @option: gas - (optional) [graphql] gas object
  * - - @option: gasSpeed - (optional) String (average|fast|faster)
  */
 export const buyItem = ({
@@ -215,7 +215,7 @@ export const buyItem = ({
   const BitGuildTokenContract = getBitGuildTokenContract(network);
   const marketplaceAddress = marketPlaceContractAddress || getMarketplaceContractAddress(network);
   const tokenIdInt = parseInt(item.tokenId, 10);
-  const userId = parseInt(user.data.id, 10);
+  const userId = parseInt(user.id, 10);
   const itemId = parseInt(item.id, 10);
   const priceBigNum = parseFloat(price, 10) * ETH2WEI;
 
@@ -272,11 +272,11 @@ export const buyItem = ({
  * - @param {Object} options
  * - - @option: contract - Game Contract Address
  * - - @option: price - ex: 1200
- * - - @option: user - [redux] user object
- * - - @option: network - [redux] network object
- * - - @option: item - [redux] item object
+ * - - @option: user - [graphql] user object
+ * - - @option: network - [graphql] network object
+ * - - @option: item - [graphql] item object
  * - - @option: marketPlaceContractAddress - optional
- * - - @option: gas - (optional) [redux] gas object
+ * - - @option: gas - (optional) [graphql] gas object
  * - - @option: gasSpeed - (optional) String (average|fast|faster)
  */
 export const buyItemWithEther = ({
@@ -299,7 +299,7 @@ export const buyItemWithEther = ({
   const tokenIdInt = parseInt(item.tokenId, 10);
   const priceFloat = parseFloat(price, 10);
   const priceWei = window.web3.toWei(priceFloat);
-  const userId = parseInt(user.data.id, 10);
+  const userId = parseInt(user.id, 10);
   const itemId = parseInt(item.id, 10);
 
   const options = {
@@ -355,10 +355,10 @@ export const buyItemWithEther = ({
  *
  * - @param {Object} options
  * - - @option: contract - Game Contract Address
- * - - @option: network - [redux] network object
- * - - @option: item - [redux] item object
+ * - - @option: network - [graphql] network object
+ * - - @option: item - [graphql] item object
  * - - @option: marketPlaceContractAddress - optional
- * - - @option: gas - (optional) [redux] gas object
+ * - - @option: gas - (optional) [graphql] gas object
  * - - @option: gasSpeed - (optional) String (average|fast|faster)
  */
 export const extendItem = ({
@@ -424,10 +424,10 @@ export const extendItem = ({
  *
  * - @param {Object} options
  * - - @option: contract - Game Contract Address
- * - - @option: network - [redux] network object
- * - - @option: item - [redux] item object
+ * - - @option: network - [graphql] network object
+ * - - @option: item - [graphql] item object
  * - - @option: marketPlaceContractAddress - optional
- * - - @option: gas - (optional) [redux] gas object
+ * - - @option: gas - (optional) [graphql] gas object
  * - - @option: gasSpeed - (optional) String (average|fast|faster)
  */
 export const withdrawItem = ({
@@ -492,7 +492,7 @@ export const withdrawItem = ({
  * getFee
  *
  * - @param {Object} options
- * - - @option: network - [redux] network object
+ * - - @option: network - [graphql] network object
  * - - @option: price - Int
  * - - @option: seller - address
  * - - @option: buyer - address
