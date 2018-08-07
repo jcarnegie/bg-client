@@ -42,6 +42,14 @@ const etherOnlineRinkeby = '0xca68213bce717c256628936a9ea4570f52ab2ed2';
 
 
 class Web3SandboxPage extends React.Component {
+  static propTypes = {
+    data: PropTypes.object,
+  }
+
+  static defaultProps = {
+    data: {},
+  }
+
   state = {
     listCurrency: 0,
     listPrice: 0,
@@ -97,7 +105,7 @@ class Web3SandboxPage extends React.Component {
 
   async onListItem() {
     const { user } = this.props;
-    const { gas, user, network } = this.props.data;
+    const { gas, network } = this.props.data;
     const contract = this.dom.list.contract.value;
     const to = this.dom.list.to.value;
     const itemId = this.dom.list.itemId.value;
@@ -197,7 +205,7 @@ class Web3SandboxPage extends React.Component {
 
   async onBuyItem() {
     const { user } = this.props;
-    const { user, network, gas } = this.props.data;
+    const { network, gas } = this.props.data;
 
     const price = parseFloat(this.dom.buy.price.value, 10);
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
