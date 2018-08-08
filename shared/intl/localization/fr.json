@@ -111,6 +111,30 @@
     }
   },
   "pages": {
+    "bugbounty": {
+      "title": "Chasse aux bugs",
+      "hey-bitizens": "Chers Bitizen !",
+      "info": "Êtes-vous un développeur curieux, intéressé d'en savoir plus sur les contrats intelligents ? Ou peut-être êtes-vous un ingénieur chevronné, avec une expérience des contrats intelligents ? Si c'est le cas, nous vous invitons à prendre part à notre programme de chasse aux bugs et à donner à nos produits la solidité d'un roc et à nos contrats une protection à toute épreuve.",
+      "conditions-header": "Conditions :",
+      "conditions-1": "Le programme ne concerne que les bugs dans l'un de nos contrats intelligents pour <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/marketplace'>le marché</a> et <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/bitizens'>les Bitizens</a>.",
+      "conditions-2": "Pour l'instant, ces contrats sont rédigés en Solidity pour le blockchain Ethereum, et le programme ne cible donc que cet écosystème.",
+      "conditions-3": "Le premier qui signale le bug obtient la récompense (voir le processus de soumission ci-dessous). La date d'émission du ticket de Github fera foi.",
+      "rewards-header": "Catégories de récompenses et de bugs :",
+      "rewards-info-1": "Sévérité 0 - Les fonds ou les items de l'utilisateur courent le risque d'un accès non autorisé par un autre utilisateur.",
+      "rewards-reward-1": "<strong>Récompense : 10 ETH + 800 000 PLAT</strong>",
+      "rewards-info-2": "Sévérité 1 - L'état de l'utilisateur (items équipés, commandes placées, etc) court le risque d'être modifié par un utilisateur non autorisé.",
+      "rewards-reward-2": "<strong>Récompense : 6 ETH + 600 000 PLAT</strong>",
+      "rewards-info-3": "Sévérité 2 - Les fonds/items/l'état de BitGuild courent le risque d'être modifiés par un utilisateur non autorisé.",
+      "rewards-reward-3": "<strong>Récompense : 3 ETH + 300 000 PLAT</strong>",
+      "rewards-info-4": "Sévérité 3 - Tout bug important dans la logique produit qui modifie de manière significative son comportement.",
+      "rewards-reward-4": "<strong>Récompense : 50 000 PLAT</strong>",
+      "report-header": "Pour soumettre un signalement, suivez la méthode suivante :",
+      "report-1": "Créez un ticket GitHub dans le répertoire approprié (voir les liens ci-dessus).",
+      "report-2": "Remplissez ce <strong><a href='https://docs.google.com/forms/d/1oCHiiXUB5zxMCq_F31p2Na0BtImp0glnBfAC3hW5kfo/edit'>formulaire Google</a></strong>.",
+      "processing": "Nous accuserons réception de votre signalement dans les <strong> 72 heures</strong> et nous nous engageons à l'évaluer et à vous comuniquer nos conclusions dans les <strong> 10 jours</strong>.",
+      "looking-forward": "We are looking forward to hearing from you!",
+      "team": "Équipe BitGuild"
+    },
     "inventory": {
       "title": "Mes objets",
       "all": "Tout",

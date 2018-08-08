@@ -110,6 +110,30 @@
     }
   },
   "pages": {
+    "bugbounty": {
+      "title": "Bug Bounty",
+      "hey-bitizens": "¡Hola, Bitizen!",
+      "info": "¿Eres un desarrollador curioso que busca aprender más sobre contratos inteligentes? ¿O quizá eres un ingeniero capacitado con experiencia en contratos inteligentes? Sea como sea, te invitamos a participar en nuestro programa de Bug Bounty y a ayudarnos a hacer que nuestros productos sean sólidos y nuestros contratos invulnerables.",
+      "conditions-header": "Condiciones:",
+      "conditions-1": "El programa cubre solo bugs en alguno de nuestros contratos inteligentes para <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/marketplace'> Mercado</a> y <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/bitizens'>Bitizens</a>.",
+      "conditions-2": "En este momento, estos contratos se escriben en Solidity para la blockchain Ethereum así que el programa solo apunta a este ecosistema.",
+      "conditions-3": "La persona que primero reporte el bug, obtiene la recompensa (mira el proceso de envío debajo). La fecha de emisión de Github se utilizará como prueba.",
+      "rewards-header": "Recompensas y categorías de bug:",
+      "rewards-info-1": "Severidad 0 - Los fondos o items de un usuario están en riesgo de que otro usuario acceda a ellos de manera no autorizada.",
+      "rewards-reward-1": "<strong>Recompensa: 10 ETH + 800.000 PLAT</strong>",
+      "rewards-info-2": "Severidad 1 - El estado de un usuario (items equipados, pedidos realizados, etc.) está en riesgo de que otro usuario los cambie de manera no autorizada.",
+      "rewards-reward-2": "<strong>Recompensa: 6 ETH + 600.000 PLAT</strong>",
+      "rewards-info-3": "Severidad 2 - Los fondos, los items o el estado de BitGuild están en riesgo de que otro usuario los cambie de manera no autorizada.",
+      "rewards-reward-3": "<strong>Recompensa: 3 ETH + 300.000 PLAT</strong>",
+      "rewards-info-4": "Severidad 3 - Cualquier bug importante en la lógica del producto que cambie de manera significativa su comportamiento.",
+      "rewards-reward-4": "<strong>Recompensa: 50.000 PLAT</strong>",
+      "report-header": "Para enviar un reporte, sigue estos pasos.",
+      "report-1": "Crea un issue de github en el repo correspondiente (ve los enlaces arriba).",
+      "report-2": "Rellena este  <strong><a href='https://docs.google.com/forms/d/1oCHiiXUB5zxMCq_F31p2Na0BtImp0glnBfAC3hW5kfo/edit'>formulario de Google</a></strong>.",
+      "processing": "Acusaremos recibo de tu envío dentro de las <strong> 72 horas </strong>, posteriores y nos comprometemos a validar el reporte y a darte una conclusión en <strong> 10 dias </strong>.",
+      "looking-forward": "¡Esperamos tus novedades!",
+      "team": "El Equipo de BitGuild"
+    },
     "inventory": {
       "title": "Mis cosas",
       "all": "Todo",

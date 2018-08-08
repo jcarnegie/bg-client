@@ -111,6 +111,30 @@
     }
   },
   "pages": {
+    "bugbounty": {
+      "title": "漏洞悬赏",
+      "hey-bitizens": "Bitizen，您好！",
+      "info": "您是否是一位充满好奇心、想要详细了解智能合约的开发人员? 还是说，您是一名对智能合约有着丰富经验、业务纯熟的工程师？ 无论您是哪种身份，我们都邀请您参加我们的漏洞悬赏计划，帮助我们打造出坚如磐石的产品，让我们的合约变得无懈可击。",
+      "conditions-header": "条件：",
+      "conditions-1": "本计划仅涵盖我们的任何 <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/marketplace'>Marketplace</a> 和 <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/bitizens'>Bitizen</a> 智能合约中存在的漏洞。",
+      "conditions-2": "目前，这些合约是使用 Solidity 为以太坊 (Ethereum) 区块链编写的，因此本计划也仅针对该生态体系。",
+      "conditions-3": "无论是谁首先报告了相应的漏洞，都能得到奖励（参见下面的提交流程）。我们将使用 Github 问题单日期作为证据。",
+      "rewards-header": "奖励和漏洞类别：",
+      "rewards-info-1": "严重度 0 - 用户的资金或物品面临着被其他用户擅自访问的风险。",
+      "rewards-reward-1": "<strong>奖励：6 ETH + 600,000 PLAT</strong>",
+      "rewards-info-2": "严重度 1 - 用户状态（装备的物品、下达的订单等）面临着被非授权用户篡改的风险。",
+      "rewards-reward-2": "<strong>Reward: 6 ETH + 600,000 PLAT</strong>",
+      "rewards-info-3": "严重度 2 - BitGuild 资金/物品/状态面临着被非授权用户篡改的风险。",
+      "rewards-reward-3": "<strong>奖励：3 ETH + 300,000 PLAT</strong>",
+      "rewards-info-4": "严重度 3 - 产品逻辑中存在着任何会极大改变产品行为的重大漏洞。",
+      "rewards-reward-4": "<strong>奖励：50,000 PLAT</strong>",
+      "report-header": "如要提交报告，请按以下步骤操作：",
+      "report-1": "在相关的存储库中创建一个 Github 问题单（参见上面的链接）。",
+      "report-2": "填写这一 <strong><a href='https://docs.google.com/forms/d/1oCHiiXUB5zxMCq_F31p2Na0BtImp0glnBfAC3hW5kfo/edit'>Google 表单F</a></strong>.",
+      "processing": "我们将在收到您的提交内容后的 <strong>72 小时</strong>内予以确认，我们还将验证该报告，并在 <strong>10 日</strong>内向您告知我们的结论。",
+      "looking-forward": "我们期待收到您的消息！",
+      "team": "BitGuild 团队"
+    },
     "inventory": {
       "title": "我的物品",
       "all": "全部",

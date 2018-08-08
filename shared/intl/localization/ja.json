@@ -107,6 +107,30 @@
     }
   },
   "pages": {
+    "bugbounty": {
+      "title": "バグバウンティ",
+      "hey-bitizens": "Bitizenの皆さん、こんにちは！",
+      "info": "あなたは、スマートコントラクトについてもっと知りたいいう関心を持ったデベロッパーですか？ それともスマートコントラクト関係で熟練の経験を積んでいるエンジニアでしょうか？ いずれにせよ、私たちのバグバウンティ・プログラムへ皆さんをご招待します。弊社製品に万全の保護を施し、コントラクトが非の打ち所のないものとなるように助けていただけないでしょうか。",
+      "conditions-header": "条件:",
+      "conditions-1": "このプログラムは、<a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/marketplace'>マーケットプレイス</a> および<a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/bitizens'>Bitizen</a>関係の弊社スマートコントラクトのいずれかに含まれるバグのみを対象としています。",
+      "conditions-2": "現時点では、これらのコントラクトはEthereumブロックチェーン用のSolidityで書かれているため、プログラムはこのエコシステムのみをターゲットにしています。",
+      "conditions-3": "最初にバグを報告した人が報酬を得ます（以下の提出プロセスをご覧ください）。Githubの「issue」日が証拠として利用されます。",
+      "rewards-header": "報酬とバグのカテゴリー:",
+      "rewards-info-1": "深刻度 0 - ユーザーの資金またはアイテムが、別のユーザーによる不正アクセスのリスクにさらされている。",
+      "rewards-reward-1": "<strong>報酬: 10 ETH + 800,000 PLAT</strong>",
+      "rewards-info-2": "深刻度 1 - ユーザーのステート（装備アイテム、出された注文など）が無許可のユーザーによって変更されるというリスクにさらされている。",
+      "rewards-reward-2": "<strong>報酬: 6 ETH + 600,000 PLAT</strong>",
+      "rewards-info-3": "深刻度 2 - BitGuildの資金/アイテム/ステートが無許可のユーザーによって変更されるというリスクにさらされている。",
+      "rewards-reward-3": "<strong>報酬: 3 ETH + 300,000 PLAT</strong>",
+      "rewards-info-4": "深刻度 3 - 該当製品に含まれ、この製品の動作を著しく変更する重大なバグ。",
+      "rewards-reward-4": "<strong>報酬: 50,000 PLAT</strong>",
+      "report-header": "いずれかの方法で報告を提出できます:",
+      "report-1": "1. 関連するrepoでGithubのissueを作成してください（上記リンク参照）。",
+      "report-2": "この <strong><a href='https://docs.google.com/forms/d/1oCHiiXUB5zxMCq_F31p2Na0BtImp0glnBfAC3hW5kfo/edit'>Googleフォーム</a></strong>に記入してください。",
+      "processing": "<strong>72時間</strong> 以内に皆さんによる提出の受領を通知し、<strong>10日</strong>以内に報告の検証に努め、弊社の結論を皆さんにお伝えします。",
+      "looking-forward": "皆さんからのお知らせを楽しみにしています！",
+      "team": "BitGuild チーム"
+    },
     "inventory": {
       "title": "インベントリ",
       "all": "すべて",

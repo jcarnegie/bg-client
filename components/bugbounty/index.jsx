@@ -63,11 +63,7 @@ export default class Bugbounty extends Component {
           font-size: 18px;
         }
         .bug-bounty .rewards li:nth-of-type(even) {
-          font-weight: 600;
           list-style: none;
-        }
-        .bug-bounty .rewards li:nth-of-type(even) span {
-          font-weight: 600;
         }
         .bug-bounty a {
           color: black;
@@ -92,13 +88,13 @@ export default class Bugbounty extends Component {
         <ul className="rewards">
           <lh><FormattedMessage id="pages.bugbounty.rewards-header" /></lh>
           <li><FormattedMessage id="pages.bugbounty.rewards-info-1" /></li>
-          <li><FormattedMessage id="pages.bugbounty.rewards-reward-1" /></li>
+          <li><FormattedHTMLMessage id="pages.bugbounty.rewards-reward-1" /></li>
           <li><FormattedMessage id="pages.bugbounty.rewards-info-2" /></li>
-          <li><FormattedMessage id="pages.bugbounty.rewards-reward-2" /></li>
+          <li><FormattedHTMLMessage id="pages.bugbounty.rewards-reward-2" /></li>
           <li><FormattedMessage id="pages.bugbounty.rewards-info-3" /></li>
-          <li><FormattedMessage id="pages.bugbounty.rewards-reward-3" /></li>
+          <li><FormattedHTMLMessage id="pages.bugbounty.rewards-reward-3" /></li>
           <li><FormattedMessage id="pages.bugbounty.rewards-info-4" /></li>
-          <li><FormattedMessage id="pages.bugbounty.rewards-reward-4" /></li>
+          <li><FormattedHTMLMessage id="pages.bugbounty.rewards-reward-4" /></li>
         </ul>
 
         <ol>
