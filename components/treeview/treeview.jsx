@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import MdChevronRight from 'react-icons/lib/md/chevron-right';
+import MdAdd from 'react-icons/lib/md/add';
+import MdRemove from 'react-icons/lib/md/remove'
 
 import style from '@/shared/constants/style';
 
@@ -80,12 +81,11 @@ class TreeView extends React.PureComponent {
           .tree-view_item-children-collapsed {
             height: 0;
           }
-
           .tree-view_item {
             position: relative;
             transition: ${style.transition.default};
           }
-          :global(.tree-view_item > .chevron) {
+          :global(.tree-view_item > .plus) {
             position: absolute;
             right: 10px;
             top: 50%;
@@ -94,7 +94,6 @@ class TreeView extends React.PureComponent {
             transition: ${style.transition.default};
           }
           :global(.tree-view .transform-down) {
-            transform: translateY(-50%) rotate(90deg);
             transform-origin: center;
             transition: ${style.transition.default};
           }
@@ -109,14 +108,23 @@ class TreeView extends React.PureComponent {
         >
           {image}
           {nodeLabel}
-          <MdChevronRight
-            color="black"
-            height={chevronSize}
-            width={chevronSize}
-            className={cx({
-              'transform-down': !collapsed,
-            }, 'chevron')}
-          />
+          {this.state.collapsed
+            ? <MdAdd
+              color="black"
+              height={chevronSize}
+              width={chevronSize}
+              className={cx({
+                'transform-down': !collapsed,
+              }, 'plus')}
+            />
+            : <MdRemove
+              color="black"
+              height={chevronSize}
+              width={chevronSize}
+              className={cx({
+                'transform-down': !collapsed,
+              }, 'plus')}
+            />}
         </div>
         <div
           className={cx({

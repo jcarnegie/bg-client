@@ -160,7 +160,7 @@ class Market extends Component {
       }, 'no-select')}>
         <style jsx>{`
           .filters {
-            min-width: 250px;
+            min-width: 200px;
             border-right: solid 2px #E1E1E1;
             margin-right: -1px;
             min-height: calc(100vh - 62px);
@@ -348,6 +348,10 @@ class Market extends Component {
             background: transparent !important; /* Boostrap override */
             background-color: transparent !important; /* Boostrap override */
             box-shadow: none !important; /* Boostrap override */
+          }
+          .inventory-items {
+            display: flex;
+            flex-wrap: wrap;
           }
         `}</style>
         <div className={this.state.mobile ? 'current-mobile-game-filter' : 'current-game-filter'}>

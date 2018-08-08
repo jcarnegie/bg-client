@@ -3,7 +3,7 @@ import { Badge, Thumbnail } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { compose, filter, isNil, not, path } from 'ramda';
-
+import { connect } from 'react-redux';
 
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
 import style from '@/shared/constants/style';
@@ -13,6 +13,11 @@ const notNil = compose(not, isNil);
 
 
 @injectIntl
+@connect(
+  state => ({
+    layout: state.layout,
+  })
+)
 class Item extends Component {
   static propTypes = {
     item: PropTypes.shape({
@@ -97,7 +102,7 @@ class Item extends Component {
   priceBanner() {
     let { salePrice, saleState } = this.props.item;
     const { user } = this.props;
-    const userId = path(['data', 'id'], user);
+    const userId = path(['viewUserByWallet', 'id'], user);
     const lastOwner = path(['lastOwner', 'id'], this.props.item);
 
     let listedFor = (
@@ -117,14 +122,12 @@ class Item extends Component {
             padding: 1px 16px;
             font-size: 11px;
             letter-spacing: 1px;
-            display: inline-block;
           }
           :global(.price-banner-null) {
             width: 100%;
             height: 16px;
             background: #F4F6F9;
             padding: 1px 16px;
-            display: inline-block;
           }
         `}</style>
         {((lastOwner && userId) && (lastOwner === userId) && saleState === 'listed') ? listedFor : <></>}
@@ -196,7 +199,13 @@ class Item extends Component {
       <div className={`item ${className}`}>
         <style jsx global>{`
           .item {
-            width: 170px;
+            width: ${this.props.layout.innerWidth >= 1600
+            ? '170px'
+            : this.props.layout.innerWidth >= 1400
+            ? '160px'
+            : this.props.layout.innerWidth >= 1200
+            ? '150px'
+            : '140px'};
             display: inline-block;
             font-size: 0.9em;
           }
@@ -235,7 +244,7 @@ class Item extends Component {
           }
           .item .thumbnail .caption dl {
             display: grid;
-            grid-template-columns: minmax(0%, 30%);
+            grid-template-columns: minmax(0%, 35%);
             column-gap: 5px;
             background-color: #F4F6F9;
             padding: 0px 15px 0px 15px;
