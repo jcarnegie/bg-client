@@ -5,7 +5,9 @@ import gql from 'graphql-tag';
 import * as log from 'loglevel';
 
 import {
+  networkIsSupported,
   getOracleContract,
+  getBitGuildTokenContract,
 } from '@/shared/utils/network';
 
 
@@ -29,86 +31,34 @@ const typeDefs = `
   }
 
   type Gas {
-    average: Int,
-    fast: Int,
-    fastest: Int,
+    average: Int
+    fast: Int
+    fastest: Int
+  }
+
+  type Gift {
+    tx: String
   }
 
   type Mutation {
-    updateNetwork(id: Int!, available: Boolean!, name: String!, supported: Boolean!) Network
+    updateNetworkAndWallet(id: Int!, available: Boolean!, name: String!, supported: Boolean!, wallet: String) Network
     updateGas(average: Int!, fast: Int!, fastest: Int!) Gas
+    updateLatestBlock(tx: String!) String
   }
 
   type Query {
     wallet: String
     rate: Number
+    gifts: [Gift]
+    latestBlock: String
     network: [Network]
     gas: Gas
+    balanceETH: Number
+    balancePLAT: Number
   }
 `;
 
-export const client = new ApolloClient({
-  uri,
-  clientState: {
-    defaults: {
-      wallet: null,
-      network: {
-        id: null,
-        name: null,
-        supported: null,
-        __typename: 'Network',
-      },
-      gas: {
-        average: 8,
-        fast: 16,
-        fastest: 30,
-        __typename: 'Gas',
-      },
-    },
-    resolvers: {
-      Mutation: {
-        updateNetwork: async(_, network, { cache, getCacheKey }) => {
-          log.info(`Setting network to ${network.name} with id ${network.id}.`);
-          await cache.writeData({
-            data: {
-              network: {
-                ...network,
-                __typename: 'Network',
-              },
-            },
-          });
-
-          const gasStationResponse = await fetch(ETH_GAS_STATION_ENDPOINT).then(res => res.json());
-          log.info(`Fetched gas from ${ETH_GAS_STATION_ENDPOINT}`);
-          await cache.writeData({
-            data: {
-              gas: {
-                average: toGwei(gasStationResponse.average),
-                fast: toGwei(gasStationResponse.fast),
-                fastest: toGwei(gasStationResponse.fastest),
-                __typename: 'Gas',
-              },
-            },
-          });
-          log.info(`Fetched rate from oracle contract on ${network.name} network.`);
-          const ETHPrice = await bluebird.promisify(getOracleContract(network).ETHPrice)();
-          const rate = window.web3.fromWei(ETHPrice, 'ether').toNumber();
-          await cache.writeData({ data: { rate } });
-          log.info(`Set rate to ${rate.toString()}.`);
-          return null;
-        },
-      },
-    },
-    typeDefs,
-  },
-});
-
 export const mutations = {
-  updateNetwork: gql`
-    mutation updateNetwork($id: Int!, $available: Boolean!, $name: String!, $supported: Boolean!) {
-      updateNetwork(id: $id, available: $available, name: $name, supported: $supported) @client
-    }
-  `,
   listItemForSale: gql`
     mutation listItemForSale ($userId: Int!, $itemId: Int!, $saleListingId: Int!, $saleTxnHash: String!, $salePrice: Int!) {
       listItemForSale(userId: $userId, itemId: $itemId, saleListingId: $saleListingId, saleTxnHash: $saleTxnHash, salePrice: $salePrice) {
@@ -173,10 +123,14 @@ export const queries = {
 
 export const localQueries = {
   root: gql`{
+    wallet @client
+    rate @client
+    balanceETH @client
+    balancePLAT @client
+    latestBlock @client
     network @client {
       id name supported
     }
-    wallet @client
     gas @client {
       average fast fastest
     }
@@ -191,7 +145,113 @@ export const localQueries = {
       id name supported
     }
   }`,
+  wallet: gql`{
+    wallet @client
+  }`,
+  balances: gql`{
+    balanceETH @client
+    balancePLAT @client
+  }`,
+  gifts: gql`{
+    gifts @client
+  }`,
 };
+
+export const localMutations = {
+  updateNetworkAndWallet: gql`
+    mutation updateNetworkAndWallet($id: Int!, $available: Boolean!, $name: String!, $supported: Boolean!, $wallet: String) {
+      updateNetworkAndWallet(id: $id, available: $available, name: $name, supported: $supported, wallet: $wallet) @client
+    }
+  `,
+  updateLatestBlock: gql`
+    mutation updateLatestBlock($tx: String!) {
+      updateLatestBlock(tx: $tx) @client
+    }
+  `,
+};
+
+export const client = new ApolloClient({
+  uri,
+  clientState: {
+    defaults: {
+      wallet: null,
+      rate: null,
+      gifts: [],
+      balanceETH: 0,
+      balancePLAT: 0,
+      latestBlock: '',
+      network: {
+        id: null,
+        name: null,
+        supported: null,
+        __typename: 'Network',
+      },
+      gas: {
+        average: 8,
+        fast: 16,
+        fastest: 30,
+        __typename: 'Gas',
+      },
+    },
+    resolvers: {
+      Mutation: {
+        updateLatestBlock: async(_, { tx }, { cache, getCacheKey }) => {
+          await cache.writeData({ data: { latestBlock: tx } });
+          const { gifts } = await cache.readQuery({ query: localQueries.gifts });
+          const result = await Promise.all(gifts.map(gift =>
+            // will return null while transaction is in process
+            bluebird.promisify(window.web3.eth.getTransactionReceipt)(gift.tx)
+          ));
+          const hashes = result.filter(tx => tx).map(tx => tx.transactionHash);
+          cache.writeData({
+            data: {
+              gifts: gifts.filter(gift => !hashes.includes(gift.tx)),
+            },
+          });
+          return null;
+        },
+        updateNetworkAndWallet: async(_, { wallet, ...network }, { cache, getCacheKey }) => {
+          log.info(`Setting network to ${network.name} with id ${network.id}. Wallet: ${wallet}`);
+          let data = {
+            network: {
+              ...network,
+              __typename: 'Network',
+            },
+          };
+          if (wallet) data.wallet = wallet;
+          await cache.writeData({ data });
+
+          const gasStationResponse = await fetch(ETH_GAS_STATION_ENDPOINT).then(res => res.json());
+          log.info(`Fetched gas from ${ETH_GAS_STATION_ENDPOINT}`);
+          await cache.writeData({
+            data: {
+              gas: {
+                average: toGwei(gasStationResponse.average),
+                fast: toGwei(gasStationResponse.fast),
+                fastest: toGwei(gasStationResponse.fastest),
+                __typename: 'Gas',
+              },
+            },
+          });
+          log.info(`Fetched rate from oracle contract on ${name} network.`);
+          const ETHPrice = await bluebird.promisify(getOracleContract(network).ETHPrice)();
+          const rate = window.web3.fromWei(ETHPrice, 'ether').toNumber();
+          await cache.writeData({ data: { rate } });
+          log.info(`Set rate to ${rate.toString()}.`);
+          if (networkIsSupported(network) && wallet) {
+            const balanceResponseETH = await bluebird.promisify(window.web3.eth.getBalance)(wallet);
+            const balanceETH = window.web3.fromWei(balanceResponseETH, 'ether').toNumber();
+            const balanceResponsePLAT = await bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(wallet);
+            const balancePLAT = window.web3.fromWei(balanceResponsePLAT, 'ether').toNumber();
+            await cache.writeData({ data: { balanceETH, balancePLAT } });
+          }
+          return null;
+        },
+      },
+    },
+    typeDefs,
+  },
+});
 
 export const viewUserByWalletQuery = graphql(queries.viewUserByWallet, {
   name: 'user',

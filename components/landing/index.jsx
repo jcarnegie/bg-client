@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Grid, Col, Row, Carousel, Image } from 'react-bootstrap';
+import { Grid, Col, Row, Carousel } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import Link from 'next/link';
 import Router from 'next/router';
+
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
+import {
+  queries,
+} from '@/shared/utils/apollo';
+
+import {
+  GAMES,
+} from '@/shared/constants/games';
 
 import FeatureFlag from '@/components/featureflag';
 import BGButton from '@/components/bgbutton';
@@ -12,7 +24,6 @@ import BGIcon from '@/components/bgicon';
 import BGGrid from '@/components/bggrid';
 import BGGameCard from '@/components/bggamecard';
 
-import { GAMES_REQUEST } from '@/shared/constants/actions';
 import style from '@/shared/constants/style';
 
 
@@ -20,38 +31,23 @@ import style from '@/shared/constants/style';
 @connect(
   state => ({
     analytics: state.analytics,
-    games: state.games,
     layout: state.layout,
   })
 )
 class GameList extends Component {
   static propTypes = {
-    games: PropTypes.shape({
-      data: PropTypes.array,
-      active: PropTypes.array,
-      comingSoon: PropTypes.array,
+    data: PropTypes.shape({
+      listGames: PropTypes.array,
+      loading: PropTypes.bool,
     }),
-    dispatch: PropTypes.func,
     analytics: PropTypes.object,
     layout: PropTypes.object,
   }
 
   static defaultProps = {
-    games: {
-      data: [],
-      active: [],
-      comingSoon: [],
+    data: {
+      listGames: [],
     },
-    dispatch: () => {},
-  }
-
-  componentDidMount() {
-    const { games } = this.props;
-    if (!games.data || !games.data.length) {
-      this.props.dispatch({
-        type: GAMES_REQUEST,
-      });
-    }
   }
 
   navigateToGame(slug) {
@@ -70,8 +66,8 @@ class GameList extends Component {
   }
 
   banner() {
-    const { games } = this.props;
-    if (!games.data) return null;
+    const { data } = this.props;
+    if (data.loading) return null;
     return (
       <Row>
         <style jsx>{`
@@ -113,9 +109,8 @@ class GameList extends Component {
         `}</style>
         <Col>
           <Carousel interval={null} className="hero-carousel" defaultActiveIndex={0}>
-            {games.active.map((game, idx) => {
+            {GAMES.ACTIVE.map((game, idx) => {
               // TODO - database flags for game states (active|presale|development)
-              // TODO - bitizens is coming soon, will need to update when launches
               return (
                 <Carousel.Item key={idx} onClick={() => ::this.navigateToGame(game.slug)}>
                   <div className="carousel-image" style={{ backgroundImage: `url(/static/images/games/${game.slug}/banner.jpg)` }} />
@@ -188,7 +183,7 @@ class GameList extends Component {
           gap: (mobile ? '60px' : '100px'),
         }}
       >
-        {this.props.games.active.map((game, k) => <BGGameCard key={k} game={game} onClick={() => ::this.navigateToGame(game.slug)} playButton />)}
+        {GAMES.ACTIVE.map((game, k) => <BGGameCard key={k} game={game} onClick={() => ::this.navigateToGame(game.slug)} playButton />)}
       </BGGrid>
     );
   }
@@ -211,7 +206,7 @@ class GameList extends Component {
             gap: (mobile ? '60px' : '100px'),
           }}
         >
-          {this.props.games.comingSoon.map((game, k) => <BGGameCard key={k} game={game} />)}
+          {GAMES.COMING_SOON.map((game, k) => <BGGameCard key={k} game={game} />)}
         </BGGrid>
       </span>
     );
@@ -296,4 +291,6 @@ class GameList extends Component {
   }
 }
 
-export default GameList;
+export default compose(
+  graphql(queries.listGames)
+)(GameList);

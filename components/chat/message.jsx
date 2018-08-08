@@ -146,7 +146,7 @@ export default class Message extends Component {
         {isMyMessage ? (
           <>
             <div className="message-box-container">
-              <div className={cx({ 'bg-admin': userIsAdmin },'message-box my')}>
+              <div className={cx({ 'bg-admin': userIsAdmin }, 'message-box my')}>
                 <div className="body contents">{this.createMessage()}</div>
               </div>
             </div>
@@ -166,7 +166,7 @@ export default class Message extends Component {
               <div className="header">
                 <div className="nickname">{messageUserNickname}</div>
               </div>
-              <div className={cx({ 'bg-admin': userIsAdmin },'message-box')}>
+              <div className={cx({ 'bg-admin': userIsAdmin }, 'message-box')}>
                 <div className="body contents">{this.createMessage()}</div>
               </div>
             </div>

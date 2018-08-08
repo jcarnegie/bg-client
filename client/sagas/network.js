@@ -3,22 +3,11 @@ import * as log from 'loglevel';
 import { eventChannel } from 'redux-saga';
 import { call, take, put, select, takeLatest } from 'redux-saga/effects';
 
-import {
-  networkIsSupported,
-  getOracleContract,
-  getBitGuildTokenContract,
-} from '@/shared/utils/network';
 
 import {
   NETWORK_GET,
   NETWORK_GET_BALANCE_ETH,
   NETWORK_GET_BALANCE_PLAT,
-  BALANCE_ETH_CHANGED,
-  BALANCE_ETH_ERROR,
-  BALANCE_ETH_LOADING,
-  BALANCE_PLAT_CHANGED,
-  BALANCE_PLAT_ERROR,
-  BALANCE_PLAT_LOADING,
   ACCOUNT_LOGGED_IN,
   ACCOUNT_LOGGED_OUT,
   NETWORK_BEGIN_LISTENING,
@@ -27,62 +16,7 @@ import {
   NETWORK_AVAILABLE,
   NETWORK_LOADING,
   NETWORK_NEW_BLOCK,
-  RATE_CHANGED,
-  RATE_ERROR,
-  RATE_LOADING,
-  RATE_REQUEST,
 } from '@/shared/constants/actions';
-
-
-function * getRate() {
-  try {
-    const network = yield select(state => state.network);
-    if (networkIsSupported(network)) {
-      yield put({ type: RATE_LOADING });
-      const ETHPrice = yield bluebird.promisify(getOracleContract(network).ETHPrice)();
-      yield put({
-        type: RATE_CHANGED,
-        payload: window.web3.fromWei(ETHPrice, 'ether').toNumber(),
-      });
-    }
-  } catch (error) {
-    yield put({ type: RATE_ERROR });
-  }
-}
-
-function * getBalanceETH() {
-  try {
-    const account = yield select(state => state.account);
-    const network = yield select(state => state.network);
-    yield put({ type: BALANCE_ETH_LOADING });
-    if (networkIsSupported(network)) {
-      const balance = yield bluebird.promisify(window.web3.eth.getBalance)(account.wallet);
-      yield put({
-        type: BALANCE_ETH_CHANGED,
-        payload: window.web3.fromWei(balance, 'ether').toNumber(),
-      });
-    }
-  } catch (error) {
-    yield put({ type: BALANCE_ETH_ERROR });
-  }
-}
-
-function * getBalancePLAT() {
-  try {
-    const account = yield select(state => state.account);
-    const network = yield select(state => state.network);
-    yield put({ type: BALANCE_PLAT_LOADING });
-    if (networkIsSupported(network)) {
-      const balance = yield bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(account.wallet);
-      yield put({
-        type: BALANCE_PLAT_CHANGED,
-        payload: window.web3.fromWei(balance, 'ether').toNumber(),
-      });
-    }
-  } catch (error) {
-    yield put({ type: BALANCE_PLAT_ERROR });
-  }
-}
 
 
 function * checkNetworkAvailability() {
@@ -156,12 +90,8 @@ function * networkBeginListening() {
 export default function * networkSaga() {
   yield takeLatest(NETWORK_GET, getNetwork);
   yield takeLatest(NETWORK_GET_AVAILABILITY, checkNetworkAvailability);
-  yield takeLatest(NETWORK_GET_BALANCE_ETH, getBalanceETH);
-  yield takeLatest(NETWORK_GET_BALANCE_PLAT, getBalancePLAT);
-  yield takeLatest(NETWORK_CHANGED, getRate);
   yield takeLatest(NETWORK_BEGIN_LISTENING, networkBeginListening);
   /* NOTE: Network is bootstrapped when account state resolves */
   yield takeLatest(ACCOUNT_LOGGED_IN, getNetwork);
   yield takeLatest(ACCOUNT_LOGGED_OUT, getNetwork);
-  yield takeLatest(RATE_REQUEST, getRate);
 }

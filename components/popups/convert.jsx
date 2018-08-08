@@ -34,14 +34,13 @@ function precisionRound(number, precision) {
 @connect(
   state => ({
     analytics: state.analytics,
-    rate: state.rate,
   })
 )
 class ConvertPopup extends Component {
   static propTypes = {
     analytics: PropTypes.object,
     show: PropTypes.bool,
-    rate: PropTypes.object,
+    data: PropTypes.object,
     dispatch: PropTypes.func,
     onHide: PropTypes.func,
     setState: PropTypes.func,
@@ -52,46 +51,52 @@ class ConvertPopup extends Component {
   state = {};
 
   componentDidMount() {
-    const { setState, rate } = this.props;
+    const { setState, data } = this.props;
     setState({
       eth: 1,
-      plat: rate.data,
+      plat: data.rate,
     });
   }
 
   static getDerivedStateFromProps(nextProps) {
-    if (!nextProps.rate.isLoading && nextProps.rate.success && nextProps.rate.data * nextProps.formData.eth !== nextProps.formData.plat) {
-      nextProps.setState({
-        plat: nextProps.rate.data * nextProps.formData.eth,
-      });
+    const { data, formData } = nextProps;
+    const { loading, rate } = data;
+    if (loading) return null;
+
+    const plat = rate * formData.eth;
+
+    if (plat !== formData.plat) {
+      nextProps.setState({ plat });
     }
 
     return null;
   }
 
   onChangeETH(e) {
-    const { setState, rate } = this.props;
+    const { setState, data } = this.props;
+    const { rate } = data;
     setState({
       eth: e.target.value,
-      plat: rate.data * e.target.value,
+      plat: rate * e.target.value,
     });
   }
 
   onChangePLAT(e) {
-    const { setState, rate } = this.props;
+    const { setState, data } = this.props;
+    const { rate } = data;
     setState({
-      eth: e.target.value / rate.data,
+      eth: e.target.value / rate,
       plat: e.target.value,
     });
   }
 
   onSubmit(e) {
     e.preventDefault();
-    const { dispatch, formData } = this.props;
-    const { gas, network } = this.props.data;
+    const { data, dispatch, formData } = this.props;
+    const { wallet, gas, network } = data;
     getTopupContract(network).buyTokens({
         value: window.web3.toWei(precisionRound(formData.eth, 6), 'ether'),
-        from: user.viewUserByWallet.wallet,
+        from: wallet,
         gas: window.web3.toHex(15e4),
         gasPrice: window.web3.toHex(gas.average),
       },
@@ -118,9 +123,10 @@ class ConvertPopup extends Component {
   }
 
   render() {
-    const { rate, show, onHide, formData } = this.props;
+    const { data, show, onHide, formData } = this.props;
+    const { rate } = data;
 
-    if (!rate.data) {
+    if (!rate) {
       return null;
     }
 
@@ -177,7 +183,7 @@ class ConvertPopup extends Component {
           <Form noValidate onSubmit={::this.onSubmit}>
           <Grid fluid>
               <Row>
-                <h2 className="convert-title">1 ETH = {rate.data} PLAT</h2>
+                <h2 className="convert-title">1 ETH = {rate} PLAT</h2>
               </Row>
               <Row style={{ display: 'flex' }}>
                 <Col sm={5} className="no-padding">
@@ -198,8 +204,8 @@ class ConvertPopup extends Component {
                 <Col sm={5} className="no-padding">
                   <InputGroup
                     type="number"
-                    min={rate.data * step}
-                    step={rate.data * step}
+                    min={rate * step}
+                    step={rate * step}
                     name="plat"
                     value={precisionRound(formData.plat, 6)}
                     onChange={::this.onChangePLAT}

@@ -5,16 +5,13 @@ import chatSaga from './chat';
 import networkSaga from './network';
 import sendBirdSaga from './sendbird';
 import userSaga from './user';
-import gameSaga from './game';
-import inventorySaga from './inventory';
+
 
 export default function * rootSaga() {
   yield all([
     accountSaga(),
     bootstrapSaga(),
     chatSaga(),
-    gameSaga(),
-    inventorySaga(),
     networkSaga(),
     sendBirdSaga(),
     userSaga(),

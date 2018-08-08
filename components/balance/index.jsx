@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import * as log from 'loglevel';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { isEmpty } from 'ramda';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 import MdAddCircle from 'react-icons/lib/md/add-circle';
 import {
   compose,
+  graphql,
 } from 'react-apollo';
 
 import {
   viewUserByWalletQuery,
+  localQueries,
 } from '@/shared/utils/apollo';
 
 import Convert from '@/components/popups/convert';
@@ -19,42 +22,38 @@ import { USER_SHOW_REGISTER_WORKFLOW, SHOW_CONVERT_MODAL } from '@/shared/consta
 
 @connect(
   state => ({
-    rate: state.rate,
     layout: state.layout,
-    balanceETH: state.balanceETH,
-    balancePLAT: state.balancePLAT,
   })
 )
 class Balance extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     layout: PropTypes.object,
-    rate: PropTypes.object,
+    data: PropTypes.object,
     user: PropTypes.object,
-    balanceETH: PropTypes.object,
-    balancePLAT: PropTypes.object,
   };
+  static defaultProps = {
+    data: {},
+  }
 
   state = {
     show: false,
-    balanceETH: this.props.balanceETH,
-    balancePLAT: this.props.balancePLAT,
+    balanceETH: this.props.data.balanceETH,
+    balancePLAT: this.props.data.balancePLAT,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.balanceETH.data !== prevState.balanceETH.data) {
-      return {
-        balanceETH: nextProps.balanceETH,
-      };
+    const { balanceETH, balancePLAT } = nextProps;
+    let props = {};
+    if (balanceETH !== prevState.balanceETH) {
+      props.balanceETH = balanceETH;
     }
 
-    if (nextProps.balancePLAT.data !== prevState.balancePLAT.data) {
-      return {
-        balancePLAT: nextProps.balancePLAT,
-      };
+    if (balancePLAT !== prevState.balancePLAT) {
+      props.balancePLAT = balancePLAT;
     }
 
-    return null;
+    return isEmpty(props) ? props : null;
   }
 
   onClick(e) {
@@ -63,7 +62,7 @@ class Balance extends Component {
       return this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
     }
 
-    if (!this.props.rate.data) {
+    if (!this.props.data.rate) {
       log.info('No rate info is avaliable, so convert workflow may not work properly.');
     }
 
@@ -104,7 +103,7 @@ class Balance extends Component {
             cursor:  not-allowed;
           }
         `}</style>
-        <a href="#" className="plus" onClick={::this.onClick} disabled={!this.props.rate.data}>
+        <a href="#" className="plus" onClick={::this.onClick} disabled={!this.props.data.rate}>
           <MdAddCircle height="30" width="30" />
         </a>
       </span>
@@ -112,7 +111,8 @@ class Balance extends Component {
   }
 
   balances() {
-    const { balanceETH, balancePLAT } = this.state;
+    const { data } = this.props;
+    const { loading, balanceETH, balancePLAT } = data;
     return (
       <span className="balance-text">
         <style jsx>{`
@@ -136,10 +136,10 @@ class Balance extends Component {
           }
         `}</style>
         <div>
-          {!Number.isFinite(balanceETH.data) || this.props.balanceETH.isLoading ? this.textLoading() : <span className="balance-value">{balanceETH.data.toFixed(2)} ETH</span>}
+          {!Number.isFinite(balanceETH) || loading ? this.textLoading() : <span className="balance-value">{balanceETH.toFixed(2)} ETH</span>}
         </div>
         <div>
-          {!Number.isFinite(balancePLAT.data) || this.props.balancePLAT.isLoading ? this.textLoading() : <span className="balance-value">{balancePLAT.data.toFixed(0)} PLAT</span>}
+          {!Number.isFinite(balancePLAT) || loading ? this.textLoading() : <span className="balance-value">{balancePLAT.toFixed(0)} PLAT</span>}
         </div>
       </span>
     );
@@ -168,4 +168,5 @@ class Balance extends Component {
 
 export default compose(
   viewUserByWalletQuery,
+  graphql(localQueries.root),
 )(Balance);

@@ -3,7 +3,6 @@ import React from 'react';
 import { Provider } from 'react-intl-redux';
 import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
-import gql from 'graphql-tag';
 import * as log from 'loglevel';
 
 import {
@@ -15,7 +14,7 @@ import {
   client,
   queries,
   localQueries,
-  mutations,
+  localMutations,
 } from '@/shared/utils/apollo';
 
 import {
@@ -68,6 +67,20 @@ class BGApp extends App {
       state.analytics.ga.pageview(window.location.pathname);
     }
 
+    /* New block listener */
+    window.web3.eth.filter('latest').watch(async(error, latestBlock) => {
+      if (error) {
+        log.error(error);
+      } else {
+        log.info(`New block, tx: ${latestBlock}`);
+        await client.mutate({
+          mutation: localMutations.updateLatestBlock,
+          variables: { tx: latestBlock },
+        });
+      }
+    });
+
+    /* Network and wallet polling */
     this.setState({
       interval: window.setInterval(async() => {
         if (!web3IsInstalled()) return;
@@ -77,36 +90,26 @@ class BGApp extends App {
 
         const currentNetworkId = await asyncGetNetworkId();
         const currentWallet = getWeb3Wallet();
+        const currentNetwork = {
+          id: currentNetworkId,
+          name: networkIdToName(currentNetworkId),
+          supported: networkIdIsSupported(currentNetworkId),
+          available: true,
+        };
 
-        /* Network has changed */
-        if (!network.id || (network.id !== currentNetworkId)) {
-          const currentNetwork = {
-            id: currentNetworkId,
-            name: networkIdToName(currentNetworkId),
-            supported: networkIdIsSupported(currentNetworkId),
-            available: true,
-          };
+        const networkHasChanged = !network.id || (parseInt(network.id, 10) !== parseInt(currentNetworkId, 10));
+        const walletHasChanged = Boolean((wallet && !currentWallet) || (wallet !== currentWallet && (wallet || currentWallet)));
+        /* Network or wallet has changed */
+        if (networkHasChanged || walletHasChanged) {
           await client.mutate({
-            mutation: mutations.updateNetwork,
+            mutation: localMutations.updateNetworkAndWallet,
             variables: {
               ...currentNetwork,
+              wallet: currentWallet,
             },
           });
           this.setState({
             network: currentNetwork,
-            wallet: currentWallet,
-          });
-        }
-
-        /* Wallet has changed */
-        if (!wallet || wallet !== currentWallet) {
-          await client.writeData({
-            data: {
-              wallet: currentWallet,
-            },
-          });
-
-          this.setState({
             wallet: currentWallet,
           });
         }
