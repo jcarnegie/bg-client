@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { pathOr } from 'ramda';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Grid, Col, Row, Carousel } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -13,10 +14,6 @@ import {
 import {
   queries,
 } from '@/shared/utils/apollo';
-
-import {
-  GAMES,
-} from '@/shared/constants/games';
 
 import FeatureFlag from '@/components/featureflag';
 import BGButton from '@/components/bgbutton';
@@ -50,6 +47,10 @@ class GameList extends Component {
     },
   }
 
+  state = {
+    activeGames: [],
+  }
+
   navigateToGame(slug) {
     this.props.analytics.ga.event({
       category: 'Site Interaction',
@@ -63,6 +64,12 @@ class GameList extends Component {
       },
       `/game/${slug}`
     );
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const listGames = pathOr([], ['data', 'listGames'], props);
+    const activeGames = listGames.filter(game => (process.env.DEPLOYED_ENV === 'production' ? !game.productionEnabled : true));
+    return { activeGames };
   }
 
   banner() {
@@ -109,11 +116,10 @@ class GameList extends Component {
         `}</style>
         <Col>
           <Carousel interval={null} className="hero-carousel" defaultActiveIndex={0}>
-            {GAMES.ACTIVE.map((game, idx) => {
-              // TODO - database flags for game states (active|presale|development)
+            {this.state.activeGames.map((game, idx) => {
               return (
                 <Carousel.Item key={idx} onClick={() => ::this.navigateToGame(game.slug)}>
-                  <div className="carousel-image" style={{ backgroundImage: `url(/static/images/games/${game.slug}/banner.jpg)` }} />
+                  <div className="carousel-image" style={{ backgroundImage: `url(${game.bannerImage})` }} />
                 </Carousel.Item>
               );
             })}
@@ -183,13 +189,15 @@ class GameList extends Component {
           gap: (mobile ? '60px' : '100px'),
         }}
       >
-        {GAMES.ACTIVE.map((game, k) => <BGGameCard key={k} game={game} onClick={() => ::this.navigateToGame(game.slug)} playButton />)}
+        {this.state.activeGames.map((game, k) => <BGGameCard key={k} game={game} onClick={() => ::this.navigateToGame(game.slug)} playButton />)}
       </BGGrid>
     );
   }
 
   comingSoon() {
+    const { data } = this.props;
     const { mobile } = this.props.layout.type;
+    if (data.loading || !data.listGames) return null;
     return (
       <span className="coming-soon">
         <style jsx>{`
@@ -206,7 +214,7 @@ class GameList extends Component {
             gap: (mobile ? '60px' : '100px'),
           }}
         >
-          {GAMES.COMING_SOON.map((game, k) => <BGGameCard key={k} game={game} />)}
+          {data.listGames.filter(game => game.comingSoon).map((game, k) => <BGGameCard key={k} game={game} />)}
         </BGGrid>
       </span>
     );

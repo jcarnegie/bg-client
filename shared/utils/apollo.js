@@ -97,7 +97,12 @@ export const queries = {
       }
     }
   `,
-  listGames: gql`{ listGames { id name slug url stagingUrl api nft itemsForSaleCount } }`,
+  listGames: gql`{
+    listGames {
+      id name slug url stagingUrl api nft itemsForSaleCount productionEnabled comingSoon
+      bannerImage thumbnailImage categoryIcon
+    }
+  }`,
   viewUserByWallet: gql`
     query viewUserByWallet($wallet: String!) {
       viewUserByWallet(wallet: $wallet) {

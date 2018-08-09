@@ -100,7 +100,7 @@ class BGGameCard extends PureComponent {
           }
         `}</style>
         <div className="bg-game-card" onClick={this.props.onClick}>
-          <img className="bg-game-card-img" src={`/static/images/games/${this.props.game.slug}/thumbnail.jpg`} alt="game thumbnail" />
+          <img className="bg-game-card-img" src={this.props.game.thumbnailImage} alt="game thumbnail" />
           {this.props.playButton ? <div className="play-game-button"><MdPlayArrow /><FormattedMessage id="global.play" /></div> : null}
           <h6>{this.props.game.name}</h6>
           <p>{this.props.game.description}</p>
