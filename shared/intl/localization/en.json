@@ -36,6 +36,10 @@
       "community": "Community",
       "presale": "IGO"
     },
+    "newsletter": {
+      "subscribe": "Subscribe to our mailing list",
+      "sub-button": "Subscribe"
+    },
     "footer": {
       "for-players": "For Players",
       "faq": "<a href='/faq'>FAQ</a>",

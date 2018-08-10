@@ -145,7 +145,8 @@ class ItemPopup extends Component {
           <div className="sellBlock">
             <input
               ref={this.priceInput}
-              type="text" value={this.state.sellPrice}
+              type="text"
+              value={this.state.sellPrice}
               placeholder="0 PLAT"
               onChange={::this.handleChange}
               onClick={::this.handleError}

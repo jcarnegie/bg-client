@@ -20,6 +20,7 @@ import BGButton from '@/components/bgbutton';
 import BGIcon from '@/components/bgicon';
 import BGGrid from '@/components/bggrid';
 import BGGameCard from '@/components/bggamecard';
+import Newsletter from '@/components/newsletter';
 
 import style from '@/shared/constants/style';
 
@@ -29,6 +30,7 @@ import style from '@/shared/constants/style';
   state => ({
     analytics: state.analytics,
     layout: state.layout,
+    user: state.user
   })
 )
 class GameList extends Component {
@@ -40,6 +42,14 @@ class GameList extends Component {
     analytics: PropTypes.object,
     layout: PropTypes.object,
   }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      newsletter: 'true',
+      playableGames: [],
+    }
+  }
 
   static defaultProps = {
     data: {
@@ -47,8 +57,18 @@ class GameList extends Component {
     },
   }
 
-  state = {
-    playableGames: [],
+  onHideNewsletter() {
+    this.setState({ newsletter: 'false' });
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const listGames = pathOr([], ['data', 'listGames'], props);
+    const playableGames = listGames.filter(game => game.enabled);
+    if (props.user.data) {
+      return { newsletter: 'false', playableGames };
+    } else {
+      return { newsletter: state.newsletter, playableGames };
+    }
   }
 
   navigateToGame(slug) {
@@ -64,12 +84,6 @@ class GameList extends Component {
       },
       `/game/${slug}`
     );
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    const listGames = pathOr([], ['data', 'listGames'], props);
-    const playableGames = listGames.filter(game => game.enabled);
-    return { playableGames };
   }
 
   banner() {
@@ -223,43 +237,48 @@ class GameList extends Component {
   aboutBitGuild() {
     const { mobile } = this.props.layout.type;
     return (
-      <BGGrid
-        title={<FormattedMessage id="global.about-bitguild"></FormattedMessage>}
-        titleIconSrc="/static/images/icons/about.png"
-        backgroundColor="#B6D0F7"
-      >
-        <style jsx>{`
-          h3 {
-            font-size: ${mobile ? '2.0em' : '2.3em'};
-            font-weight: 400;
-            margin-top: 0;
-          }
-          :global(.about-bitguild p) {
-            max-width: 100%;
-          }
-          :global(.about-bitguild .about-text-left) {
-            padding: ${mobile ? 0 : '0 10px 0 40px'};
-            margin-bottom: ${mobile ? '30px' : 'intiial'}
-          }
-          :global(.about-bitguild .about-text-right) {
-            padding: ${mobile ? 0 : '0 40px 0 10px'};
-          }
-        `}</style>
-        <Row className="about-bitguild">
-          <Col xs={12} sm={6}>
-            <div className="about-text-left">
-              <h3><FormattedMessage id="pages.games.about.tagline"></FormattedMessage></h3>
-            </div>
-          </Col>
-          <Col xs={12} sm={6}>
-            <Col>
-              <div className="about-text-right">
-                <p><FormattedMessage id="pages.games.about.body"></FormattedMessage></p>
+      <div className="about-bitguild">
+        <BGGrid
+          title={<FormattedMessage id="global.about-bitguild"></FormattedMessage>}
+          titleIconSrc="/static/images/icons/about.png"
+          backgroundColor="#B6D0F7"
+        >
+          <style jsx>{`
+            :global(.about-bitguild .bg-grid-wrapper) {
+              background: linear-gradient(to top,#B6D0F7, #E7F1FF) !important;
+            }
+            h3 {
+              font-size: ${mobile ? '2.0em' : '2.3em'};
+              font-weight: 400;
+              margin-top: 0;
+            }
+            :global(.about-bitguild p) {
+              max-width: 100%;
+            }
+            :global(.about-bitguild .about-text-left) {
+              padding: ${mobile ? 0 : '0 10px 0 40px'};
+              margin-bottom: ${mobile ? '30px' : 'intiial'}
+            }
+            :global(.about-bitguild .about-text-right) {
+              padding: ${mobile ? 0 : '0 40px 0 10px'};
+            }
+          `}</style>
+          <Row className="about-bitguild">
+            <Col xs={12} sm={6}>
+              <div className="about-text-left">
+                <h3><FormattedMessage id="pages.games.about.tagline"></FormattedMessage></h3>
               </div>
             </Col>
-          </Col>
-        </Row>
-      </BGGrid>
+            <Col xs={12} sm={6}>
+              <Col>
+                <div className="about-text-right">
+                  <p><FormattedMessage id="pages.games.about.body"></FormattedMessage></p>
+                </div>
+              </Col>
+            </Col>
+          </Row>
+        </BGGrid>
+      </div>
     );
   }
 
@@ -294,6 +313,10 @@ class GameList extends Component {
             {::this.aboutBitGuild()}
           </Col>
         </Row>
+        <Newsletter
+          show={this.state.newsletter}
+          onHide={::this.onHideNewsletter}
+        />
       </Grid>
     );
   }
