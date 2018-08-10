@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { pathOr } from 'ramda';
+import { pathOr, path } from 'ramda';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Grid, Col, Row, Carousel } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -30,7 +30,7 @@ import style from '@/shared/constants/style';
   state => ({
     analytics: state.analytics,
     layout: state.layout,
-    user: state.user
+    user: state.user,
   })
 )
 class GameList extends Component {
@@ -42,13 +42,14 @@ class GameList extends Component {
     analytics: PropTypes.object,
     layout: PropTypes.object,
   }
+
   constructor(props) {
     super(props);
 
     this.state = {
       newsletter: 'true',
       playableGames: [],
-    }
+    };
   }
 
   static defaultProps = {
@@ -64,7 +65,7 @@ class GameList extends Component {
   static getDerivedStateFromProps(props, state) {
     const listGames = pathOr([], ['data', 'listGames'], props);
     const playableGames = listGames.filter(game => game.enabled);
-    if (props.user.data) {
+    if (path('data', props.user)) {
       return { newsletter: 'false', playableGames };
     } else {
       return { newsletter: state.newsletter, playableGames };
