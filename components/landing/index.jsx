@@ -48,7 +48,7 @@ class GameList extends Component {
   }
 
   state = {
-    activeGames: [],
+    playableGames: [],
   }
 
   navigateToGame(slug) {
@@ -68,8 +68,8 @@ class GameList extends Component {
 
   static getDerivedStateFromProps(props, state) {
     const listGames = pathOr([], ['data', 'listGames'], props);
-    const activeGames = listGames.filter(game => (process.env.DEPLOYED_ENV === 'production' ? !game.enabled : true));
-    return { activeGames };
+    const playableGames = listGames.filter(game => game.enabled);
+    return { playableGames };
   }
 
   banner() {
@@ -116,7 +116,7 @@ class GameList extends Component {
         `}</style>
         <Col>
           <Carousel interval={null} className="hero-carousel" defaultActiveIndex={0}>
-            {this.state.activeGames.map((game, idx) => {
+            {this.state.playableGames.map((game, idx) => {
               return (
                 <Carousel.Item key={idx} onClick={() => ::this.navigateToGame(game.slug)}>
                   <div className="carousel-image" style={{ backgroundImage: `url(${game.bannerImage})` }} />
@@ -189,7 +189,7 @@ class GameList extends Component {
           gap: (mobile ? '60px' : '100px'),
         }}
       >
-        {this.state.activeGames.map((game, k) => <BGGameCard key={k} game={game} onClick={() => ::this.navigateToGame(game.slug)} playButton />)}
+        {this.state.playableGames.map((game, k) => <BGGameCard key={k} game={game} onClick={() => ::this.navigateToGame(game.slug)} playButton />)}
       </BGGrid>
     );
   }
