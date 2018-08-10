@@ -28,6 +28,15 @@
       "exchange": "拍卖行",
       "community": "社区"
     },
+    "footer": {
+      "for-players": "玩家",
+      "faq": "<a href='/faq'>常见问题</a>",
+      "feedback": "<a href='https://docs.google.com/forms/d/1xDavZE4wBlceRDuxQDgroBO5lfrEL4Y4nsM8BfCH1AU/edit' target='_blank' rel='noopener noreferrer'>反馈</a>",
+      "for-developers": "开发者",
+      "bug-bounty": "<a href='/bounty'>漏洞悬赏</a>",
+      "portal-sdk": "<a href='https://github.com/BitGuildPlatform/Documentation/blob/master/README.md' target='_blank' rel='noopener noreferrer'> 平台SDK </a>",
+      "join": "加入BitGuild社区"
+    },
     "loader": {
       "loading": "加载中"
     },
