@@ -68,7 +68,7 @@ class GameList extends Component {
 
   static getDerivedStateFromProps(props, state) {
     const listGames = pathOr([], ['data', 'listGames'], props);
-    const activeGames = listGames.filter(game => (process.env.DEPLOYED_ENV === 'production' ? !game.productionEnabled : true));
+    const activeGames = listGames.filter(game => (process.env.DEPLOYED_ENV === 'production' ? !game.enabled : true));
     return { activeGames };
   }
 

@@ -99,7 +99,7 @@ export const queries = {
   `,
   listGames: gql`{
     listGames {
-      id name slug url stagingUrl api nft itemsForSaleCount productionEnabled comingSoon
+      id name slug url stagingUrl api nft itemsForSaleCount enabled comingSoon
       bannerImage thumbnailImage categoryIcon
     }
   }`,
