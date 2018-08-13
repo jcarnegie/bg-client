@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormattedMessage, FormattedHTMLMEssage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import MdClear from 'react-icons/lib/md/clear';
 import cx from 'classnames';
