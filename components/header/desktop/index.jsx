@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
+import {
+  compose,
+} from 'react-apollo';
+
 import style from '@/shared/constants/style';
 
 import RegisterButton from '@/components/RegisterButton';
@@ -13,18 +17,19 @@ import Language from '@/components/language';
 import Balance from '@/components/balance';
 import User from '@/components/user';
 
+import {
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
 
 @injectIntl
 @connect(
   state => ({
-    account: state.account,
     chat: state.chat,
-    user: state.user,
   })
 )
-export default class Header extends Component {
+class Header extends Component {
   static propTypes = {
-    account: PropTypes.object,
     dispatch: PropTypes.func,
     chat: PropTypes.object,
     user: PropTypes.object,
@@ -113,6 +118,8 @@ export default class Header extends Component {
 
   settings() {
     const { user } = this.props;
+    const { viewUserByWallet } = user;
+
     return (
       <div className="settings">
         <style jsx>{`
@@ -132,10 +139,10 @@ export default class Header extends Component {
           }
           .settings .user {
             margin: 0 10px 0 0;
-            display: ${user.data ? 'initial' : 'none'};
+            display: ${viewUserByWallet ? 'initial' : 'none'};
           }
         `}</style>
-        <div className={cx({ 'spaced-right': !!user.data })}>
+        <div className={cx({ 'spaced-right': !!viewUserByWallet })}>
           <Balance />
         </div>
         <div className="user">
@@ -169,3 +176,7 @@ export default class Header extends Component {
     );
   }
 }
+
+export default compose(
+  viewUserByWalletQuery
+)(Header);

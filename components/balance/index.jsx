@@ -13,11 +13,13 @@ import {
 import {
   viewUserByWalletQuery,
   localQueries,
+  client,
+  localMutations,
 } from '@/shared/utils/apollo';
 
 import Convert from '@/components/popups/convert';
 
-import { USER_SHOW_REGISTER_WORKFLOW, SHOW_CONVERT_MODAL } from '@/shared/constants/actions';
+import { SHOW_CONVERT_MODAL } from '@/shared/constants/actions';
 
 
 @connect(
@@ -59,7 +61,7 @@ class Balance extends Component {
   onClick(e) {
     e.preventDefault();
     if (!this.props.user.viewUserByWallet) {
-      return this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
+      return client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
     }
 
     if (!this.props.data.rate) {

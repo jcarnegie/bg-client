@@ -31,7 +31,10 @@ import ResizeListener from '@/components/resizelistener';
 import Web3Modals from '@/components/popups/Web3Modals';
 import GlobalStyles from '@/components/GlobalStyles';
 import style from '@/shared/constants/style';
-import { APP_INIT } from '@/shared/constants/actions';
+import {
+  APP_INIT,
+  INIT_CHAT,
+} from '@/shared/constants/actions';
 
 /* Poll web3 interface for user account with this frequency */
 const WEB3_ACCOUNT_POLLING_INTERVAL = process.env.NODE_ENV === 'development' ? 1000 : 200;
@@ -68,17 +71,19 @@ class BGApp extends App {
     }
 
     /* New block listener */
-    window.web3.eth.filter('latest').watch(async(error, latestBlock) => {
-      if (error) {
-        log.error(error);
-      } else {
-        log.info(`New block, tx: ${latestBlock}`);
-        await client.mutate({
-          mutation: localMutations.updateLatestBlock,
-          variables: { tx: latestBlock },
-        });
-      }
-    });
+    if (web3IsInstalled()) {
+      window.web3.eth.filter('latest').watch(async(error, latestBlock) => {
+        if (error) {
+          log.error(error);
+        } else {
+          log.info(`New block, tx: ${latestBlock}`);
+          await client.mutate({
+            mutation: localMutations.updateLatestBlock,
+            variables: { tx: latestBlock },
+          });
+        }
+      });
+    }
 
     /* Network and wallet polling */
     this.setState({
@@ -98,7 +103,11 @@ class BGApp extends App {
         };
 
         const networkHasChanged = !network.id || (parseInt(network.id, 10) !== parseInt(currentNetworkId, 10));
-        const walletHasChanged = Boolean((wallet && !currentWallet) || (wallet !== currentWallet && (wallet || currentWallet)));
+        const walletHasChanged = Boolean(
+          (wallet && !currentWallet) || /* log out */
+          (!wallet && currentWallet) || /* log in */
+          (wallet !== currentWallet && (wallet || currentWallet)) /* Different wallet */
+        );
         /* Network or wallet has changed */
         if (networkHasChanged || walletHasChanged) {
           await client.mutate({
@@ -108,6 +117,7 @@ class BGApp extends App {
               wallet: currentWallet,
             },
           });
+          this.props.store.dispatch({ type: INIT_CHAT });
           this.setState({
             network: currentNetwork,
             wallet: currentWallet,

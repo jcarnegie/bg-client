@@ -1,64 +1,64 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { omit } from 'ramda';
-import { VALIDATION_REMOVE } from '@/shared/constants/actions';
 import { injectIntl, intlShape } from 'react-intl';
+
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
+import {
+  client,
+  localQueries,
+  localMutations,
+} from '@/shared/utils/apollo';
 
 
 export default function withValidation(Input) {
   @injectIntl
-  @connect(
-    state => ({
-      validations: state.validations,
-    })
-  )
   class InputWithValidation extends Component {
     static propTypes = {
-      validations: PropTypes.array,
+      data: PropTypes.shape({
+        validationMessages: PropTypes.array,
+      }),
       onChange: PropTypes.func,
-      dispatch: PropTypes.func,
       removeValidation: PropTypes.func,
       name: PropTypes.string,
       intl: intlShape,
     };
 
     static defaultProps = {
-      validations: [],
+      data: {},
       onChange: Function.prototype,
     };
 
     componentWillUnmount() {
-      const { dispatch } = this.props;
-      const validation = this.getValidation(this.props.name);
-      if (validation) {
-        dispatch({
-          type: VALIDATION_REMOVE,
-          payload: validation,
-        });
-      }
+      client.mutate({ mutation: localMutations.removeAllValidations });
     }
 
     onChange(e) {
-      const { name, dispatch, onChange } = this.props;
-      const validation = this.getValidation(name);
-      if (validation) {
-        dispatch({
-          type: VALIDATION_REMOVE,
-          payload: validation,
-        });
-      }
+      const { onChange } = this.props;
+      ::this.removeValidation();
       onChange(e);
     }
 
     getValidation(name) {
-      const { validations } = this.props;
-      return validations.find(validation => validation.name === name);
+      const { validationMessages } = this.props.data;
+      if (!validationMessages) return null;
+      return validationMessages.find(validation => validation.name === name);
+    }
+
+    async removeValidation() {
+      const validation = this.getValidation(this.props.name);
+      if (validation) {
+        await client.mutate({ mutation: localMutations.removeValidation, variables: { validation } });
+      }
     }
 
     render() {
       const { name, intl } = this.props;
-      const props = omit(['validations', 'dispatch', 'intl'], this.props);
+      const props = omit(['data', 'intl'], this.props);
       return (
         <Input
           {...props}
@@ -93,5 +93,7 @@ export default function withValidation(Input) {
     }
   }
 
-  return InputWithValidation;
+  return compose(
+    graphql(localQueries.root)
+  )(InputWithValidation);
 }

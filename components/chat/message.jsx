@@ -74,7 +74,7 @@ export default class Message extends Component {
   render() {
     const { message, user } = this.props;
 
-    const userWallet = path(['data', 'wallet'], user);
+    const userWallet = path(['wallet'], user);
     const messageUserId = path(['sender', 'userId'], message);
     const isMyMessage = Boolean(userWallet && (messageUserId === userWallet));
     const userIsAdmin = message.messageType === 'admin';

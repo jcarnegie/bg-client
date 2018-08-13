@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  // FormattedMessage,
   injectIntl,
 } from 'react-intl';
 
@@ -34,12 +33,6 @@ class GameList extends Component {
     },
     dispatch: () => {},
   }
-
-  // componentDidMount() {
-  //   this.setState({
-  //     gameTitle: '',
-  //   });
-  // }
 
   navigateToGame(slug) {
     this.props.analytics.ga.event({

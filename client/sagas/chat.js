@@ -9,8 +9,16 @@ import * as log from 'loglevel';
 
 import {
   isEmpty,
+  path,
   pathOr,
 } from 'ramda';
+
+import {
+  client,
+  queries,
+  localQueries,
+  localMutations,
+} from '@/shared/utils/apollo';
 
 import { channels as chatChannels,
   messages as chatMessages,
@@ -23,15 +31,11 @@ import { channels as chatChannels,
 } from '@/client/utils/chat';
 
 import {
-  ACCOUNT_LOGGED_OUT,
   CHAT_LOAD_MESSAGES,
   CHAT_MESSAGE_SEND,
   CHAT_MESSAGE_SENT,
   CHAT_SET_CHANNEL,
   SENDBIRD_INIT,
-  USER_CHANGED,
-  USER_ERROR,
-  USER_SHOW_REGISTER_WORKFLOW,
 } from '@/shared/constants/actions';
 
 
@@ -46,12 +50,13 @@ function * sendChatMessage(action) {
       return null;
     }
 
-    if (!state.user.data) {
-      yield put({
-        type: USER_SHOW_REGISTER_WORKFLOW,
-        payload: true,
-      });
-      return;
+    const rootQuery = yield client.query({ query: localQueries.root });
+    const wallet = pathOr('0x0anonymous', ['data', 'wallet'], rootQuery);
+    const userQuery = yield client.query({ query: queries.viewUserByWallet, variables: { wallet } });
+    const user = path(['data', 'viewUserByWallet'], userQuery);
+
+    if (!user) {
+      return client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
     }
 
     const sentMessage = yield sendMessage(cleanMsg, currentChannel);
@@ -76,10 +81,12 @@ function * initChat(action) {
   try {
     let sb;
     let sbUser;
-    let user = yield select(state => state.user);
-    let account = yield select(state => state.account);
-    const wallet = pathOr('0x0anonymous', ['wallet'], account);
-    const nickName = pathOr('Guest', ['data', 'nickName'], user);
+
+    const rootQuery = yield client.query({ query: localQueries.root });
+    const wallet = pathOr('0x0anonymous', ['data', 'wallet'], rootQuery);
+    const userQuery = yield client.query({ query: queries.viewUserByWallet, variables: { wallet } });
+    const nickName = pathOr('Guest', ['data', 'viewUserByWallet', 'nickName'], userQuery);
+
 
     [sb, sbUser] = yield chatInit(wallet, nickName);
 
@@ -122,7 +129,5 @@ function * initChat(action) {
 
 export default function * chatSaga() {
   yield takeEvery(CHAT_MESSAGE_SEND, sendChatMessage);
-  yield takeEvery(USER_CHANGED, initChat);
-  yield takeEvery(USER_ERROR, initChat);
-  yield takeEvery(ACCOUNT_LOGGED_OUT, initChat);
+  yield takeEvery('INIT_CHAT', initChat);
 }

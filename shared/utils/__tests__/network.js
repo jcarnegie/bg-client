@@ -32,7 +32,7 @@ describe('web3IsInstalled', () => {
 describe('Network methods', () => {
   test('networkIdToNameMap', () => {
     expect(networkIdToNameMap['1']).toBe('main');
-    expect(networkIdToNameMap['2']).toBe('kovan');
+    expect(networkIdToNameMap['42']).toBe('kovan'); /* kovan is id 42 from metamask injected web3 */
     expect(networkIdToNameMap['3']).toBe('ropsten');
     expect(networkIdToNameMap['4']).toBe('rinkeby');
   });

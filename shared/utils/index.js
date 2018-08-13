@@ -1,8 +1,14 @@
 import Router from 'next/router';
 import { contains, propOr } from 'ramda';
-import { USER_SHOW_REGISTER_WORKFLOW } from '@/shared/constants/actions';
+
 import features from '@/shared/constants/features.json';
-import { networkIsSupported } from '@/shared/utils/network';
+import {
+  networkIsSupported,
+} from '@/shared/utils/network';
+import {
+  client,
+  localMutations,
+} from '@/shared/utils/apollo';
 
 const env = process.env.DEPLOYED_ENV || 'local';
 
@@ -12,16 +18,16 @@ export function returnToPath(path, res) {
   }
 }
 
-export function userLoginRouteGuard({ store, res }) {
+export function userLoginRouteGuard({ store, res, ...rest }) {
   if (!store.getState().user.data) {
-    store.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
+    client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
     returnToPath('/', res);
   }
 }
 
-export function ethNetworkRouteGuard({ store, res }) {
+export function ethNetworkRouteGuard({ store, res, ...rest }) {
   if (!networkIsSupported(store.getState().network)) {
-    store.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
+    client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
     returnToPath('/', res);
   }
 }

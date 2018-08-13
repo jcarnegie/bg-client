@@ -1,35 +1,42 @@
 import { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { equals } from 'ramda';
 
+import {
+  compose,
+} from 'react-apollo';
 
-@connect(
-  state => ({
-    user: state.user,
-  })
-)
-export default class Init extends Component {
+import {
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
+
+class Init extends Component {
   static propTypes = {
     user: PropTypes.object,
   };
 
+  static defaultProps = {
+    user: {},
+  };
+
   state = {
-    user: this.props.user.data,
+    user: this.props.user.viewUserByWallet,
     sources: {},
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (!nextProps.user.isLoading && nextProps.user.success && !equals(nextProps.user.data, prevState.user)) {
+    if (!nextProps.user.loading && nextProps.user.viewUserByWallet &&
+      !equals(nextProps.user.viewUserByWallet, prevState.user.viewUserByWallet)) {
       Object.keys(prevState.sources).forEach(origin => {
         prevState.sources[origin].postMessage({
           type: 'user',
-          user: nextProps.user.data,
+          user: nextProps.user.viewUserByWallet,
         }, origin);
       });
 
       return {
-        user: nextProps.user.data,
+        user: nextProps.user.viewUserByWallet,
       };
     }
 
@@ -75,3 +82,6 @@ export default class Init extends Component {
     return null;
   }
 }
+
+
+export default compose(viewUserByWalletQuery)(Init);

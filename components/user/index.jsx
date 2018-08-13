@@ -17,11 +17,11 @@ class User extends Component {
   };
 
   render() {
-    const { viewUserByWallet } = this.props.data;
+    const { data } = this.props;
+    const { viewUserByWallet } = data;
 
-    if (!viewUserByWallet) return <ScaleLoader height={10} width={2} color="white" />;
-    if (viewUserByWallet.loading) return <ScaleLoader height={10} width={2} color="white" />;
-    if (viewUserByWallet.error) return 'Error'; // TODO - error states
+    if (!viewUserByWallet || data.loading) return <ScaleLoader height={10} width={2} color="white" />;
+    if (data.error) return null;
 
     return (
       <div className="user">

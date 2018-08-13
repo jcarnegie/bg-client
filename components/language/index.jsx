@@ -6,16 +6,20 @@ import { injectIntl, intlShape } from 'react-intl';
 import { Image, MenuItem, DropdownButton } from 'react-bootstrap';
 import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
 import { localization } from '@/shared/intl/setup';
-import { UPDATE_USER } from '@/shared/constants/actions';
 import { Mobile, Desktop } from '@/components/responsive';
 
+import {
+  compose,
+} from 'react-apollo';
+
+import {
+  updateUser,
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
 @injectIntl
-@connect(
-  state => ({
-    user: state.user,
-  })
-)
-export default class Language extends Component {
+@connect()
+class Language extends Component {
   static propTypes = {
     user: PropTypes.object,
     dispatch: PropTypes.func,
@@ -23,15 +27,9 @@ export default class Language extends Component {
   };
 
   onSelect(language) {
-    const { dispatch } = this.props;
-
+    const { dispatch, user } = this.props;
     dispatch(updateIntl(localization[language]));
-    dispatch({
-      type: UPDATE_USER,
-      payload: {
-        language,
-      },
-    });
+    if (user.viewUserByWallet) updateUser(user.viewUserByWallet, { language });
     document.documentElement.setAttribute('lang', language);
   }
 
@@ -54,8 +52,8 @@ export default class Language extends Component {
 
   render() {
     const { user, intl } = this.props;
-
-    const language = !user.isLoading && user.success ? user.data.language : intl.locale;
+    const { viewUserByWallet } = user;
+    const language = !user.loading && viewUserByWallet ? viewUserByWallet.language : intl.locale;
 
     return (
       <div className="lang-dropdown">
@@ -205,3 +203,6 @@ export default class Language extends Component {
     );
   }
 }
+
+
+export default compose(viewUserByWalletQuery)(Language);

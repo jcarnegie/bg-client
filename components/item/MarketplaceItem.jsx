@@ -11,10 +11,11 @@ import {
 } from 'react-apollo';
 
 import {
+  client,
   localQueries,
   viewUserByWalletQuery,
+  localMutations,
 } from '@/shared/utils/apollo';
-
 
 import {
   getContractFromGame,
@@ -24,7 +25,6 @@ import {
   buyItem,
 } from '@/shared/utils/contracts';
 
-import { USER_SHOW_REGISTER_WORKFLOW } from '@/shared/constants/actions';
 import style from '@/shared/constants/style';
 
 import ItemPopup from '@/components/popups/itempopup';
@@ -59,7 +59,7 @@ class MarketplaceItem extends ItemBase {
   onShowBuy(e) {
     e.preventDefault();
     if (!this.props.user.viewUserByWallet) {
-      return this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
+      return client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
     }
 
     this.setState({ buy: true });

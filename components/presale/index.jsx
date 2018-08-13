@@ -6,8 +6,13 @@ import { Image, Row, Col, Tab, Tabs, ProgressBar } from 'react-bootstrap';
 import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import MDCheck from 'react-icons/lib/md/check';
-
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+import { pathOr } from 'ramda';
+
 import {
   getBitGuildTokenContract,
   getBitizensIGOContract,
@@ -19,11 +24,18 @@ import ItemSetDetailsCard from '@/components/ItemSetDetailsCard';
 
 import style from '@/shared/constants/style';
 import {
-  USER_SHOW_REGISTER_WORKFLOW,
   SHOW_CONVERT_MODAL,
 } from '@/shared/constants/actions';
 
-import { client as api } from '@/shared/utils/apollo';
+import {
+  client,
+  localMutations,
+  localQueries,
+  viewUserByWalletQuery,
+  queries,
+  listItemsQuery,
+} from '@/shared/utils/apollo';
+
 
 const PLAT_DISCOUNT = 50;
 const TOTAL_ITEMS_COUNT = 139;
@@ -66,17 +78,16 @@ const SETS = [
 @injectIntl
 @connect(
   state => ({
-    balancePLAT: state.balancePLAT,
-    network: state.network,
-    user: state.user,
     layout: state.layout,
   }),
 )
 class Presale extends Component {
   static propTypes = {
     slug: PropTypes.string,
-    balancePLAT: PropTypes.object,
-    network: PropTypes.object,
+    data: PropTypes.shape({
+      network: PropTypes.object,
+      balancePLAT: PropTypes.number,
+    }),
     user: PropTypes.object,
     layout: PropTypes.object,
     items: PropTypes.object,
@@ -101,6 +112,7 @@ class Presale extends Component {
 
   async logPurchase(tx, set) {
     const { user } = this.props;
+    const { viewUserByWallet } = user;
     const mutation = gql`
       mutation createPresaleTicket($payload:CreatePresaleTicketPayload!) {
         createPresaleTicket(payload:$payload) {
@@ -114,13 +126,13 @@ class Presale extends Component {
       payload: {
         setId: set.tokenId,
         price: set.price - PLAT_DISCOUNT,
-        wallet: user.data.wallet,
+        wallet: viewUserByWallet.wallet,
         transactionHash: tx,
         GameId: BITIZENS_GAME_ID,
-        UserId: user.data.id,
+        UserId: viewUserByWallet.id,
       },
     };
-    const ticket = await api.mutate({ mutation, variables });
+    const ticket = await client.mutate({ mutation, variables });
     log.info('Purchase ticket:', ticket);
   }
 
@@ -172,8 +184,9 @@ class Presale extends Component {
   }
 
   getQtyOfItemRemaining(setId) {
-    if (!this.props.network.data || !this.props.network.data.id) return;
-    const IGOContract = getBitizensIGOContract(this.props.network);
+    const { network } = this.props.data;
+    if (!network || !network.id) return;
+    const IGOContract = getBitizensIGOContract(network);
 
     // Trigger approval for transaction
     IGOContract.getQty(setId, (err, qty) => {
@@ -187,17 +200,16 @@ class Presale extends Component {
 
   purchase(set) {
     log.info('User purchase flow for set: ', set);
-    const { balancePLAT } = this.props;
-
-    if (!this.props.network.data) {
+    const { balancePLAT, network } = this.props.data;
+    if (!this.props.data.network) {
       log.error('Network has not loaded.');
-      this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
+      client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
       return;
     }
 
-    if (!this.props.user.data) {
+    if (!this.props.user.viewUserByWallet) {
       log.info('User must be logged in to purchase item.');
-      this.props.dispatch({ type: USER_SHOW_REGISTER_WORKFLOW, payload: true });
+      client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
       return;
     }
 
@@ -217,7 +229,7 @@ class Presale extends Component {
     }
 
     // Trigger approval for transaction
-    getBitGuildTokenContract(this.props.network).approveAndCall(getBitizensIGOContractAddress(this.props.network), priceForUserBigNumber, set.tokenId, (err, tx) => {
+    getBitGuildTokenContract(network).approveAndCall(getBitizensIGOContractAddress(network), priceForUserBigNumber, set.tokenId, (err, tx) => {
       if (err) {
         log.error(err);
       } else {
@@ -228,7 +240,8 @@ class Presale extends Component {
   }
 
   userHasAlreadyPurchasedItem(setId) {
-    return Boolean(this.props.user.presaleTransactions && this.props.user.presaleTransactions.find(txObj => txObj.setId === setId));
+    const { listUserPresaleTickets } = this.props.listUserPresaleTickets;
+    return Boolean(listUserPresaleTickets && listUserPresaleTickets.find(txObj => txObj.setId === setId));
   }
 
   setSection(set) {
@@ -537,7 +550,6 @@ class Presale extends Component {
             padding: 0;
           }
         `}</style>
-
         {::this.presaleTitles()}
         {::this.presaleBanner()}
         {::this.presaleInfo()}
@@ -581,4 +593,17 @@ class Presale extends Component {
   }
 }
 
-export default Presale;
+export default compose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root),
+  graphql(queries.listUserPresaleTickets, {
+    name: 'listUserPresaleTickets',
+    options: props => ({
+      variables: {
+        wallet: pathOr(null, ['user', 'viewUserByWallet', 'wallet'], props),
+        userId: pathOr(null, ['user', 'viewUserByWallet', 'id'], props),
+      },
+    }),
+  }),
+  listItemsQuery,
+)(Presale);

@@ -5,6 +5,16 @@ import StayScrolled from 'react-stay-scrolled';
 import { isEmpty, map } from 'ramda';
 import { Button, Form, FormControl, FormGroup } from 'react-bootstrap';
 
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
+import {
+  viewUserByWalletQuery,
+  localQueries,
+} from '@/shared/utils/apollo';
+
 import style from '@/shared/constants/style';
 import { sendChatMessage } from '@/client/actions/chat';
 import Message from './message';
@@ -13,14 +23,14 @@ import Message from './message';
 @connect(
   state => ({
     chat: state.chat,
-    user: state.user,
   }),
   { sendChatMessage }
 )
-export default class Chat extends Component {
+class Chat extends Component {
   static propTypes = {
     chat: PropTypes.object,
     user: PropTypes.object,
+    data: PropTypes.object,
     parentCollapsed: PropTypes.bool,
   };
 
@@ -33,7 +43,7 @@ export default class Chat extends Component {
   };
 
   componentDidUpdate() {
-    this.scrollBottom();
+    if (this.scrollBottom) this.scrollBottom();
   }
 
   async handleSubmit(e) {
@@ -114,8 +124,9 @@ export default class Chat extends Component {
   render() {
     const { messages } = this.props.chat;
     const { user, parentCollapsed } = this.props;
+    if (user.loading) return null;
 
-    const renderMessages = map(msg => <Message key={msg.messageId} message={msg} user={user} />, messages);
+    const renderMessages = map(msg => <Message key={msg.messageId} message={msg} user={user.viewUserByWallet} />, messages);
 
     return (
       <div className="chat">
@@ -188,3 +199,8 @@ export default class Chat extends Component {
     );
   }
 }
+
+export default compose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root)
+)(Chat);
