@@ -70,7 +70,7 @@ export default class Newsletter extends Component {
               border-radius: 3px;
               margin-right: 15px;
               margin-left: ${layout.type.mobile ? '15px' : null};
-              padding-left: 5px;
+              padding-left: 10px;
               font-size: ${layout.type.mobile ? '12px' : null};
               float: ${layout.type.mobile ? null : 'right'};
             }

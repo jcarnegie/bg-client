@@ -65,7 +65,7 @@ class GameList extends Component {
   static getDerivedStateFromProps(props, state) {
     const listGames = pathOr([], ['data', 'listGames'], props);
     const playableGames = listGames.filter(game => game.enabled);
-    if (path('data', props.user)) {
+    if (path(['data'], props.user)) {
       return { newsletter: 'false', playableGames };
     } else {
       return { newsletter: state.newsletter, playableGames };
@@ -286,9 +286,7 @@ class GameList extends Component {
   render() {
     return (
       <Grid fluid>
-
         {this.banner()}
-
         <Row>
           <Col>
             <FeatureFlag flag="bitizens_presale">

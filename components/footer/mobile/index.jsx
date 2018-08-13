@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
+import { compose } from 'react-apollo';
 import Link from 'next/link';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import Router from 'next/router';
+import { path } from 'ramda';
+import {
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
 
-export default class Footer extends Component {
+class Footer extends Component {
   render() {
+    const user = path(['viewUserByWallet'], this.props.user);
     return (
       <div className="footer">
         <style jsx global>{`
           .footer {
             position: relative;
             width: 100%;
-            height: 200px;
+            height: ${Router.router.route === '/' && !user ? '265px' : '200px'};
             background-color: #B6D0F7;
           }
           .footer img {
@@ -120,3 +127,7 @@ export default class Footer extends Component {
     );
   }
 }
+
+export default compose(
+  viewUserByWalletQuery,
+)(Footer);
