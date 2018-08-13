@@ -229,7 +229,7 @@ class GameList extends Component {
             gap: (mobile ? '60px' : '100px'),
           }}
         >
-          {data.listGames.filter(game => game.comingSoon).map((game, k) => <BGGameCard key={k} game={game} />)}
+          {data.listGames.filter(game => game.comingSoon && !game.enabled).map((game, k) => <BGGameCard key={k} game={game} />)}
         </BGGrid>
       </span>
     );
