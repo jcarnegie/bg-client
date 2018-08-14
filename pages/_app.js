@@ -25,9 +25,6 @@ import {
   networkIdIsSupported,
 } from '@/shared/utils/network';
 
-import {
-  redirectToHomeIfOnAuthRoute,
-} from '@/shared/utils';
 
 import configureStore from '@/client/utils/store';
 
@@ -95,7 +92,7 @@ class BGApp extends App {
     /* Network and wallet polling */
     this.setState({
       interval: window.setInterval(async() => {
-        if (!web3IsInstalled()) return redirectToHomeIfOnAuthRoute(router);
+        if (!web3IsInstalled()) return;
 
         const { data } = await client.query({ query: localQueries.root });
         const { network, wallet } = data;
@@ -130,7 +127,6 @@ class BGApp extends App {
             wallet: currentWallet,
           });
         }
-        redirectToHomeIfOnAuthRoute(router);
       }, WEB3_ACCOUNT_POLLING_INTERVAL),
     });
   }
