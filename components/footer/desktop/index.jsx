@@ -4,6 +4,7 @@ import { compose } from 'react-apollo';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Router from 'next/router';
 import { path } from 'ramda';
+import ActiveLink from '@/components/activelink';
 
 import {
   viewUserByWalletQuery,
@@ -91,7 +92,11 @@ class Footer extends Component {
           <img src="/static/images/icons/players.png" />
           <div className="footer-text-block">
             <h2><FormattedMessage id="components.footer.for-players" /></h2>
-            <FormattedHTMLMessage id="components.footer.faq" />
+            <ActiveLink href="/faq">
+              <span className="navigation-link">
+                <FormattedHTMLMessage id="components.footer.faq" />
+              </span>
+            </ActiveLink>
             <FormattedHTMLMessage id="components.footer.feedback" />
           </div>
         </div>
@@ -99,7 +104,11 @@ class Footer extends Component {
           <img src="/static/images/icons/developers.png" />
           <div className="footer-text-block">
             <h2><FormattedMessage id="components.footer.for-developers" /></h2>
-            <FormattedHTMLMessage id="components.footer.bug-bounty" />
+            <ActiveLink href="/bounty">
+              <span className="navigation-link">
+                <FormattedHTMLMessage id="components.footer.bug-bounty" />
+              </span>
+            </ActiveLink>
             <FormattedHTMLMessage id="components.footer.portal-sdk" />
             </div>
         </div>

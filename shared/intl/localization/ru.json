@@ -35,10 +35,10 @@
     },
     "footer": {
       "for-players": "Игрокам",
-      "faq": "<a href='/faq'>FAQ</a>",
+      "faq": "FAQ",
       "feedback": "<a href='https://docs.google.com/forms/d/1xDavZE4wBlceRDuxQDgroBO5lfrEL4Y4nsM8BfCH1AU/edit' target='_blank' rel='noopener noreferrer'>Обратная связь</a>",
       "for-developers": "Разработчикам",
-      "bug-bounty": "<a href='/bounty'>Награда за обнаруженные ошибки в программном обеспечении</a>",
+      "bug-bounty": "Награда за обнаруженные ошибки в программном обеспечении",
       "portal-sdk": "<a href='https://github.com/BitGuildPlatform/Documentation/blob/master/README.md' target='_blank' rel='noopener noreferrer'> SDK портала </a>",
       "join": "Вступить в сообщество"
     },
