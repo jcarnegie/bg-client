@@ -30,10 +30,10 @@
     },
     "footer": {
       "for-players": "Para Jogadores",
-      "faq": "<a href='/faq'>FAQ</a>",
+      "faq": "FAQ",
       "feedback": "<a href='https://docs.google.com/forms/d/1xDavZE4wBlceRDuxQDgroBO5lfrEL4Y4nsM8BfCH1AU/edit' target='_blank' rel='noopener noreferrer'>Feedback</a>",
       "for-developers": "Para Desenvolvedores",
-      "bug-bounty": "<a href='/bounty'>Busca de Bugs</a>",
+      "bug-bounty": "Busca de Bugs",
       "portal-sdk": "<a href='https://github.com/BitGuildPlatform/Documentation/blob/master/README.md' target='_blank' rel='noopener noreferrer'> Portal SDK </a>",
       "join": "Junte-se à Comunidade BitGuild"
     },
