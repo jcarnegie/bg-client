@@ -2,9 +2,7 @@ import Router from 'next/router';
 import { contains, propOr } from 'ramda';
 
 import features from '@/shared/constants/features.json';
-import {
-  networkIsSupported,
-} from '@/shared/utils/network';
+
 import {
   client,
   localMutations,
@@ -18,23 +16,23 @@ export function returnToPath(path, res) {
   }
 }
 
-export function userLoginRouteGuard({ store, res, ...rest }) {
-  if (!store.getState().user.data) {
-    client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
-    returnToPath('/', res);
-  }
-}
+export const showRegistrationWorkflow = () => client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
 
-export function ethNetworkRouteGuard({ store, res, ...rest }) {
-  if (!networkIsSupported(store.getState().network)) {
-    client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
-    returnToPath('/', res);
+export const AUTH_ROUTES_WHITELIST = [
+  '/game',
+  '/inventory',
+];
+
+export const redirectToHomeIfOnAuthRoute = async() => {
+  if (AUTH_ROUTES_WHITELIST.includes(Router.route)) {
+    Router.push('/');
+    await showRegistrationWorkflow();
   }
-}
+};
 
 export function featureRouteGuard({ res }, featureOn) {
   if (!featureOn) {
-    returnToPath('/', res);
+    Router.push('/');
   }
 }
 

@@ -257,7 +257,7 @@ const onError = ({ graphQLErrors, networkError }) => {
   return null;
 };
 
-export const client = new ApolloBoostClient({
+export const createApolloClient = () => new ApolloBoostClient({
   uri,
   onError,
   clientState: {
@@ -377,6 +377,7 @@ export const client = new ApolloBoostClient({
   },
 });
 
+export const client = createApolloClient();
 
 export const viewUserByWalletQuery = graphql(queries.viewUserByWallet, {
   name: 'user',

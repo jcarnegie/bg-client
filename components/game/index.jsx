@@ -2,12 +2,20 @@ import * as log from 'loglevel';
 import queryString from 'query-string';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 
 import {
   viewGameBySlugQuery,
   viewUserByWalletQuery,
+  localQueries,
 } from '@/shared/utils/apollo';
+
+import {
+  redirectToHomeIfOnAuthRoute,
+} from '@/shared/utils';
+
+import DataLoading from '@/components/DataLoading';
+import DataError from '@/components/DataError';
 
 import InitGameIframeConnection from '@/components/common/init';
 import { defaultLanguage } from '@/shared/constants/language';
@@ -15,6 +23,7 @@ import { defaultLanguage } from '@/shared/constants/language';
 class Game extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
+    data: PropTypes.object,
     game: PropTypes.object,
     user: PropTypes.object,
     slug: PropTypes.string,
@@ -50,6 +59,15 @@ class Game extends Component {
   }
 
   render() {
+    const { user, data } = this.props;
+
+    const { network } = data;
+    if (user.loading || data.loading) return <DataLoading />;
+    if (user.error) return <DataError />;
+    if (!network.supported) {
+      redirectToHomeIfOnAuthRoute();
+      return null;
+    }
     return (
       <div>
         <style jsx global>{`
@@ -69,5 +87,6 @@ class Game extends Component {
 
 export default compose(
   viewGameBySlugQuery,
-  viewUserByWalletQuery
+  viewUserByWalletQuery,
+  graphql(localQueries.root)
 )(Game);

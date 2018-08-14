@@ -21,7 +21,7 @@ class Init extends Component {
   };
 
   state = {
-    user: this.props.user.viewUserByWallet,
+    user: {},
     sources: {},
   };
 
@@ -36,7 +36,7 @@ class Init extends Component {
       });
 
       return {
-        user: nextProps.user.viewUserByWallet,
+        user: {},
       };
     }
 

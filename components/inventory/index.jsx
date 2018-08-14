@@ -14,14 +14,19 @@ import {
   uniq,
 } from 'ramda';
 import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
-import { compose } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 
 import {
   viewGameBySlugQuery,
   viewUserByWalletQuery,
   listGamesQuery,
   listItemsQuery,
+  localQueries,
 } from '@/shared/utils/apollo';
+
+import {
+  redirectToHomeIfOnAuthRoute,
+} from '@/shared/utils';
 
 import {
   calcMaxItemsStats,
@@ -40,7 +45,8 @@ class Inventory extends Component {
 	static propTypes = {
 		items: PropTypes.object,
 		games: PropTypes.object,
-		game: PropTypes.object,
+    game: PropTypes.object,
+		data: PropTypes.object,
 		user: PropTypes.object,
 		lastLocation: PropTypes.shape({
       pathname: PropTypes.string,
@@ -203,6 +209,15 @@ class Inventory extends Component {
 
 
 	render() {
+    const { user, data } = this.props;
+
+    const { network } = data;
+    if (user.loading || data.loading) return <DataLoading />;
+    if (user.error) return <DataError />;
+    if (!network.supported) {
+      redirectToHomeIfOnAuthRoute();
+      return null;
+    }
     return (
 			<div className="inventory">
 				{this.indexStyle()}
@@ -282,4 +297,5 @@ export default compose(
   viewGameBySlugQuery,
   listGamesQuery,
   listItemsQuery,
+  graphql(localQueries.root),
 )(Inventory);

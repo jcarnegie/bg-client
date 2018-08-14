@@ -1,6 +1,6 @@
 import App, { Container } from 'next/app';
 import React from 'react';
-import { Provider } from 'react-intl-redux';
+import { Provider as IntlProvider } from 'react-intl-redux';
 import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
 import * as log from 'loglevel';
@@ -24,6 +24,10 @@ import {
   networkIdToName,
   networkIdIsSupported,
 } from '@/shared/utils/network';
+
+import {
+  redirectToHomeIfOnAuthRoute,
+} from '@/shared/utils';
 
 import configureStore from '@/client/utils/store';
 
@@ -51,7 +55,8 @@ class BGApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
     const { isServer } = ctx;
 
-    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+    const rootData = await client.query({ query: localQueries.root });
+    const pageProps = Component.getInitialProps ? await Component.getInitialProps({ rootData: rootData.data, ...ctx }) : {};
     const web3ModalsProps = Web3Modals.WrappedComponent.getInitialProps(ctx);
     const locals = isServer ? ctx.res.locals : {};
 
@@ -63,6 +68,8 @@ class BGApp extends App {
   }
 
   componentDidMount() {
+    const { router } = this.props;
+
     this.props.store.dispatch({ type: APP_INIT });
     const state = this.props.store.getState();
 
@@ -88,7 +95,7 @@ class BGApp extends App {
     /* Network and wallet polling */
     this.setState({
       interval: window.setInterval(async() => {
-        if (!web3IsInstalled()) return;
+        if (!web3IsInstalled()) return redirectToHomeIfOnAuthRoute(router);
 
         const { data } = await client.query({ query: localQueries.root });
         const { network, wallet } = data;
@@ -123,6 +130,7 @@ class BGApp extends App {
             wallet: currentWallet,
           });
         }
+        redirectToHomeIfOnAuthRoute(router);
       }, WEB3_ACCOUNT_POLLING_INTERVAL),
     });
   }
@@ -149,10 +157,19 @@ class BGApp extends App {
       <Container>
         <GlobalStyles style={style} />
         <ApolloProvider client={client}>
-          <Provider store={store}>
+          <IntlProvider store={store}>
             <>
               <ResizeListener />
-              <Web3Modals {...web3ModalsProps} />
+              <Query query={localQueries.root}>
+                {({ loading, error, data }) => {
+                  if (loading || error) return null;
+                  return (
+                    <>
+                      <Web3Modals {...web3ModalsProps} />
+                    </>
+                  );
+                }}
+              </Query>
               <Query
                 skip={() => !wallet}
                 query={queries.viewUserByWallet}
@@ -161,7 +178,7 @@ class BGApp extends App {
                 {() => <Component {...pageProps} {...locals} />}
               </Query>
             </>
-          </Provider>
+          </IntlProvider>
         </ApolloProvider>
       </Container>
     );
