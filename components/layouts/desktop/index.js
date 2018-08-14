@@ -61,7 +61,7 @@ class DesktopLayout extends React.Component {
           {aside}
           {this.props.children}
         </div>
-        <Footer />
+        <Footer offsetRight={offsetRight} />
       </Desktop>
     );
   }

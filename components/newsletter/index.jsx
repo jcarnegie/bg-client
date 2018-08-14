@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import MdClear from 'react-icons/lib/md/clear';
 import cx from 'classnames';
 
+import style from '@/shared/constants/style';
+
 @connect(
   state => ({
     layout: state.layout,
@@ -25,10 +27,15 @@ export default class Newsletter extends Component {
 
   render() {
     const { layout } = this.props;
-
+    const { mobile, desktop } = layout.type;
     let containerClass = 'newsletter';
     if (this.props.show === 'false') {
       containerClass = 'newsletter-closed';
+    }
+
+    let offsetRight = '0px';
+    if (desktop) {
+       offsetRight = layout.asideRightCollapsed ? layout.asideRightCollapsedWidth : layout.asideRightWidth;
     }
 
     return (
@@ -36,59 +43,60 @@ export default class Newsletter extends Component {
         <style jsx>{`
             .newsletter {
               position: fixed;
-              height: ${layout.type.mobile ? '65px' : '60px;'};
-              width: ${layout.type.mobile ? '100%' : 'calc(100% - 285px)'};
+              height: ${mobile ? '65px' : '60px;'};
+              width: calc(100% - ${offsetRight});
               background: linear-gradient(to right,#D2EAF8, #B0CAFF);
               color: black;
               bottom: 0;
               z-index: 2;
               margin-right: -15px;
               margin-left: -15px;
-              display: ${layout.type.mobile ? null : 'flex'};
+              display: ${mobile ? null : 'flex'};
               align-items: center;
               justify-content: space-between;
+              transition: ${style.transition.default};
             }
             .newsletter-closed {
               display: none;
             }
              .subscribe-text {
-              font-size: ${layout.type.mobile ? '18px' : layout.innerWidth >= 1200 ? '23px' : '21px'};
+              font-size: ${mobile ? '18px' : layout.innerWidth >= 1200 ? '23px' : '21px'};
               text-transform: uppercase;
               display: inline-block;
               letter-spacing: 1px;
-              margin-left: ${layout.type.mobile ? null : '10px'};
+              margin-left: ${mobile ? null : '10px'};
             }
             .email-input {
               display: inline-block;
-              height: ${layout.type.mobile ? '30px' : '40px'};
+              height: ${mobile ? '30px' : '40px'};
               border: none;
               border-bottom: 1px solid black;
               background-color: #F3F4FA;
               font-size: .9em;
-              width: ${layout.type.mobile ? '65%' : layout.innerWidth >= 1300 ? '300px' : '200px'};
+              width: ${mobile ? '65%' : layout.innerWidth >= 1300 ? '300px' : '200px'};
               color: #9B9B9B;
               border-radius: 3px;
               margin-right: 15px;
-              margin-left: ${layout.type.mobile ? '15px' : null};
+              margin-left: ${mobile ? '15px' : null};
               padding-left: 10px;
-              font-size: ${layout.type.mobile ? '12px' : null};
-              float: ${layout.type.mobile ? null : 'right'};
+              font-size: ${mobile ? '12px' : null};
+              float: ${mobile ? null : 'right'};
             }
             .email-input::placeholder {
               color: #C1C1C1;
             }
             .newsletter-submit {
               display: inline-block;
-              height: ${layout.type.mobile ? '31px' : '40px'};
-              width: ${layout.type.mobile ? '85px' : layout.innerWidth >= 1300 ? '140px' : '100px'};
+              height: ${mobile ? '31px' : '40px'};
+              width: ${mobile ? '85px' : layout.innerWidth >= 1300 ? '140px' : '100px'};
               color: white;
               background-color: #314B88;
               border: none;
               border-radius: 3px;
               text-transform: uppercase;
-              padding: ${layout.innerWidth <= 1300 || layout.type.mobile ? null : '7px 20px 10px 20px'};
-              font-size: ${layout.type.mobile ? '12px' : null};
-              float: ${layout.type.mobile ? null : 'right'};
+              padding: ${layout.innerWidth <= 1300 || mobile ? null : '7px 20px 10px 20px'};
+              font-size: ${mobile ? '12px' : null};
+              float: ${mobile ? null : 'right'};
             }
             :global(.newsletter-clear) {
               margin-left: 10px;
@@ -99,8 +107,8 @@ export default class Newsletter extends Component {
               width: 100%
             }
             .newsletter-right {
-              margin-top: ${layout.type.mobile ? '3px' : null};
-              padding-right: ${layout.type.mobile ? null : '10px'};
+              margin-top: ${mobile ? '3px' : null};
+              padding-right: ${mobile ? null : '10px'};
               width: 100%;
             }
             .validate {
@@ -128,7 +136,7 @@ export default class Newsletter extends Component {
             className="validate"
             target="_blank" >
               {
-                layout.type.mobile ? null
+                mobile ? null
                 : (<button
                     type="submit"
                     value="Subscribe"
@@ -150,7 +158,7 @@ export default class Newsletter extends Component {
                 placeholder="Email address"
               />
               {
-                layout.type.mobile
+                mobile
                 ? (<button
                   type="submit"
                   value="Subscribe"

@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { compose } from 'react-apollo';
-import Link from 'next/link';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Router from 'next/router';
 import { path } from 'ramda';
+
 import {
   viewUserByWalletQuery,
 } from '@/shared/utils/apollo';
 
+import style from '@/shared/constants/style';
+
+
 class Footer extends Component {
+  static propTypes = {
+    offsetRight: PropTypes.string,
+    user: PropTypes.object,
+  }
+
   render() {
     const user = path(['viewUserByWallet'], this.props.user);
     return (
@@ -17,7 +26,8 @@ class Footer extends Component {
           .footer {
             position: relative;
             height: ${Router.router.route === '/' && !user ? '190px' : '130px'};
-            width: calc(100% - 285px);
+            width: calc(100% - ${this.props.offsetRight || '0px'});
+            transition: ${style.transition.default};
             display: flex;
             background-color: #B6D0F7;
           }
@@ -109,7 +119,7 @@ class Footer extends Component {
               <img src="/static/images/icons/reddit.png" />
             </a>
             <a href="https://medium.com/the-notice-board" target="_blank" rel="noopener noreferrer">
-              <img src="/static/images/icons/medium.png"/>
+              <img src="/static/images/icons/medium.png" />
             </a>
           </div>
         </div>
@@ -117,6 +127,7 @@ class Footer extends Component {
     );
   }
 }
+
 
 export default compose(
   viewUserByWalletQuery,
