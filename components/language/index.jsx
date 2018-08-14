@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { updateIntl } from 'react-intl-redux';
 import { injectIntl, intlShape } from 'react-intl';
 import { Image, MenuItem, DropdownButton } from 'react-bootstrap';
+import { withRouter } from 'next/router';
+
 import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
 import { localization } from '@/shared/intl/setup';
 import { Mobile, Desktop } from '@/components/responsive';
@@ -18,17 +20,19 @@ import {
   viewUserByWalletQuery,
 } from '@/shared/utils/apollo';
 
+@withRouter
 @injectIntl
 @connect()
 class Language extends Component {
   static propTypes = {
     user: PropTypes.object,
+    router: PropTypes.object,
     dispatch: PropTypes.func,
     intl: intlShape,
   };
 
   onSelect(language) {
-    const { dispatch, user } = this.props;
+    const { dispatch, user, router } = this.props;
     dispatch(updateIntl(localization[language]));
     dispatch({
       type: UPDATE_USER,
@@ -39,6 +43,7 @@ class Language extends Component {
 
     if (user.viewUserByWallet) updateUser(user.viewUserByWallet, { language });
     document.documentElement.setAttribute('lang', language);
+    if (router.route === '/game') window.location.reload();
   }
 
   renderLanguageMenuItems() {

@@ -31,8 +31,8 @@ export const AUTH_ROUTES = [
 export const AUTH_ROUTES_REGEX = new RegExp('^(\/inventory|\/game)', 'i'); /* eslint-disable-line no-useless-escape */
 
 export const requireUserLoginAndSupportedNetwork = (user = {}, network = {}) => {
-  if (!user.viewUserByWallet || !network.supported) {
-    showRegistrationWorkflow();
+  if ((!user.loading && !user.viewUserByWallet) || (!network.supported && network.supported !== null)) {
+    if (!user.loading || network.supported !== null) showRegistrationWorkflow();
     return false;
   }
   return true;
