@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
+import { connect } from 'react-redux';
+
 import {
   compose,
   graphql,
@@ -15,6 +17,7 @@ import {
 } from '@/shared/utils/apollo';
 
 
+@connect()
 class RegisterButton extends Component {
   static propTypes = {
     data: PropTypes.shape({

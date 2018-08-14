@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import * as log from 'loglevel';
 import { pathOr, path } from 'ramda';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Grid, Col, Row, Carousel } from 'react-bootstrap';
@@ -13,8 +14,13 @@ import {
 
 import {
   queries,
+  localQueries,
   viewUserByWalletQuery,
 } from '@/shared/utils/apollo';
+
+import {
+  requireUserLoginAndSupportedNetwork,
+} from '@/shared/utils';
 
 import FeatureFlag from '@/components/featureflag';
 import BGButton from '@/components/bgbutton';
@@ -35,12 +41,14 @@ import style from '@/shared/constants/style';
 )
 class GameList extends Component {
   static propTypes = {
-    data: PropTypes.shape({
+    games: PropTypes.shape({
       listGames: PropTypes.array,
       loading: PropTypes.bool,
     }),
     analytics: PropTypes.object,
     layout: PropTypes.object,
+    user: PropTypes.object,
+    root: PropTypes.object,
   }
 
   constructor(props) {
@@ -53,7 +61,7 @@ class GameList extends Component {
   }
 
   static defaultProps = {
-    data: {
+    games: {
       listGames: [],
     },
   }
@@ -63,7 +71,7 @@ class GameList extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const listGames = pathOr([], ['data', 'listGames'], props);
+    const listGames = pathOr([], ['games', 'listGames'], props);
     const playableGames = listGames.filter(game => game.enabled);
     if (path(['viewUserByWallet'], props.user)) {
       return { newsletter: 'false', playableGames };
@@ -73,6 +81,9 @@ class GameList extends Component {
   }
 
   navigateToGame(slug) {
+    const { user, root } = this.props;
+    console.log('root: ', root);
+    if (!requireUserLoginAndSupportedNetwork(user, path(['network'], root))) return log.info('User not logged in, rejecting navigateToGame.');
     this.props.analytics.ga.event({
       category: 'Site Interaction',
       action: 'Play',
@@ -88,8 +99,8 @@ class GameList extends Component {
   }
 
   banner() {
-    const { data } = this.props;
-    if (data.loading) return null;
+    const { games } = this.props;
+    if (games.loading) return null;
     return (
       <Row>
         <style jsx>{`
@@ -210,9 +221,9 @@ class GameList extends Component {
   }
 
   comingSoon() {
-    const { data } = this.props;
+    const { games } = this.props;
     const { mobile } = this.props.layout.type;
-    if (data.loading || !data.listGames) return null;
+    if (games.loading || !games.listGames) return null;
     return (
       <span className="coming-soon">
         <style jsx>{`
@@ -229,7 +240,7 @@ class GameList extends Component {
             gap: (mobile ? '60px' : '100px'),
           }}
         >
-          {data.listGames.filter(game => game.comingSoon && !game.enabled).map((game, k) => <BGGameCard key={k} game={game} />)}
+          {games.listGames.filter(game => game.comingSoon && !game.enabled).map((game, k) => <BGGameCard key={k} game={game} />)}
         </BGGrid>
       </span>
     );
@@ -323,5 +334,6 @@ class GameList extends Component {
 
 export default compose(
   viewUserByWalletQuery,
-  graphql(queries.listGames)
+  graphql(queries.listGames, { name: 'games' }),
+  graphql(localQueries.root, { name: 'root' })
 )(GameList);

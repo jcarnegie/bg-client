@@ -14,6 +14,9 @@ import {
   localQueries,
 } from '@/shared/utils/apollo';
 
+import {
+  AUTH_ROUTES_REGEX,
+} from '@/shared/utils';
 
 import Web3Install from '@/components/popups/Web3Modals/Web3.install';
 import Web3Login from '@/components/popups/Web3Modals/Web3.login';
@@ -52,20 +55,10 @@ class Web3 extends Component {
     const { pathname, router, data, user } = this.props;
     const { network, wallet, loading, showUserRegistrationWorkflow } = data;
 
-    const guestRoutes = [
-      '',
-      'faq',
-      'events',
-      'presale',
-    ];
-
-    /* Regex is insensitive, matches startswith. Ex: presale/bitizens is public. */
-    const matchExp = new RegExp(`^(${guestRoutes.reduce((a, b) => (a + `|\\/${b}`))})`, 'i');
     const path = pathname || router.pathname;
 
     /* If we haven't read the wallet state from web3, don't render any modals */
-    // if (!wallet) return null;
-    if (!path || (path.match(matchExp) && !showUserRegistrationWorkflow)) return null;
+    if (!path || (!path.match(AUTH_ROUTES_REGEX) && !showUserRegistrationWorkflow)) return null;
 
     if (showUserRegistrationWorkflow && !network.available) {
       return <Web3Install show onHide={::this.hideRegistrationWorkflowModals} />;
