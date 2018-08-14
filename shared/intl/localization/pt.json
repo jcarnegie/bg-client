@@ -73,6 +73,7 @@
   },
   "buttons": {
     "submit": "Submeter",
+    "login": "Entrar",
     "register": "Registrar",
     "convert": "Converter",
     "install": "Instalar MetaMask",

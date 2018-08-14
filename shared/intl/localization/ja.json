@@ -73,6 +73,7 @@
   },
   "buttons": {
     "submit": "提出する",
+    "login": "ログイン",
     "register": "登録",
     "convert": "購入",
     "install": "MetaMaskをインストール",

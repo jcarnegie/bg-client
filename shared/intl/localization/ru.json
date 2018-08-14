@@ -78,6 +78,7 @@
   },
   "buttons": {
     "submit": "Отправить",
+    "login": "авторизоваться",
     "register": "Зарегистрироваться",
     "convert": "Купить",
     "install": "Установить MetaMask",

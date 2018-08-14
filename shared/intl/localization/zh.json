@@ -75,6 +75,7 @@
   "buttons": {
     "submit": "确认",
     "register": "注册",
+    "login": "登录",
     "convert": "转换",
     "install": "安装MetaMask",
     "send": "发送"

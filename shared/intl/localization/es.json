@@ -74,6 +74,7 @@
   "buttons": {
     "submit": "Enviar",
     "register": "Inscribirse",
+    "login": "Entrar",
     "convert": "Comprar",
     "install": "Instalar MetaMask",
     "send": "Enviar"

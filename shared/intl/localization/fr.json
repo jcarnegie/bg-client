@@ -74,6 +74,7 @@
   },
   "buttons": {
     "submit": "Soumettre",
+    "login": "S'identifier",
     "register": "S'inscrire",
     "convert": "Convertir",
     "install": "Installer MetaMask",

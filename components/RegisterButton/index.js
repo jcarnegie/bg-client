@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import {
   compose,
@@ -15,7 +15,6 @@ import {
 } from '@/shared/utils/apollo';
 
 
-@injectIntl
 class RegisterButton extends Component {
   static propTypes = {
     data: PropTypes.shape({
