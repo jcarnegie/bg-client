@@ -136,7 +136,7 @@ export const queries = {
   listGames: gql`{
     listGames {
       id name slug url stagingUrl api nft itemsForSaleCount enabled comingSoon
-      bannerImage thumbnailImage categoryIcon
+      bannerImage thumbnailImage categoryIcon config
     }
   }`,
   viewUserByWallet: gql`

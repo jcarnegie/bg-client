@@ -25,6 +25,10 @@ import {
   listItem,
 } from '@/shared/utils/contracts';
 
+import {
+  getConfigForGame,
+} from '@/shared/utils/games';
+
 import { GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD } from '@/shared/constants/actions';
 
 import style from '@/shared/constants/style';
@@ -32,8 +36,8 @@ import ItemPopup from '@/components/popups/itempopup';
 
 import Item from './Item';
 import ItemBase from './ItemBase';
-@connect()
 
+@connect()
 @injectIntl
 class InventoryItem extends ItemBase {
   static propTypes = {
@@ -201,7 +205,7 @@ class InventoryItem extends ItemBase {
         bottomBar = this.inProgressBar('withdraw-in-progress');
         break;
       case 'sold':
-        if (game.listed) {
+        if (getConfigForGame(game).showInMarketplace) {
           bottomBar = (
             <>
               {this.sellButton({ side: 'left', onClick: () => ::this.setState({ modal: 'sell' }) })}
