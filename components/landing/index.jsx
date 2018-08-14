@@ -82,7 +82,6 @@ class GameList extends Component {
 
   navigateToGame(slug) {
     const { user, root } = this.props;
-    console.log('root: ', root);
     if (!requireUserLoginAndSupportedNetwork(user, path(['network'], root))) return log.info('User not logged in, rejecting navigateToGame.');
     this.props.analytics.ga.event({
       category: 'Site Interaction',
