@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
 
+import Router from 'next/router';
+
+import { compose, graphql } from 'react-apollo';
+
+import {
+  viewUserByWalletQuery,
+  localQueries,
+} from '@/shared/utils/apollo';
+
 import {
   DesktopLayout,
   MobileLayout,
@@ -13,6 +22,14 @@ class GamePage extends Component {
   getInitialProps = ctx => Game.getInitialProps(ctx);
 
   render() {
+    const { user, data } = this.props;
+    const { network } = data;
+    if (user.loading || data.loading) return null;
+    if (user.error || !network.supported) {
+      Router.replace('/');
+      return null;
+    };
+
     return (
       <>
         <MobileLayout
@@ -28,5 +45,8 @@ class GamePage extends Component {
 };
 
 
-export default GamePage;
+export default compose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root)
+)(GamePage);
 

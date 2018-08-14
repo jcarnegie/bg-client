@@ -12,7 +12,7 @@ const env = process.env.DEPLOYED_ENV || 'local';
 
 export function returnToPath(path, res) {
   if (!res) {
-    Router.push(path);
+    Router.replace(path);
   }
 }
 
@@ -25,14 +25,14 @@ export const AUTH_ROUTES_WHITELIST = [
 
 export const redirectToHomeIfOnAuthRoute = async() => {
   if (AUTH_ROUTES_WHITELIST.includes(Router.route)) {
-    Router.push('/');
+    window.location = '/';
     await showRegistrationWorkflow();
   }
 };
 
 export function featureRouteGuard({ res }, featureOn) {
   if (!featureOn) {
-    Router.push('/');
+    Router.replace('/');
   }
 }
 

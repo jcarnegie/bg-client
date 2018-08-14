@@ -25,10 +25,6 @@ import {
 } from '@/shared/utils/apollo';
 
 import {
-  redirectToHomeIfOnAuthRoute,
-} from '@/shared/utils';
-
-import {
   calcMaxItemsStats,
   isValidItemCategory,
   getAttrsFromItems,
@@ -210,14 +206,9 @@ class Inventory extends Component {
 
 	render() {
     const { user, data } = this.props;
-
     const { network } = data;
     if (user.loading || data.loading) return <DataLoading />;
-    if (user.error || network.supported) {
-      redirectToHomeIfOnAuthRoute();
-      return null;
-    };
-
+    if (user.error || !network.supported) return null;
     return (
 			<div className="inventory">
 				{this.indexStyle()}

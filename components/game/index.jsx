@@ -10,12 +10,7 @@ import {
   localQueries,
 } from '@/shared/utils/apollo';
 
-import {
-  redirectToHomeIfOnAuthRoute,
-} from '@/shared/utils';
-
 import DataLoading from '@/components/DataLoading';
-import DataError from '@/components/DataError';
 
 import InitGameIframeConnection from '@/components/common/init';
 import { defaultLanguage } from '@/shared/constants/language';
@@ -60,13 +55,9 @@ class Game extends Component {
 
   render() {
     const { user, data } = this.props;
-
     const { network } = data;
     if (user.loading || data.loading) return <DataLoading />;
-    if (user.error || network.supported) {
-      redirectToHomeIfOnAuthRoute();
-      return null;
-    };
+    if (user.error || !network.supported) return null;
     return (
       <div>
         <style jsx global>{`

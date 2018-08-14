@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
 
+import Router from 'next/router';
+
+import { compose, graphql } from 'react-apollo';
+
+import {
+  viewUserByWalletQuery,
+  localQueries,
+} from '@/shared/utils/apollo';
+
 import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
 import Inventory from '@/components/inventory';
 import Chat from '@/components/chat';
@@ -8,6 +17,13 @@ class InventoryPage extends Component {
   getInitialProps = ctx => ({});
 
   render() {
+    const { user, data } = this.props;
+    const { network } = data;
+    if (user.loading || data.loading) return null;
+    if (user.error || !network.supported) {
+      Router.replace('/');
+      return null;
+    };
     return (
       <>
         <MobileLayout
@@ -23,4 +39,7 @@ class InventoryPage extends Component {
 };
 
 
-export default InventoryPage;
+export default compose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root)
+)(InventoryPage);
