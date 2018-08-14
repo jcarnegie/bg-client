@@ -25,6 +25,10 @@ import {
 } from '@/shared/utils/apollo';
 
 import {
+  getConfigForGame,
+} from '@/shared/utils/games';
+
+import {
   calcMaxItemsStats,
   isValidItemCategory,
   getAttrsFromItems,
@@ -150,7 +154,8 @@ class Inventory extends Component {
 
 	renderTabs(games, items) {
     const gameIdsWithItems = uniq(map(path(['game', 'id']), items));
-    const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games);
+    const inventoryWhitelistedGames = filter(game => getConfigForGame(game).showInventory, games);
+    const visibleGames = filter(g => contains(g.id, gameIdsWithItems), inventoryWhitelistedGames);
     const itemsByGameId = {};
 
     games.forEach(game => (itemsByGameId[game.id] = items.filter(item => item.game.id === game.id)));
