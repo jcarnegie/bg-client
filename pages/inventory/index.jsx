@@ -20,7 +20,7 @@ class InventoryPage extends Component {
     const { user, root } = this.props;
     const { network } = root;
     if (user.loading || root.loading) return null;
-    if (user.error || !network.supported) {
+    if (user.error || !network.supported && network.supported !== null) {
       Router.replace('/');
       return null;
     };
