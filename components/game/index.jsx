@@ -25,6 +25,15 @@ class Game extends Component {
     query: PropTypes.object,
   };
 
+  static defaultProps = {
+    dispatch: () => {},
+    data: {},
+    game: {},
+    user: {},
+    slug: '',
+    query: {},
+  };
+
   static getInitialProps({ err, req, res, query, store, isServer }) {
     if (err) {
       log.error(err);
@@ -32,12 +41,7 @@ class Game extends Component {
     return { ...query };
   };
 
-  renderGame() {
-    const { game, user, query } = this.props;
-
-    if (game.loading || user.loading) return 'loading';
-    if (game.error || user.error) return 'Error';
-
+  renderGame(game, user, query) {
     let url = '';
 
     try {
@@ -47,16 +51,17 @@ class Game extends Component {
       }
       log.info(`game URL: ${url}`);
     } catch (err) {
-      log.error('Unable to parse url for game.');
+      log.error('Unable to parse url for game: ', err);
       return 'Error';
     }
     return (<iframe src={url} key={user.data ? user.data.language : defaultLanguage} className="game" />);
   }
 
   render() {
-    const { user, data } = this.props;
-    const { network } = data;
-    if (user.loading || data.loading) return <DataLoading />;
+    const { user, root, game, query } = this.props;
+    if (!user || !root || !game) return <DataLoading />;
+    const { network } = root;
+    if (user.loading || root.loading || game.loading) return <DataLoading />;
     if (user.error || !network.supported) return null;
     return (
       <div>
@@ -69,7 +74,7 @@ class Game extends Component {
           }
         `}</style>
         <InitGameIframeConnection />
-        {this.renderGame()}
+        {this.renderGame(game, user, query)}
       </div>
     );
   }
@@ -78,5 +83,5 @@ class Game extends Component {
 export default compose(
   viewGameBySlugQuery,
   viewUserByWalletQuery,
-  graphql(localQueries.root)
+  graphql(localQueries.root, { name: 'root' })
 )(Game);

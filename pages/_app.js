@@ -52,11 +52,9 @@ class BGApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
     const { isServer } = ctx;
 
-    const rootData = await client.query({ query: localQueries.root });
-    const pageProps = Component.getInitialProps ? await Component.getInitialProps({ rootData: rootData.data, ...ctx }) : {};
+    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     const web3ModalsProps = Web3Modals.WrappedComponent.getInitialProps(ctx);
     const locals = isServer ? ctx.res.locals : {};
-
     return { pageProps, web3ModalsProps, locals };
   }
 

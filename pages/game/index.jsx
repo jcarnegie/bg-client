@@ -10,10 +10,6 @@ import {
 } from '@/shared/utils/apollo';
 
 import {
-  showRegistrationWorkflow,
-} from '@/shared/utils';
-
-import {
   DesktopLayout,
   MobileLayout,
 } from '@/components/layouts';
@@ -23,15 +19,14 @@ import Chat from '@/components/chat';
 
 
 class GamePage extends Component {
-  getInitialProps = ctx => Game.getInitialProps(ctx);
+  static getInitialProps = ctx => Game.getInitialProps(ctx);
 
   render() {
-    const { user, data } = this.props;
-    const { network } = data;
-    if (user.loading || data.loading) return null;
+    const { user, root } = this.props;
+    const { network } = root;
+    if (user.loading || root.loading) return null;
     if (user.error || !network.supported) {
       Router.replace('/');
-      showRegistrationWorkflow();
       return null;
     };
 
@@ -52,6 +47,6 @@ class GamePage extends Component {
 
 export default compose(
   viewUserByWalletQuery,
-  graphql(localQueries.root)
+  graphql(localQueries.root, { name: 'root' })
 )(GamePage);
 
