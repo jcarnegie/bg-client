@@ -73,7 +73,7 @@ class GameList extends Component {
   static getDerivedStateFromProps(props, state) {
     const listGames = pathOr([], ['games', 'listGames'], props);
     const playableGames = listGames.filter(game => game.enabled);
-    if (path(['viewUserByWallet'], props.user)) {
+    if (path(['user', 'viewUserByWallet'], props)) {
       return { newsletter: 'false', playableGames };
     } else {
       return { newsletter: state.newsletter, playableGames };
