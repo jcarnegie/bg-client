@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import { connect } from 'react-redux';
-
 import {
   compose,
   graphql,
@@ -17,16 +15,13 @@ import {
 } from '@/shared/utils/apollo';
 
 
-@connect()
 class RegisterButton extends Component {
   static propTypes = {
-    data: PropTypes.shape({
+    root: PropTypes.shape({
       wallet: PropTypes.string,
       network: PropTypes.object,
     }),
     user: PropTypes.object,
-    reduxUser: PropTypes.object,
-    dispatch: PropTypes.func,
   }
 
   state = {}
@@ -72,14 +67,14 @@ class RegisterButton extends Component {
   }
 
   render() {
-    const { data, user } = this.props;
-    const { wallet, network } = data;
+    const { root, user } = this.props;
+    const { wallet, network } = root;
 
     /* Delay Hack to prevent flicker of register button on initial render */
     if (this.state.timeout) return null;
 
     /* Render null if loading */
-    if (user.loading || network.loading) return null;
+    if (user.loading || network.supported === null) return null;
 
     /* If user does not have web3, show "register" */
     if (!network.available) {
@@ -117,5 +112,5 @@ class RegisterButton extends Component {
 
 export default compose(
   viewUserByWalletQuery,
-  graphql(localQueries.root),
+  graphql(localQueries.root, { name: 'root' }),
 )(RegisterButton);

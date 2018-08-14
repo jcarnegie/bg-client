@@ -13,15 +13,19 @@ import { Mobile, Desktop } from '@/components/responsive';
 
 class User extends Component {
   static propTypes = {
-    data: PropTypes.object,
+    user: PropTypes.object,
+  };
+
+  static defaultProps = {
+    user: {},
   };
 
   render() {
-    const { data } = this.props;
-    const { viewUserByWallet } = data;
+    const { user } = this.props;
+    const { viewUserByWallet } = user;
 
-    if (!viewUserByWallet || data.loading) return <ScaleLoader height={10} width={2} color="white" />;
-    if (data.error) return null;
+    if (user.loading) return <ScaleLoader height={10} width={2} color="white" />;
+    if (user.error || !viewUserByWallet) return null;
 
     return (
       <div className="user">
@@ -96,6 +100,7 @@ class User extends Component {
 }
 
 export default compose(graphql(queries.viewUserByWallet, {
+  name: 'user',
   options: props => ({
     variables: { wallet: getWeb3Wallet() },
     ssr: false,
