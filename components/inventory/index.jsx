@@ -213,11 +213,11 @@ class Inventory extends Component {
 
     const { network } = data;
     if (user.loading || data.loading) return <DataLoading />;
-    if (user.error) return <DataError />;
-    if (!network.supported) {
+    if (user.error || network.supported) {
       redirectToHomeIfOnAuthRoute();
       return null;
-    }
+    };
+
     return (
 			<div className="inventory">
 				{this.indexStyle()}

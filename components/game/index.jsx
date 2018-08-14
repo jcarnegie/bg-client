@@ -63,11 +63,10 @@ class Game extends Component {
 
     const { network } = data;
     if (user.loading || data.loading) return <DataLoading />;
-    if (user.error) return <DataError />;
-    if (!network.supported) {
+    if (user.error || network.supported) {
       redirectToHomeIfOnAuthRoute();
       return null;
-    }
+    };
     return (
       <div>
         <style jsx global>{`
