@@ -65,8 +65,6 @@ class BGApp extends App {
   }
 
   componentDidMount() {
-    const { router } = this.props;
-
     this.props.store.dispatch({ type: APP_INIT });
     const state = this.props.store.getState();
 
