@@ -10,25 +10,7 @@ import {
 
 const env = process.env.DEPLOYED_ENV || 'local';
 
-export function returnToPath(path, res) {
-  if (!res) {
-    Router.replace(path);
-  }
-}
-
 export const showRegistrationWorkflow = () => client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
-
-export const AUTH_ROUTES_WHITELIST = [
-  '/game',
-  '/inventory',
-];
-
-export const redirectToHomeIfOnAuthRoute = async() => {
-  if (AUTH_ROUTES_WHITELIST.includes(Router.route)) {
-    window.location = '/';
-    await showRegistrationWorkflow();
-  }
-};
 
 export function featureRouteGuard({ res }, featureOn) {
   if (!featureOn) {

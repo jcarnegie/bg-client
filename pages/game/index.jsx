@@ -10,6 +10,10 @@ import {
 } from '@/shared/utils/apollo';
 
 import {
+  showRegistrationWorkflow,
+} from '@/shared/utils';
+
+import {
   DesktopLayout,
   MobileLayout,
 } from '@/components/layouts';
@@ -27,6 +31,7 @@ class GamePage extends Component {
     if (user.loading || data.loading) return null;
     if (user.error || !network.supported) {
       Router.replace('/');
+      showRegistrationWorkflow();
       return null;
     };
 

@@ -9,6 +9,10 @@ import {
   localQueries,
 } from '@/shared/utils/apollo';
 
+import {
+  showRegistrationWorkflow,
+} from '@/shared/utils';
+
 import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
 import Inventory from '@/components/inventory';
 import Chat from '@/components/chat';
@@ -22,6 +26,7 @@ class InventoryPage extends Component {
     if (user.loading || data.loading) return null;
     if (user.error || !network.supported) {
       Router.replace('/');
+      showRegistrationWorkflow();
       return null;
     };
     return (
