@@ -13,6 +13,7 @@ import {
 
 import {
   queries,
+  viewUserByWalletQuery,
 } from '@/shared/utils/apollo';
 
 import FeatureFlag from '@/components/featureflag';
@@ -30,7 +31,6 @@ import style from '@/shared/constants/style';
   state => ({
     analytics: state.analytics,
     layout: state.layout,
-    user: state.user,
   })
 )
 class GameList extends Component {
@@ -65,7 +65,7 @@ class GameList extends Component {
   static getDerivedStateFromProps(props, state) {
     const listGames = pathOr([], ['data', 'listGames'], props);
     const playableGames = listGames.filter(game => game.enabled);
-    if (path(['data'], props.user)) {
+    if (path(['viewUserByWallet'], props.user)) {
       return { newsletter: 'false', playableGames };
     } else {
       return { newsletter: state.newsletter, playableGames };
@@ -322,5 +322,6 @@ class GameList extends Component {
 }
 
 export default compose(
+  viewUserByWalletQuery,
   graphql(queries.listGames)
 )(GameList);

@@ -36,6 +36,7 @@ import {
   CHAT_MESSAGE_SENT,
   CHAT_SET_CHANNEL,
   SENDBIRD_INIT,
+  UPDATE_USER,
 } from '@/shared/constants/actions';
 
 
@@ -129,5 +130,6 @@ function * initChat(action) {
 
 export default function * chatSaga() {
   yield takeEvery(CHAT_MESSAGE_SEND, sendChatMessage);
+  yield takeEvery(UPDATE_USER, initChat);
   yield takeEvery('INIT_CHAT', initChat);
 }

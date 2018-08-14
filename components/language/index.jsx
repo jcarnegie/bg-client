@@ -7,6 +7,7 @@ import { Image, MenuItem, DropdownButton } from 'react-bootstrap';
 import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
 import { localization } from '@/shared/intl/setup';
 import { Mobile, Desktop } from '@/components/responsive';
+import { UPDATE_USER } from '@/shared/constants/actions';
 
 import {
   compose,
@@ -29,6 +30,13 @@ class Language extends Component {
   onSelect(language) {
     const { dispatch, user } = this.props;
     dispatch(updateIntl(localization[language]));
+    dispatch({
+      type: UPDATE_USER,
+      payload: {
+        language,
+      },
+    });
+
     if (user.viewUserByWallet) updateUser(user.viewUserByWallet, { language });
     document.documentElement.setAttribute('lang', language);
   }
