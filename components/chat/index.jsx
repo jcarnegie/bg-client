@@ -124,9 +124,8 @@ class Chat extends Component {
   render() {
     const { messages } = this.props.chat;
     const { user, parentCollapsed } = this.props;
-    if (user.loading) return null;
 
-    const renderMessages = map(msg => <Message key={msg.messageId} message={msg} user={user.viewUserByWallet} />, messages);
+    const renderMessages = map(msg => <Message key={msg.messageId} message={msg} user={user.viewUserByWallet || {}} />, messages);
 
     return (
       <div className="chat">
@@ -147,6 +146,7 @@ class Chat extends Component {
               flex-grow: 1;
               overflow-y: scroll;
               padding-bottom: 10px;
+              visibility: ${user.loading ? 'hidden' : 'visible'};
             }
             .chat form {
               width: auto;
@@ -183,8 +183,8 @@ class Chat extends Component {
               max-width: 60px;
             }
           `}</style>
-          <StayScrolled className="list" component="div" provideControllers={this.storeScrolledControllers}>
-            {parentCollapsed ? null : renderMessages}
+          <StayScrolled className="list" component="div" provideControllers={::this.storeScrolledControllers}>
+            {parentCollapsed ? <div /> : renderMessages}
           </StayScrolled>
           {parentCollapsed ? ::this.sendButtonWithoutBootstrap() : (
             <Form onSubmit={::this.handleSubmit}>
