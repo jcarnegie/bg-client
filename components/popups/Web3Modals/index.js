@@ -60,15 +60,15 @@ class Web3 extends Component {
     /* If we haven't read the wallet state from web3, don't render any modals */
     if (!path || (!path.match(AUTH_ROUTES_REGEX) && !showUserRegistrationWorkflow)) return null;
 
-    if (showUserRegistrationWorkflow && !network.available) {
+    if (showUserRegistrationWorkflow && !network.available && !network.available === null) {
       return <Web3Install show onHide={::this.hideRegistrationWorkflowModals} />;
     }
 
     const networkLoadedSuccess = !loading && network.available;
-    const showNetwork = networkLoadedSuccess && !network.supported;
+    const showNetwork = networkLoadedSuccess && !network.supported && !network.supported === null;
     if (showNetwork) return <Web3Network show={true} onHide={::this.hideRegistrationWorkflowModals} />;
 
-    const showWeb3Login = (!wallet && !loading);
+    const showWeb3Login = (!wallet && !loading && wallet !== null);
     if (showWeb3Login) return <Web3Login show={true} onHide={::this.hideRegistrationWorkflowModals} />;
 
     const userIsAlreadyRegistered = user.viewUserByWallet && wallet;
