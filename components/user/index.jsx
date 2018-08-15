@@ -101,6 +101,7 @@ class User extends Component {
 
 export default compose(graphql(queries.viewUserByWallet, {
   name: 'user',
+  skip: () => !getWeb3Wallet(),
   options: props => ({
     variables: { wallet: getWeb3Wallet() },
     ssr: false,

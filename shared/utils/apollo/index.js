@@ -253,7 +253,6 @@ const onError = ({ graphQLErrors, networkError }) => {
     const validationMessages = map(err => ({ ...err, __typename: 'ValidationMessage' }), map(prop('data'), dupErrors));
     client.mutate({ mutation: localMutations.validationAddAll, variables: { validationMessages } });
   }
-
   return null;
 };
 
@@ -317,18 +316,18 @@ export const createApolloClient = () => new ApolloBoostClient({
 
           await cache.writeData({ data });
 
-          const gasStationResponse = await fetch(ETH_GAS_STATION_ENDPOINT).then(res => res.json());
-          log.info(`Fetched gas from ${ETH_GAS_STATION_ENDPOINT}`);
-          await cache.writeData({
-            data: {
-              gas: {
-                average: toGwei(gasStationResponse.average),
-                fast: toGwei(gasStationResponse.fast),
-                fastest: toGwei(gasStationResponse.fastest),
-                __typename: 'Gas',
-              },
-            },
-          });
+          // const gasStationResponse = await fetch(ETH_GAS_STATION_ENDPOINT).then(res => res.json());
+          // log.info(`Fetched gas from ${ETH_GAS_STATION_ENDPOINT}`);
+          // await cache.writeData({
+          //   data: {
+          //     gas: {
+          //       average: toGwei(gasStationResponse.average),
+          //       fast: toGwei(gasStationResponse.fast),
+          //       fastest: toGwei(gasStationResponse.fastest),
+          //       __typename: 'Gas',
+          //     },
+          //   },
+          // });
           log.info(`Fetched rate from oracle contract on ${name} network.`);
           const ETHPrice = await bluebird.promisify(getOracleContract(network).ETHPrice)();
           const rate = window.web3.fromWei(ETHPrice, 'ether').toNumber();

@@ -68,11 +68,11 @@ class Language extends Component {
     const prevLang = path(['user', 'viewUserByWallet', 'language'], prevProps);
     const language = path(['user', 'viewUserByWallet', 'language'], this.props);
     if (prevLang !== language) {
-      dispatch(updateIntl(localization[language]));
+      dispatch(updateIntl(localization[language || 'en']));
       dispatch({
         type: UPDATE_USER,
         payload: {
-          language,
+          language: language || 'en',
         },
       });
     }
