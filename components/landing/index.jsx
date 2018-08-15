@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as log from 'loglevel';
-import { pathOr, path } from 'ramda';
+import { pathOr, path, uniq } from 'ramda';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Grid, Col, Row, Carousel } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -57,6 +57,7 @@ class GameList extends Component {
     this.state = {
       newsletter: 'true',
       playableGames: [],
+      bannerGames: [],
     };
   }
 
@@ -72,11 +73,33 @@ class GameList extends Component {
 
   static getDerivedStateFromProps(props, state) {
     const listGames = pathOr([], ['games', 'listGames'], props);
-    const playableGames = listGames.filter(game => game.enabled);
+    const unsortedPlayableGames = listGames.filter(game => game.enabled);
+    const bitizens = unsortedPlayableGames.find(g => g.slug === 'bitizens');
+    const mythereum = unsortedPlayableGames.find(g => g.slug === 'mythereum');
+    const etherOnline = unsortedPlayableGames.find(g => g.slug === 'ether.online');
+
+    let playableGames = [];
+    let bannerGames = [];
+
+    if (bitizens) {
+      playableGames.push(bitizens);
+      bannerGames.push(bitizens);
+    }
+    if (mythereum) {
+      playableGames.push(mythereum);
+      bannerGames.push(mythereum);
+    }
+    if (etherOnline) {
+      playableGames.push(etherOnline);
+      bannerGames.push(etherOnline);
+    }
+
+    playableGames = uniq(playableGames.concat(unsortedPlayableGames));
+
     if (path(['user', 'viewUserByWallet'], props)) {
-      return { newsletter: 'false', playableGames };
+      return { newsletter: 'false', playableGames, bannerGames };
     } else {
-      return { newsletter: state.newsletter, playableGames };
+      return { newsletter: state.newsletter, playableGames, bannerGames };
     }
   }
 
@@ -141,7 +164,7 @@ class GameList extends Component {
         `}</style>
         <Col>
           <Carousel interval={null} className="hero-carousel" defaultActiveIndex={0}>
-            {this.state.playableGames.map((game, idx) => {
+            {this.state.bannerGames.map((game, idx) => {
               return (
                 <Carousel.Item key={idx} onClick={() => ::this.navigateToGame(game.slug)}>
                   <div className="carousel-image" style={{ backgroundImage: `url(${game.bannerImage})` }} />
