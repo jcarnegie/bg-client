@@ -5,7 +5,7 @@ import { updateIntl } from 'react-intl-redux';
 import { injectIntl, intlShape } from 'react-intl';
 import { Image, MenuItem, DropdownButton } from 'react-bootstrap';
 import { withRouter } from 'next/router';
-
+import { path } from 'ramda';
 import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
 import { localization } from '@/shared/intl/setup';
 import { Mobile, Desktop } from '@/components/responsive';
@@ -61,6 +61,21 @@ class Language extends Component {
       );
     }
     return dropDownLanguages;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { dispatch } = this.props;
+    const prevLang = path(['user', 'viewUserByWallet', 'language'], prevProps);
+    const language = path(['user', 'viewUserByWallet', 'language'], this.props);
+    if (prevLang !== language) {
+      dispatch(updateIntl(localization[language]));
+      dispatch({
+        type: UPDATE_USER,
+        payload: {
+          language,
+        },
+      });
+    }
   }
 
   render() {
