@@ -60,7 +60,7 @@ class Web3 extends Component {
     /* If we haven't read the wallet state from web3, don't render any modals */
     if (!path || (!path.match(AUTH_ROUTES_REGEX) && !showUserRegistrationWorkflow)) return null;
 
-    if (showUserRegistrationWorkflow && !network.available && network.available !== null) {
+    if (showUserRegistrationWorkflow && !network.available && network.available === null) {
       return <Web3Install show onHide={::this.hideRegistrationWorkflowModals} />;
     }
 
