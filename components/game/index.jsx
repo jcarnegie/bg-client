@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
-
+import { path } from 'ramda';
 import {
   viewGameBySlugQuery,
   viewUserByWalletQuery,
@@ -23,16 +23,27 @@ class Game extends Component {
     user: PropTypes.object,
     slug: PropTypes.string,
     query: PropTypes.object,
+    root: PropTypes.object,
   };
 
   static defaultProps = {
     dispatch: () => {},
-    data: {},
-    game: {},
-    user: {},
+    game: {
+      viewGameBySlug: {},
+    },
+    user: {
+      viewUserByWallet: {},
+    },
     slug: '',
     query: {},
+    root: {
+      network: {},
+    },
   };
+
+  dom = {
+    frame: null,
+  }
 
   static getInitialProps({ err, req, res, query, store, isServer }) {
     if (err) {
@@ -54,7 +65,39 @@ class Game extends Component {
       log.error('Unable to parse url for game: ', err);
       return 'Error';
     }
-    return (<iframe src={url} key={user.data ? user.data.language : defaultLanguage} className="game" />);
+
+    return (
+      <div id="game-frame-wrapper">
+        <iframe
+          ref={c => (this.dom.frame = c)}
+          id="game-frame"
+          src={url}
+          key={user.data ? user.data.language : defaultLanguage}
+          className="game"
+        />
+      </div>
+    );
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const nextUserId = path(['user', 'viewUserByWallet', 'id'], nextProps);
+    const userId = path(['user', 'viewUserByWallet', 'id'], this.props);
+    const nextNetworkId = path(['network', 'id'], nextProps.root);
+    const networkId = path(['network', 'id'], this.props.root);
+    const nextGameId = path(['viewGameBySlug', 'id'], nextProps.game);
+    const gameId = path(['viewGameBySlug', 'id'], this.props.game);
+    const shouldRender = (
+      nextUserId !== userId ||
+      nextNetworkId !== networkId ||
+      nextGameId !== gameId
+    );
+    return shouldRender;
+  }
+
+  componentWillUnmount() {
+    this.dom.frame.src = 'about:blank';
+    document.getElementById('game-frame-wrapper').removeChild(document.getElementById('game-frame'));
+    document.getElementById('game-component-wrapper').removeChild(document.getElementById('game-frame-wrapper'));
   }
 
   render() {
@@ -64,7 +107,7 @@ class Game extends Component {
     if (user.loading || root.loading || game.loading) return <DataLoading />;
     if (user.error || !network.supported) return null;
     return (
-      <div>
+      <div id="game-component-wrapper">
         <style jsx global>{`
           iframe.game {
             height: calc(100vh - 62px);
@@ -74,7 +117,7 @@ class Game extends Component {
           }
         `}</style>
         <InitGameIframeConnection />
-        {this.renderGame(game, user, query)}
+        {::this.renderGame(game, user, query)}
       </div>
     );
   }
