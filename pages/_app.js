@@ -166,6 +166,7 @@ class BGApp extends App {
                 skip={() => !wallet}
                 query={queries.viewUserByWallet}
                 variables={{ wallet }}
+                fetchPolicy="no-cache"
               >
                 {() => <Component {...pageProps} {...locals} />}
               </Query>

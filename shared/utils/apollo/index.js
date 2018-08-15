@@ -13,7 +13,6 @@ import {
   prop,
 } from 'ramda';
 
-
 import {
   web3IsInstalled,
   getWeb3Wallet,
@@ -302,9 +301,6 @@ export const createApolloClient = () => new ApolloBoostClient({
           return null;
         },
         updateNetworkAndWallet: async(_, { wallet, ...network }, { cache, getCacheKey }) => {
-          const root = await cache.readQuery({ query: localQueries.wallet });
-          if (root.wallet && !wallet) return client.resetStore();
-          if ((root.wallet && wallet) && (root.wallet !== !wallet)) return client.resetStore();
           log.info(`Setting network to ${network.name} with id ${network.id}. Wallet: ${wallet}`);
           let data = {
             network: {
@@ -388,6 +384,7 @@ export const viewUserByWalletQuery = graphql(queries.viewUserByWallet, {
     return ({
       variables: { wallet: typeof window !== 'undefined' && window.web3 && (window.web3.eth.accounts[0] || null) },
       ssr: false,
+      fetchPolicy: 'no-cache',
     });
   },
 });

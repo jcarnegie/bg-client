@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
+import { compose } from 'react-apollo';
 
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 
-import { queries } from '@/shared/utils/apollo';
-import { getWeb3Wallet } from '@/shared/utils/network';
+import { viewUserByWalletQuery } from '@/shared/utils/apollo';
 import style from '@/shared/constants/style';
 
 import { Mobile, Desktop } from '@/components/responsive';
@@ -99,11 +98,4 @@ class User extends Component {
   }
 }
 
-export default compose(graphql(queries.viewUserByWallet, {
-  name: 'user',
-  skip: () => !getWeb3Wallet(),
-  options: props => ({
-    variables: { wallet: getWeb3Wallet() },
-    ssr: false,
-  }),
-}))(User);
+export default compose(viewUserByWalletQuery)(User);
