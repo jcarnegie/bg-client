@@ -145,9 +145,9 @@ class Inventory extends Component {
           {this.renderCategories(game, categories)}
         </div>
         <h3>{game.name}</h3>
-        <Row>
+        <div className="flex-row space-between">
           {itemsToRender}
-        </Row>
+        </div>
       </Fragment>
     );
   }
@@ -281,6 +281,14 @@ class Inventory extends Component {
         }
         .inventory .empty p {
           font-size: 28px;
+        }
+        .flex-row {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+        }
+        .space-between {
+          justify-content: space-evenly;
         }
       `}</style>
     );

@@ -316,7 +316,7 @@ class Market extends Component {
         <style jsx>{`
           .filtered-market {
             width: 100%;
-            padding: 0 0 25px 50px;
+            padding: 25px 50px;
             background-color: #F5F7FB;
           }
           .filtered-mobile-market {
@@ -352,6 +352,7 @@ class Market extends Component {
           .inventory-items {
             display: flex;
             flex-wrap: wrap;
+            justify-content: space-evenly;
           }
         `}</style>
         <div className={this.state.mobile ? 'current-mobile-game-filter' : 'current-game-filter'}>
