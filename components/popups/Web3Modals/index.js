@@ -68,7 +68,7 @@ class Web3 extends Component {
     const showNetwork = networkLoadedSuccess && !network.supported && !network.supported === null;
     if (showNetwork) return <Web3Network show={true} onHide={::this.hideRegistrationWorkflowModals} />;
 
-    const showWeb3Login = (!wallet && !loading && wallet !== null);
+    const showWeb3Login = (!wallet && !loading && wallet === null);
     if (showWeb3Login) return <Web3Login show={true} onHide={::this.hideRegistrationWorkflowModals} />;
 
     const userIsAlreadyRegistered = user.viewUserByWallet && wallet;
