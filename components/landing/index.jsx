@@ -208,7 +208,6 @@ class GameList extends Component {
       <BGGrid
         title={<FormattedMessage id="global.all-games"></FormattedMessage>}
         titleIconSrc="/static/images/icons/all_games.png"
-        underlayImage="/static/images/backgrounds/people_and_interactions.png"
         backgroundImageStats={{
           colors: ['#F0F6FE', '#F0F6FE', 'white'],
           gap: (mobile ? '60px' : '100px'),
