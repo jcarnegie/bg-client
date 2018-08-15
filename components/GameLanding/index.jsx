@@ -1,14 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import * as log from 'loglevel';
+import { path } from 'ramda';
+import { connect } from 'react-redux';
 
 import {
   injectIntl,
 } from 'react-intl';
 
-import { connect } from 'react-redux';
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
 import Router from 'next/router';
 import { Mobile, Desktop } from '@/components/responsive';
 import style from '@/shared/constants/style';
+
+import {
+  localQueries,
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
+import {
+  requireUserLoginAndSupportedNetwork,
+} from '@/shared/utils';
 
 
 @injectIntl
@@ -23,6 +39,8 @@ class GameList extends Component {
     dispatch: PropTypes.func,
     analytics: PropTypes.object,
     layout: PropTypes.object,
+    user: PropTypes.object,
+    root: PropTypes.object,
   }
 
   static defaultProps = {
@@ -35,6 +53,10 @@ class GameList extends Component {
   }
 
   navigateToGame(slug) {
+    const { user, root } = this.props;
+
+    if (!requireUserLoginAndSupportedNetwork(user, path(['network'], root))) return log.info('User not logged in, rejecting navigateToGame.');
+
     this.props.analytics.ga.event({
       category: 'Site Interaction',
       action: 'Play',
@@ -291,7 +313,7 @@ class GameList extends Component {
             left: 0;
             top: 0;
             background-image: url(/static/images/games/bitizens/landing/mining.png);
-            background-size: cover; 
+            background-size: cover;
             background-position: center;
           }
 
@@ -647,7 +669,7 @@ class GameList extends Component {
             left: 0;
             top: 0;
             background-image: url(/static/images/games/bitizens/landing/mining.png);
-            background-size: cover; 
+            background-size: cover;
             background-position: center;
           }
 
@@ -798,4 +820,7 @@ class GameList extends Component {
   }
 }
 
-export default GameList;
+export default compose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root, { name: 'root' })
+)(GameList);
