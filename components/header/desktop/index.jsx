@@ -3,11 +3,6 @@ import Link from 'next/link';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import cx from 'classnames';
-
-import {
-  compose,
-} from 'react-apollo';
 
 import style from '@/shared/constants/style';
 
@@ -16,10 +11,6 @@ import ActiveLink from '@/components/activelink';
 import Language from '@/components/language';
 import Balance from '@/components/balance';
 import User from '@/components/user';
-
-import {
-  viewUserByWalletQuery,
-} from '@/shared/utils/apollo';
 
 
 @injectIntl
@@ -32,7 +23,6 @@ class Header extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     chat: PropTypes.object,
-    user: PropTypes.object,
   };
 
   navigation() {
@@ -104,7 +94,7 @@ class Header extends Component {
         <ActiveLink
           href={{
             pathname: '/presale',
-            query: { slug: 'bitizens' }
+            query: { slug: 'bitizens' },
           }}
           as="/presale/bitizens"
           activeStyle={activeNavigationLinkStyle}
@@ -117,9 +107,6 @@ class Header extends Component {
   }
 
   settings() {
-    const { user } = this.props;
-    const { viewUserByWallet } = user;
-
     return (
       <div className="settings">
         <style jsx>{`
@@ -134,20 +121,9 @@ class Header extends Component {
             display: flex;
             align-items: center;
           }
-          .settings .spaced-right {
-            margin: 0 25px 0 0;
-          }
-          .settings .user {
-            margin: 0 10px 0 0;
-            display: ${viewUserByWallet ? 'initial' : 'none'};
-          }
         `}</style>
-        <div className={cx({ 'spaced-right': !!viewUserByWallet })}>
           <Balance />
-        </div>
-        <div className="user">
           <User />
-        </div>
         <Language />
         <RegisterButton />
       </div>
@@ -177,6 +153,4 @@ class Header extends Component {
   }
 }
 
-export default compose(
-  viewUserByWalletQuery
-)(Header);
+export default Header;
