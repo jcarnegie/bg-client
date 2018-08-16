@@ -112,6 +112,8 @@ class GameList extends Component {
       label: slug,
     });
 
+    /* FIXME - interim solution to handle iframe memory issues */
+    return window.location.replace(`/game/${slug}`);
     Router.push({
         pathname: '/game',
         query: { slug },

@@ -83,8 +83,6 @@ class Inventory extends Component {
 	renderInventory() {
     const { items, games, user } = this.props;
 
-    if (!user.viewUserByWallet && !user.loading) Router.push('/');
-
     if (user.loading || items.loading || games.loading) return <DataLoading />;
     if (user.error || items.error || games.error) return <DataError />;
 
