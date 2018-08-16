@@ -23,7 +23,7 @@
   "license": "closed",
   "dependencies": {
     "@zeit/next-css": "0.2.0",
-    "apollo-boost": "0.1.10",
+    "apollo-boost": "0.1.13",
     "bluebird": "3.5.1",
     "body-parser": "1.18.3",
     "classnames": "2.2.6",
@@ -47,7 +47,7 @@
     "query-string": "6.1.0",
     "ramda": "0.25.0",
     "react": "16.4.1",
-    "react-apollo": "2.1.6",
+    "react-apollo": "2.1.11",
     "react-bootstrap": "0.32.1",
     "react-dom": "16.4.1",
     "react-ga": "2.5.3",
