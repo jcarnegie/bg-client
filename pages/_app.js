@@ -83,6 +83,10 @@ class BGApp extends App {
           });
         }
       });
+    } else {
+      this.props.store.dispatch({
+        type: INIT_CHAT
+      });
     }
 
     /* Network and wallet polling */
