@@ -74,7 +74,7 @@ class RegisterButton extends Component {
     if (this.state.timeout) return null;
 
     /* Render null if loading */
-    if (user.loading || network.supported === null) return null;
+    if (user.loading) return null;
 
     /* If user does not have web3, show "register" */
     if (!network.available) {
