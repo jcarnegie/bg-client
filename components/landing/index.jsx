@@ -76,7 +76,7 @@ class GameList extends Component {
     const unsortedPlayableGames = listGames.filter(game => game.enabled);
     const bitizens = unsortedPlayableGames.find(g => g.slug === 'bitizens');
     const mythereum = unsortedPlayableGames.find(g => g.slug === 'mythereum');
-    const etherOnline = unsortedPlayableGames.find(g => g.slug === 'ether.online');
+    const magicAcademy = unsortedPlayableGames.find(g => g.slug === 'magicacademy');
 
     let playableGames = [];
     let bannerGames = [];
@@ -89,9 +89,9 @@ class GameList extends Component {
       playableGames.push(mythereum);
       bannerGames.push(mythereum);
     }
-    if (etherOnline) {
-      playableGames.push(etherOnline);
-      bannerGames.push(etherOnline);
+    if (magicAcademy) {
+      playableGames.push(magicAcademy);
+      bannerGames.push(magicAcademy);
     }
 
     playableGames = uniq(playableGames.concat(unsortedPlayableGames));
