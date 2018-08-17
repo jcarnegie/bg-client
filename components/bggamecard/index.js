@@ -92,7 +92,6 @@ class BGGameCard extends PureComponent {
           }
           h6, p {
             text-align: center;
-            font-size: 1em;
           }
           p {
             font-size: .8em;

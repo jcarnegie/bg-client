@@ -48,7 +48,7 @@ class Footer extends Component {
           .footer-text-block h2 {
             font-weight: 600;
             font-size: 16px;
-            margin: 0;
+            margin: 0 0 10px 0;
             text-transform: uppercase;
           }
           .social-footer h2 {

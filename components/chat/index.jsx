@@ -159,6 +159,9 @@ class Chat extends Component {
               flex-grow: 6;
               margin-bottom: 0;
             }
+            .chat form .form-group .form-control[type=text]::placeholder {
+              color: #C1C1C1 !important;
+            }
             .chat form .form-group .form-control[type=text] {
               border: none;
               border-bottom: 1px solid lightgray;
@@ -189,7 +192,7 @@ class Chat extends Component {
           {parentCollapsed ? ::this.sendButtonWithoutBootstrap() : (
             <Form onSubmit={::this.handleSubmit}>
               <FormGroup>
-                <FormControl onChange={::this.handleMessageChange} type="text" value={this.state.newMessage} placeholder='Write Something' />
+                <FormControl onChange={::this.handleMessageChange} type="text" value={this.state.newMessage} placeholder='Write something' />
                 {this.sendButton()}
               </FormGroup>
             </Form>

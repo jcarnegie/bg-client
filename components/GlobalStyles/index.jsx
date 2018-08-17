@@ -23,6 +23,20 @@ function GlobalStyles({ style }) {
           color: ${style.colors.text};
           background: ${style.colors.background};
         }
+
+        .bg-input {
+          border-bottom: 1px solid #565656 !important;
+        }
+
+        .bg-input:focus {
+          border-bottom: 1px solid ${style.colors.secondary} !important;
+          outline: none;
+        }
+
+        .bg-input::placeholder {
+          color: #C1C1C1;
+        }
+
         .wrapper {
           min-height: 100%;
           margin-bottom: -130px;
@@ -61,9 +75,11 @@ function GlobalStyles({ style }) {
         a {
           color: #314B88;
           cursor: pointer;
+          text-decoration: none;
         }
         a:hover {
-          color: #536EAD;
+          font-weight: 500;
+          text-decoration: none;
         }
         .gap {
           padding-left: 90px;
@@ -233,6 +249,14 @@ function GlobalStyles({ style }) {
           color: #ffffff;
           outline: 0;
           box-shadow: none;
+        }
+      `}</style>
+      {/* Vendor overrides */}
+      {/* Bootstrap */}
+      <style jsx global>{`
+        .dropdown-menu {
+          border: none !important;
+          box-shadow: ${style.boxShadow.card} !important;
         }
       `}</style>
     </div>

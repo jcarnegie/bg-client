@@ -6,6 +6,8 @@ import cx from 'classnames';
 
 import style from '@/shared/constants/style';
 
+import BGButton from '@/components/bgbutton';
+
 @connect(
   state => ({
     layout: state.layout,
@@ -51,7 +53,7 @@ export default class Newsletter extends Component {
               z-index: 2;
               margin-right: -15px;
               margin-left: -15px;
-              display: ${mobile ? null : 'flex'};
+              display: ${mobile ? 'initial' : 'flex'};
               align-items: center;
               justify-content: space-between;
               transition: ${style.transition.default};
@@ -59,12 +61,23 @@ export default class Newsletter extends Component {
             .newsletter-closed {
               display: none;
             }
-             .subscribe-text {
-              font-size: ${mobile ? '18px' : layout.innerWidth >= 1200 ? '23px' : '21px'};
+            .newsletter-left {
+              display: flex;
+              align-items: center;
+              width: 100%
+            }
+            .subscribe-text {
+              font-size: ${mobile ? '18px' : '21px'};
               text-transform: uppercase;
               display: inline-block;
               letter-spacing: 1px;
-              margin-left: ${mobile ? null : '10px'};
+              margin-left: ${mobile ? 'initial' : '10px'};
+            }
+            .newsletter-right {
+              margin-top: ${mobile ? '3px' : 'initial'};
+              padding-right: ${mobile ? 'initial' : '15px'};
+              width: 100%;
+              position: relative;
             }
             .email-input {
               display: inline-block;
@@ -77,15 +90,15 @@ export default class Newsletter extends Component {
               color: #9B9B9B;
               border-radius: 3px;
               margin-right: 15px;
-              margin-left: ${mobile ? '15px' : null};
+              margin-left: ${mobile ? '15px' : 'initial'};
               padding-left: 10px;
-              font-size: ${mobile ? '12px' : null};
-              float: ${mobile ? null : 'right'};
+              font-size: ${mobile ? '12px' : 'initial'};
+              float: ${mobile ? 'none' : 'right'};
             }
             .email-input::placeholder {
               color: #C1C1C1;
             }
-            .newsletter-submit {
+            :global(.newsletter-submit) {
               display: inline-block;
               height: ${mobile ? '31px' : '40px'};
               width: ${mobile ? '85px' : layout.innerWidth >= 1300 ? '140px' : '100px'};
@@ -95,21 +108,16 @@ export default class Newsletter extends Component {
               border-radius: 3px;
               text-transform: uppercase;
               padding: ${layout.innerWidth <= 1300 || mobile ? null : '7px 20px 10px 20px'};
-              font-size: ${mobile ? '12px' : null};
-              float: ${mobile ? null : 'right'};
+              font-size: ${mobile ? '12px' : '0'};
+              float: ${mobile ? 'none' : 'right !important'};
             }
             :global(.newsletter-clear) {
               margin-left: 10px;
+              color: #C1C1C1;
+              cursor: pointer;
             }
-            .newsletter-left {
-              display: flex;
-              align-items: center;
-              width: 100%
-            }
-            .newsletter-right {
-              margin-top: ${mobile ? '3px' : null};
-              padding-right: ${mobile ? null : '10px'};
-              width: 100%;
+            :global(.newsletter-clear:hover) {
+              color: gray;
             }
             .validate {
               display: inline;
@@ -117,9 +125,8 @@ export default class Newsletter extends Component {
         `}</style>
         <div className="newsletter-left">
           <MdClear
-            color="#C1C1C1"
-            height={layout.innerWidth >= 1200 ? 35 : 30}
-            width={layout.innerWidth >= 1200 ? 35 : 30}
+            height={layout.innerWidth >= 1200 ? 16 : 30}
+            width={layout.innerWidth >= 1200 ? 16 : 30}
             onClick={::this.props.onHide}
             className={cx('newsletter-clear')}
           />
@@ -137,7 +144,8 @@ export default class Newsletter extends Component {
             target="_blank" >
               {
                 mobile ? null
-                : (<button
+                : (
+                  <BGButton
                     type="submit"
                     value="Subscribe"
                     name="subscribe"
@@ -145,7 +153,7 @@ export default class Newsletter extends Component {
                     className="newsletter-submit"
                   >
                     <FormattedMessage id="components.newsletter.sub-button" />
-                  </button>
+                  </BGButton>
                 )
               }
               <input
@@ -153,7 +161,7 @@ export default class Newsletter extends Component {
                 onChange={::this.handleChange}
                 value={this.state.email}
                 name="EMAIL"
-                className="email-input"
+                className="email-input bg-input"
                 id="mce-EMAIL"
                 placeholder="Email address"
               />

@@ -1,6 +1,6 @@
 export const colors = {
   primary: '#314B88',
-  secondary: '',
+  secondary: '#5180EB',
   tertiary: '#536EAD',
   logos: '#FFD57D',
   background: 'rgb(250, 250, 250)',
@@ -35,6 +35,7 @@ export const boxShadow = {
   dark: '0 0 12px rgba(0,0,0,0.70)',
   wide: '0 0 15px rgba(0,0,0,0.12)',
   hover: '0 2px 4px rgba(0,0,0,0.18), 0 1px 8px rgba(0,0,0,0.24)',
+  card: '0 2px 6px rgba(0,0,0,.175)',
 };
 
 export const textShadow = {

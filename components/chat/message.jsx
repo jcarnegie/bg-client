@@ -109,18 +109,11 @@ export default class Message extends Component {
             background-color: #6795FF;
           }
           .chat .message-box.my .body {
-            font-size: 13px;
+            font-size: 14px;
             color: #FFF;
           }
-          .chat .message .header {
-            color: #9FB1CD;
-            display: block;
-            font-size: 10px;
-            margin-bottom: 5px;
-            margin-left: 10px;
-          }
           .chat .message .message-box .body {
-            font-size: 13px;
+            font-size: 14px;
             display: block;
           }
           .chat .message .message-box .body .contents {

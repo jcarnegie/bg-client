@@ -37,7 +37,7 @@ class BGGrid extends PureComponent {
   title() {
     const { mobile } = this.props.layout.type;
     return this.props.title ? (
-      <h5 className="title">
+      <h4 className="title">
         <style jsx>{`
           .title {
             margin: 0 0 0 ${mobile ? '3%' : '1.5%'};
@@ -47,7 +47,7 @@ class BGGrid extends PureComponent {
           }
         `}</style>
         {this.props.title}
-      </h5>
+      </h4>
     ) : null;
   }
 

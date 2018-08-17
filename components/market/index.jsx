@@ -348,6 +348,10 @@ class Market extends Component {
             background: transparent !important; /* Boostrap override */
             background-color: transparent !important; /* Boostrap override */
             box-shadow: none !important; /* Boostrap override */
+            font-weight: 500 !important;
+          }
+          :global(.sort-dropdown .caret) {
+            margin-left: 2px !important;
           }
           .inventory-items {
             display: flex;
