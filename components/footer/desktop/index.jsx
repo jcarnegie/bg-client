@@ -29,8 +29,11 @@ class Footer extends Component {
             height: ${Router.router.route === '/' && !user ? '190px' : '130px'};
             width: calc(100% - ${this.props.offsetRight || '0px'});
             transition: ${style.transition.default};
-            display: flex;
+            display: ${Router.router.route === '/game' ? 'none' : 'flex'};
             background-color: #B6D0F7;
+          }
+          .wrapper {
+            padding-bottom: ${Router.router.route === '/game' ? '0px !important' : '130px'};
           }
           .footer img {
             display: inline-block;

@@ -18,7 +18,11 @@ class Footer extends Component {
             position: relative;
             width: 100%;
             height: ${Router.router.route === '/' && !user ? '265px' : '200px'};
+            display: ${Router.router.route === '/game' ? 'none' : null};
             background-color: #B6D0F7;
+          }
+          .mobile-wrapper {
+            padding-bottom: ${Router.router.route === '/game' ? '0px !important' : '200px'};
           }
           .footer img {
             display: inline-block;
