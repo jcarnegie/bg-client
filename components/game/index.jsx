@@ -95,6 +95,7 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
+    if (!this.dom.frame) return;
     this.dom.frame.src = 'about:blank';
     document.getElementById('game-frame-wrapper').removeChild(document.getElementById('game-frame'));
     document.getElementById('game-component-wrapper').removeChild(document.getElementById('game-frame-wrapper'));
