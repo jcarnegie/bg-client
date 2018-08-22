@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import MdAdd from 'react-icons/lib/md/add';
-import MdRemove from 'react-icons/lib/md/remove'
+import MdChevronRight from 'react-icons/lib/md/chevron-right';
 
 import style from '@/shared/constants/style';
 
@@ -19,6 +18,7 @@ class TreeView extends React.PureComponent {
     childrenClassName: PropTypes.string,
     treeViewClassName: PropTypes.string,
     onClick: PropTypes.func,
+    noChevron: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -41,6 +41,14 @@ class TreeView extends React.PureComponent {
     }
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.noChevron === false && props.defaultCollapsed !== state.collapsed) {
+      return { collapsed: props.defaultCollapsed };
+    } else {
+      return { collapsed: state.collapsed };
+    }
+  }
+
   render() {
     const {
       collapsed = this.state.collapsed,
@@ -53,6 +61,7 @@ class TreeView extends React.PureComponent {
       defaultCollapsed,
       imgSource,
       chevronSize,
+      noChevron,
       ...rest
     } = this.props;
 
@@ -85,17 +94,18 @@ class TreeView extends React.PureComponent {
             position: relative;
             transition: ${style.transition.default};
           }
-          :global(.tree-view_item > .plus) {
+          :global(.tree-view_item > .chevron) {
             position: absolute;
             right: 10px;
             top: 50%;
             transform-origin: center;
-            transform: translateY(-50%);
+            transform: translateY(-50%) rotate(-90deg);
             transition: ${style.transition.default};
           }
           :global(.tree-view .transform-down) {
             transform-origin: center;
             transition: ${style.transition.default};
+            transform: translateY(-50%) rotate(90deg);
           }
         `}</style>
         <div
@@ -108,23 +118,17 @@ class TreeView extends React.PureComponent {
         >
           {image}
           {nodeLabel}
-          {this.state.collapsed
-            ? <MdAdd
+          {noChevron === false
+            ? null
+            : <MdChevronRight
               color="black"
               height={chevronSize}
               width={chevronSize}
               className={cx({
                 'transform-down': !collapsed,
-              }, 'plus')}
-            />
-            : <MdRemove
-              color="black"
-              height={chevronSize}
-              width={chevronSize}
-              className={cx({
-                'transform-down': !collapsed,
-              }, 'plus')}
-            />}
+              }, 'chevron')}
+              />
+          }
         </div>
         <div
           className={cx({

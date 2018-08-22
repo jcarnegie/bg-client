@@ -178,7 +178,7 @@
     },
     "marketplace": {
       "title": "Marketplace",
-      "games": "Games",
+      "games": "All Games",
       "expires-in": "Expires in ",
       "expires-today": "Expires today",
       "days": "days",

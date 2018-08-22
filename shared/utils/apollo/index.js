@@ -153,8 +153,8 @@ export const queries = {
     }
   `,
   listMarketplaceItems: gql`
-    query listMarketplaceItems($language: String, $userId: Int, $gameId: Int!, $categories: [String], $sort: Value) {
-      listMarketplaceItems(language: $language, userId: $userId, gameId: $gameId, categories: $categories, sort: $sort) {
+      query listMarketplaceItems($language: String, $userId: Int, $gameId: Int, $categories: [String], $andNotCategories: [String], $sort: Value) {
+        listMarketplaceItems(language: $language, userId: $userId, gameId: $gameId, categories: $categories, andNotCategories: $andNotCategories, sort: $sort) {
         id lan tokenId name description image attrs categories salePrice saleExpiration saleState lastOwner {id} saleExpiration saleCurrency game {id} user {id}
       }
     }
