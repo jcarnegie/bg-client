@@ -46,9 +46,8 @@ class User extends Component {
       <div className="user">
         <style jsx global>{`
           .user .user-mobile {
-            border-bottom: ${style.header.border};
             width: 100%;
-            padding: 20px 27px;
+            padding: 20px 20px;
             font-size: 14px;
             font-weight: 100;
           }
@@ -79,18 +78,20 @@ class User extends Component {
               }
               .text .name {
                 text-transform: uppercase;
-                font-size: 14px;
+                font-size: ${layout.type.mobile ? '15px' : '14px'};
                 display: block;
                 text-align: right;
                 float: left;
                 clear: both;
+                ${layout.type.mobile ? 'margin-bottom: 5px;' : ''}
               }
               .text .wallet {
                 text-align: right;
                 display: block;
                 float: left;
                 clear: both;
-                font-size: 12px;
+                font-size: ${layout.type.mobile ? '14px;' : '12px'};
+                ${layout.type.mobile ? 'font-weight: 100;' : ''}
               }
               .user-desktop {
                 margin-left: 20px;

@@ -74,7 +74,7 @@ class BGGrid extends PureComponent {
           .bg-grid-wrapper,
           .bg-grid-header,
           .bg-grid {
-            padding: ${mobile ? '5px' : '15px'};
+            padding: ${mobile ? '5px 0 10px 0' : '15px'};
           }
           .bg-grid-wrapper {
             background: ${this.props.backgroundColor};
@@ -83,7 +83,7 @@ class BGGrid extends PureComponent {
             position: relative;
           }
           .bg-grid-header {
-            padding: ${mobile ? '5px' : '30px 30px 15px 30px'};
+            padding: ${mobile ? '20px' : '30px 30px 15px 30px'};
             display: flex;
             align-items: center;
           }

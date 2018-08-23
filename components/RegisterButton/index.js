@@ -37,7 +37,6 @@ class RegisterButton extends Component {
             background-color: #5DBE81;
             padding: 0 30px;
             text-transform: uppercase;
-            font-weight: 100;
             font-size: 14px;
             letter-spacing: 1px;
             height: 62px;

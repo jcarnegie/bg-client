@@ -27,7 +27,8 @@ import BGButton from '@/components/bgbutton';
 import BGIcon from '@/components/bgicon';
 import BGGrid from '@/components/bggrid';
 import BGGameCard from '@/components/bggamecard';
-import Newsletter from '@/components/newsletter';
+import NewsletterMobile from '@/components/newsletter/mobile';
+import NewsletterDesktop from '@/components/newsletter/desktop';
 
 import style from '@/shared/constants/style';
 
@@ -112,18 +113,12 @@ class GameList extends Component {
       label: slug,
     });
 
-    /* FIXME - interim solution to handle iframe memory issues */
     return window.location.replace(`/game/${slug}`);
-    Router.push({
-        pathname: '/game',
-        query: { slug },
-      },
-      `/game/${slug}`
-    );
   }
 
   banner() {
-    const { games } = this.props;
+    const { games, layout } = this.props;
+    const { mobile } = layout.type;
     if (games.loading) return null;
     return (
       <Row>
@@ -135,7 +130,7 @@ class GameList extends Component {
           :global(.hero-carousel .carousel-image),
           :global(.hero-carousel .carousel-inner),
           :global(.hero-carousel .carousel-inner .item) {
-            height: 500px;
+            height: ${mobile ? '350px' : '500px'};
             margin: 0 auto;
           }
           :global(.hero-carousel .carousel-control) {
@@ -147,7 +142,7 @@ class GameList extends Component {
             text-shadow: 1px 1px 4px black;
           }
           :global(.hero-carousel .carousel-control .glyphicon:before) {
-            font-size: 45px !important;
+            font-size: 35px !important;
           }
           :global(.hero-carousel .carousel-indicators li) {
             box-shadow: 1px 1px 4px black;
@@ -156,7 +151,7 @@ class GameList extends Component {
             opacity: 1;
           }
           :global(.hero-carousel .carousel-image) {
-            background-size: auto 100%;
+            background-size: ${mobile ? 'auto 350px' : 'cover'};
             background-position: center center;
             background-repeat: no-repeat;
           }
@@ -346,7 +341,11 @@ class GameList extends Component {
             {::this.aboutBitGuild()}
           </Col>
         </Row>
-        <Newsletter
+        <NewsletterMobile
+          show={this.state.newsletter}
+          onHide={::this.onHideNewsletter}
+        />
+        <NewsletterDesktop
           show={this.state.newsletter}
           onHide={::this.onHideNewsletter}
         />

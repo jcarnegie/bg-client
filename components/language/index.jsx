@@ -183,36 +183,37 @@ class Language extends Component {
             .lang-dropdown {
               padding: 0 7px;
             }
-            .lang-dropdown .dropdown-menu {
+            .lang-dropdown .dropdown .btn .caret {
+              color: white;
+            }
+            .lang-dropdown .dropdown .btn img,
+            .lang-dropdown .dropdown .btn .caret {
+              transform: translateX(8px);
+            }
+            .lang-dropdown .dropdown .dropdown-menu li a:focus,
+            .lang-dropdown .dropdown .dropdown-menu li a:hover {
+              background: rgba(255, 255, 255, 0.15) !important;
+            }
+
+            .current-lang {
+              color: white;
+              padding-left: 22px;
+            }
+
+            .native-language {
+              color: white;
+              font-size: 15px;
+              margin-bottom: 10px;
+            }
+            .dropdown-menu {
               background-color: #BCC4DE;
               min-width: 0;
               margin-right: 10px;
               margin-top: 0;
               border-top-left-radius: 0;
               border-top-right-radius: 0;
-            }
-
-            .lang-dropdown .dropdown .btn .caret {
-              color: white;
-            }
-
-            .lang-dropdown .dropdown .btn img,
-            .lang-dropdown .dropdown .btn .caret {
-              transform: translateX(8px);
-            }
-
-            .lang-dropdown .dropdown .dropdown-menu li a:focus,
-            .lang-dropdown .dropdown .dropdown-menu li a:hover {
-              background: rgba(255, 255, 255, 0.15) !important;
-            }
-
-            .current-lang{
-              color: white;
-              padding-left: 22px;
-            }
-
-            .native-language{
-              color: white;
+              overflow-y: scroll !important;
+              height: 150px !important;
             }
           `}</style>
         </Mobile>

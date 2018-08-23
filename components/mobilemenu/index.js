@@ -32,7 +32,7 @@ class HeaderItem extends Component {
             display: flex;
             align-items: center;
             height: 100%;
-            padding: 0 15px;
+            padding: 0 21px;
             background: ${this.props.active ? 'rgba(255, 255, 255, .2)' : 'transparent'};
           }
         `}</style>

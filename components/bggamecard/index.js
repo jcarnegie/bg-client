@@ -44,14 +44,15 @@ class BGGameCard extends PureComponent {
             justify-content: start;
             background: white;
             max-width: 300px;
-            min-width: 140px;
+            min-width: 150px;
             max-height: 440px;
             width: 30%;
             height: 35%;
             background: white;
             border-radius: 6px;
-            box-shadow: ${style.boxShadow.default};
+            box-shadow: ${style.boxShadow.wide};
             padding: ${mobile ? '5px' : '10px'};
+            ${mobile ? 'margin: 10px 0px !important;' : ''}
             cursor: pointer;
             border: 1px solid white;
             opacity: 1;
