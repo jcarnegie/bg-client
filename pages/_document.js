@@ -30,6 +30,7 @@ export default class BGDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer></script>
         </body>
       </html>
     );

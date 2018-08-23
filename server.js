@@ -29,7 +29,8 @@ console.log('process.env.MAINNET_ORACLE_CONTRACT_ADDR: ', process.env.MAINNET_OR
 console.log('process.env.RINKEBY_TOKEN_CONTRACT_ADDR: ', process.env.RINKEBY_TOKEN_CONTRACT_ADDR);
 console.log('process.env.RINKEBY_TOPUP_CONTRACT_ADDR: ', process.env.RINKEBY_TOPUP_CONTRACT_ADDR);
 console.log('process.env.RINKEBY_ORACLE_CONTRACT_ADDR: ', process.env.RINKEBY_ORACLE_CONTRACT_ADDR);
-console.log('process.env.SENDBIRD_APP_ID: ', process.env.SENDBIRD_APP_ID);
+console.log('process.env.DISCORD_SERVER: ', process.env.DISCORD_SERVER);
+console.log('process.env.DISCORD_SHARD: ', process.env.DISCORD_SHARD);
 
 
 next.prepare().then(() => {

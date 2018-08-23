@@ -12,7 +12,6 @@ import {
 } from '@/components/layouts';
 
 import Game from '@/components/game';
-import Chat from '@/components/chat';
 
 
 class GamePage extends Component {
@@ -29,7 +28,6 @@ class GamePage extends Component {
         />
         <DesktopLayout
           main={<Game {...this.props} />}
-          aside={<Chat {...this.props} />}
         />
       </>
     );

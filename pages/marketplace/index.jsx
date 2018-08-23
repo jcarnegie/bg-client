@@ -1,6 +1,5 @@
 import { DesktopLayout, MobileLayout } from '@/components/layouts';
 import Market from '@/components/market';
-import Chat from '@/components/chat';
 
 
 const MarketPlace = props => (
@@ -10,7 +9,6 @@ const MarketPlace = props => (
     />
     <DesktopLayout
       main={<Market {...props} />}
-      aside={<Chat {...props} />}
     />
   </>
 );

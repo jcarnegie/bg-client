@@ -1,6 +1,5 @@
 import { DesktopLayout, MobileLayout } from '@/components/layouts';
 import Sandbox from '@/components/sandbox';
-import Chat from '@/components/chat';
 
 
 const SandboxPage = props => (
@@ -10,7 +9,6 @@ const SandboxPage = props => (
     />
     <DesktopLayout
       main={<Sandbox {...props} />}
-      aside={<Chat {...props} />}
     />
   </>
 );

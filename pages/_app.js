@@ -18,6 +18,10 @@ import {
 } from '@/shared/utils/apollo';
 
 import {
+  createCrate,
+} from '@/shared/utils/discord';
+
+import {
   asyncGetNetworkId,
   web3IsInstalled,
   getWeb3Wallet,
@@ -34,7 +38,6 @@ import GlobalStyles from '@/components/GlobalStyles';
 import style from '@/shared/constants/style';
 import {
   APP_INIT,
-  INIT_CHAT,
 } from '@/shared/constants/actions';
 
 /* Poll web3 interface for user account with this frequency */
@@ -66,6 +69,8 @@ class BGApp extends App {
     this.props.store.dispatch({ type: APP_INIT });
     const state = this.props.store.getState();
 
+    createCrate();
+
     if (state.analytics.ga.pageview) {
       state.analytics.ga.pageview(window.location.pathname);
     }
@@ -82,10 +87,6 @@ class BGApp extends App {
             variables: { tx: latestBlock },
           });
         }
-      });
-    } else {
-      this.props.store.dispatch({
-        type: INIT_CHAT
       });
     }
 
@@ -121,7 +122,6 @@ class BGApp extends App {
               wallet: currentWallet,
             },
           });
-          this.props.store.dispatch({ type: INIT_CHAT });
           this.setState({
             network: currentNetwork,
             wallet: currentWallet,

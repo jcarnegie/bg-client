@@ -8,7 +8,6 @@ import {
 
 import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
 import Inventory from '@/components/inventory';
-import Chat from '@/components/chat';
 
 class InventoryPage extends Component {
   static getInitialProps = ctx => ({});
@@ -23,7 +22,6 @@ class InventoryPage extends Component {
         />
         <DesktopLayout
           main={<DesktopContent><Inventory {...this.props} /></DesktopContent>}
-          aside={<Chat {...this.props} />}
         />
       </>
     );

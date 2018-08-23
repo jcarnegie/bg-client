@@ -6,7 +6,6 @@ import Main from '@/components/layouts/main';
 import Header from '@/components/header/mobile';
 import Footer from '@/components/footer/mobile';
 import MenuDrawer from '@/components/menudrawer';
-import ChatDrawer from '@/components/chatdrawer';
 import { Mobile } from '@/components/responsive';
 
 
@@ -30,7 +29,6 @@ class MobileLayout extends Component {
             {props.main}
           </Main>
           <MenuDrawer show={props.layout.showMenu} />
-          <ChatDrawer show={props.layout.chatMobileShow} />
           {props.children}
         </div>
         <Footer />
