@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {omit} from "ramda";
-import {Col, ControlLabel, FormGroup, Glyphicon, HelpBlock} from "react-bootstrap";
-import {FormattedMessage} from "react-intl";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { omit } from 'ramda';
+import { Col, ControlLabel, FormGroup, Glyphicon, HelpBlock } from 'react-bootstrap';
+import { FormattedMessage } from 'react-intl';
 
 
 export default function withGroup(Input) {
@@ -18,10 +18,10 @@ export default function withGroup(Input) {
     };
 
     render() {
-      const {required, validation} = this.props;
-      const props = omit(["validation"], this.props);
+      const { required, validation } = this.props;
+      const props = omit(['validation'], this.props);
       return (
-        <FormGroup controlId={this.props.name} validationState={validation ? "error" : null}>
+        <FormGroup controlId={this.props.name} validationState={validation ? 'error' : null}>
           <Col componentClass={ControlLabel}>
             <FormattedMessage id={`fields.${this.props.name}.label`} />
             {required ? <sup><Glyphicon glyph="asterisk" /></sup> : null}

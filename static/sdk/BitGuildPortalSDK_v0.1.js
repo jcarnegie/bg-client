@@ -31,145 +31,145 @@
   var prefix = "https://www.bitguild.com/api/";
 
   var _default = new (
-    /*#__PURE__*/
-    function () {
-      function BitGuildSDK() {
-        _classCallCheck(this, BitGuildSDK);
+  /*#__PURE__*/
+  function () {
+    function BitGuildSDK() {
+      _classCallCheck(this, BitGuildSDK);
 
-        Object.defineProperty(this, "user", {
-          configurable: true,
-          enumerable: true,
-          writable: true,
-          value: null
-        });
-        Object.defineProperty(this, "_init", {
-          configurable: true,
-          enumerable: true,
-          writable: true,
-          value: null
-        });
-        Object.defineProperty(this, "_user", {
-          configurable: true,
-          enumerable: true,
-          writable: true,
-          value: null
+      Object.defineProperty(this, "user", {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        value: null
+      });
+      Object.defineProperty(this, "_init", {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        value: null
+      });
+      Object.defineProperty(this, "_user", {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        value: null
+      });
+    }
+
+    _createClass(BitGuildSDK, [{
+      key: "init",
+      value: function init() {
+        if (!this._init) {
+          this._init = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+              reject(new Error("timeout!"));
+            }, 10000);
+            window.addEventListener("message", function (_ref) {
+              var data = _ref.data;
+
+              if (data.type === "pong") {
+                resolve();
+              }
+            }, false);
+            window.top.postMessage({
+              type: "ping"
+            }, "*");
+          });
+        }
+
+        return this._init;
+      }
+    }, {
+      key: "receiveMessage",
+      value: function receiveMessage(resolve) {
+        var _this = this;
+
+        return function (_ref2) {
+          var data = _ref2.data;
+
+          switch (data.type) {
+            case "user":
+              _this.user = data.user;
+              break;
+
+            default:
+              break;
+          }
+
+          resolve();
+        };
+      }
+    }, {
+      key: "isOnPortal",
+      value: function isOnPortal() {
+        return this.init().then(function () {
+          return true;
+        }).catch(function () {
+          return false;
         });
       }
+    }, {
+      key: "getUser",
+      value: function getUser() {
+        var _this2 = this;
 
-      _createClass(BitGuildSDK, [{
-        key: "init",
-        value: function init() {
-          if (!this._init) {
-            this._init = new Promise(function (resolve, reject) {
+        return this.init().then(function () {
+          if (!_this2._user) {
+            _this2._user = new Promise(function (resolve, reject) {
               setTimeout(function () {
                 reject(new Error("timeout!"));
-              }, 200);
-              window.addEventListener("message", function (_ref) {
-                var data = _ref.data;
+              }, 10000);
+              window.addEventListener("message", function (_ref3) {
+                var data = _ref3.data;
 
-                if (data.type === "pong") {
+                if (data.type === "user") {
+                  _this2.user = data.user;
                   resolve();
                 }
               }, false);
               window.top.postMessage({
-                type: "ping"
+                type: "user"
               }, "*");
             });
           }
 
-          return this._init;
-        }
-      }, {
-        key: "receiveMessage",
-        value: function receiveMessage(resolve) {
-          var _this = this;
-
-          return function (_ref2) {
-            var data = _ref2.data;
-
-            switch (data.type) {
-              case "user":
-                _this.user = data.user;
-                break;
-
-              default:
-                break;
+          return _this2._user;
+        }).then(function () {
+          return _this2.user;
+        });
+      }
+    }, {
+      key: "getUsersByAddress",
+      value: function getUsersByAddress() {
+        var address = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+        var query = "{ usersByWallet(wallets:".concat(JSON.stringify(address), ") { id wallet nickName language } }");
+        return fetch(prefix, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json; charset=utf-8"
+          },
+          body: JSON.stringify({
+            query: query
+          })
+        }).then(function (response) {
+          return response.json().then(function (json) {
+            if (!response.ok) {
+              return Promise.reject(json.errors);
             }
 
-            resolve();
-          };
-        }
-      }, {
-        key: "isOnPortal",
-        value: function isOnPortal() {
-          return this.init().then(function () {
-            return true;
-          }).catch(function () {
-            return false;
+            return {
+              list: json.data.usersByWallet.reduce(function (memo, item) {
+                return _extends({}, memo, _defineProperty({}, item.wallet, item));
+              }, {})
+            };
           });
-        }
-      }, {
-        key: "getUser",
-        value: function getUser() {
-          var _this2 = this;
+        });
+      }
+    }]);
 
-          return this.init().then(function () {
-            if (!_this2._user) {
-              _this2._user = new Promise(function (resolve, reject) {
-                setTimeout(function () {
-                  reject(new Error("timeout!"));
-                }, 200);
-                window.addEventListener("message", function (_ref3) {
-                  var data = _ref3.data;
-
-                  if (data.type === "user") {
-                    _this2.user = data.user;
-                    resolve();
-                  }
-                }, false);
-                window.top.postMessage({
-                  type: "user"
-                }, "*");
-              });
-            }
-
-            return _this2._user;
-          }).then(function () {
-            return _this2.user;
-          });
-        }
-      }, {
-        key: "getUsersByAddress",
-        value: function getUsersByAddress() {
-          var address = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-          var query = "{ usersByWallet(wallets:".concat(JSON.stringify(address), ") { id wallet nickName language } }");
-          return fetch(prefix, {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json; charset=utf-8"
-            },
-            body: JSON.stringify({
-              query: query
-            })
-          }).then(function (response) {
-            return response.json().then(function (json) {
-              if (!response.ok) {
-                return Promise.reject(json.errors);
-              }
-
-              return {
-                list: json.data.usersByWallet.reduce(function (memo, item) {
-                  return _extends({}, memo, _defineProperty({}, item.wallet, item));
-                }, {})
-              };
-            });
-          });
-        }
-      }]);
-
-      return BitGuildSDK;
-    }())();
+    return BitGuildSDK;
+  }())();
 
   _exports.default = _default;
 });

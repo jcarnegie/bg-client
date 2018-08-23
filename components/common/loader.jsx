@@ -1,6 +1,6 @@
-import React, {Component} from "react";
-import {Glyphicon} from "react-bootstrap";
-import {FormattedMessage} from "react-intl";
+import React, { Component } from 'react';
+import { Glyphicon } from 'react-bootstrap';
+import { FormattedMessage } from 'react-intl';
 
 
 export default class Loader extends Component {
@@ -8,7 +8,7 @@ export default class Loader extends Component {
     return (
       <div>
         <Glyphicon glyph="refresh" className="gly-spin" />
-        {" "}
+        {' '}
         <FormattedMessage id="components.loader.loading" />
       </div>
     );

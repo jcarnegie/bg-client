@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class BGIcon extends React.PureComponent {
   static propTypes = {
@@ -10,16 +10,16 @@ class BGIcon extends React.PureComponent {
   }
 
   static defaultProps = {
-    width: "75px",
-    src: "",
-    className: "",
+    width: '75px',
+    src: '',
+    className: '',
     style: {},
   }
 
   render() {
-    const {src, style, width, className} = this.props;
+    const { src, style, width, className } = this.props;
     return (
-      <div className={`bg-icon no-select ${className || ""}`} style={style}>
+      <div className={`bg-icon no-select ${className || ''}`} style={style}>
         <style jsx>{`
           .bg-icon img {
             width: ${width};

@@ -1,77 +1,130 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {FormattedMessage, injectIntl} from "react-intl";
-import {Grid, Col, Image, Row, Carousel} from "react-bootstrap";
-import {connect} from "react-redux";
-import Link from "next/link";
-import Router from "next/router";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import * as log from 'loglevel';
+import { pathOr, path, uniq } from 'ramda';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { Grid, Col, Row, Carousel } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import Router from 'next/router';
 
-import {Mobile, Desktop} from "@/components/responsive";
-import GameIcon from "@/components/gameicon";
-import BGButton from "@/components/bgbutton";
-import BGIcon from "@/components/bgicon";
-import BGGrid from "@/components/bggrid";
-import BGGameCard from "@/components/bggamecard";
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
 
-import {featureOn} from "@/shared/utils";
-import {GAMES_REQUEST} from "@/shared/constants/actions";
-import style from "@/shared/constants/style";
+import {
+  queries,
+  localQueries,
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
+import {
+  requireUserLoginAndSupportedNetwork,
+} from '@/shared/utils';
+
+import FeatureFlag from '@/components/featureflag';
+import BGButton from '@/components/bgbutton';
+import BGIcon from '@/components/bgicon';
+import BGGrid from '@/components/bggrid';
+import BGGameCard from '@/components/bggamecard';
+import Newsletter from '@/components/newsletter';
+
+import style from '@/shared/constants/style';
 
 
 @injectIntl
 @connect(
   state => ({
     analytics: state.analytics,
-    games: state.games,
+    layout: state.layout,
   })
 )
 class GameList extends Component {
   static propTypes = {
     games: PropTypes.shape({
-      data: PropTypes.array,
-      active: PropTypes.array,
-      comingSoon: PropTypes.array,
+      listGames: PropTypes.array,
+      loading: PropTypes.bool,
     }),
-    dispatch: PropTypes.func,
     analytics: PropTypes.object,
+    layout: PropTypes.object,
+    user: PropTypes.object,
+    root: PropTypes.object,
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      newsletter: 'true',
+      playableGames: [],
+      bannerGames: [],
+    };
   }
 
   static defaultProps = {
     games: {
-      data: [],
-      active: [],
-      comingSoon: [],
+      listGames: [],
     },
-    dispatch: () => {},
   }
 
-  componentDidMount() {
-    const {games} = this.props;
-    if (!games.data || !games.data.length) {
-      this.props.dispatch({
-        type: GAMES_REQUEST,
-      });
+  onHideNewsletter() {
+    this.setState({ newsletter: 'false' });
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const listGames = pathOr([], ['games', 'listGames'], props);
+    const unsortedPlayableGames = listGames.filter(game => game.enabled);
+    const bitizens = unsortedPlayableGames.find(g => g.slug === 'bitizens');
+    const mythereum = unsortedPlayableGames.find(g => g.slug === 'mythereum');
+    const magicAcademy = unsortedPlayableGames.find(g => g.slug === 'magicacademy');
+
+    let playableGames = [];
+    let bannerGames = [];
+
+    if (bitizens) {
+      playableGames.push(bitizens);
+      bannerGames.push(bitizens);
+    }
+    if (mythereum) {
+      playableGames.push(mythereum);
+      bannerGames.push(mythereum);
+    }
+    if (magicAcademy) {
+      playableGames.push(magicAcademy);
+      bannerGames.push(magicAcademy);
+    }
+
+    playableGames = uniq(playableGames.concat(unsortedPlayableGames));
+
+    if (path(['user', 'viewUserByWallet'], props)) {
+      return { newsletter: 'false', playableGames, bannerGames };
+    } else {
+      return { newsletter: state.newsletter, playableGames, bannerGames };
     }
   }
 
   navigateToGame(slug) {
+    const { user, root } = this.props;
+    if (!requireUserLoginAndSupportedNetwork(user, path(['network'], root))) return log.info('User not logged in, rejecting navigateToGame.');
     this.props.analytics.ga.event({
-      category: "Site Interaction",
-      action: "Play",
+      category: 'Site Interaction',
+      action: 'Play',
       label: slug,
     });
 
+    /* FIXME - interim solution to handle iframe memory issues */
+    return window.location.replace(`/game/${slug}`);
     Router.push({
-        pathname: "/game",
-        query: {slug},
+        pathname: '/game',
+        query: { slug },
       },
       `/game/${slug}`
     );
   }
 
   banner() {
-    const {games} = this.props;
-    if (!games.data) return null;
+    const { games } = this.props;
+    if (games.loading) return null;
     return (
       <Row>
         <style jsx>{`
@@ -82,7 +135,7 @@ class GameList extends Component {
           :global(.hero-carousel .carousel-image),
           :global(.hero-carousel .carousel-inner),
           :global(.hero-carousel .carousel-inner .item) {
-            height: 600px;
+            height: 500px;
             margin: 0 auto;
           }
           :global(.hero-carousel .carousel-control) {
@@ -107,14 +160,19 @@ class GameList extends Component {
             background-position: center center;
             background-repeat: no-repeat;
           }
+          :global(.hero-carousel .carousel-indicators) {
+            bottom: 0;
+          }
         `}</style>
         <Col>
-          <Carousel interval={null} className="hero-carousel">
-            {games.data.map((game, idx) => (
-              <Carousel.Item key={idx} onClick={() => ::this.navigateToGame(game.slug)}>
-                <div className="carousel-image" style={{backgroundImage: `url(/static/images/games/${game.slug}/banner.jpg)`}} />
-              </Carousel.Item>
-            ))}
+          <Carousel interval={null} className="hero-carousel" defaultActiveIndex={0}>
+            {this.state.bannerGames.map((game, idx) => {
+              return (
+                <Carousel.Item key={idx} onClick={() => ::this.navigateToGame(game.slug)}>
+                  <div className="carousel-image" style={{ backgroundImage: `url(${game.bannerImage})` }} />
+                </Carousel.Item>
+              );
+            })}
           </Carousel>
         </Col>
       </Row>
@@ -122,214 +180,139 @@ class GameList extends Component {
   }
 
   presale(slug) {
-    return featureOn("bitizens_presale") ? (
-      <div onClick={() => Router.push({pathname: "/presale", query: {slug}}, `/presale/${slug}`)} className="promotional-banner presale-banner">
+    const { mobile } = this.props.layout.type;
+    return (
+      <div onClick={() => Router.push({ pathname: '/presale', query: { slug } }, `/presale/${slug}`)} className="promotional-banner presale-banner">
         <style jsx>{`
           .promotional-banner.presale-banner {
-            background-color: rgba(109, 151, 233, 1);
+            background: linear-gradient(to right, #8AAFF2, #5180EB);;
             color: ${style.colors.logos};
             border-bottom: 1px solid #c7c6f2;
             height: 200px;
             width: 100%;
+            max-width: 100%;
             text-align: center;
             text-shadow: ${style.textShadow.default};
             cursor: pointer;
+            font-size: ${mobile ? '.95em' : 'initial'}
           }
           .promotional-banner.presale-banner * {
             text-align: center;
           }
+          :global(.promotional-banner .row) {
+            width: 100%;
+            margin: auto 0;
+          }
           h1 {
             text-transform: uppercase;
             text-align: center;
+            margin: initial auto;
+          }
+          :global(.promotional-banner .button-row) {
+            padding-top: 10px;
           }
         `}</style>
         <Row>
-          <BGIcon src="/static/images/icons/bitguild_logo@1x.png" width="25px" style={{marginTop: "20px"}} />
+          <BGIcon src="/static/images/icons/bitguild_logo@1x.png" width="25px" style={{ marginTop: '20px' }} />
         </Row>
         <Row>
           <h1><FormattedMessage id={`pages.presale.${slug}.title`} /></h1>
         </Row>
-        <Row>
+        <Row className="button-row">
           <BGButton>
             <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
           </BGButton>
         </Row>
       </div>
-    ) : null;
-  }
-
-  events() {
-    return (
-      <div className="events">
-        <style jsx>{`
-          .events {
-            background-size: contain;
-            background-color: #F1F5FF;
-            color: #314B88;
-            border-bottom: 1px solid #c7c6f2;
-            height: 200px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          .events-center {
-            flex-grow: 2;
-            text-align: center;
-          }
-          .events-title,
-          .events-subtitle {
-            display: block;
-            text-align: center;
-            text-transform: uppercase;
-            margin: 0;
-          }
-          .events-title {
-            font-size: 40px;
-            font-weight: 600;
-            color: rgb(247,200,65);
-            text-shadow: 1px 1px 1px #314B88;
-          }
-          .events-subtitle {
-            font-size: 36px;
-            color: #314B88;
-            text-shadow: 1px 1px 1px #999;
-          }
-          .events-title-mobile {
-            font-size: 24px;
-          }
-          .events-subtitle-mobile {
-            font-size: 20px;
-          }
-          .bitguild-logo-wrapper {
-            width: 75px;
-          }
-          :global(.events-flex) {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-grow: 1;
-          }
-          :global(.events .events-button) {
-            margin-top: 10px;
-          }
-        `}</style>
-        <GameIcon game={{slug: "ether.online"}} width="75px" className="events-flex" />
-        <div className="events-center">
-          <Mobile>
-            <h2 className="events-title events-title-mobile">Ether Online</h2>
-            <h3 className="events-subtitle events-subtitle-mobile">
-              <FormattedMessage id="pages.games.events.pets-giveaway"></FormattedMessage>
-            </h3>
-          </Mobile>
-          <Desktop>
-            <h2 className="events-title">Ether Online</h2>
-            <h3 className="events-subtitle">
-              <FormattedMessage id="pages.games.events.pets-giveaway"></FormattedMessage>
-            </h3>
-          </Desktop>
-          <div>
-            <BGButton className="events-button" onClick={() => Router.push("/events")}>
-              <FormattedMessage id="pages.games.events.learn-more"></FormattedMessage>
-            </BGButton>
-          </div>
-        </div>
-        <div className="events-flex bitguild-logo-wrapper">
-          <BGIcon src="/static/images/icons/bitguild_logo@1x.png" className="bitguild-logo events-flex" width="75px" />
-        </div>
-      </div>
     );
   }
 
   allGames() {
+    const { mobile } = this.props.layout.type;
     return (
-      <BGGrid title={"All Games"} titleIconSrc={"http://via.placeholder.com/100x100"}>
-        {this.props.games.active.map((game, k) => <BGGameCard key={k} game={game} />)}
+      <BGGrid
+        title={<FormattedMessage id="global.all-games"></FormattedMessage>}
+        titleIconSrc="/static/images/icons/all_games.png"
+        backgroundImageStats={{
+          colors: ['#F0F6FE', '#F0F6FE', 'white'],
+          gap: (mobile ? '60px' : '100px'),
+        }}
+      >
+        {this.state.playableGames.map((game, k) => <BGGameCard key={k} game={game} onClick={() => ::this.navigateToGame(game.slug)} playButton />)}
       </BGGrid>
     );
   }
 
   comingSoon() {
+    const { games } = this.props;
+    const { mobile } = this.props.layout.type;
+    if (games.loading || !games.listGames) return null;
     return (
-      <BGGrid title={"Coming Soon"} titleIconSrc={"http://via.placeholder.com/100x100"} backgroundImage={"linear-gradient(#DFECFE 50%, #DFECFE 75%, white 50%)"}>
-        {this.props.games.comingSoon.map((game, k) => <BGGameCard key={k} game={game} />)}
-      </BGGrid>
+      <span className="coming-soon">
+        <style jsx>{`
+          :global(.coming-soon .bg-game-card-wrapper) {
+            cursor: default !important;
+          }
+        `}</style>
+        <BGGrid
+          title={<FormattedMessage id="global.coming-soon"></FormattedMessage>}
+          titleIconSrc="/static/images/icons/coming_soon.png"
+          backgroundImage={'linear-gradient(#DFECFE 50%, #DFECFE calc(100% - 100px), white 100px)'}
+          backgroundImageStats={{
+            colors: ['#DFECFE', '#DFECFE', 'white'],
+            gap: (mobile ? '60px' : '100px'),
+          }}
+        >
+          {games.listGames.filter(game => game.comingSoon && !game.enabled).map((game, k) => <BGGameCard key={k} game={game} />)}
+        </BGGrid>
+      </span>
     );
   }
 
   aboutBitGuild() {
+    const { mobile } = this.props.layout.type;
     return (
-      <BGGrid title={"About BitGuild"} titleIconSrc={"http://via.placeholder.com/100x100"} style={{background: "#A5BEE4"}}>
-        <style jsx>{`
-          .img-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 0;
-          }
-          :global(.img-wrapper img) {
-            margin: 0 10px;
-            max-width: 30%;
-          }
-          h3 {
-            font-size: 3em;
-            font-weight: 300;
-          }
-        `}</style>
-        <Row>
-          <Col xs={12} sm={6}>
-            <div>
-              <h3><FormattedMessage id="pages.games.about.tagline"></FormattedMessage></h3>
-            </div>
-          </Col>
-          <Col xs={12} sm={6}>
-            <Col>
-              <div>
-                <p><FormattedMessage id="pages.games.about.body"></FormattedMessage></p>
+      <div className="about-bitguild">
+        <BGGrid
+          title={<FormattedMessage id="global.about-bitguild"></FormattedMessage>}
+          titleIconSrc="/static/images/icons/about.png"
+          backgroundColor="#B6D0F7"
+        >
+          <style jsx>{`
+            :global(.about-bitguild .bg-grid-wrapper) {
+              background: linear-gradient(to top,#B6D0F7, #E7F1FF) !important;
+            }
+            h3 {
+              font-size: ${mobile ? '2.0em' : '2.3em'};
+              font-weight: 400;
+              margin-top: 0;
+            }
+            :global(.about-bitguild p) {
+              max-width: 100%;
+            }
+            :global(.about-bitguild .about-text-left) {
+              padding: ${mobile ? 0 : '0 10px 0 40px'};
+              margin-bottom: ${mobile ? '30px' : 'intiial'}
+            }
+            :global(.about-bitguild .about-text-right) {
+              padding: ${mobile ? 0 : '0 40px 0 10px'};
+            }
+          `}</style>
+          <Row className="about-bitguild">
+            <Col xs={12} sm={6}>
+              <div className="about-text-left">
+                <h3><FormattedMessage id="pages.games.about.tagline"></FormattedMessage></h3>
               </div>
             </Col>
-            <Col>
-              <div className="img-wrapper">
-                <Image src="http://via.placeholder.com/100x100" circle responsive />
-                <Image src="http://via.placeholder.com/100x100" circle responsive />
-                <Image src="http://via.placeholder.com/100x100" circle responsive />
-              </div>
+            <Col xs={12} sm={6}>
+              <Col>
+                <div className="about-text-right">
+                  <p><FormattedMessage id="pages.games.about.body"></FormattedMessage></p>
+                </div>
+              </Col>
             </Col>
-          </Col>
-        </Row>
-        <Row style={{width: "100%", margin: "10px 20px"}}>
-          <Col xs={12} sm={6} style={{borderBottom: "1px solid #3B5998"}}><div /></Col>
-        </Row>
-      </BGGrid>
-    );
-  }
-
-  footer() {
-    return (
-      <div className="explore">
-        <style jsx>{`
-          .explore {
-            padding: 20px;
-          }
-          :global(.explore span) {
-            margin-left: 20px;
-          }
-        `}</style>
-          <FormattedMessage id="pages.games.explore.questions" />
-          <Link href="/faq">
-            <a>
-              <FormattedMessage id="pages.games.explore.faq" />
-            </a>
-          </Link>
-          <a href="https://discordapp.com/invite/pPC2frB" target="_blank" rel="noopener noreferrer" onClick={() => {
-            this.props.analytics.ga.event({
-              category: "Site Interaction",
-              action: "Page Visit",
-              label: "Discord",
-            });
-          }}>
-            <FormattedMessage id="pages.games.explore.discord" />
-          </a>
+          </Row>
+        </BGGrid>
       </div>
     );
   }
@@ -337,15 +320,12 @@ class GameList extends Component {
   render() {
     return (
       <Grid fluid>
-
         {this.banner()}
-
         <Row>
           <Col>
-            {this.presale("bitizens")}
-          </Col>
-          <Col>
-            {this.events()}
+            <FeatureFlag flag="bitizens_presale">
+              {this.presale('bitizens')}
+            </FeatureFlag>
           </Col>
         </Row>
 
@@ -366,15 +346,17 @@ class GameList extends Component {
             {::this.aboutBitGuild()}
           </Col>
         </Row>
-
-        <Row>
-          <Col>
-            {::this.footer()}
-          </Col>
-        </Row>
+        <Newsletter
+          show={this.state.newsletter}
+          onHide={::this.onHideNewsletter}
+        />
       </Grid>
     );
   }
 }
 
-export default GameList;
+export default compose(
+  viewUserByWalletQuery,
+  graphql(queries.listGames, { name: 'games' }),
+  graphql(localQueries.root, { name: 'root' })
+)(GameList);

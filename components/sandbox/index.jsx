@@ -1,10 +1,12 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import Init from "../common/init";
-import {Col, Row} from "react-bootstrap";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Init from '@/components/common/init';
+import { Col, Row } from 'react-bootstrap';
+import * as log from 'loglevel';
 
-const BITGUILD_INFO_URL = "https://bitguild.info/";
-const HEADER_HEIGHT = "62px";
+import style from '@/shared/constants/style';
+
+const BITGUILD_INFO_URL = 'https://bitguild.info/';
 
 export default class SandBox extends Component {
   static propTypes = {
@@ -13,22 +15,22 @@ export default class SandBox extends Component {
     }),
   };
 
-  static async getInitialProps({query}) {
-    return {query: query || {}};
+  static async getInitialProps({ query }) {
+    log.info('getInitialProps: query: ', query);
+    return { query: (query || {}) };
   }
 
   renderIframe(query) {
-    let url = query.url && /^https?:\/\//.test(query.url) ? query.url : BITGUILD_INFO_URL;
-    return <iframe src={url} />;
+    log.info('Rendering iFrame with query: ', query);
+    return <iframe src={query ? query.url : BITGUILD_INFO_URL} />;
   }
 
   render() {
-    const {query} = this.props;
     return (
-      <Row>
+      <div>
         <style jsx global>{`
           .sandbox iframe {
-            height: calc(100vh - ${HEADER_HEIGHT});
+            height: calc(100vh - ${style.header.height});
             width: 100%;
             border: 0;
             display: block;
@@ -36,9 +38,9 @@ export default class SandBox extends Component {
         `}</style>
         <Col className="sandbox">
           <Init />
-          {this.renderIframe(query)}
+          {this.renderIframe(this.props.query)}
         </Col>
-      </Row>
+      </div>
     );
   }
 }

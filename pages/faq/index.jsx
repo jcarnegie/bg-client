@@ -1,6 +1,6 @@
-import {DesktopContent, MobileContent, DesktopLayout, MobileLayout} from "@/components/layouts";
-import FAQ from "@/components/faq";
-import Chat from "@/components/chat";
+import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
+import FAQ from '@/components/faq';
+import Chat from '@/components/chat';
 
 
 const FAQPage = props => (

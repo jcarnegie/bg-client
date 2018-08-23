@@ -1,13 +1,14 @@
-import React, {Component} from "react";
-import {FormattedMessage} from "react-intl";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
 
-import ActiveLink from "@/components/activelink";
-import Language from "@/components/language";
-import Balance from "@/components/balance";
-import User from "@/components/user";
+import ActiveLink from '@/components/activelink';
+import Language from '@/components/language';
+import Balance from '@/components/balance';
+import User from '@/components/user';
+import FeatureFlag from '@/components/featureflag';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
 
 class MenuDrawer extends Component {
@@ -20,14 +21,30 @@ class MenuDrawer extends Component {
   }
 
   render() {
+    const menuLinkActiveStyle = {
+      background: 'rgba(255, 255, 255, .15)',
+      borderLeft: `4px solid ${style.colors.logos}`,
+    };
+
+    const menuLinkDefaultStyle = {
+      textDecoration: 'none',
+      color: 'white',
+      display: 'block',
+      padding: '20px 27px',
+      textTransform: 'uppercase',
+      fontWeight: '100',
+      fontSize: '15px',
+      borderLeft: '4px solid transparent',
+    };
+
     return (
       <div className="menu-drawer">
         <style jsx>{`
           .menu-drawer {
-            min-width: ${this.props.show ? "50%" : "0"};
-            max-width: ${this.props.show ? "75%" : "0"};
-            visibility: ${this.props.show ? "visible" : "hidden"};
-            background: ${style.colors.secondary};
+            min-width: ${this.props.show ? '50%' : '0'};
+            max-width: ${this.props.show ? '75%' : '0'};
+            visibility: ${this.props.show ? 'visible' : 'hidden'};
+            background: ${style.colors.primary};
             position: fixed;
             top: ${style.header.height}; /* top border width */
             bottom: 0;
@@ -45,6 +62,16 @@ class MenuDrawer extends Component {
           .balance-mobile {
             padding: 20px 27px;
           }
+          .language-mobile {
+            padding: 0 3px;
+          }
+          :global(.language-mobile .current-lang) {
+            padding: 0 0 0 18px;
+            vertical-align: middle;
+          }
+          :global(.language-mobile .lang-dropdown .caret) {
+            transform: translate(1px, 0) !important; /* Bootstrap overrides */
+        }
         `}</style>
 
         <User />
@@ -52,18 +79,28 @@ class MenuDrawer extends Component {
         <div className="links">
           <ActiveLink
             href="/inventory"
-            style={{
-              textDecoration: "none",
-              color: "white",
-              display: "block",
-              padding: "20px 27px",
-              textTransform: "uppercase",
-              fontWeight: "100",
-              fontSize: "14px",
-            }}
-            activeStyle={{background: "rgba(255, 255, 255, .15)"}}
+            style={menuLinkDefaultStyle}
+            activeStyle={menuLinkActiveStyle}
           >
             <FormattedMessage id="components.menu.inventory" />
+          </ActiveLink>
+          <ActiveLink
+            href="/marketplace"
+            style={menuLinkDefaultStyle}
+            activeStyle={menuLinkActiveStyle}
+          >
+            <FormattedMessage id="components.menu.marketplace" />
+          </ActiveLink>
+          <ActiveLink
+            href={{
+              pathname: '/presale',
+              query: { slug: 'bitizens' }
+            }}
+            as="/presale/bitizens"
+            style={menuLinkDefaultStyle}
+            activeStyle={menuLinkActiveStyle}
+          >
+            <FormattedMessage id="components.menu.presale" />
           </ActiveLink>
         </div>
 
@@ -71,7 +108,9 @@ class MenuDrawer extends Component {
           <Balance />
         </div>
 
-        <Language />
+        <div className="language-mobile">
+          <Language />
+        </div>
 
       </div>
     );

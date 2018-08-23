@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import Link from "next/link";
+import React, { Component } from 'react';
+import Link from 'next/link';
 
-import style from "@/shared/constants/style";
-import MobileMenu from "@/components/mobilemenu";
+import style from '@/shared/constants/style';
+import MobileMenu from '@/components/mobilemenu';
 
 
 export default class Header extends Component {
@@ -41,8 +41,9 @@ export default class Header extends Component {
             right: 0;
             width: 100%;
             z-index: 1060; /* Bootstrap modal is 1040, 1050 - MenuDrawer is 1030 */
-            background-color: ${style.colors.secondary};
+            background-color: ${style.colors.primary};
             height: ${style.header.height};
+            border-bottom: ${style.header.border};
           }
           .mobile-settings {
             position: absolute;

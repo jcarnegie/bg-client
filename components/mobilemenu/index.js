@@ -1,16 +1,20 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {FormattedMessage} from "react-intl";
-import {connect} from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import RegisterButton from '@/components/RegisterButton';
 
-import {MENU_SHOW, CHAT_TOGGLE, USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
-import style from "@/shared/constants/style";
+import {
+  LAYOUT_MOBILE_MENU_SHOW,
+  LAYOUT_MOBILE_CHAT_SHOW,
+} from '@/shared/constants/actions';
+
+import style from '@/shared/constants/style';
 
 
 class HeaderItem extends Component {
   static defaultProps = {
     active: false,
-    className: "",
+    className: '',
     onClick: () => {},
   }
 
@@ -30,7 +34,7 @@ class HeaderItem extends Component {
             align-items: center;
             height: 100%;
             padding: 0 15px;
-            background: ${this.props.active ? "rgba(255, 255, 255, .2)" : "transparent"};
+            background: ${this.props.active ? 'rgba(255, 255, 255, .2)' : 'transparent'};
           }
         `}</style>
         {this.props.children}
@@ -55,10 +59,15 @@ class MenuToggle extends Component {
       <HeaderItem
         active={this.props.layout.showMenu}
         onClick={() => this.props.dispatch({
-          type: MENU_SHOW,
-          payload: {showMenu: !this.props.layout.showMenu},
+          type: LAYOUT_MOBILE_MENU_SHOW,
+          payload: { showMenu: !this.props.layout.showMenu },
         })}
       >
+        <style jsx>{`
+          g {
+            fill: white;
+          }
+        `}</style>
         <svg width="20px" height="17px" viewBox="0 0 20 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
           <g id="Portal-UIs-final" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <g id="chat--screen-2-copy-4" transform="translate(-337.000000, -21.000000)" fill="#D7DDE3">
@@ -79,20 +88,31 @@ class MenuToggle extends Component {
 
 @connect(
   state => ({
-    chat: state.chat,
+    layout: state.layout,
   })
 )
 class ChatToggle extends Component {
   static propTypes = {
-    chat: PropTypes.shape({
-      show: PropTypes.bool,
+    layout: PropTypes.shape({
+      chatMobileShow: PropTypes.bool,
     }),
     dispatch: PropTypes.func,
   }
 
   render() {
     return (
-      <HeaderItem active={this.props.chat.show} onClick={() => this.props.dispatch({type: CHAT_TOGGLE})}>
+      <HeaderItem
+        active={this.props.layout.chatMobileShow}
+        onClick={() => this.props.dispatch({
+          type: LAYOUT_MOBILE_CHAT_SHOW,
+          payload: !this.props.layout.chatMobileShow,
+        })}
+      >
+        <style jsx>{`
+          g {
+            fill: white;
+          }
+        `}</style>
         <svg width="21px" height="21px" viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
           <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <g transform="translate(-297.000000, -20.000000)" fill="#FFFFFF" fillRule="nonzero">
@@ -110,20 +130,9 @@ class ChatToggle extends Component {
   }
 }
 
-@connect(
-  state => ({
-    user: state.user,
-  })
-)
+
 class MobileMenu extends Component {
-  static propTypes = {
-    user: PropTypes.object,
-    dispatch: PropTypes.func,
-  }
-
   render() {
-    const {user, dispatch} = this.props;
-
     return (
       <div className="menu-wrapper">
         <style jsx>{`
@@ -132,32 +141,10 @@ class MobileMenu extends Component {
             align-items: center;
             height: 100%;
           }
-          :global(.settings-button) {
-            display: ${user.data ? "none" : "flex"} !important; /* module overrides */
-            color: white;
-            border: 0;
-            background: rgba(87, 181, 127, .9) !important; /* module overrides */
-            padding: 0 30px !important; /* module overrides */
-            text-transform: uppercase;
-            font-weight: 500;
-            align-items: center;
-            justify-content: center;
-            font-weight: 100;
-            font-size: 14px;
-            letter-spacing: 1px;
-          }
-          :global(.settings-button:hover) {
-            background: rgba(87, 181, 127, 1) !important;
-          }
         `}</style>
         <ChatToggle />
         <MenuToggle />
-        <HeaderItem className="settings-button" onClick={() => dispatch({
-          type: USER_SHOW_REGISTER_WORKFLOW,
-          payload: !this.props.user.showRegisterWorkflow,
-        })}>
-          <FormattedMessage id="buttons.register" />
-        </HeaderItem>
+        <RegisterButton />
       </div>
     );
   }

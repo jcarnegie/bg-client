@@ -1,12 +1,12 @@
 /* eslint-disable react/react-in-jsx-scope */
-import Document, {Head, Main, NextScript} from "next/document";
-import flush from "styled-jsx/server";
+import Document, { Head, Main, NextScript } from 'next/document';
+import flush from 'styled-jsx/server';
 
 export default class BGDocument extends Document {
-  static getInitialProps({renderPage}) {
-    const {html, head, errorHtml, chunks} = renderPage();
+  static getInitialProps({ renderPage }) {
+    const { html, head, errorHtml, chunks } = renderPage();
     const styles = flush();
-    return {html, head, errorHtml, chunks, styles};
+    return { html, head, errorHtml, chunks, styles };
   }
   render() {
     return (
@@ -20,7 +20,7 @@ export default class BGDocument extends Document {
           <meta name="robots" content="all" />
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
           <title>BitGuild</title>
-          <link rel="shortcut icon" href={"/favicon.png"} />
+          <link rel="shortcut icon" href={'/favicon.png'} />
           <link rel="stylesheet" href="https://use.typekit.net/woi6egk.css" />
           <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous" />

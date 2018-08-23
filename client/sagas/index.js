@@ -1,20 +1,13 @@
-import {all} from "redux-saga/effects";
-import chatSaga from "./chat";
-import metaMaskSaga from "./metamask";
-import sendBirdSaga from "./sendbird";
-import userSaga from "./user";
-import gameSaga from "./game";
-import inventorySaga from "./inventory";
-import gasSaga from "./gas";
+import { all } from 'redux-saga/effects';
+import bootstrapSaga from './bootstrap';
+import chatSaga from './chat';
+import sendBirdSaga from './sendbird';
+
 
 export default function * rootSaga() {
   yield all([
+    bootstrapSaga(),
     chatSaga(),
-    gameSaga(),
-    gasSaga(),
-    inventorySaga(),
-    metaMaskSaga(),
     sendBirdSaga(),
-    userSaga(),
   ]);
 }

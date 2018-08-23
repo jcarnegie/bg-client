@@ -1,4 +1,17 @@
 {
+  "global": {
+    "about": "A propos",
+    "description": "Prévente",
+    "faq": "À propos de Bitizens",
+    "remaining": "Quantité restante",
+    "rules": "Règles",
+    "all-games": "All Games",
+    "about-bitguild": "About BitGuild",
+    "coming-soon": "Coming Soon",
+    "play": "Play",
+    "sell": "Vendre",
+    "gift": "Offrir"
+  },
   "components": {
     "switchLanguage": "Choix de la Langue",
     "language": {
@@ -14,6 +27,15 @@
       "inventory": "Mes Objets",
       "exchange": "Échanges",
       "community": "Communauté"
+    },
+    "footer": {
+      "for-players": "Pour Les Joueurs",
+      "faq": "FAQ",
+      "feedback": "<a href='https://docs.google.com/forms/d/1xDavZE4wBlceRDuxQDgroBO5lfrEL4Y4nsM8BfCH1AU/edit' target='_blank' rel='noopener noreferrer'>Feedback</a>",
+      "for-developers": "Pour Les Développeurs",
+      "bug-bounty": "Chasse aux bugs",
+      "portal-sdk": "<a href='https://github.com/BitGuildPlatform/Documentation/blob/master/README.md' target='_blank' rel='noopener noreferrer'> SDK Portail </a>",
+      "join": "Suivez BitGuild"
     },
     "loader": {
       "loading": "Chargement..."
@@ -52,9 +74,8 @@
   },
   "buttons": {
     "submit": "Soumettre",
+    "login": "S'identifier",
     "register": "S'inscrire",
-    "sell": "Vendre",
-    "gift": "Offrir",
     "convert": "Convertir",
     "install": "Installer MetaMask",
     "send": "Envoyer"
@@ -100,6 +121,30 @@
     }
   },
   "pages": {
+    "bugbounty": {
+      "title": "Chasse aux bugs",
+      "hey-bitizens": "Chers Bitizen !",
+      "info": "Êtes-vous un développeur curieux, intéressé d'en savoir plus sur les contrats intelligents ? Ou peut-être êtes-vous un ingénieur chevronné, avec une expérience des contrats intelligents ? Si c'est le cas, nous vous invitons à prendre part à notre programme de chasse aux bugs et à donner à nos produits la solidité d'un roc et à nos contrats une protection à toute épreuve.",
+      "conditions-header": "Conditions :",
+      "conditions-1": "Le programme ne concerne que les bugs dans l'un de nos contrats intelligents pour <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/marketplace'>le marché</a> et <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/bitizens'>les Bitizens</a>.",
+      "conditions-2": "Pour l'instant, ces contrats sont rédigés en Solidity pour le blockchain Ethereum, et le programme ne cible donc que cet écosystème.",
+      "conditions-3": "Le premier qui signale le bug obtient la récompense (voir le processus de soumission ci-dessous). La date d'émission du ticket de Github fera foi.",
+      "rewards-header": "Catégories de récompenses et de bugs :",
+      "rewards-info-1": "Sévérité 0 - Les fonds ou les items de l'utilisateur courent le risque d'un accès non autorisé par un autre utilisateur.",
+      "rewards-reward-1": "<strong>Récompense : 10 ETH + 800 000 PLAT</strong>",
+      "rewards-info-2": "Sévérité 1 - L'état de l'utilisateur (items équipés, commandes placées, etc) court le risque d'être modifié par un utilisateur non autorisé.",
+      "rewards-reward-2": "<strong>Récompense : 6 ETH + 600 000 PLAT</strong>",
+      "rewards-info-3": "Sévérité 2 - Les fonds/items/l'état de BitGuild courent le risque d'être modifiés par un utilisateur non autorisé.",
+      "rewards-reward-3": "<strong>Récompense : 3 ETH + 300 000 PLAT</strong>",
+      "rewards-info-4": "Sévérité 3 - Tout bug important dans la logique produit qui modifie de manière significative son comportement.",
+      "rewards-reward-4": "<strong>Récompense : 50 000 PLAT</strong>",
+      "report-header": "Pour soumettre un signalement, suivez la méthode suivante :",
+      "report-1": "Créez un ticket GitHub dans le répertoire approprié (voir les liens ci-dessus).",
+      "report-2": "Remplissez ce <strong><a href='https://docs.google.com/forms/d/1oCHiiXUB5zxMCq_F31p2Na0BtImp0glnBfAC3hW5kfo/edit'>formulaire Google</a></strong>.",
+      "processing": "Nous accuserons réception de votre signalement dans les <strong> 72 heures</strong> et nous nous engageons à l'évaluer et à vous comuniquer nos conclusions dans les <strong> 10 jours</strong>.",
+      "looking-forward": "We are looking forward to hearing from you!",
+      "team": "Équipe BitGuild"
+    },
     "inventory": {
       "title": "Mes objets",
       "all": "Tout",
@@ -233,7 +278,134 @@
       "p9": "contribution à provoquer des spams, effort insuffisant, offensant, ou contenu double. Soyez sympa !"
     },
     "presale": {
-      "title": "Bitizens Presale"
+      "bitizens": {
+        "title": "Prévente pionner Bitizen",
+        "subtitle": "Bienvenue Bitizens !",
+        "presale-stats-title": "IGO Stats",
+        "items-bought": "Items sold",
+        "items-left": "left",
+        "total-buyers": "Total buyers",
+        "stretch-goals-unlocked": "Déverrouillé",
+        "stretch-goals-locked": "locked",
+        "bonus-reward-1-title": "Dril'r Bot Pioneer-I",
+        "bonus-reward-1-description": "Once <strong>30%</strong> of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot Pioneer-I paint job!",
+        "bonus-reward-2-title": "Pioneer's Rocket",
+        "bonus-reward-2-description": "Selling <strong>70%</strong> of all Bitizens pre-sale items will unlock something extra special for all participants - Your very own miniature rocket!",
+        "dividing-text": "Nous avons aussi défini des objectifs complémentaires exceptionnels : en les atteignant, les participants à la prévente pourront accéder à des items uniques. C'est une récompense super spéciale pour les remercier de nous avoir aidé à faire de la vision Bitizen une réalité.",
+        "drillrbot-title": "Premier objectif complémentaire :",
+        "drillrbot-text-1": "Dès que 30 % de tous les items Bitizens en prévente seront partis, chaque participant deviendra l'heureux propriétaire d'une illustration unique pour Dril'r Bot !",
+        "drillrbot-text-2": "Vous ne rêvez pas ! Cet adorable petit compagnon de minage est maintenant un jeton ERC721, ce qui signifie qu'il peut être personnalisé ! L'illustration est l'une des meilleures possibilités pour les joueurs de personnaliser leur propre Dril 'rBot, et celle qui est représentée ici sera assez spéciale (une fois la prévente terminée, vous ne pourrez plus jamais l'obtenir !)",
+        "rocket-title": "Deuxième objectif complémentaire :",
+        "rocket-text-1": "Lorsque nous aurons vendu 70 % de tous les items Bitizens en prévente, une récompense spéciale sera accessible à tous les participants : votre propre fusée miniature !",
+        "rocket-text-2": "La mini-fusée est un accessoire, ce qui signifie que vous pouvez en équiper votre personnage pour offrir des effets spéciaux à votre Bitizen ou améliorer vos statistiques, ou même les deux à la fois ! Tout comme la personnalisation par l'illustration ci-dessus, cette mini-fusée ne sera plus disponible une fois la prévente de Bitizens terminée !",
+        "final-text": "Rejoignez-nous alors que nous apportons notre amour pour les jeux en ligne aux blockchain avec Bitizens !",
+        "description-text": {
+          "p1": "Mettez la main sur les items exclusifs ci-dessous en participant à notre événement de prévente. Ce sera une occasion UNIQUE de posséder ces items  : n'hésitez pas, car les quantités sont limitées !",
+          "p2": "En participant à la prévente Bitizens, vous nous aiderez non seulement à produire un jeu de qualité s'adressant avant tout aux joueurs en leur offrant des expériences de jeu de blockchain intenses, enrichissantes et captivantes. Mais cela vous aidera également à afficher votre statut de pionnier des Bitizens et du portail BitGuild. Une fois le jeu lancé, ces items spéciaux et disponibles pour une durée limitée ne peuvent pas être acquis de manière traditionnelle : vous ne pourrez les avoir que par le biais d'échanges !",
+          "p3": "Une fois le jeu lancé, ces items spéciaux et disponibles pour une durée limitée ne peuvent pas être acquis de manière traditionnelle : vous ne pourrez les avoir que par le biais d'échanges !",
+          "p4": "Saisissez votre chance d'acquérir un fragment de l'histoire des crypto-jeux et de devenir un pionnier Bitizens dès aujourd'hui !"
+        },
+        "faq-text": {
+          "p1": "<strong>Votre invitation à participer pour rendre le monde meilleur.</strong>",
+          "p2": "<strong>Bienvenue à Bitropolis : la destination obligée pour un nouveau monde crypto !</strong>",
+          "p3": "Visitez cette ville tentaculaire et profitez de tout ce qu'elle a à offrir, du ciel numérique ensoleillé aux profondeurs des bitmines. Tout le monde est le bienvenu, il ne vous reste plus qu'à vous inscrire : votre connaissance numérique sera ensuite chargée dans votre nouvelle destination en quelques clics !",
+          "p4": "Qu'est-ce que c'est que cet endroit ?",
+          "p5": "Oh ce n'est pas grand chose, il s'agit simplement de la civilisation numérique la plus majestueuse de ce coté de la blockchain (probablement de l'autre côté aussi… mais on ne va pas là-bas.) C'est une jungle urbaine tentaculaire et interminable dans laquelle vos rêves les plus fous peuvent se réaliser : à condition que vous vouliez décrocher le jackpot dans le monde du crypto ! Expérimentez des possibilités illimitées pendant votre voyage vers cette nouvelle utopie virtuelle interconnectée.",
+          "p6": "Qui suis-je ici ?",
+          "p7": "La personne de votre choix ! Vous, et toute personne qui s'arrête dans la belle Bitropolis est un Bitizen honoraire ! Dans cet univers, vous pouvez personnaliser votre joli visage polygonal et annoncer à tout le monde la couleur en arborant les accessoires de votre choix.",
+          "p8": "Oui c'est sympa… mais pourquoi devrais-je rester ?",
+          "p9": "Pour la prospérité, bien sûr ! Une fois que vous l'aurez vu par vous-même, vous y croirez instantanément : Bitropolis est L'ENDROIT où il faut être ! C'est un monde où chacun bénéficie d'énormément d'opportunités, et ici tout le monde part sur un pied d'égalité. Refuser d'être un résident de Bitropolis, ce serait comme utiliser vos bitcoins pour acheter une pizza en 2010 : pas très malin !",
+          "p10": "Ok, montrez-moi l'art et la manière !",
+          "p11": "Chaque Bitizen reçoit une version standard, à peine utilisée du Dril'rBot Rx-24. Avec cette fidèle petite pelleteuse à vos côtés, vous pouvez plonger dans la véritable caverne aux trésors que sont les mines de Bitropolis. Creusez à votre guise, car tout ce que vous trouvez peut être échangé contre de délicieuses récompenses à la fonderie !",
+          "p12": "Cool ! … et maintenant ?",
+          "p13": "Prélassez-vous dans la gloire, affichez votre swag en vous ornant de fils rares et uniques, puis recommencez ! Ce que vous pouvez trouver là-bas est sans fin, et vous pouvez conserver, utiliser, échanger ou même vendre tous les items acquis dans Bitropolis pour des PLAT ! Qui sait ce que vous pourriez trouver… Cela pourrait être exactement ce dont vous avez besoin pour compléter votre collection... ou la collection de votre voisin (à condition que vous soyez prêt à la lui vendre... Qui a parlé de bénéfices ? BINGO !)",
+          "p14": "Ça semble génial ! Comment j'y vais ?",
+          "p15": "Vous pouvez réserver votre aller simple (admettons-le, vous n'aurez pas besoin du billet de retour) pour le monde virtuel de Bitropolis en cliquant ici. Pas de classe touriste ici. Les Bitizens voyagent toujours en première, mon cher !"
+        },
+        "rules-text": {
+          "p1": "<strong>Limitations:</strong>",
+          "l1": "Vous ne pouvez pas acheter le même ensemble plus d'une fois.",
+          "l2": "Plusieurs achats ne vous qualifieront que pour une récompense bonus pour chaque niveau.",
+          "l3": "Ces items ne seront disponibles qu'à la fin de la pré-vente.",
+          "l4": "Les items de pionnier seront autorisés pour la vente sur notre Marché.",
+          "l5": "Tous les items de pré-vente sont disponibles à l'achat sur PLAT seulement.",
+          "l6": "Toutes les transactions de pré-vente sont finales.",
+          "p2": "<strong>Distribution:</strong>",
+          "l7": "Les ensembles, les items et les récompenses bonus de pionnier seront disponibles au moment de la sortie de la garde-robe de Bitizen, planifiée pour fin juillet.",
+          "l8": "Vous devez réclamer vos items sur le compte utilisé pour acheter les items.",
+          "l9": "Des frais de gaz peuvent s'appliquer au moment de l'échange d'items dans le jeu. "
+        },
+        "sets": {
+          "pioneer_of_the_wilds": {
+            "name": "Pionnier des espaces sauvages",
+            "description": "Toujours prêt à vous lancer dans de nouvelles aventures, la tenue de l'explorateur indiquera à tout le monde que vous êtes à l'avant-garde des crypto-jeux, et que vous y étiez « avant que ça ne soit cool » !",
+            "item1": {
+              "name": "Un casque colonial"
+            },
+            "item2": {
+              "name": "Une veste d'expédition"
+            },
+            "item3": {
+              "name": "Un pantalon d'expédition"
+            },
+            "item4": {
+              "name": "Des bottes d'expédition"
+            }
+          },
+          "pioneer_of_the_seas": {
+            "name": "Pionnier des mers",
+            "description": "Plongez plus profondément que quiconque et découvrez les secrets inédits d'un monde inexploré.",
+            "item1": {
+              "name": "Un casque de plongée en eau profonde"
+            },
+            "item2": {
+              "name": "Un haut de plongée"
+            },
+            "item3": {
+              "name": "Un pantalon de plongée"
+            },
+            "item4": {
+              "name": "Des bottes lestées"
+            }
+          },
+          "pioneer_of_the_skies": {
+            "name": "Pionnier du ciel",
+            "description": "Volez au-dessus du radar dans cette tenue de vol stoïque. Vous en ferez pâlir d'envie plus d'un si votre Bitizen est repéré dans cette tenue !",
+            "item1": {
+              "name": "Des lunettes d'aviation"
+            },
+            "item2": {
+              "name": "Une veste de pilote"
+            },
+            "item3": {
+              "name": "Un pantalon de vol"
+            },
+            "item4": {
+              "name": "Des bottes de pilote"
+            }
+          },
+          "pioneer_of_the_cyberscape": {
+            "name": "Pionnier du cyber-espace",
+            "description": "Équipez-vous comme l'un des 5 cyber-guerriers Bitizens. Vous faites partie de la chaîne et la chaîne fait partie de vous.",
+            "item1": {
+              "name": "Un cyber-casque"
+            },
+            "item2": {
+              "name": "Un cyber-plastron"
+            },
+            "item3": {
+              "name": "Des cyber-cuissardes"
+            },
+            "item4": {
+              "name": "Des cyber-bottes"
+            }
+          },
+          "pioneer_compass": {
+            "name": "Boussole du pionnier",
+            "description": "Cette boussole ancienne montre toujours le chemin, mais personne ne sait exactement où. Certains disent qu'elle indique le cœur perdu depuis longtemps de Bitropolis, d'autres disent qu'elle pointe vers vos désirs les plus intimes. De toute façon, elle augmente vos chances de trouver quelque chose de bien dans les mines !"
+          }
+        }
+      }
     }
   },
   "chat": {

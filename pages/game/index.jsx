@@ -1,25 +1,41 @@
-import {DesktopLayout, MobileLayout} from "@/components/layouts";
-import Game from "@/components/game";
-import Chat from "@/components/chat";
-import {userLoginRouteGuard, ethNetworkRouteGuard} from "@/shared/utils";
+import React, { Component } from 'react';
 
-const GamePage = props => (
-  <>
-    <MobileLayout
-      main={<Game {...props} />}
-    />
-    <DesktopLayout
-      main={<Game {...props} />}
-      aside={<Chat {...props} />}
-    />
-  </>
-);
+import { compose } from 'react-apollo';
 
-GamePage.getInitialProps = ctx => {
-  userLoginRouteGuard(ctx);
-  ethNetworkRouteGuard(ctx);
-  return Game.getInitialProps(ctx);
+import {
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
+import {
+  DesktopLayout,
+  MobileLayout,
+} from '@/components/layouts';
+
+import Game from '@/components/game';
+import Chat from '@/components/chat';
+
+
+class GamePage extends Component {
+  static getInitialProps = ctx => Game.getInitialProps(ctx);
+
+  render() {
+    const { user } = this.props;
+    if (user.loading) return null;
+
+    return (
+      <>
+        <MobileLayout
+          main={<Game {...this.props} />}
+        />
+        <DesktopLayout
+          main={<Game {...this.props} />}
+          aside={<Chat {...this.props} />}
+        />
+      </>
+    );
+  }
 };
 
 
-export default GamePage;
+export default compose(viewUserByWalletQuery)(GamePage);
+

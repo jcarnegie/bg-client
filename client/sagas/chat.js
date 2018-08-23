@@ -1,13 +1,26 @@
-import {put, select, takeEvery, takeLatest} from "redux-saga/effects";
-import {delay} from "redux-saga";
-import xssFilters from "xss-filters";
-import * as log from "loglevel";
+import {
+  put,
+  select,
+  takeEvery,
+} from 'redux-saga/effects';
+
+import xssFilters from 'xss-filters';
+import * as log from 'loglevel';
+
 import {
   isEmpty,
+  path,
   pathOr,
-} from "ramda";
+} from 'ramda';
 
-import {channels as chatChannels,
+import {
+  client,
+  queries,
+  localQueries,
+  localMutations,
+} from '@/shared/utils/apollo';
+
+import { channels as chatChannels,
   messages as chatMessages,
   sendMessage,
   channelNameForLocale,
@@ -15,25 +28,23 @@ import {channels as chatChannels,
   chatInit,
   findChannelByName,
   setChannelByName,
-} from "@/client/utils/chat";
+} from '@/client/utils/chat';
 
 import {
-  SENDBIRD_INIT,
-  CHAT_INIT,
   CHAT_LOAD_MESSAGES,
   CHAT_MESSAGE_SEND,
   CHAT_MESSAGE_SENT,
   CHAT_SET_CHANNEL,
-  USER_SHOW_REGISTER_WORKFLOW,
-} from "@/shared/constants/actions";
-
-const CHAT_THROTTLE = 1000;
+  INIT_CHAT,
+  SENDBIRD_INIT,
+  UPDATE_USER,
+} from '@/shared/constants/actions';
 
 
 function * sendChatMessage(action) {
   try {
     const state = yield select();
-    const {currentChannel} = state.chat;
+    const { currentChannel } = state.chat;
     const message = action.payload;
     const cleanMsg = xssFilters.inHTMLData(message);
 
@@ -41,12 +52,13 @@ function * sendChatMessage(action) {
       return null;
     }
 
-    if (!state.user.data) {
-      yield put({
-        type: USER_SHOW_REGISTER_WORKFLOW,
-        payload: true,
-      });
-      return;
+    const rootQuery = yield client.query({ query: localQueries.root });
+    const wallet = pathOr('0x0anonymous', ['data', 'wallet'], rootQuery);
+    const userQuery = yield client.query({ query: queries.viewUserByWallet, variables: { wallet } });
+    const user = path(['data', 'viewUserByWallet'], userQuery);
+
+    if (!user) {
+      return client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
     }
 
     const sentMessage = yield sendMessage(cleanMsg, currentChannel);
@@ -58,38 +70,39 @@ function * sendChatMessage(action) {
 
     let analytics = yield select(state => state.analytics);
     analytics.ga.event({
-      category: "Site Interaction",
-      action: "Chat",
-      label: "Send Message",
+      category: 'Site Interaction',
+      action: 'Chat',
+      label: 'Send Message',
     });
   } catch (e) {
-    log.error("sendChatMessage error:", e);
+    log.error('sendChatMessage error:', e);
   }
 }
 
 function * initChat(action) {
-  yield delay(CHAT_THROTTLE);
   try {
     let sb;
     let sbUser;
-    let user = yield select(state => state.user);
-    let account = yield select(state => state.account);
-    const wallet = pathOr("0x0anonymous", ["wallet"], account);
-    const nickName = pathOr("Guest", ["data", "nickName"], user);
+
+    const rootQuery = yield client.query({ query: localQueries.root });
+    const wallet = pathOr('0x0anonymous', ['data', 'wallet'], rootQuery);
+    const userQuery = yield client.query({ query: queries.viewUserByWallet, variables: { wallet } });
+    const nickName = pathOr('Guest', ['data', 'viewUserByWallet', 'nickName'], userQuery);
+
 
     [sb, sbUser] = yield chatInit(wallet, nickName);
 
     yield put({
       type: SENDBIRD_INIT,
-      payload: {sb, user: sbUser},
+      payload: { sb, user: sbUser },
     });
 
     const channels = yield chatChannels(sb);
     const locale = yield select(state => state.intl.locale);
     const channelName = channelNameForLocale(locale);
     const channelOperators = [
-      "0xc40cD464ad0895571bB396071A4FaA81935353A5", // Jeff
-      "0xa9Af3D88E5167cA6E9413CBB9b946EC95FE469ee", // Shain
+      '0xc40cD464ad0895571bB396071A4FaA81935353A5', // Jeff
+      '0xa9Af3D88E5167cA6E9413CBB9b946EC95FE469ee', // Shain
     ];
 
     let channel;
@@ -118,5 +131,6 @@ function * initChat(action) {
 
 export default function * chatSaga() {
   yield takeEvery(CHAT_MESSAGE_SEND, sendChatMessage);
-  yield takeLatest(CHAT_INIT, initChat);
+  yield takeEvery(INIT_CHAT, initChat);
+  yield takeEvery(UPDATE_USER, initChat);
 }

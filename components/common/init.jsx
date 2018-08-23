@@ -1,35 +1,42 @@
-import {Component} from "react";
-import {connect} from "react-redux";
-import PropTypes from "prop-types";
-import {equals} from "ramda";
+import { Component } from 'react';
+import PropTypes from 'prop-types';
+import { equals } from 'ramda';
+
+import {
+  compose,
+} from 'react-apollo';
+
+import {
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
 
 
-@connect(
-  state => ({
-    user: state.user,
-  })
-)
-export default class Init extends Component {
+class Init extends Component {
   static propTypes = {
     user: PropTypes.object,
   };
 
+  static defaultProps = {
+    user: {},
+  };
+
   state = {
-    user: this.props.user.data,
-    sources: {}
+    user: {},
+    sources: {},
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (!nextProps.user.isLoading && nextProps.user.success && !equals(nextProps.user.data, prevState.user)) {
+    if (!nextProps.user.loading && nextProps.user.viewUserByWallet &&
+      !equals(nextProps.user.viewUserByWallet, prevState.user.viewUserByWallet)) {
       Object.keys(prevState.sources).forEach(origin => {
         prevState.sources[origin].postMessage({
-          type: "user",
-          user: nextProps.user.data
+          type: 'user',
+          user: nextProps.user.viewUserByWallet,
         }, origin);
       });
 
       return {
-        user: nextProps.user.data
+        user: {},
       };
     }
 
@@ -37,33 +44,33 @@ export default class Init extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("message", ::this.receiveMessage, false);
+    window.addEventListener('message', ::this.receiveMessage, false);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("message", ::this.receiveMessage);
+    window.removeEventListener('message', ::this.receiveMessage);
   }
 
-  receiveMessage({data, origin, source}) {
+  receiveMessage({ data, origin, source }) {
     if (!this.state.sources[origin]) {
       this.setState({
         sources: {
           ...this.state.sources,
-          [origin]: source
-        }
+          [origin]: source,
+        },
       });
     }
 
     switch (data.type) {
-      case "ping":
+      case 'ping':
         source.postMessage({
-          type: "pong"
+          type: 'pong',
         }, origin);
         break;
-      case "user":
+      case 'user':
         source.postMessage({
-          type: "user",
-          user: this.state.user
+          type: 'user',
+          user: this.state.user,
         }, origin);
         break;
       default:
@@ -75,3 +82,6 @@ export default class Init extends Component {
     return null;
   }
 }
+
+
+export default compose(viewUserByWalletQuery)(Init);

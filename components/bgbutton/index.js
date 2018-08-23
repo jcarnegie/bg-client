@@ -1,7 +1,7 @@
-import {PureComponent} from "react";
-import PropTypes from "prop-types";
+import { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
 
 class BGButton extends PureComponent {
@@ -9,20 +9,22 @@ class BGButton extends PureComponent {
     onClick: PropTypes.func,
     children: PropTypes.any,
     className: PropTypes.string,
+    style: PropTypes.object,
   }
   static defaultProps = {
     onClick: () => {},
     children: null,
-    className: "",
+    className: '',
+    style: {},
   }
 
   render() {
     return (
-      <button className={`bg-button ${this.props.className}`} onClick={::this.props.onClick}>
+      <button className={`bg-button ${this.props.className}`} onClick={::this.props.onClick} style={this.props.style}>
         <style jsx>{`
           .bg-button {
             color: white;
-            background: ${style.colors.secondary};
+            background: ${style.colors.primary};
             box-shadow: ${style.boxShadow.default};
             font-size: 14px;
             font-weight: 100;

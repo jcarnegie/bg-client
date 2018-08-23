@@ -1,11 +1,11 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import style from "@/shared/constants/style";
-import DesktopLayout from "./desktop";
-import MobileLayout from "./mobile";
+import style from '@/shared/constants/style';
+import DesktopLayout from './desktop';
+import MobileLayout from './mobile';
 
 
-function Content({padding = "20px", children = null}) {
+function Content({ padding = '20px', children = null }) {
   return (
     <div className="bg-content">
       <style jsx>{`
@@ -25,7 +25,7 @@ Content.propTypes = {
 };
 
 function DesktopContent(props) {
-  return (<Content {...props} padding="40px 8%" />);
+  return (<Content {...props} padding="40px 10%" />);
 }
 function MobileContent(props) {
   return (<Content {...props} padding="4%" />);

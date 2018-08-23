@@ -1,37 +1,40 @@
-import React, {Component} from "react";
-import Link from "next/link";
-import {FormattedMessage, injectIntl} from "react-intl";
-import {connect} from "react-redux";
-import PropTypes from "prop-types";
-import cx from "classnames";
+import React, { Component } from 'react';
+import Link from 'next/link';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
-import style from "@/shared/constants/style";
+import style from '@/shared/constants/style';
 
-import ActiveLink from "@/components/activelink";
-import Language from "@/components/language";
-import Balance from "@/components/balance";
-import User from "@/components/user";
-import FeatureFlag from "@/components/featureflag";
+import RegisterButton from '@/components/RegisterButton';
+import ActiveLink from '@/components/activelink';
+import Language from '@/components/language';
+import Balance from '@/components/balance';
+import User from '@/components/user';
 
 
 @injectIntl
 @connect(
   state => ({
-    account: state.account,
     chat: state.chat,
-    user: state.user,
   })
 )
-export default class Header extends Component {
+class Header extends Component {
   static propTypes = {
-    account: PropTypes.object,
     dispatch: PropTypes.func,
     chat: PropTypes.object,
-    user: PropTypes.object,
   };
 
   navigation() {
+    const activeNavigationLinkStyle = {
+      boxShadow: 'inset 0px -4px 0px 0px #ffd57d',
+      background: 'rgba(255, 255, 255, .15)',
+    };
+    const defaultNavigationLinkStyle = {
+      textDecoration: 'none',
+      margin: '0',
+      padding: '0 20px',
+    };
     return (
       <div className="navigation">
         <style jsx>{`
@@ -76,28 +79,34 @@ export default class Header extends Component {
         </span>
         <ActiveLink
           href="/inventory"
-          activeStyle={{boxShadow: "inset 0px -4px 0px 0px #ffd57d"}}
-          style={{textDecoration: "none"}}
+          activeStyle={activeNavigationLinkStyle}
+          style={Object.assign({}, defaultNavigationLinkStyle, { marginLeft: 0 })}
         >
           <span className="navigation-link"><FormattedMessage id="components.menu.inventory" /></span>
         </ActiveLink>
-        <FeatureFlag flag="marketplace">
-          <ActiveLink
-            href="/marketplace"
-            activeStyle={{ boxShadow: "inset 0px -4px 0px 0px #ffd57d" }}
-            style={{ 
-            textDecoration: "none",
-            marginLeft: "20px" }}
-          >
-            <span className="navigation-link"><FormattedMessage id="components.menu.marketplace" /></span>
-          </ActiveLink>
-        </FeatureFlag>
+        <ActiveLink
+          href="/marketplace"
+          activeStyle={activeNavigationLinkStyle}
+          style={defaultNavigationLinkStyle}
+        >
+          <span className="navigation-link"><FormattedMessage id="components.menu.marketplace" /></span>
+        </ActiveLink>
+        <ActiveLink
+          href={{
+            pathname: '/presale',
+            query: { slug: 'bitizens' },
+          }}
+          as="/presale/bitizens"
+          activeStyle={activeNavigationLinkStyle}
+          style={Object.assign({}, defaultNavigationLinkStyle, { marginLeft: 0 })}
+        >
+          <span className="navigation-link"><FormattedMessage id="components.menu.presale" /></span>
+        </ActiveLink>
       </div>
     );
   }
 
   settings() {
-    const {user, dispatch} = this.props;
     return (
       <div className="settings">
         <style jsx>{`
@@ -112,42 +121,11 @@ export default class Header extends Component {
             display: flex;
             align-items: center;
           }
-          .settings .spaced-right {
-            margin: 0 25px 0 0;
-          }
-          .settings .user {
-            margin: 0 10px 0 0;
-            display: ${user.data ? "initial" : "none"};
-          }
-          .settings .settings-button {
-            display: ${user.data ? "none" : "initial"};
-            color: white;
-            margin: 0 -15px 0 0;
-            border: 0;
-            background-color: rgba(87, 181, 127, .9);
-            padding: 0 30px;
-            text-transform: uppercase;
-            font-weight: 100;
-            font-size: 14px;
-            letter-spacing: 1px;
-          }
-          .settings .settings-button:hover {
-            background-color: rgba(87, 181, 127, 1);
-          }
         `}</style>
-        <div className={cx({"spaced-right": !!user.data})}>
           <Balance />
-        </div>
-        <div className="user">
           <User />
-        </div>
         <Language />
-        <button className="settings-button" onClick={() => dispatch({
-          type: USER_SHOW_REGISTER_WORKFLOW,
-          payload: !user.showRegisterWorkflow,
-        })}>
-          <FormattedMessage id="buttons.register" />
-        </button>
+        <RegisterButton />
       </div>
     );
   }
@@ -163,8 +141,9 @@ export default class Header extends Component {
             right: 0;
             width: 100%;
             z-index: 1060; /* Bootstrap modal is 1040, 1050 - MenuDrawer is 1030 */
-            background-color: ${style.colors.secondary};
+            background-color: ${style.colors.primary};
             height: ${style.header.height};
+            border-bottom: ${style.header.border};
           }
         `}</style>
         {::this.navigation()}
@@ -173,3 +152,5 @@ export default class Header extends Component {
     );
   }
 }
+
+export default Header;
