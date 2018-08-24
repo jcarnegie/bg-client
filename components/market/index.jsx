@@ -65,6 +65,19 @@ class Market extends Component {
     itemsSortTitle: 'Newest',
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (state.mobile !== props.layout.type.mobile) {
+      return {
+        mobile: props.layout.type.mobile,
+        gameFilter: state.gameFilter,
+        categories: state.categories,
+        secondaryCategories: state.secondaryCategories,
+        itemsSort: state.itemsSort,
+        itemsSortTitle: state.itemsSortTitle,
+      };
+    }
+  }
+
   handleGameFilter(gameFilter) {
     if (this.state.gameFilter !== gameFilter) {
       this.setState({ gameFilter, categories: [], secondaryCategories: [] });
@@ -81,7 +94,7 @@ class Market extends Component {
   }
 
   handleSecondaryCategories(category) {
-    let index = this.state.categories.indexOf(category);
+    const index = this.state.secondaryCategories.indexOf(category);
     let categories = Array.from(this.state.secondaryCategories);
     if (categories.includes(category)) {
       categories.splice(index, 1);
@@ -628,9 +641,6 @@ class Market extends Component {
   }
 
   render() {
-    if (this.state.mobile !== this.props.layout.type.mobile) {
-      this.setState({ mobile: this.props.layout.type.mobile });
-    }
     const { games, user } = this.props;
 
     if (!games || !user) return <DataLoading />;
