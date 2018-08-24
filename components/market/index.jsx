@@ -32,7 +32,7 @@ import {
 } from '@/client/utils/item';
 import { MarketplaceItem } from '@/components/item';
 
-import itemList from './items.test.json';
+// import itemList from './items.test.json';
 
 
 @injectIntl
@@ -654,8 +654,8 @@ class Market extends Component {
         {({ loading, error, data, refetch }) => {
           if (error) return <DataError />;
 
-          // const { listMarketplaceItems } = data;
-          const listMarketplaceItems = itemList;
+          const { listMarketplaceItems } = data;
+          // const listMarketplaceItems = itemList;
 
           if (!this.listMarketplaceItems || this.listMarketplaceItems.length === 0) {
             this.listMarketplaceItems = listMarketplaceItems;
