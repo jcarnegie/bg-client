@@ -504,7 +504,7 @@ class Market extends Component {
           .inventory-items {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-evenly;
+            justify-content: center;
           }
         `}</style>
         <div className={this.state.mobile ? 'current-mobile-game-filter' : 'current-game-filter'}>

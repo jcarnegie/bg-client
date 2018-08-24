@@ -148,7 +148,7 @@ class Inventory extends Component {
           {this.renderCategories(game, categories)}
         </div>
         <h3>{game.name}</h3>
-        <div className="flex-row space-between">
+        <div className="flex-row flex-start">
           {itemsToRender}
         </div>
       </Fragment>
@@ -301,8 +301,8 @@ class Inventory extends Component {
           display: flex;
           flex-wrap: wrap;
         }
-        .space-between {
-          justify-content: space-evenly;
+        .flex-start {
+          justify-content: flex-start;
         }
       `}</style>
     );
