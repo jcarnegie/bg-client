@@ -2,13 +2,22 @@ import * as log from 'loglevel';
 import queryString from 'query-string';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
+import {
+  compose,
+  graphql,
+  Query,
+} from 'react-apollo';
 import { path } from 'ramda';
+
 import {
   viewGameBySlugQuery,
-  viewUserByWalletQuery,
+  queries,
   localQueries,
 } from '@/shared/utils/apollo';
+
+import {
+  WalletContext,
+} from '@/shared/utils/context';
 
 import DataLoading from '@/components/DataLoading';
 
@@ -72,7 +81,7 @@ class Game extends Component {
           ref={c => (this.dom.frame = c)}
           id="game-frame"
           src={url}
-          key={user.data ? user.data.language : defaultLanguage}
+          key={user ? user.language : defaultLanguage}
           className="game"
         />
       </div>
@@ -80,14 +89,11 @@ class Game extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const nextUserId = path(['user', 'viewUserByWallet', 'id'], nextProps);
-    const userId = path(['user', 'viewUserByWallet', 'id'], this.props);
     const nextNetworkId = path(['network', 'id'], nextProps.root);
     const networkId = path(['network', 'id'], this.props.root);
     const nextGameId = path(['viewGameBySlug', 'id'], nextProps.game);
     const gameId = path(['viewGameBySlug', 'id'], this.props.game);
     const shouldRender = (
-      nextUserId !== userId ||
       nextNetworkId !== networkId ||
       nextGameId !== gameId
     );
@@ -102,11 +108,10 @@ class Game extends Component {
   }
 
   render() {
-    const { user, root, game, query } = this.props;
-    if (!user || !root || !game) return <DataLoading />;
-    const { network } = root;
-    if (user.loading || root.loading || game.loading) return <DataLoading />;
-    if (user.error || !network.supported) return null;
+    const { root, game, query } = this.props;
+    if (!root || !game) return <DataLoading />;
+    if (root.loading || game.loading) return <DataLoading />;
+    if (!root.network.supported) return null;
     return (
       <div id="game-component-wrapper">
         <style jsx global>{`
@@ -117,8 +122,30 @@ class Game extends Component {
             display: block;
           }
         `}</style>
-        <InitGameIframeConnection />
-        {::this.renderGame(game, user, query)}
+        <WalletContext.Consumer>
+          {({ wallet }) => {
+            if (!wallet) return <DataLoading />;
+            return (
+              <Query
+                query={queries.viewUserByWallet}
+                variables={{ wallet }}
+              >
+                {({ data }) => {
+                  if (!data || !data.viewUserByWallet || data.error || data.loading) {
+                    if (path(['error'], data)) log.error('error occurred');
+                    return <DataLoading />;
+                  }
+                  return (
+                    <>
+                      <InitGameIframeConnection />
+                      {::this.renderGame(game, data.viewUserByWallet, query)}
+                    </>
+                  );
+                }}
+              </Query>
+            );
+          }}
+        </WalletContext.Consumer>
       </div>
     );
   }
@@ -126,6 +153,5 @@ class Game extends Component {
 
 export default compose(
   viewGameBySlugQuery,
-  viewUserByWalletQuery,
   graphql(localQueries.root, { name: 'root' })
 )(Game);
