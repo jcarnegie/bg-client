@@ -302,6 +302,16 @@ export const createApolloClient = () => new ApolloBoostClient({
         },
         updateNetworkAndWallet: async(_, { wallet, ...network }, { cache, getCacheKey }) => {
           log.info(`Setting network to ${network.name} with id ${network.id}. Wallet: ${wallet}`);
+
+          if (!wallet) {
+            try {
+              log.info('Trying to manually invalidate user in apollo cache.');
+              delete cache.data.data['User:1'];
+            } catch (e) {
+              log.error(e);
+            }
+          }
+
           let data = {
             network: {
               ...network,
@@ -310,7 +320,9 @@ export const createApolloClient = () => new ApolloBoostClient({
             wallet: (wallet || null),
           };
 
+
           await cache.writeData({ data });
+
 
           // const gasStationResponse = await fetch(ETH_GAS_STATION_ENDPOINT).then(res => res.json());
           // log.info(`Fetched gas from ${ETH_GAS_STATION_ENDPOINT}`);

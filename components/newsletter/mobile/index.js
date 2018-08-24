@@ -19,7 +19,7 @@ export default class Newsletter extends Component {
 
   static propTypes = {
     onHide: PropTypes.func,
-    show: PropTypes.bool,
+    show: PropTypes.string,
   }
 
   handleChange(e) {

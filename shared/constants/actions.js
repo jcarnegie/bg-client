@@ -22,7 +22,6 @@ export const USER_RESET = 'USER_RESET';
 export const SHOW_CONVERT_MODAL = 'SHOW_CONVERT_MODAL';
 
 export const CREATE_USER = 'CREATE_USER';
-export const UPDATE_USER = 'UPDATE_USER';
 
 
 export const NETWORK_NEW_BLOCK = 'NETWORK_NEW_BLOCK';

@@ -9,7 +9,6 @@ import { path } from 'ramda';
 import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
 import { localization } from '@/shared/intl/setup';
 import { Mobile, Desktop } from '@/components/responsive';
-import { UPDATE_USER } from '@/shared/constants/actions';
 
 import {
   compose,
@@ -34,12 +33,6 @@ class Language extends Component {
   onSelect(language) {
     const { dispatch, user, router } = this.props;
     dispatch(updateIntl(localization[language]));
-    dispatch({
-      type: UPDATE_USER,
-      payload: {
-        language,
-      },
-    });
 
     if (user.viewUserByWallet) updateUser(user.viewUserByWallet, { language });
     document.documentElement.setAttribute('lang', language);
@@ -67,14 +60,8 @@ class Language extends Component {
     const { dispatch } = this.props;
     const prevLang = path(['user', 'viewUserByWallet', 'language'], prevProps);
     const language = path(['user', 'viewUserByWallet', 'language'], this.props);
-    if (prevLang !== language) {
-      dispatch(updateIntl(localization[language || 'en']));
-      dispatch({
-        type: UPDATE_USER,
-        payload: {
-          language: language || 'en',
-        },
-      });
+    if (prevLang !== language && language) {
+      dispatch(updateIntl(localization[language]));
     }
   }
 
