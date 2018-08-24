@@ -1,6 +1,5 @@
 import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
 import Presale from '@/components/presale';
-import Chat from '@/components/chat';
 import { featureOn, featureRouteGuard } from '@/shared/utils';
 
 const PresalePage = props => (
@@ -10,7 +9,6 @@ const PresalePage = props => (
     />
     <DesktopLayout
       main={<DesktopContent><Presale {...props} /></DesktopContent>}
-      aside={<Chat {...props} />}
     />
   </>
 );

@@ -1,6 +1,5 @@
 import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
 import ThankYou from '@/components/thankyou';
-import Chat from '@/components/chat';
 
 
 const ThankYouPage = props => {
@@ -30,7 +29,6 @@ const ThankYouPage = props => {
           `}</style>
           <ThankYou {...props} />
         </div>}
-        aside={<Chat {...props} />}
       />
     </>
   );

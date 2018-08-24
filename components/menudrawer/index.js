@@ -30,7 +30,7 @@ class MenuDrawer extends Component {
       textDecoration: 'none',
       color: 'white',
       display: 'block',
-      padding: '20px 27px',
+      padding: '20px 20px',
       textTransform: 'uppercase',
       fontWeight: '100',
       fontSize: '15px',
@@ -41,7 +41,7 @@ class MenuDrawer extends Component {
       <div className="menu-drawer">
         <style jsx>{`
           .menu-drawer {
-            min-width: ${this.props.show ? '50%' : '0'};
+            min-width: ${this.props.show ? 'calc(50% - 20px)' : '0'};
             max-width: ${this.props.show ? '75%' : '0'};
             visibility: ${this.props.show ? 'visible' : 'hidden'};
             background: ${style.colors.primary};
@@ -49,7 +49,7 @@ class MenuDrawer extends Component {
             top: ${style.header.height}; /* top border width */
             bottom: 0;
             right: 0;
-            padding: 0;
+            padding: 20px 0 0 0;
             transition: all 0.2s ease;
             z-index: 1030; /* Bootstrap modal is 1040, 1050 respectively */
           }
@@ -60,10 +60,11 @@ class MenuDrawer extends Component {
             color: white;
           }
           .balance-mobile {
-            padding: 20px 27px;
+            padding: 20px 20px;
           }
           .language-mobile {
-            padding: 0 3px;
+            padding: 0;
+            margin-left: -3px;
           }
           :global(.language-mobile .current-lang) {
             padding: 0 0 0 18px;

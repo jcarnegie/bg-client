@@ -5,14 +5,17 @@ import { FormattedMessage } from 'react-intl';
 import {
   compose,
   graphql,
+  Query,
 } from 'react-apollo';
 
 import {
   client,
-  viewUserByWalletQuery,
+  queries,
   localQueries,
   localMutations,
 } from '@/shared/utils/apollo';
+
+import { WalletContext } from '@/shared/utils/context';
 
 
 class RegisterButton extends Component {
@@ -21,10 +24,11 @@ class RegisterButton extends Component {
       wallet: PropTypes.string,
       network: PropTypes.object,
     }),
-    user: PropTypes.object,
   }
 
-  state = {}
+  state = {
+    timeout: null,
+  }
 
   renderButtonWithText(text) {
     return (
@@ -37,7 +41,6 @@ class RegisterButton extends Component {
             background-color: #5DBE81;
             padding: 0 30px;
             text-transform: uppercase;
-            font-weight: 100;
             font-size: 14px;
             letter-spacing: 1px;
             height: 62px;
@@ -62,55 +65,73 @@ class RegisterButton extends Component {
   }
 
   componentDidMount() {
-    /* Delay Hack to prevent flicker of register button on initial render */
-    this.setState({ timeout: setTimeout(() => this.setState({ timeout: null }), 2000) });
+    this.setState({
+      /* Delay Hack to prevent flicker of register button on initial render */
+      timeout: setTimeout(() => this.setState({ timeout: null }), 2000),
+    });
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.state.timeout);
   }
 
   render() {
-    const { root, user } = this.props;
-    const { wallet, network } = root;
+    return (
+      <WalletContext.Consumer>
+        {({ wallet }) => {
+          const { root } = this.props;
+          const { network } = root;
 
-    /* Delay Hack to prevent flicker of register button on initial render */
-    if (this.state.timeout) return null;
+          /* Delay Hack to prevent flicker of register button on initial render */
+          if (this.state.timeout) return null;
 
-    /* Render null if loading */
-    if (user.loading) return null;
+          /* If user does not have web3, show "register" */
+          if (!network.available) {
+            return ::this.renderButtonWithText(<FormattedMessage id="buttons.register" />);
+          }
 
-    /* If user does not have web3, show "register" */
-    if (!network.available) {
-      return ::this.renderButtonWithText(<FormattedMessage id="buttons.register" />);
-    }
+          /* Not on supported network, show "login" */
+          if (!network || !network.supported) {
+            return ::this.renderButtonWithText(<FormattedMessage id="buttons.login" />);
+          }
 
-    /* Not on supported network, show "login" */
-    if (!network || !network.supported) {
-      return ::this.renderButtonWithText(<FormattedMessage id="buttons.login" />);
-    }
+          /* Render register if no wallet */
+          if (!wallet) return ::this.renderButtonWithText(<FormattedMessage id="buttons.login" />);
 
-    /* If wallet and user are available, show nothing */
-    if (wallet && user.viewUserByWallet) {
-      return null;
-    }
+          return (
+            <Query
+              query={queries.viewUserByWallet}
+              variables={{ wallet }}
+              fetchPolicy="no-cache"
+            >
+              {({ data }) => {
+                /* Render null if loading */
+                if (data && data.loading) return null;
 
-    /* If user is logged into web3 but does not have a user account, show "register" */
-    if (wallet && !user.viewUserByWallet) {
-      return ::this.renderButtonWithText(<FormattedMessage id="buttons.register" />);
-    }
+                /* Render register if error */
+                if (data && data.error) return ::this.renderButtonWithText(<FormattedMessage id="buttons.register" />);
 
-    /* If wallet is not available, but user is still defined in apollo cache, show render null */
-    if (!wallet && user.viewUserByWallet) {
-      return null;
-    }
 
-    /* If wallet is not available, but user has web3, show "login" */
-    if (!wallet && !user.viewUserByWallet) {
-      return ::this.renderButtonWithText(<FormattedMessage id="buttons.login" />);
-    }
+                /* If wallet and user are available, show nothing */
+                if (data) {
+                  return null;
+                }
 
-    return null;
+                /* If user is logged into web3 but does not have a user account, show "register" */
+                if (!data) {
+                  return ::this.renderButtonWithText(<FormattedMessage id="buttons.register" />);
+                }
+
+                return null;
+              }}
+            </Query>
+          );
+        }}
+      </WalletContext.Consumer>
+    );
   }
 }
 
 export default compose(
-  viewUserByWalletQuery,
   graphql(localQueries.root, { name: 'root' }),
 )(RegisterButton);

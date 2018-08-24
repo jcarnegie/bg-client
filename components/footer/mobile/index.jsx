@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { compose } from 'react-apollo';
-import Link from 'next/link';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Router from 'next/router';
 import { path } from 'ramda';
@@ -17,59 +16,61 @@ class Footer extends Component {
           .footer {
             position: relative;
             width: 100%;
-            height: ${Router.router.route === '/' && !user ? '265px' : '200px'};
+            height: ${Router.router.route === '/' && !user ? '305px' : '240px'};
+            display: ${Router.router.route === '/game' ? 'none' : null};
             background-color: #B6D0F7;
           }
+          .mobile-wrapper {
+            padding-bottom: ${Router.router.route === '/game' ? '0px !important' : '200px'};
+          }
           .footer img {
-            display: inline-block;
             height: 70px;
             width: 70px;
-            float: left;
-            margin-right: 15px;
           }
           .mobile-footer-block {
             width: 100%;
             display: flex;
-            padding-left: 2%;
-            padding-right: 2%;
+            justify-content: space-evenly;
+            padding: 0 2%;
           }
           .footer-text-block {
-            display: block;
           }
           .footer-text-block h2 {
             font-weight: 600;
             font-size: 16px;
-            margin: 0;
+            margin: 15px 0 5px 0;
             text-transform: uppercase;
+          }
+          .footer-text-block span {
+            font-size: 16px;
+            margin-top: 3px;
+            text-align: center;
+          }
+          .footer .players-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 50%;
+            margin-top: 8%;
+          }
+          .footer .developer-footer {
+            width: 50%;
+            text-align: center;
+            margin-top: 8%;
+          }
+          .footer .social-footer {
+            width: 100%;
           }
           .social-footer h2 {
             font-weight: 600;
             font-size: 16px;
-            margin: 0 0 15px 0;
+            margin: 40px 0 15px 0;
             text-transform: uppercase;
-          }
-          .footer-text-block span {
-            display: block;
-            font-size: 16px;
-            margin-top: 3px;
-          }
-          .footer .players-footer {
-            display: block;
-            width: 50%;
-            margin-top: 5%;
-          }
-          .footer .developer-footer {
-            display: block;
-            width: 50%;
-            margin-top: 5%;
-          }
-          .footer .social-footer {
-            display: block;
-            width: 100%;
-            margin-top: 20px;
+            text-align: center;
           }
           .footer .social-footer span {
-            display: block;
             text-align: center;
           }
           .mobile-social-icons {
@@ -86,20 +87,20 @@ class Footer extends Component {
           }
         `}</style>
         <div className='mobile-footer-block'>
-          <div className="players-footer">
+          <div className="footer-icon-block players-footer">
             <img src="/static/images/icons/players.png" />
             <div className="footer-text-block">
               <h2><FormattedMessage id="components.footer.for-players" /></h2>
-              <FormattedHTMLMessage id="components.footer.faq" />
-              <FormattedHTMLMessage id="components.footer.feedback" />
+              <div><FormattedHTMLMessage id="components.footer.faq" /></div>
+              <div><FormattedHTMLMessage id="components.footer.feedback" /></div>
             </div>
           </div>
-          <div className="developer-footer">
+          <div className="footer-icon-block developer-footer">
             <img src="/static/images/icons/developers.png" />
             <div className="footer-text-block">
               <h2><FormattedMessage id="components.footer.for-developers" /></h2>
-              <FormattedHTMLMessage id="components.footer.bug-bounty" />
-              <FormattedHTMLMessage id="components.footer.portal-sdk" />
+              <div><FormattedHTMLMessage id="components.footer.bug-bounty" /></div>
+              <div><FormattedHTMLMessage id="components.footer.portal-sdk" /></div>
             </div>
           </div>
         </div>

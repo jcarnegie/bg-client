@@ -1,6 +1,5 @@
 import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
 import FAQ from '@/components/faq';
-import Chat from '@/components/chat';
 
 
 const FAQPage = props => (
@@ -10,7 +9,6 @@ const FAQPage = props => (
     />
     <DesktopLayout
       main={<DesktopContent><FAQ {...props} /></DesktopContent>}
-      aside={<Chat {...props} />}
     />
   </>
 );

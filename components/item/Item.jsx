@@ -54,7 +54,6 @@ class Item extends Component {
             width: 100%;
             height: 16px;
             padding: 1px 16px;
-            background-color: #F4F6F9;
           }
         `}</style>
             <>
@@ -126,7 +125,6 @@ class Item extends Component {
           :global(.price-banner-null) {
             width: 100%;
             height: 16px;
-            background: #F4F6F9;
             padding: 1px 16px;
           }
         `}</style>
@@ -165,7 +163,6 @@ class Item extends Component {
         <style jsx>{`
           .attrs {
             overflow: hidden;
-            background-color: #F4F6F9;
             padding: 5px 0 7px 15px;
             display: flex;
             align-items: flex-start;
@@ -214,7 +211,7 @@ class Item extends Component {
             border: 0;
             background-color: #FAFAFA;
             border-radius: 6px;
-            box-shadow: ${style.boxShadow.dark};
+            box-shadow: ${style.boxShadow.default};
           }
           .item .thumbnail .itemImage {
             display: block;
@@ -228,12 +225,10 @@ class Item extends Component {
             padding: 0;
             background-color: #ffffff;
             border-radius: 6px;
-            box-shadow: 0px 0px 20px 10px #EAECF0;
           }
           .item .thumbnail .caption h4 {
             font-size: 0.9em;
             font-weight: 500;
-            background-color: #F4F6F9;
             padding: 5px 15px 3px 15px;
             margin: 0;
           }
@@ -246,7 +241,6 @@ class Item extends Component {
             display: grid;
             grid-template-columns: minmax(0%, 35%);
             column-gap: 5px;
-            background-color: #F4F6F9;
             padding: 0px 15px 0px 15px;
             margin: 0;
             columns: 2;

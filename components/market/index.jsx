@@ -12,6 +12,7 @@ import {
   map,
   path,
   uniq,
+  intersection,
 } from 'ramda';
 
 import TreeView from '@/components/treeview/treeview';
@@ -57,37 +58,54 @@ class Market extends Component {
 
   state = {
     mobile: this.props.layout.type.mobile,
-    gameFilter: '1',
-    categories: null,
+    gameFilter: false,
+    categories: [],
+    secondaryCategories: [],
     itemsSort: [['saleExpiration', 'ASC']],
     itemsSortTitle: 'Newest',
   }
 
-  handleGameFilter(gameFilter) {
-    if (this.state.gameFilter !== gameFilter) {
-      this.setState({ gameFilter });
+  static getDerivedStateFromProps(props, state) {
+    if (state.mobile !== props.layout.type.mobile) {
+      return {
+        mobile: props.layout.type.mobile,
+        gameFilter: state.gameFilter,
+        categories: state.categories,
+        secondaryCategories: state.secondaryCategories,
+        itemsSort: state.itemsSort,
+        itemsSortTitle: state.itemsSortTitle,
+      };
     }
   }
 
-  handleSubCategories(subCategory) {
-    if (this.state.categories && this.state.categories.includes(subCategory)) {
-      let index = this.state.categories.indexOf(subCategory);
-      let resetCategories = Array.from(this.state.categories);
+  handleGameFilter(gameFilter) {
+    if (this.state.gameFilter !== gameFilter) {
+      this.setState({ gameFilter, categories: [], secondaryCategories: [] });
+    }
+  }
 
-      if (this.state.categories.length === 0) {
-        this.setState({
-          categories: null,
-        });
-      } else {
-        resetCategories.splice(index, 1);
-        this.setState({
-          categories: resetCategories,
-        });
-      }
+  handlePrimaryCategories(subCategory) {
+    if (subCategory === false) {
+      const categories = [];
+      this.setState({ categories, secondaryCategories: [] });
     } else {
-      const categories = this.state.categories ? Array.from(this.state.categories) : [];
-      categories.push(subCategory);
-      this.setState({ categories });
+      this.setState({ categories: [subCategory], secondaryCategories: [] });
+    }
+  }
+
+  handleSecondaryCategories(category) {
+    const index = this.state.secondaryCategories.indexOf(category);
+    let categories = Array.from(this.state.secondaryCategories);
+    if (categories.includes(category)) {
+      categories.splice(index, 1);
+      this.setState({
+        secondaryCategories: categories,
+      });
+    } else {
+      categories.push(category);
+      this.setState({
+        secondaryCategories: categories,
+      });
     }
   }
 
@@ -97,8 +115,102 @@ class Market extends Component {
     };
   }
 
-  renderFilters(items, games, loading = false) {
+  renderSecondaryFilters(gameFilter) {
+    const filterColors = ['#4A90E2', '#805DFF', '#43ABAE'];
+    let secondaryCategories = [];
+    let categoryIndex = null;
+
+    gameFilter.categories.map((category, i) => {
+      if (!category.subCategories.includes(this.state.categories[0])) {
+        secondaryCategories.push(category);
+      } else {
+        secondaryCategories.push(category);
+        categoryIndex = i;
+      }
+    });
+    return (
+      <div className="secondary-filter">
+        <style jsx>{`
+          .secondary-filter {
+            background-color: #EFF3FB;
+            min-height: 46%;
+          }
+          .secondary-filter-header {
+            border-bottom: 1px solid #EEEEEE;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: .9em;
+          }
+          .secondary-category-header {
+            border: none;
+            font-size: .8em;
+            padding-left: 60px;
+            margin-bottom: 5px;
+            margin-top: 15px;
+            text-transform: uppercase;
+          }
+          .secondary-category {
+            font-size: .8em;
+            padding-left: 61px;
+          }
+          .secondary-category label {
+             font-weight: 300;
+          }
+          .filter-icon {
+            margin-left: 18px;
+            margin-right: 16px;
+            height: 25px;
+            width: 25px;
+            position: relative;
+            bottom: 3px;
+          }
+          .filter-checkbox {
+            margin-right: 10px;
+            position: relative;
+            bottom: 2px;
+          }
+        `}
+        </style>
+        <div className="secondary-filter-header">
+          <img src="/static/images/icons/filter_icon.svg" className="filter-icon" />
+          FILTERS
+        </div>
+        {secondaryCategories.map((category, i) => {
+          let styles = {
+            color: filterColors[(i) % filterColors.length],
+          };
+          if (categoryIndex !== i) {
+            return (
+              <>
+                <legend className="secondary-category-header" style={styles}>{category.categoryName}</legend>
+                { category.subCategories.map(subCategory => {
+                  return (
+                    <div
+                      className="secondary-category"
+                      key={subCategory}>
+                      <input
+                        type="checkbox" id={subCategory}
+                        name="feature"
+                        className="filter-checkbox"
+                        onChange={() => ::this.handleSecondaryCategories(subCategory)}
+                        checked={!this.state.secondaryCategories.includes(subCategory)}
+                        />
+                      <label>{subCategory}</label>
+                    </div>
+                  );
+                })}
+              </>
+            );
+          }
+        })}
+      </div>
+    );
+  }
+
+  renderPrimaryFilters(items, games, loading = false) {
     let gameFilters = [];
+    const filterColors = ['#4A90E2', '#805DFF', '#43ABAE'];
 
     if (!games || !items) return null;
 
@@ -160,10 +272,11 @@ class Market extends Component {
       }, 'no-select')}>
         <style jsx>{`
           .filters {
-            min-width: 200px;
-            border-right: solid 2px #E1E1E1;
+            min-width: 250px;
+            border-right: solid 2px #EEEEEE;
             margin-right: -1px;
             min-height: calc(100vh - 62px);
+            background-color: white;
           }
           .mobileFilters {
             width: 100%;
@@ -172,59 +285,48 @@ class Market extends Component {
             width: 100%;
             display: inline-block;
             text-align: center;
-            border-bottom: 1px solid #E1E1E1;
+            border-bottom: 1px solid #EEEEEE;
             height: 50px;
             font-weight: 400;
             line-height: 45px;
-            font-size: 0.9em;
+            font-size: 0.8em;
             text-transform: uppercase;
+            cursor: pointer;
+            color: #919497;
+          }
+          .primary-filter {
+            min-height: 50%;
           }
         `}
         </style>
         <style global jsx>{`
           .tree-view {}
-
           .tree-view_item .node {
             font-size: 1.0em;
             font-weight: 500;
             position: relative;
           }
-
-          .tree-view_item {
-            display: flex;
-            align-items: center;
-          }
-
           .tree-view_item {
             /* immediate child of .tree-view, for styling convenience */
             cursor: pointer;
-            padding-left: 20px;
+            padding-left: 15px;
             height: 50px;
-            border-bottom: 1px solid #E1E1E1;
+            border-top: 1px solid #EEEEEE;
+            display: flex;
+            align-items: center;
           }
           .treeview-active-item {
             background-color: #D3E0F7;
+            font-weight 50
           }
           .info {
             cursor: pointer;
             font-size: 0.8em;
             font-weight: 300;
-            height: 45px;
-            padding: 0 20px 0 100px;
+            height: 40px;
+            padding: 0 20px 0 80px;
             display: flex;
             align-items: center;
-            border-bottom: 1px solid #E1E1E1;
-          }
-          .info-active {
-            cursor: pointer;
-            font-size: 0.8em;
-            font-weight: 300;
-            height: 45px;
-            padding: 0 20px 0 100px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #E1E1E1;
-            background-color: #D3E0F7;
           }
           .tree-view_children-collapsed {
             height: 0px;
@@ -237,13 +339,14 @@ class Market extends Component {
             font-size: 1.1em;
           }
           .tree-view_children .tree-view_item .node.category {
-            font-size: 0.9em;
+            font-size: 0.8em;
             padding-left: 45px;
+            text-transform: uppercase;
           }
           .tree-view_children .tree-view_item {
             /* immediate child of .tree-view, for styling convenience */
             cursor: pointer;
-            padding-left: 20px;
+            padding-left: 15px;
             height: 45px;
           }
           .tree-view_image {
@@ -253,51 +356,109 @@ class Market extends Component {
             position: relative;
             margin-right: 10px;
           }
+          .reset-filters {
+            min-height: 4%;
+            background-color: #E7EBF7;
+            font-size: 14px;
+            padding-left: 20px;
+            vertical-align: middle;
+            cursor: pointer;
+            padding-top: 10px;
+          }
+          .subcategory-name {
+            display: inline-block;
+            text-transform: upppercase;
+          }
+          .subcategory-name-active {
+            border-left: 3px solid black;
+            font-weight: 500;
+            padding-left: 10px;
+            text-transform: upppercase;
+          }
         `}
         </style>
-        <div className="gameFilterHeader">
-          <FormattedMessage id="pages.marketplace.games" />
+        <div className="primary-filter">
+          <div className="gameFilterHeader" onClick={() => ::this.handleGameFilter(false)}>
+            <FormattedMessage id="pages.marketplace.games" />
+          </div>
+          {this.state.gameFilter === false
+          ? <TreeView
+            key={'allItems'}
+            nodeLabel={<span className="node">{'All Marketplace Items'}</span>}
+            defaultCollapsed={this.state.gameFilter === false}
+            onClick={() => ::this.handleGameFilter(false)}
+            imgSource={'/static/images/icons/all_items.png'}
+            noChevron={false}
+            itemClassName={this.state.gameFilter === false ? 'treeview-active-item' : ''}
+          />
+          : null}
+          {(loading && !(games && items)) ? <DataLoading /> : gameFilters.map((item, i) => {
+            const { name, id, categories, imgSource } = item;
+            const { gameFilter } = this.state;
+            let gameFilterIsSelected = false;
+            if (gameFilter !== false) {
+              gameFilterIsSelected = gameFilter.toString() === id.toString();
+            }
+            if (gameFilter === false || gameFilterIsSelected === true) {
+              return (
+                <TreeView
+                  key={name + '|' + i}
+                  nodeLabel={<span className="node">{name}</span>}
+                  defaultCollapsed={gameFilterIsSelected === false || !gameFilterIsSelected}
+                  onClick={() => ::this.handleGameFilter(id)}
+                  imgSource={imgSource}
+                  noChevron={false}
+                >
+                <TreeView
+                  key={'allItems' + i}
+                  nodeLabel={<span className='node category'>All items</span>}
+                  noChevron={false}
+                  onClick={() => ::this.handlePrimaryCategories(false)}
+                  itemClassName={gameFilterIsSelected && this.state.categories.length === 0 && this.state.secondaryCategories.length === 0 ? 'treeview-active-item' : ''}
+                />
+                  {categories.map(({ categoryName, subCategories }, i) => {
+                    const filterColorIndex = i % filterColors.length;
+                    const styles = {
+                      color: filterColors[filterColorIndex],
+                    };
+                    return (
+                      <TreeView
+                        defaultCollapsed
+                        nodeLabel={<span className="node category" style={styles}>{categoryName}</span>}
+                        key={categoryName}
+                        itemClassName={intersection(this.state.categories, subCategories).length > 0 ? 'treeview-active-item' : ''}
+                        chevronSize={15}
+                      >
+                      {
+                        subCategories.map(subCategory => {
+                          return (
+                            <div key={subCategory}
+                            className="info"
+                            onClick={() => ::this.handlePrimaryCategories(subCategory, id)}>
+                            <span className={this.state.categories.includes(subCategory)
+                            ? 'subcategory-name-active'
+                            : 'subcategory-name'}>{subCategory}</span>
+                            </div>
+                          );
+                        })
+                      }
+                      </TreeView>
+                    );
+                  })}
+                </TreeView>
+              );
+            }
+          }
+          )}
         </div>
-        {(loading && !(games && items)) ? <DataLoading /> : gameFilters.map((node, i) => {
-          const { name, id, categories, imgSource } = node;
-          const { gameFilter } = this.state;
-          const gameFilterIsSelected = gameFilter.toString() === id.toString();
-          return (
-            <TreeView
-              key={name + '|' + i}
-              nodeLabel={<span className="node">{name}</span>}
-              collapsed={!gameFilterIsSelected}
-              onClick={() => ::this.handleGameFilter(id)}
-              imgSource={imgSource}
-              itemClassName={gameFilterIsSelected ? 'treeview-active-item' : ''}
-            >
-              {categories.map(({ categoryName, subCategories }) => {
-                return (
-                  <TreeView
-                    defaultCollapsed
-                    nodeLabel={<span className="node category">{categoryName}</span>}
-                    key={categoryName}
-                    chevronSize={15}
-                  >
-                  {
-                    subCategories.map(subCategory => {
-                      return (
-                        <div key={subCategory}
-                        className={`${this.state.categories === null
-                        ? 'info'
-                        : this.state.categories.includes(subCategory)
-                        ? 'info-active' : 'info'}`}
-                        onClick={() => ::this.handleSubCategories(subCategory, id)}>{subCategory}</div>
-                      );
-                    })
-                  }
-                  </TreeView>
-                );
-              })}
-            </TreeView>
-          );
-        }
-        )}
+        {this.state.categories.length === 0
+        ? null
+        : this.renderSecondaryFilters(gameFilters.find(f => f.id === this.state.gameFilter))}
+        {this.state.categories.length === 0
+        ? null
+        : <div className="reset-filters" onClick={() => ::this.handleGameFilter(false)}>
+          RESET ALL FILTERS
+        </div>}
       </div>
     );
   }
@@ -348,11 +509,15 @@ class Market extends Component {
             background: transparent !important; /* Boostrap override */
             background-color: transparent !important; /* Boostrap override */
             box-shadow: none !important; /* Boostrap override */
+            font-weight: 500 !important;
+          }
+          :global(.sort-dropdown .caret) {
+            margin-left: 2px !important;
           }
           .inventory-items {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-evenly;
+            justify-content: center;
           }
         `}</style>
         <div className={this.state.mobile ? 'current-mobile-game-filter' : 'current-game-filter'}>
@@ -384,8 +549,13 @@ class Market extends Component {
   renderItems(game, items, refetch) {
     const { mobile } = this.props.layout.type;
     const maxStats = calcMaxItemsStats(items);
-    return items.filter(item => Object.keys(this.state.gameFilter).includes(item.game.id) ? this.state.gameFilter[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
-      .map(item => (
+    let filteredItems = null;
+    if (this.state.gameFilter !== null) {
+      filteredItems = items.filter(item => Object.keys(this.state.gameFilter).includes(item.game.id) ? this.state.gameFilter[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true);
+    } else {
+      filteredItems = items;
+    }
+    return filteredItems.map(item => (
         <div
           className={cx({
             'item-wrapper-desktop': !mobile,
@@ -408,7 +578,7 @@ class Market extends Component {
             item={item}
             game={game}
             maxStats={maxStats}
-            handler={::this.handleSubCategories}
+            handler={::this.handlePrimaryCategories}
             onBuy={::this.handleBuy(refetch)}
           />
         </div>
@@ -471,9 +641,6 @@ class Market extends Component {
   }
 
   render() {
-    if (this.state.mobile !== this.props.layout.type.mobile) {
-      this.setState({ mobile: this.props.layout.type.mobile });
-    }
     const { games, user } = this.props;
 
     if (!games || !user) return <DataLoading />;
@@ -481,18 +648,16 @@ class Market extends Component {
 
     let { listGames } = games;
     let { viewUserByWallet } = user;
-
     return (
       <Query
         query={queries.listMarketplaceItems}
         variables={{
           userId: (viewUserByWallet) ? viewUserByWallet.id : null,
           language: (viewUserByWallet) ? viewUserByWallet.language : null,
-          gameId: this.state.gameFilter,
+          gameId: this.state.gameFilter === false ? null : this.state.gameFilter,
           sort: this.state.itemsSort,
+          andNotCategories: this.state.secondaryCategories,
           categories: (!this.listMarketplaceItems) ? []
-            : !this.listMarketplaceItems.length > 0 ? []
-            : this.listMarketplaceItems[0].game.id !== this.state.gameFilter ? []
             : this.state.categories,
         }}
       >
@@ -521,7 +686,7 @@ class Market extends Component {
                 flex-direction: column;
               }
             `}</style>
-              {this.renderFilters(this.listMarketplaceItems, listGames, loadingAny)}
+              {this.renderPrimaryFilters(this.listMarketplaceItems, listGames, loadingAny)}
               {this.renderItemGrid(listMarketplaceItems, listGames, refetch, loadingAny)}
             </div>
           );

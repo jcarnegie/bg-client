@@ -37,7 +37,7 @@ class BGGrid extends PureComponent {
   title() {
     const { mobile } = this.props.layout.type;
     return this.props.title ? (
-      <h5 className="title">
+      <h4 className="title">
         <style jsx>{`
           .title {
             margin: 0 0 0 ${mobile ? '3%' : '1.5%'};
@@ -47,7 +47,7 @@ class BGGrid extends PureComponent {
           }
         `}</style>
         {this.props.title}
-      </h5>
+      </h4>
     ) : null;
   }
 
@@ -74,7 +74,7 @@ class BGGrid extends PureComponent {
           .bg-grid-wrapper,
           .bg-grid-header,
           .bg-grid {
-            padding: ${mobile ? '5px' : '15px'};
+            padding: ${mobile ? '5px 0 10px 0' : '15px'};
           }
           .bg-grid-wrapper {
             background: ${this.props.backgroundColor};
@@ -83,7 +83,7 @@ class BGGrid extends PureComponent {
             position: relative;
           }
           .bg-grid-header {
-            padding: ${mobile ? '5px' : '30px 30px 15px 30px'};
+            padding: ${mobile ? '20px' : '30px 30px 15px 30px'};
             display: flex;
             align-items: center;
           }

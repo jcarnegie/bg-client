@@ -22,8 +22,9 @@ module.exports = withBundleAnalyzer({
 				'process.env.MAINNET_BITIZENS_IGO_CONTRACT_ADDR': JSON.stringify(process.env.MAINNET_BITIZENS_IGO_CONTRACT_ADDR),
         'process.env.RINKEBY_BITIZENS_IGO_CONTRACT_ADDR': JSON.stringify(process.env.RINKEBY_BITIZENS_IGO_CONTRACT_ADDR),
         'process.env.MAINNET_MARKETPLACE_CONTRACT_ADDR': JSON.stringify(process.env.MAINNET_MARKETPLACE_CONTRACT_ADDR),
-				'process.env.RINKEBY_MARKETPLACE_CONTRACT_ADDR': JSON.stringify(process.env.RINKEBY_MARKETPLACE_CONTRACT_ADDR),
-        'process.env.SENDBIRD_APP_ID': JSON.stringify(process.env.SENDBIRD_APP_ID),
+        'process.env.RINKEBY_MARKETPLACE_CONTRACT_ADDR': JSON.stringify(process.env.RINKEBY_MARKETPLACE_CONTRACT_ADDR),
+        'process.env.DISCORD_SERVER': JSON.stringify(process.env.DISCORD_SERVER),
+				'process.env.DISCORD_SHARD': JSON.stringify(process.env.DISCORD_SHARD),
 			})
 		);
 

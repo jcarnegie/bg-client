@@ -2,10 +2,10 @@
  * TODO - Modularize sub-components for re-use
 **/
 import React, { Component, Fragment } from 'react';
-import { Button, Image, Row, Tab, Tabs } from 'react-bootstrap';
+import { Button, Image, Tab, Tabs } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import Router from 'next/router';
+
 import {
   contains,
   filter,
@@ -13,16 +13,26 @@ import {
   path,
   uniq,
 } from 'ramda';
+
 import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
-import { compose, graphql } from 'react-apollo';
+
+import {
+  compose,
+  graphql,
+  Query,
+} from 'react-apollo';
 
 import {
   viewGameBySlugQuery,
-  viewUserByWalletQuery,
   listGamesQuery,
   listItemsQuery,
   localQueries,
+  queries,
 } from '@/shared/utils/apollo';
+
+import {
+  getWeb3Wallet,
+} from '@/shared/utils/network';
 
 import {
   getConfigForGame,
@@ -46,8 +56,7 @@ class Inventory extends Component {
 		items: PropTypes.object,
 		games: PropTypes.object,
     game: PropTypes.object,
-		data: PropTypes.object,
-		user: PropTypes.object,
+		root: PropTypes.object,
 		lastLocation: PropTypes.shape({
       pathname: PropTypes.string,
 		}),
@@ -81,11 +90,7 @@ class Inventory extends Component {
 	}
 
 	renderInventory() {
-    const { items, games, user } = this.props;
-
-    if (user.loading || items.loading || games.loading) return <DataLoading />;
-    if (user.error || items.error || games.error) return <DataError />;
-
+    const { items, games } = this.props;
 		return items.listItems && items.listItems.length ? this.renderTabs(games.listGames, items.listItems) : this.renderEmpty();
 	}
 
@@ -143,7 +148,7 @@ class Inventory extends Component {
           {this.renderCategories(game, categories)}
         </div>
         <h3>{game.name}</h3>
-        <div className="flex-row space-between">
+        <div className="flex-row flex-start">
           {itemsToRender}
         </div>
       </Fragment>
@@ -208,15 +213,26 @@ class Inventory extends Component {
 
 
 	render() {
-    const { user, data } = this.props;
-    const { network } = data;
-    if (user.loading || data.loading) return <DataLoading />;
-    if (user.error || !network.supported) return null;
+    const { items, games, root } = this.props;
+    const { network } = root;
     return (
-			<div className="inventory">
-				{this.indexStyle()}
-				{::this.renderInventory()}
-			</div>
+      <Query
+        query={queries.viewUserByWallet}
+        variables={{ wallet: getWeb3Wallet() }}
+      >
+        {({ data }) => {
+          if (data.loading || items.loading || games.loading) return <DataLoading />;
+          if (data.error || items.error || games.error) return <DataError />;
+          if (!network.supported) return null;
+          const { viewUserByWallet } = data;
+          return (
+            <div className="inventory">
+              {this.indexStyle()}
+              {::this.renderInventory({ user: viewUserByWallet })}
+            </div>
+          );
+        }}
+      </Query>
 		);
 	}
 
@@ -285,8 +301,8 @@ class Inventory extends Component {
           display: flex;
           flex-wrap: wrap;
         }
-        .space-between {
-          justify-content: space-evenly;
+        .flex-start {
+          justify-content: flex-start;
         }
       `}</style>
     );
@@ -295,9 +311,8 @@ class Inventory extends Component {
 
 
 export default compose(
-  viewUserByWalletQuery,
   viewGameBySlugQuery,
   listGamesQuery,
   listItemsQuery,
-  graphql(localQueries.root),
+  graphql(localQueries.root, { name: 'root' }),
 )(Inventory);

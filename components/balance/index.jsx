@@ -36,6 +36,7 @@ class Balance extends Component {
   };
   static defaultProps = {
     data: {},
+    layout: {},
   }
 
   state = {
@@ -134,7 +135,7 @@ class Balance extends Component {
             text-align: right;
             float: left;
             clear: both;
-            line-height: 14px;
+            line-height: ${this.props.layout.type.mobile ? '20px' : '14px'};
           }
         `}</style>
         <div>
@@ -155,7 +156,7 @@ class Balance extends Component {
             display: flex;
             align-items: center;
             color: white;
-            font-size: 13px;
+            font-size: ${this.props.layout.type.mobile ? '14px' : '13px'};
             font-weight: 100;
           }
         `}</style>

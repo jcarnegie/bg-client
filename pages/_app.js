@@ -18,6 +18,10 @@ import {
 } from '@/shared/utils/apollo';
 
 import {
+  createCrate,
+} from '@/shared/utils/discord';
+
+import {
   asyncGetNetworkId,
   web3IsInstalled,
   getWeb3Wallet,
@@ -25,17 +29,20 @@ import {
   networkIdIsSupported,
 } from '@/shared/utils/network';
 
+import { WalletContext } from '@/shared/utils/context';
 
 import configureStore from '@/client/utils/store';
 
 import ResizeListener from '@/components/resizelistener';
 import Web3Modals from '@/components/popups/Web3Modals';
 import GlobalStyles from '@/components/GlobalStyles';
+import DataLoading from '@/components/DataLoading';
+
 import style from '@/shared/constants/style';
 import {
   APP_INIT,
-  INIT_CHAT,
 } from '@/shared/constants/actions';
+
 
 /* Poll web3 interface for user account with this frequency */
 const WEB3_ACCOUNT_POLLING_INTERVAL = process.env.NODE_ENV === 'development' ? 1000 : 200;
@@ -66,6 +73,8 @@ class BGApp extends App {
     this.props.store.dispatch({ type: APP_INIT });
     const state = this.props.store.getState();
 
+    createCrate();
+
     if (state.analytics.ga.pageview) {
       state.analytics.ga.pageview(window.location.pathname);
     }
@@ -82,10 +91,6 @@ class BGApp extends App {
             variables: { tx: latestBlock },
           });
         }
-      });
-    } else {
-      this.props.store.dispatch({
-        type: INIT_CHAT
       });
     }
 
@@ -121,7 +126,6 @@ class BGApp extends App {
               wallet: currentWallet,
             },
           });
-          this.props.store.dispatch({ type: INIT_CHAT });
           this.setState({
             network: currentNetwork,
             wallet: currentWallet,
@@ -152,31 +156,35 @@ class BGApp extends App {
     return (
       <Container>
         <GlobalStyles style={style} />
-        <ApolloProvider client={client}>
-          <IntlProvider store={store}>
-            <>
-              <ResizeListener />
-              <Query query={localQueries.root}>
-                {({ loading, error, data }) => {
-                  if (loading || error) return null;
-                  return (
-                    <>
-                      <Web3Modals {...web3ModalsProps} />
-                    </>
-                  );
-                }}
-              </Query>
-              <Query
-                skip={() => !wallet}
-                query={queries.viewUserByWallet}
-                variables={{ wallet }}
-                fetchPolicy="no-cache"
-              >
-                {() => <Component {...pageProps} {...locals} />}
-              </Query>
-            </>
-          </IntlProvider>
-        </ApolloProvider>
+        <WalletContext.Provider value={{ wallet }}>
+          <ApolloProvider client={client}>
+            <IntlProvider store={store}>
+              <>
+                <ResizeListener />
+                <Query query={localQueries.root}>
+                  {({ loading, error, data }) => {
+                    if (loading || error) return null;
+                    return (
+                      <>
+                        <Web3Modals {...web3ModalsProps} />
+                      </>
+                    );
+                  }}
+                </Query>
+                <Query
+                  query={queries.viewUserByWallet}
+                  variables={{ wallet }}
+                >
+                  {({ data }) => {
+                    if ((!data || (data && !data.viewUserByWallet) || (data && data.loading)) && (data && data.error)) return <DataLoading />;
+                    if (data && data.error) log.error('error occurred');
+                    return <Component {...pageProps} {...locals} />;
+                  }}
+                </Query>
+              </>
+            </IntlProvider>
+          </ApolloProvider>
+        </WalletContext.Provider>
       </Container>
     );
   }

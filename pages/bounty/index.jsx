@@ -1,6 +1,5 @@
-import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
+import { DesktopLayout, MobileLayout } from '@/components/layouts';
 import Bugbounty from '@/components/bugbounty';
-import Chat from '@/components/chat';
 
 
 const BugBountyPage = props => {
@@ -28,7 +27,6 @@ const BugBountyPage = props => {
           `}</style>
           <Bugbounty {...props} />
         </div>}
-        aside={<Chat {...props} />}
       />
     </>
   );

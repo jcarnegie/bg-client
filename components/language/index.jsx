@@ -9,7 +9,6 @@ import { path } from 'ramda';
 import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
 import { localization } from '@/shared/intl/setup';
 import { Mobile, Desktop } from '@/components/responsive';
-import { UPDATE_USER } from '@/shared/constants/actions';
 
 import {
   compose,
@@ -34,12 +33,6 @@ class Language extends Component {
   onSelect(language) {
     const { dispatch, user, router } = this.props;
     dispatch(updateIntl(localization[language]));
-    dispatch({
-      type: UPDATE_USER,
-      payload: {
-        language,
-      },
-    });
 
     if (user.viewUserByWallet) updateUser(user.viewUserByWallet, { language });
     document.documentElement.setAttribute('lang', language);
@@ -67,14 +60,8 @@ class Language extends Component {
     const { dispatch } = this.props;
     const prevLang = path(['user', 'viewUserByWallet', 'language'], prevProps);
     const language = path(['user', 'viewUserByWallet', 'language'], this.props);
-    if (prevLang !== language) {
-      dispatch(updateIntl(localization[language || 'en']));
-      dispatch({
-        type: UPDATE_USER,
-        payload: {
-          language: language || 'en',
-        },
-      });
+    if (prevLang !== language && language) {
+      dispatch(updateIntl(localization[language]));
     }
   }
 
@@ -183,36 +170,37 @@ class Language extends Component {
             .lang-dropdown {
               padding: 0 7px;
             }
-            .lang-dropdown .dropdown-menu {
+            .lang-dropdown .dropdown .btn .caret {
+              color: white;
+            }
+            .lang-dropdown .dropdown .btn img,
+            .lang-dropdown .dropdown .btn .caret {
+              transform: translateX(8px);
+            }
+            .lang-dropdown .dropdown .dropdown-menu li a:focus,
+            .lang-dropdown .dropdown .dropdown-menu li a:hover {
+              background: rgba(255, 255, 255, 0.15) !important;
+            }
+
+            .current-lang {
+              color: white;
+              padding-left: 22px;
+            }
+
+            .native-language {
+              color: white;
+              font-size: 15px;
+              margin-bottom: 10px;
+            }
+            .dropdown-menu {
               background-color: #BCC4DE;
               min-width: 0;
               margin-right: 10px;
               margin-top: 0;
               border-top-left-radius: 0;
               border-top-right-radius: 0;
-            }
-
-            .lang-dropdown .dropdown .btn .caret {
-              color: white;
-            }
-
-            .lang-dropdown .dropdown .btn img,
-            .lang-dropdown .dropdown .btn .caret {
-              transform: translateX(8px);
-            }
-
-            .lang-dropdown .dropdown .dropdown-menu li a:focus,
-            .lang-dropdown .dropdown .dropdown-menu li a:hover {
-              background: rgba(255, 255, 255, 0.15) !important;
-            }
-
-            .current-lang{
-              color: white;
-              padding-left: 22px;
-            }
-
-            .native-language{
-              color: white;
+              overflow-y: scroll !important;
+              height: 150px !important;
             }
           `}</style>
         </Mobile>
