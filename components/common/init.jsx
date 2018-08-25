@@ -1,14 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { equals } from 'ramda';
-
-import {
-  compose,
-} from 'react-apollo';
-
-import {
-  viewUserByWalletQuery,
-} from '@/shared/utils/apollo';
+import { equals, path } from 'ramda';
 
 
 class Init extends Component {
@@ -25,22 +17,16 @@ class Init extends Component {
     sources: {},
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (!nextProps.user.loading && nextProps.user.viewUserByWallet &&
-      !equals(nextProps.user.viewUserByWallet, prevState.user.viewUserByWallet)) {
-      Object.keys(prevState.sources).forEach(origin => {
-        prevState.sources[origin].postMessage({
-          type: 'user',
-          user: nextProps.user.viewUserByWallet,
-        }, origin);
-      });
+  componentDidUpdate(prevProps, prevState) {
+    const { user } = this.props;
+    const prevUser = prevProps.user;
+    const { sources } = this.state;
 
-      return {
-        user: {},
-      };
+    if (!user) return null;
+    
+    if (!equals(user.wallet, prevUser.wallet)) {
+      ::this.postUserToSources(user);
     }
-
-    return null;
   }
 
   componentDidMount() {
@@ -51,14 +37,26 @@ class Init extends Component {
     window.removeEventListener('message', ::this.receiveMessage);
   }
 
+  postUserToSources(user) {
+    const { sources } = this.state;
+    Object.keys(sources).forEach(origin => {
+      sources[origin].postMessage({
+        type: 'user',
+        user,
+      }, origin);
+    });
+  }
+
   receiveMessage({ data, origin, source }) {
-    if (!this.state.sources[origin]) {
+    const { user } = this.props;
+    const { sources } = this.state;
+    if (!sources[origin]) {
       this.setState({
         sources: {
-          ...this.state.sources,
+          ...sources,
           [origin]: source,
         },
-      });
+      }, () => ::this.postUserToSources(user));
     }
 
     switch (data.type) {
@@ -70,7 +68,7 @@ class Init extends Component {
       case 'user':
         source.postMessage({
           type: 'user',
-          user: this.state.user,
+          user,
         }, origin);
         break;
       default:
@@ -84,4 +82,4 @@ class Init extends Component {
 }
 
 
-export default compose(viewUserByWalletQuery)(Init);
+export default Init;

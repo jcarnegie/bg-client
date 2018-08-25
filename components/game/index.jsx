@@ -77,6 +77,7 @@ class Game extends Component {
 
     return (
       <div id="game-frame-wrapper">
+        <InitGameIframeConnection user={user} />
         <iframe
           ref={c => (this.dom.frame = c)}
           id="game-frame"
@@ -135,12 +136,7 @@ class Game extends Component {
                     if (path(['error'], data)) log.error('error occurred');
                     return <DataLoading />;
                   }
-                  return (
-                    <>
-                      <InitGameIframeConnection />
-                      {::this.renderGame(game, data.viewUserByWallet, query)}
-                    </>
-                  );
+                  return ::this.renderGame(game, data.viewUserByWallet, query);
                 }}
               </Query>
             );
