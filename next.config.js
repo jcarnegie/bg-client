@@ -24,6 +24,7 @@ module.exports = withBundleAnalyzer({
         'process.env.MAINNET_MARKETPLACE_CONTRACT_ADDR': JSON.stringify(process.env.MAINNET_MARKETPLACE_CONTRACT_ADDR),
         'process.env.RINKEBY_MARKETPLACE_CONTRACT_ADDR': JSON.stringify(process.env.RINKEBY_MARKETPLACE_CONTRACT_ADDR),
         'process.env.DISCORD_SERVER': JSON.stringify(process.env.DISCORD_SERVER),
+        'process.env.DISCORD_CHANNEL_DEFAULT': JSON.stringify(process.env.DISCORD_CHANNEL_DEFAULT),
 				'process.env.DISCORD_SHARD': JSON.stringify(process.env.DISCORD_SHARD),
 			})
 		);

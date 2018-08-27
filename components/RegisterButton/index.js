@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-
+import { path } from 'ramda';
 import {
   compose,
   graphql,
@@ -113,12 +113,12 @@ class RegisterButton extends Component {
 
 
                 /* If wallet and user are available, show nothing */
-                if (data) {
+                if (path(['viewUserByWallet'], data)) {
                   return null;
                 }
 
                 /* If user is logged into web3 but does not have a user account, show "register" */
-                if (!data) {
+                if (!path(['viewUserByWallet'], data)) {
                   return ::this.renderButtonWithText(<FormattedMessage id="buttons.register" />);
                 }
 
