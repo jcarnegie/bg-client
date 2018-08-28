@@ -98,7 +98,7 @@ class GameList extends Component {
           }
 
           .game-landing-background-section-ocean {
-            height: 1400px;
+            height: ${2200}px;
           }
 
           .game-landing-background-boy-and-girl {
@@ -138,19 +138,19 @@ class GameList extends Component {
             background: linear-gradient(to bottom, rgba(45,96,135,1) 0%, rgba(44,116,150,1) 31%, rgba(40,125,159,1) 52%, rgba(45,99,138,1) 72%, rgba(45,95,135,1) 100%);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2d6087', endColorstr='#2d5f87', GradientType=0 );
 
-            height: 1400px;
+            height: ${2200}px;
           }
 
           .game-landing-background-bitropolis-globe {
             position: absolute;
             height: 600px;
             left: 0;
-            top: 1600px;
+            top: ${2200 + 200}px;
             z-index: 5;
           }
 
           .landing-background-yellow {
-            height: 1800px;
+            height: ${2200 + 100}px;
             background: rgb(245, 237, 162);
             clip-path: polygon(100% 0%, 100% 0, 100% 100%, -80% 100%);
           }
@@ -158,13 +158,13 @@ class GameList extends Component {
           .game-landing-background-rocket {
             position: absolute;
             right: 50px;
-            top: 3550px;
+            top: ${2200 + 2650}px;
             height: 650px;
           }
           .game-landing-background-launchpad {
             position: absolute;
             right: 50px;
-            top: 3720px;
+            top: ${2200 + 2850}px;
             height: 850px;
           }
 
@@ -284,6 +284,17 @@ class GameList extends Component {
             padding: 30px 20px 0 45px;
           }
 
+          .content-section.video {
+            padding: 0;
+            width: 100%;
+            height: auto;
+            margin: 40px 0 0 0;
+          }
+          .content-section.video iframe {
+            width: 100vw;
+            height: 45vw;
+          }
+
           .content-section.wardrobe {
             height: 280px;
             background: white;
@@ -339,7 +350,7 @@ class GameList extends Component {
             box-shadow: none;
             height: 150px;
             padding: 65px 0 0 0;
-            margin: 250px 0 0 0;
+            margin: 550px 0 0 0;
           }
           .content-section.limited-presale-items {
             box-shadow: none;
@@ -348,7 +359,7 @@ class GameList extends Component {
             flex-direction: row;
             flex-wrap: wrap;
             padding: 0;
-            margin-top: -5px;
+            margin-top: 100px;
             height: initial;
           }
           .content-section.limited-presale-items img {
@@ -385,6 +396,9 @@ class GameList extends Component {
         <section className="content-section play-now">
           <p>Create & customize your personal 3D Bitizen, and  discover what Bitropolis has to offer. Take your first steps in a new social blockchain experience today!</p>
           <button onClick={() => ::this.navigateToGame('bitizens')}>PLAY NOW</button>
+        </section>
+        <section className="content-section video">
+          <iframe src="https://www.youtube.com/embed/MiEFHUgOvMk?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen />
         </section>
         <section className="content-section single-title bitizen-features">
           <h2>BITIZEN FEATURES</h2>
@@ -454,7 +468,7 @@ class GameList extends Component {
           }
 
           .game-landing-background-section-ocean {
-            height: 1400px;
+            height: ${2200}px;
           }
 
           .game-landing-background-boy-and-girl {
@@ -494,19 +508,19 @@ class GameList extends Component {
             background: linear-gradient(to bottom, rgba(45,96,135,1) 0%, rgba(44,116,150,1) 31%, rgba(40,125,159,1) 52%, rgba(45,99,138,1) 72%, rgba(45,95,135,1) 100%);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2d6087', endColorstr='#2d5f87', GradientType=0 );
 
-            height: 1400px;
+            height: ${2200}px;
           }
 
           .game-landing-background-bitropolis-globe {
             position: absolute;
             height: 450px;
             left: -50px;
-            top: 1850px;
+            top: 2150px;
             z-index: 5;
           }
 
           .landing-background-yellow {
-            height: 1400px;
+            height: ${1300}px;
             background: rgb(245, 237, 162);
             clip-path: polygon(100% 0%, 100% 0, 100% 100%, -60% 100%);
           }
@@ -514,13 +528,13 @@ class GameList extends Component {
           .game-landing-background-rocket {
             position: absolute;
             right: 0;
-            top: 3050px;
+            top: ${2200 + 1550}px;
             height: 400px;
           }
           .game-landing-background-launchpad {
             position: absolute;
             right: 50px;
-            top: 3200px;
+            top: ${2200 + 1700}px;
             height: 400px;
           }
 
@@ -606,6 +620,17 @@ class GameList extends Component {
             padding: 10px;
             min-width: 150px;
             font-weight: 600;
+          }
+
+          .content-section.video {
+            padding: 0;
+            width: 100%;
+            height: auto;
+            margin: 40px 0 0 0;
+          }
+          .content-section.video iframe {
+            width: 100vw;
+            height: 50vw;
           }
 
           .content-section.bitizen-features,
@@ -695,7 +720,7 @@ class GameList extends Component {
             box-shadow: none;
             height: 150px;
             padding: 65px 0 0 0;
-            margin: 250px 0 0 0;
+            margin: 400px 0 0 0;
           }
           .content-section.limited-presale-items {
             box-shadow: none;
@@ -738,22 +763,13 @@ class GameList extends Component {
           .content-section.limited-presale-text button:hover {
             background: transparent;
           }
-         {/* .header-play-now-button {
-            font-weight: 600;
-            position: absolute;
-            top: 500px;
-            left: 20px;
-            background: rgb(244, 142, 92);
-            border: 3px solid rgb(244, 142, 92);
-            border-radius: 5px;
-            color: rgb(40, 117, 169);
-            padding: 10px;
-            min-width: 150px;
-          }*/}
         `}</style>
         <section className="content-section play-now">
           <p>Create & customize your personal 3D Bitizen, and  discover what Bitropolis has to offer. Take your first steps in a new social blockchain experience today!</p>
           <button onClick={() => ::this.navigateToGame('bitizens')}>PLAY NOW</button>
+        </section>
+        <section className="content-section video">
+          <iframe src="https://www.youtube.com/embed/MiEFHUgOvMk?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen />
         </section>
         <section className="content-section single-title bitizen-features">
           <h2>BITIZEN FEATURES</h2>
