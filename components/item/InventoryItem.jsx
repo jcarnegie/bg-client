@@ -29,8 +29,6 @@ import {
   getConfigForGame,
 } from '@/shared/utils/games';
 
-import { GIFT_ADD_SUCCESS, GIFT_ADD_ERROR, GIFT_ADD_LOADING, MESSAGE_ADD } from '@/shared/constants/actions';
-
 import style from '@/shared/constants/style';
 import ItemPopup from '@/components/popups/itempopup';
 
@@ -119,13 +117,9 @@ class InventoryItem extends ItemBase {
       user,
       item,
       game,
-      dispatch
     } = this.props;
 
     if (this.isValid(data.wallet)) {
-      dispatch({
-        type: GIFT_ADD_LOADING,
-      });
       /* TODO - move to shared/utils/contracts.js */
       const contract = window.web3.eth.contract(nftABI).at(game.nft[this.props.data.network.id]);
       contract.safeTransferFrom(user.viewUserByWallet.wallet, data.wallet, item.tokenId, {
@@ -134,22 +128,14 @@ class InventoryItem extends ItemBase {
       },
         (error, tx) => {
           if (error) {
-            dispatch({
-              type: GIFT_ADD_ERROR,
-            });
-            dispatch({
-              type: MESSAGE_ADD,
-              payload: error,
-            });
+            log.error(error);
           } else {
-            dispatch({
-              type: GIFT_ADD_SUCCESS,
-              payload: {
-                item: item.tokenId,
-                game: game.id,
-                tx,
-              },
-            });
+            // TODO - add gift in apollo cache
+            // payload: {
+            //   item: item.tokenId,
+            //   game: game.id,
+            //   tx,
+            // },
           }
         }
       );
