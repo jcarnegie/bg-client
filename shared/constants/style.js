@@ -16,10 +16,6 @@ export const chat = {
   width: '285px',
 };
 
-export const aside = {
-  width: '285px',
-};
-
 export const mobile = {
   minWidth: 0,
   maxWidth: 991,
@@ -62,7 +58,6 @@ export const breakpoints = {
 
 
 export default {
-  aside,
   breakpoints,
   boxShadow,
   chat,

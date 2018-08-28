@@ -1,5 +1,5 @@
 import Router from 'next/router';
-import { contains, propOr } from 'ramda';
+import { contains, propOr, path } from 'ramda';
 
 import features from '@/shared/constants/features.json';
 
@@ -31,9 +31,22 @@ export const AUTH_ROUTES = [
 export const AUTH_ROUTES_REGEX = new RegExp('^(\/inventory|\/game)', 'i'); /* eslint-disable-line no-useless-escape */
 
 export const requireUserLoginAndSupportedNetwork = (user = {}, network = {}) => {
-  if ((!user.loading && !user.viewUserByWallet) || (!network.supported && network.supported !== null)) {
-    if (!user.loading || network.supported !== null) showRegistrationWorkflow();
+  /* User is loading still */
+  const loadingUser = path(['loading'], user);
+  if (loadingUser) return false;
+
+  /* Network is not supported */
+  if (!network.supported && network.supported !== null) {
+    showRegistrationWorkflow();
     return false;
   }
+
+  /* User is not defined, show registration workflow */
+  if (!path(['viewUserByWallet'], user)) {
+    showRegistrationWorkflow();
+    return false;
+  }
+
+  /* User is defined */
   return true;
 };

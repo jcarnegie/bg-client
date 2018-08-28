@@ -132,6 +132,7 @@ class RegisterButton extends Component {
   }
 }
 
+
 export default compose(
   graphql(localQueries.root, { name: 'root' }),
 )(RegisterButton);

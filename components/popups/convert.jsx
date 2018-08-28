@@ -21,7 +21,6 @@ import {
   getTopupContract,
 } from '@/shared/utils/network';
 
-import { MESSAGE_ADD } from '@/shared/constants/actions';
 import InputGroup from '@/components/inputs/input.group';
 
 
@@ -102,10 +101,7 @@ class ConvertPopup extends Component {
       },
       error => {
         if (error) {
-          return dispatch({
-            type: MESSAGE_ADD,
-            payload: error,
-          });
+          return null;
         }
         this.props.analytics.ga.event({
           category: 'Site Interaction',

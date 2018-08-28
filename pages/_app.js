@@ -2,7 +2,6 @@ import App, { Container } from 'next/app';
 import React from 'react';
 import { Provider as IntlProvider } from 'react-intl-redux';
 import withRedux from 'next-redux-wrapper';
-import withReduxSaga from 'next-redux-saga';
 import * as log from 'loglevel';
 
 import {
@@ -31,6 +30,7 @@ import {
 
 import { WalletContext } from '@/shared/utils/context';
 
+import BGReactGA from '@/client/utils/BGReactGA';
 import configureStore from '@/client/utils/store';
 
 import ResizeListener from '@/components/resizelistener';
@@ -41,6 +41,8 @@ import DataLoading from '@/components/DataLoading';
 import style from '@/shared/constants/style';
 import {
   APP_INIT,
+  APP_RESIZE,
+  GA_CREATE,
 } from '@/shared/constants/actions';
 
 
@@ -71,7 +73,14 @@ class BGApp extends App {
 
   componentDidMount() {
     this.props.store.dispatch({ type: APP_INIT });
+    this.props.store.dispatch({ type: APP_RESIZE });
     const state = this.props.store.getState();
+
+    /* Bootstrap Google Analytics */
+    this.props.store.dispatch({
+      type: GA_CREATE,
+      payload: new BGReactGA(process.env.GOOGLE_ANALYTICS_TRACKING_ID),
+    });
 
     createCrate();
 
@@ -190,4 +199,4 @@ class BGApp extends App {
   }
 }
 
-export default withRedux(configureStore)(withReduxSaga({ async: true })(BGApp));
+export default withRedux(configureStore)(BGApp);
