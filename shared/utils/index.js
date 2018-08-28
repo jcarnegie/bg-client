@@ -31,19 +31,22 @@ export const AUTH_ROUTES = [
 export const AUTH_ROUTES_REGEX = new RegExp('^(\/inventory|\/game)', 'i'); /* eslint-disable-line no-useless-escape */
 
 export const requireUserLoginAndSupportedNetwork = (user = {}, network = {}) => {
-  /* Network is not supported */
-  if (network.supported && network.supported !== null) return false;
-
   /* User is loading still */
   const loadingUser = path(['loading'], user);
   if (loadingUser) return false;
 
+  /* Network is not supported */
+  if (!network.supported && network.supported !== null) {
+    showRegistrationWorkflow();
+    return false;
+  }
+
   /* User is not defined, show registration workflow */
   if (!path(['viewUserByWallet'], user)) {
     showRegistrationWorkflow();
-    return true;
+    return false;
   }
 
   /* User is defined */
-  return false;
+  return true;
 };
