@@ -27,7 +27,6 @@ import {
 
 import {
   calcMaxItemsStats,
-  // isValidItemCategory,
   isStat,
 } from '@/client/utils/item';
 import { MarketplaceItem } from '@/components/item';
@@ -517,7 +516,7 @@ class Market extends Component {
           .inventory-items {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: flex-start;
           }
         `}</style>
         <div className={this.state.mobile ? 'current-mobile-game-filter' : 'current-game-filter'}>
