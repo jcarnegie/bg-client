@@ -3,13 +3,18 @@ import { compose } from 'react-apollo';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Router from 'next/router';
 import { path } from 'ramda';
+
 import {
   viewUserByWalletQuery,
 } from '@/shared/utils/apollo';
 
+import { shouldFooterHide } from '@/components/footer';
+
+
 class Footer extends Component {
   render() {
     const user = path(['viewUserByWallet'], this.props.user);
+    const hide = shouldFooterHide();
     return (
       <div className="footer">
         <style jsx global>{`
@@ -17,11 +22,11 @@ class Footer extends Component {
             position: relative;
             width: 100%;
             height: ${Router.router.route === '/' && !user ? '305px' : '240px'};
-            display: ${Router.router.route === '/game' ? 'none' : null};
+            display: ${hide ? 'none' : null};
             background-color: #B6D0F7;
           }
           .mobile-wrapper {
-            padding-bottom: ${Router.router.route === '/game' ? '0px !important' : '200px'};
+            padding-bottom: ${hide ? '0px !important' : '200px'};
           }
           .footer img {
             height: 70px;

@@ -32,11 +32,15 @@ class Language extends Component {
 
   onSelect(language) {
     const { dispatch, user, router } = this.props;
+    const { route } = router;
+    const refreshRoutes = ['/game', '/sandbox']
     dispatch(updateIntl(localization[language]));
 
-    if (user.viewUserByWallet) updateUser(user.viewUserByWallet, { language });
     document.documentElement.setAttribute('lang', language);
-    if (router.route === '/game') window.location.reload();
+    const viewUserByWallet = path(['viewUserByWallet'], user);
+    if (viewUserByWallet) updateUser(viewUserByWallet, { language });
+
+    if (refreshRoutes.includes(route)) window.location.reload();
   }
 
   renderLanguageMenuItems() {
