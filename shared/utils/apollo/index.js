@@ -141,7 +141,7 @@ export const queries = {
   viewUserByWallet: gql`
     query viewUserByWallet($wallet: String!) {
       viewUserByWallet(wallet: $wallet) {
-        id wallet nickName email language
+        id wallet nickName language
       }
     }
   `,
