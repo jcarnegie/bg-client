@@ -39,17 +39,12 @@ class SandBox extends Component {
     return { query: (query || {}) };
   }
 
-  dom = {
-    frame: null,
-  }
-
   renderGame(user, query) {
     log.info('Rendering iFrame with query: ', query);
     return (
       <div className="game-frame-wrapper">
         <GameIframeConnection user={user} />
         <iframe
-          ref={c => (this.dom.frame = c)}
           id="game-frame"
           src={query ? query.url : BITGUILD_INFO_URL}
           key={user ? user.language : defaultLanguage}
@@ -66,13 +61,6 @@ class SandBox extends Component {
       nextNetworkId !== networkId
     );
     return shouldRender;
-  }
-
-  componentWillUnmount() {
-    if (!this.dom.frame) return;
-    this.dom.frame.src = 'about:blank';
-    document.getElementById('game-frame-wrapper').removeChild(document.getElementById('game-frame'));
-    document.getElementById('game-component-wrapper').removeChild(document.getElementById('game-frame-wrapper'));
   }
 
   render() {
