@@ -21,7 +21,7 @@ import {
 
 import DataLoading from '@/components/DataLoading';
 
-import InitGameIframeConnection from '@/components/common/init';
+import GameIframeConnection from '@/components/GameIframeConnection';
 import { defaultLanguage } from '@/shared/constants/language';
 
 class Game extends Component {
@@ -77,7 +77,7 @@ class Game extends Component {
 
     return (
       <div id="game-frame-wrapper">
-        <InitGameIframeConnection user={user} />
+        <GameIframeConnection user={user} />
         <iframe
           ref={c => (this.dom.frame = c)}
           id="game-frame"

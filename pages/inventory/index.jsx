@@ -6,7 +6,7 @@ import {
   viewUserByWalletQuery,
 } from '@/shared/utils/apollo';
 
-import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
+import Layout, { Content } from '@/components/layouts';
 import Inventory from '@/components/inventory';
 
 class InventoryPage extends Component {
@@ -17,12 +17,16 @@ class InventoryPage extends Component {
     if (user.loading) return null;
     return (
       <>
-        <MobileLayout
-          main={<MobileContent><Inventory {...this.props} /></MobileContent>}
-        />
-        <DesktopLayout
-          main={<DesktopContent><Inventory {...this.props} /></DesktopContent>}
-        />
+        <Layout.Mobile>
+          <Content.Mobile>
+            <Inventory {...this.props} />
+          </Content.Mobile>
+        </Layout.Mobile>
+        <Layout.Desktop>
+          <Content.Desktop>
+            <Inventory {...this.props} />
+          </Content.Desktop>
+        </Layout.Desktop>
       </>
     );
   }

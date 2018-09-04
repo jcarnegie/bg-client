@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { equals, path } from 'ramda';
 
 
-class Init extends Component {
+class GameIframeConnection extends Component {
   static propTypes = {
     user: PropTypes.object,
   };
@@ -82,4 +82,4 @@ class Init extends Component {
 }
 
 
-export default Init;
+export default GameIframeConnection;

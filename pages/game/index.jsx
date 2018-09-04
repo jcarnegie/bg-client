@@ -6,10 +6,7 @@ import {
   viewUserByWalletQuery,
 } from '@/shared/utils/apollo';
 
-import {
-  DesktopLayout,
-  MobileLayout,
-} from '@/components/layouts';
+import Layout from '@/components/layouts';
 
 import Game from '@/components/game';
 
@@ -23,12 +20,12 @@ class GamePage extends Component {
 
     return (
       <>
-        <MobileLayout
-          main={<Game {...this.props} />}
-        />
-        <DesktopLayout
-          main={<Game {...this.props} />}
-        />
+        <Layout.Mobile>
+          <Game {...this.props} />
+        </Layout.Mobile>
+        <Layout.Desktop>
+          <Game {...this.props} />
+        </Layout.Desktop>
       </>
     );
   }

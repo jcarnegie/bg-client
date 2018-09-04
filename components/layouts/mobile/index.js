@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import Main from '@/components/layouts/main';
+import Main from '@/components/layouts/Main';
 import Header from '@/components/header/mobile';
 import Footer from '@/components/footer/mobile';
 import MenuDrawer from '@/components/menudrawer';
@@ -11,7 +11,6 @@ import { Mobile } from '@/components/responsive';
 
 @connect(
   state => ({
-    chat: state.chat,
     layout: state.layout,
   })
 )
@@ -26,10 +25,9 @@ class MobileLayout extends Component {
         <div className="mobile-wrapper">
           <Header />
           <Main>
-            {props.main}
+            {props.children}
           </Main>
           <MenuDrawer show={props.layout.showMenu} />
-          {props.children}
         </div>
         <Footer />
       </Mobile>
@@ -38,12 +36,10 @@ class MobileLayout extends Component {
 }
 
 MobileLayout.propTypes = {
-  main: PropTypes.any,
   children: PropTypes.any,
 };
 
 MobileLayout.defaultProps = {
-  main: null,
   children: null,
 };
 

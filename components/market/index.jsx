@@ -75,6 +75,7 @@ class Market extends Component {
         itemsSortTitle: state.itemsSortTitle,
       };
     }
+    return state
   }
 
   handleGameFilter(gameFilter) {

@@ -1,15 +1,16 @@
-import { DesktopLayout, MobileLayout } from '@/components/layouts';
+import Layout from '@/components/layouts';
+
 import Market from '@/components/market';
 
 
 const MarketPlace = props => (
   <>
-    <MobileLayout
-      main={<Market {...props} />}
-    />
-    <DesktopLayout
-      main={<Market {...props} />}
-    />
+    <Layout.Mobile>
+      <Market {...props} />
+    </Layout.Mobile>
+    <Layout.Desktop>
+      <Market {...props} />
+    </Layout.Desktop>
   </>
 );
 

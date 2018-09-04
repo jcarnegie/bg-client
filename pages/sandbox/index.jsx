@@ -1,15 +1,15 @@
-import { DesktopLayout, MobileLayout } from '@/components/layouts';
+import Layout from '@/components/layouts';
 import Sandbox from '@/components/sandbox';
 
 
 const SandboxPage = props => (
   <>
-    <MobileLayout
-      main={<Sandbox {...props} />}
-    />
-    <DesktopLayout
-      main={<Sandbox {...props} />}
-    />
+    <Layout.Mobile>
+      <Sandbox {...props} />
+    </Layout.Mobile>
+    <Layout.Desktop>
+      <Sandbox {...props} />
+    </Layout.Desktop>
   </>
 );
 

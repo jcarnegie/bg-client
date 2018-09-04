@@ -1,15 +1,19 @@
-import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
+import Layout, { Content } from '@/components/layouts';
 import Presale from '@/components/presale';
 import { featureOn, featureRouteGuard } from '@/shared/utils';
 
 const PresalePage = props => (
   <>
-    <MobileLayout
-      main={<MobileContent><Presale {...props} /></MobileContent>}
-    />
-    <DesktopLayout
-      main={<DesktopContent><Presale {...props} /></DesktopContent>}
-    />
+    <Layout.Mobile>
+      <Content.Mobile>
+        <Presale {...props} />
+      </Content.Mobile>
+    </Layout.Mobile>
+    <Layout.Desktop>
+      <Content.Desktop>
+        <Presale {...props} />
+      </Content.Desktop>
+    </Layout.Desktop>
   </>
 );
 

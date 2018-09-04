@@ -19,7 +19,6 @@ class Main extends Component {
           main {
             width: 100%;
             margin-top: ${style.header.height};
-            width: calc(100% - ${this.props.offsetRight || '0px'});
             transition: ${style.transition.default};
           }
         `}</style>
@@ -30,12 +29,10 @@ class Main extends Component {
 }
 
 Main.propTypes = {
-  offsetRight: PropTypes.string,
   children: PropTypes.any,
 };
 
 Main.defaultProps = {
-  offsetRight: '0px',
   children: null,
 };
 

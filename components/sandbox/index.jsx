@@ -21,7 +21,7 @@ import {
 
 import DataLoading from '@/components/DataLoading';
 
-import InitGameIframeConnection from '@/components/common/init';
+import GameIframeConnection from '@/components/GameIframeConnection';
 import { defaultLanguage } from '@/shared/constants/language';
 import style from '@/shared/constants/style';
 
@@ -47,7 +47,7 @@ class SandBox extends Component {
     log.info('Rendering iFrame with query: ', query);
     return (
       <div className="game-frame-wrapper">
-        <InitGameIframeConnection user={user} />
+        <GameIframeConnection user={user} />
         <iframe
           ref={c => (this.dom.frame = c)}
           id="game-frame"

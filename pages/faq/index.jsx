@@ -1,15 +1,19 @@
-import { DesktopContent, MobileContent, DesktopLayout, MobileLayout } from '@/components/layouts';
+import Layout, { Content } from '@/components/layouts';
 import FAQ from '@/components/faq';
 
 
 const FAQPage = props => (
   <>
-    <MobileLayout
-      main={<MobileContent><FAQ {...props} /></MobileContent>}
-    />
-    <DesktopLayout
-      main={<DesktopContent><FAQ {...props} /></DesktopContent>}
-    />
+    <Layout.Mobile>
+      <Content.Mobile>
+        <FAQ {...props} />
+      </Content.Mobile>
+    </Layout.Mobile>
+    <Layout.Desktop>
+      <Content.Desktop>
+        <FAQ {...props} />
+      </Content.Desktop>
+    </Layout.Desktop>
   </>
 );
 

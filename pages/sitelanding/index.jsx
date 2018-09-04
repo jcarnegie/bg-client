@@ -1,15 +1,15 @@
-import { DesktopLayout, MobileLayout } from '@/components/layouts';
+import Layout from '@/components/layouts';
 import Landing from '@/components/landing';
 
 
 const SiteLandingPage = props => (
   <>
-    <MobileLayout
-      main={<Landing {...props} />}
-    />
-    <DesktopLayout
-      main={<Landing {...props} />}
-    />
+    <Layout.Mobile>
+      <Landing {...props} />
+    </Layout.Mobile>
+    <Layout.Desktop>
+      <Landing {...props} />
+    </Layout.Desktop>
   </>
 );
 

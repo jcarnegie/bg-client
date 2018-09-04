@@ -1,16 +1,16 @@
-import { DesktopLayout, MobileLayout } from '@/components/layouts';
+import Layout from '@/components/layouts';
 import GameLanding from '@/components/GameLanding';
 
 
 const GameLandingPage = props => {
   return (
     <>
-      <MobileLayout
-        main={<GameLanding {...props} />}
-      />
-      <DesktopLayout
-        main={<GameLanding {...props} />}
-      />
+      <Layout.Mobile>
+        <GameLanding {...props} />
+      </Layout.Mobile>
+      <Layout.Desktop>
+        <GameLanding {...props} />
+      </Layout.Desktop>
     </>
   );
 };
