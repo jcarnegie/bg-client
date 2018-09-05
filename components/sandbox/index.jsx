@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Row } from 'react-bootstrap';
 import * as log from 'loglevel';
 
 import {

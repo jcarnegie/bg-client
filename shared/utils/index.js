@@ -20,15 +20,8 @@ export function featureRouteGuard({ res }, featureOn) {
 
 export const featureOn = feature => contains(env, propOr([], feature, features));
 
-
-export const AUTH_ROUTES = [
-  'inventory',
-  'game',
-];
-
-
 /* Regex is insensitive, matches startswith. Ex: presale/bitizens is public. */
-export const AUTH_ROUTES_REGEX = new RegExp('^(\/inventory|\/game)', 'i'); /* eslint-disable-line no-useless-escape */
+export const AUTH_ROUTES_REGEX = new RegExp('^(\/inventory|\/game|\/sandbox)', 'i'); /* eslint-disable-line no-useless-escape */
 
 export const requireUserLoginAndSupportedNetwork = (user = {}, network = {}) => {
   /* User is loading still */
