@@ -1,22 +1,24 @@
-import {DesktopContent, MobileContent, DesktopLayout, MobileLayout} from "@/components/layouts";
-import Presale from "@/components/presale";
-import Chat from "@/components/chat";
-import {featureOn, featureRouteGuard} from "@/shared/utils";
+import Layout, { Content } from '@/components/layouts';
+import Presale from '@/components/presale';
+import { featureOn, featureRouteGuard } from '@/shared/utils';
 
 const PresalePage = props => (
   <>
-    <MobileLayout
-      main={<MobileContent><Presale {...props} /></MobileContent>}
-    />
-    <DesktopLayout
-      main={<DesktopContent><Presale {...props} /></DesktopContent>}
-      aside={<Chat {...props} />}
-    />
+    <Layout.Mobile>
+      <Content.Mobile>
+        <Presale {...props} />
+      </Content.Mobile>
+    </Layout.Mobile>
+    <Layout.Desktop>
+      <Content.Desktop>
+        <Presale {...props} />
+      </Content.Desktop>
+    </Layout.Desktop>
   </>
 );
 
 PresalePage.getInitialProps = ctx => {
-  featureRouteGuard(ctx, featureOn("bitizens_presale"));
+  featureRouteGuard(ctx, featureOn('bitizens_presale'));
   return Presale.WrappedComponent.getInitialProps(ctx);
 };
 

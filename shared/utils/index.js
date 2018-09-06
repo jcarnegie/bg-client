@@ -1,40 +1,45 @@
-import Router from "next/router";
-import {contains, propOr} from "ramda";
-import {USER_SHOW_REGISTER_WORKFLOW} from "@/shared/constants/actions";
-import features from "@/shared/constants/features.json";
-import networkConfig from "@/client/utils/network";
+import Router from 'next/router';
+import { contains, propOr, path } from 'ramda';
 
-const env = process.env.DEPLOYED_ENV || "local";
+import features from '@/shared/constants/features.json';
 
-export function returnToPath(path, res) {
-  if (!res) {
-    Router.push(path);
-  }
-}
+import {
+  client,
+  localMutations,
+} from '@/shared/utils/apollo';
 
-export function userLoginRouteGuard({store, res}) {
-  const user = store.getState().user;
+const env = process.env.DEPLOYED_ENV || 'local';
 
-  if (!user.data) {
-    store.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: true});
-    returnToPath("/", res);
-  }
-}
+export const showRegistrationWorkflow = () => client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
 
-export function ethNetworkRouteGuard({store, res}) {
-  const network = store.getState().network;
-  const onSupportedNetwork = network.data && Object.keys(networkConfig).includes(network.data.id);
-
-  if (!onSupportedNetwork) {
-    store.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: true});
-    returnToPath("/", res);
-  }
-}
-
-export function featureRouteGuard({res}, featureOn) {
+export function featureRouteGuard({ res }, featureOn) {
   if (!featureOn) {
-    returnToPath("/", res);
+    Router.replace('/');
   }
 }
 
 export const featureOn = feature => contains(env, propOr([], feature, features));
+
+/* Regex is insensitive, matches startswith. Ex: presale/bitizens is public. */
+export const AUTH_ROUTES_REGEX = new RegExp('^(\/inventory|\/game|\/sandbox)', 'i'); /* eslint-disable-line no-useless-escape */
+
+export const requireUserLoginAndSupportedNetwork = (user = {}, network = {}) => {
+  /* User is loading still */
+  const loadingUser = path(['loading'], user);
+  if (loadingUser) return false;
+
+  /* Network is not supported */
+  if (!network.supported && network.supported !== null) {
+    showRegistrationWorkflow();
+    return false;
+  }
+
+  /* User is not defined, show registration workflow */
+  if (!path(['viewUserByWallet'], user)) {
+    showRegistrationWorkflow();
+    return false;
+  }
+
+  /* User is defined */
+  return true;
+};

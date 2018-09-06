@@ -1,95 +1,115 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'react-apollo';
+import { path } from 'ramda';
+import cx from 'classnames';
 
-import {Mobile, Desktop} from "@/components/responsive";
+import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 
+import { viewUserByWalletQuery } from '@/shared/utils/apollo';
+import style from '@/shared/constants/style';
 
 @connect(
   state => ({
-    user: state.user,
+    layout: state.layout,
   })
 )
-export default class User extends Component {
+class User extends Component {
   static propTypes = {
     user: PropTypes.object,
-    balanceETH: PropTypes.object,
-    balancePLAT: PropTypes.object,
+    layout: PropTypes.object,
   };
 
-  render() {
-    const {user} = this.props;
+  static defaultProps = {
+    user: {},
+    layout: {},
+  };
 
-    if (user.isLoading || !user.success) {
-      return null;
-    }
+  truncatedField(str = '') {
+    return str.length > 10 ? `${str.substring(0, 10)}...` : str;
+  }
+
+  fieldLoader() {
+    return <ScaleLoader height={10} width={2} color="white" />;
+  }
+
+  render() {
+    const { user, layout } = this.props;
+    const { viewUserByWallet, loading } = user;
+    if (user.error || !viewUserByWallet) return null;
+
+    const nickName = path(['nickName'], viewUserByWallet);
+    const wallet = path(['wallet'], viewUserByWallet);
 
     return (
       <div className="user">
-        <style jsx>{`
-          .user {
-            line-height: 0;
-            display: flex;
-            align-items: center;
-            color: white;
-            font-size: 12px;
-            font-weight: 100;
-          }
-          .user .avatar {
-            width: 25px;
-            height: 25px;
-          }
-          .user .text {
-            line-height: 15px;
-            display: inline-block;
-            margin: 15px 0;
-            vertical-align: middle;
-            padding: 0 0 0 8px;
-          }
-          .user .text .name {
-            text-transform: uppercase;
-            display: block;
-            text-align: right;
-            float: left;
-            clear: both;
-          }
-          .user .text .wallet {
-            text-align: right;
-            display: block;
-            float: left;
-            clear: both;
-            font-size: 12px;
-          }
+        <style jsx global>{`
           .user .user-mobile {
-            border-bottom: 1px solid rgba(133, 148, 183);
             width: 100%;
-            padding: 20px 27px;
-            font-size: 16px;
+            padding: 20px 20px;
+            font-size: 14px;
             font-weight: 100;
           }
           .user .user-mobile .text {
             margin: 0;
           }
         `}</style>
-        <Desktop>
-          <div className="user-desktop">
-          <img src="/static/images/icons/avatar.png" className="avatar" />
-          <span className="text">
-            <span className="name">{user.data.nickName}</span>
-            <span className="wallet">{user.data.wallet.substring(0, 10) + "..."}</span>
-          </span>
+         <style jsx>{`
+              .user {
+                line-height: 0;
+                height: 62px;
+                display: flex;
+                align-items: center;
+                color: white;
+                font-size: 12px;
+                font-weight: 100;
+              }
+              .avatar {
+                width: 25px;
+                height: 25px;
+              }
+              .text {
+                line-height: 15px;
+                display: inline-block;
+                margin: 14px 0;
+                vertical-align: middle;
+                padding: 0 0 0 8px;
+              }
+              .text .name {
+                text-transform: uppercase;
+                font-size: ${layout.type.mobile ? '15px' : '14px'};
+                display: block;
+                text-align: right;
+                float: left;
+                clear: both;
+                ${layout.type.mobile ? 'margin-bottom: 5px;' : ''}
+              }
+              .text .wallet {
+                text-align: right;
+                display: block;
+                float: left;
+                clear: both;
+                font-size: ${layout.type.mobile ? '14px;' : '12px'};
+                ${layout.type.mobile ? 'font-weight: 100;' : ''}
+              }
+              .user-desktop {
+                margin-left: 20px;
+              }
+            `}</style>
+            <div className={cx({
+              'user-mobile': layout.type.mobile,
+              'user-desktop': !layout.type.mobile,
+            })}>
+            <img src="/static/images/icons/avatar_my.png" className="avatar" />
+            <span className="text">
+              <span className="name">{loading ? this.fieldLoader() : this.truncatedField(nickName)}</span>
+              <span className="wallet">{loading ? this.fieldLoader() : this.truncatedField(wallet)}</span>
+            </span>
           </div>
-        </Desktop>
-        <Mobile>
-          <div className="user-mobile">
-          <img src="/static/images/icons/avatar.png" className="avatar" />
-          <span className="text">
-            <span className="name">{user.data.nickName}</span>
-            <span className="wallet">{user.data.wallet.substring(0, 10) + "..."}</span>
-          </span>
-          </div>
-        </Mobile>
       </div>
     );
   }
 }
+
+export default compose(viewUserByWalletQuery)(User);

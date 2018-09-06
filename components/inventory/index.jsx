@@ -1,57 +1,70 @@
 /*
  * TODO - Modularize sub-components for re-use
 **/
-import React, {Component, Fragment} from "react";
-import {Button, Image, Row, Tab, Tabs} from "react-bootstrap";
-import {connect} from "react-redux";
-import PropTypes from "prop-types";
-import Link from "next/link";
-import {contains, filter, flatten, map, path, uniq, values} from "ramda";
-import {FormattedHTMLMessage, FormattedMessage, injectIntl} from "react-intl";
+import React, { Component, Fragment } from 'react';
+import { Button, Image, Tab, Tabs } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import Link from 'next/link';
 
-import Loader from "@/components/common/loader";
-import {calcMaxItemsStats, isValidItemCategory} from "@/client/utils/item";
-import {GAMES_REQUEST, INVENTORY_ITEMS_REQUEST} from "@/shared/constants/actions";
+import {
+  contains,
+  filter,
+  map,
+  path,
+  uniq,
+} from 'ramda';
 
-import Item from "./item";
+import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
+
+import {
+  compose,
+  graphql,
+  Query,
+} from 'react-apollo';
+
+import {
+  viewGameBySlugQuery,
+  listGamesQuery,
+  listItemsQuery,
+  localQueries,
+  queries,
+} from '@/shared/utils/apollo';
+
+import {
+  getWeb3Wallet,
+} from '@/shared/utils/network';
+
+import {
+  getConfigForGame,
+} from '@/shared/utils/games';
+
+import {
+  calcMaxItemsStats,
+  isValidItemCategory,
+  getAttrsFromItems,
+  getCategoriesFromItemAttrs,
+} from '@/client/utils/item';
+import DataLoading from '@/components/DataLoading';
+import DataError from '@/components/DataError';
+
+import { InventoryItem } from '@/components/item';
+
 
 @injectIntl
-@connect(
-	state => ({
-		items: state.items,
-		games: state.games,
-		game: state.game,
-		user: state.user,
-	})
-)
-export default class Inventory extends Component {
+class Inventory extends Component {
 	static propTypes = {
-		dispatch: PropTypes.func,
 		items: PropTypes.object,
 		games: PropTypes.object,
-		game: PropTypes.object,
-		user: PropTypes.object,
+    game: PropTypes.object,
+		root: PropTypes.object,
 		lastLocation: PropTypes.shape({
-		pathname: PropTypes.string,
+      pathname: PropTypes.string,
 		}),
 	};
 
 	state = {
 		filters: {},
 	};
-
-	componentDidMount() {
-		const {dispatch} = this.props;
-
-		dispatch({
-			type: GAMES_REQUEST,
-			payload: this.props.user,
-		});
-		dispatch({
-			type: INVENTORY_ITEMS_REQUEST,
-			payload: this.props.user,
-		});
-	}
 
 	onClick(game, categories) {
 		return e => {
@@ -63,38 +76,31 @@ export default class Inventory extends Component {
 				},
 			});
 		};
-	}
+  }
+
+  onSell(item, listItemResult) {
+    const { items } = this.props;
+    setTimeout(::items.refetch, 3000);
+  }
 
 	onSelect(key) {
 		if (key === 1) {
-			this.setState({filters: {}});
+			this.setState({ filters: {} });
 		}
 	}
 
 	renderInventory() {
-		const {items, games} = this.props;
-
-		if (items.isLoading || games.isLoading) {
-			return <Loader />;
-		}
-
-		if (!items.success || !games.success) {
-			return null;
-		}
-
-		return items.data && items.data.length ? this.renderTabs() : this.renderEmpty();
+    const { items, games } = this.props;
+		return items.listItems && items.listItems.length ? this.renderTabs(games.listGames, items.listItems) : this.renderEmpty();
 	}
 
 	renderBackToGameButton() {
-		const {game} = this.props;
-
-		if (!game.data || !game.data.id) {
-			return null;
-		}
+    const { game } = this.props;
+    if (!game || (game && !game.viewGameBySlug)) return null;
 
 		return (
 			<div className="pull-right">
-				<Link href={`/game/${game.data.slug}`}>
+				<Link href={`/game/${game.viewGameBySlug.slug}`}>
 					<a>
 						<Button><FormattedMessage id="pages.inventory.back-to-game" /></Button>
 					</a>
@@ -107,6 +113,7 @@ export default class Inventory extends Component {
     if (!categories.length) {
       return null;
     }
+
     return (
       <>
         <Button onClick={::this.onClick(game.id, categories)} bsStyle="link">
@@ -123,31 +130,38 @@ export default class Inventory extends Component {
     );
   }
 
-	renderTab(game, items) {
-		const attrs = flatten(items.map(item => values(item.attrs || {})));
-		const maxStats = calcMaxItemsStats(items);
-		const categories = uniq(attrs.map(attr => attr.value));
-
+	renderTab(game, items, type) {
+    const attrs = getAttrsFromItems(items);
+    const categories = getCategoriesFromItemAttrs(attrs);
+    const maxStats = calcMaxItemsStats(items);
+    const itemsToRender = items.filter(item => Object.keys(this.state.filters).includes(item.game.id) ? this.state.filters[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
+      .map(item => (
+         type === undefined
+          ? <InventoryItem key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} onSell={::this.onSell} />
+          : type === 'onsale' && item.saleState === 'listed'
+            ? <InventoryItem key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} onSell={::this.onSell} />
+            : null
+      ));
     return (
       <Fragment key={game.id}>
         <div className="arrow-right pull-right">
           {this.renderCategories(game, categories)}
         </div>
         <h3>{game.name}</h3>
-        <Row className="flex-row">
-          {items.filter(item => Object.keys(this.state.filters).includes(item.game.id) ? this.state.filters[item.game.id].filter(x => !!~item.categories.indexOf(x)).length : true)
-            .map(item =>
-              <Item key={item.tokenId} item={item} game={game} maxStats={maxStats} onClick={::this.onClick} />
-            )}
-        </Row>
+        <div className="flex-row flex-start">
+          {itemsToRender}
+        </div>
       </Fragment>
     );
   }
 
-	renderTabs() {
-    const {items, games} = this.props;
-    const gameIdsWithItems = uniq(map(path(["game", "id"]), items.data));
-    const visibleGames = filter(g => contains(g.id, gameIdsWithItems), games.data);
+	renderTabs(games, items) {
+    const gameIdsWithItems = uniq(map(path(['game', 'id']), items));
+    const inventoryWhitelistedGames = filter(game => getConfigForGame(game).showInventory, games);
+    const visibleGames = filter(g => contains(g.id, gameIdsWithItems), inventoryWhitelistedGames);
+    const itemsByGameId = {};
+
+    games.forEach(game => (itemsByGameId[game.id] = items.filter(item => item.game.id === game.id)));
 
     return (
       <>
@@ -158,14 +172,24 @@ export default class Inventory extends Component {
         <Tabs defaultActiveKey={1} id="inventory" onSelect={::this.onSelect}>
           <Tab eventKey={1} title={<FormattedMessage id="pages.inventory.all-items" />}>
             {visibleGames.map(game =>
-              this.renderTab(game, items.data.filter(item => item.game.id === game.id))
+              this.renderTab(game, itemsByGameId[game.id])
             )}
           </Tab>
           {visibleGames.map((game, i) =>
-            <Tab eventKey={i + 2} title={game.name || game.slug} key={game.id}>
-              {this.renderTab(game, items.data.filter(item => item.game.id === game.id))}
+            <Tab eventKey={i + 3} title={game.name || game.slug} key={game.id}>
+              {this.renderTab(game, itemsByGameId[game.id])}
             </Tab>
           )}
+          {
+            <Tab eventKey={2} title={<FormattedMessage id="pages.inventory.on-sale" />}>
+              {visibleGames.map(game =>
+                (
+                  itemsByGameId[game.id].some(item => item.saleState === 'listed')
+                  ? this.renderTab(game, itemsByGameId[game.id], 'onsale') : null
+                )
+              )}
+            </Tab>
+          }
         </Tabs>
       </>
     );
@@ -187,95 +211,108 @@ export default class Inventory extends Component {
 		);
 	}
 
-	indexStyle() {
-		return (
-			<style jsx global>{`
-				.inventory h2 {
-					font-weight: 500;
-				}
-				.inventory h2 .btn {
-					text-transform: uppercase;
-					font-size: 14px;
-					font-weight: 600;
-					color: #FF8E64;
-					border-color: #FF8E64;
-				}
-				.inventory h2 .btn:hover,
-				.inventory h2 .btn:focus {
-					color: #FF8E64;
-					border-color: #FF8E64;
-					background-color: #FFD6C7;
-				}
-				.inventory h3 {
-					font-size: 15px;
-					font-weight: bold;
-					line-height: 34px;
-					margin-top: 0;
-					margin-bottom: 10px;
-				}
-				.inventory .arrow-right {
-					font-size: 13px;
-				}
-				.inventory .arrow-right button {
-					padding: 6px;
-					color: #130029;
-					font-weight: 400;
-				}
-				.inventory .arrow-right button:hover {
-					color: #130029;
-				}
-				.inventory .arrow-right button:first-child {
-					font-weight: 600;
-				}
-				.inventory .empty {
-					display: flex;
-					text-align: center;
-					align-items: center;
-					vertical-align: middle;
-					justify-content: center;
-					height: calc(100vh - 62px);
-				}
-				.inventory .empty h2 {
-					font-size: 38px;
-				}
-				.inventory .empty img {
-					height: 220px;
-					width: 220px;
-					margin: 40px;
-				}
-				.inventory .empty p {
-					font-size: 28px;
-				}
-			`}</style>
-		);
-	}
-
-	flexStyle() {
-		return (
-			<style jsx global>{`
-				.flex-row {
-					display: flex;
-					flex-wrap: wrap;
-				}
-				.flex-row > [class*='col-'] {
-					display: flex;
-					flex-direction: column;
-				}
-				.flex-row:after,
-				.flex-row:before {
-					display: flex;
-				}
-			`}</style>
-		);
-	}
 
 	render() {
-		return (
-			<div className="inventory">
-				{this.indexStyle()}
-				{this.flexStyle()}
-				{this.renderInventory()}
-			</div>
+    const { items, games, root } = this.props;
+    const { network } = root;
+    return (
+      <Query
+        query={queries.viewUserByWallet}
+        variables={{ wallet: getWeb3Wallet() }}
+      >
+        {({ data }) => {
+          if (data.loading || items.loading || games.loading) return <DataLoading />;
+          if (data.error || items.error || games.error) return <DataError />;
+          if (!network.supported) return null;
+          const { viewUserByWallet } = data;
+          return (
+            <div className="inventory">
+              {this.indexStyle()}
+              {::this.renderInventory({ user: viewUserByWallet })}
+            </div>
+          );
+        }}
+      </Query>
 		);
 	}
+
+
+  indexStyle() {
+    return (
+      <style jsx global>{`
+        .inventory h2 {
+          font-weight: 500;
+        }
+        .inventory h2 .btn {
+          text-transform: uppercase;
+          font-size: 14px;
+          font-weight: 600;
+          color: #FF8E64;
+          border-color: #FF8E64;
+        }
+        .inventory h2 .btn:hover,
+        .inventory h2 .btn:focus {
+          color: #FF8E64;
+          border-color: #FF8E64;
+          background-color: #FFD6C7;
+        }
+        .inventory h3 {
+          font-size: 15px;
+          font-weight: bold;
+          line-height: 34px;
+          margin-top: 0;
+          margin-bottom: 10px;
+        }
+        .inventory .arrow-right {
+          font-size: 13px;
+        }
+        .inventory .arrow-right button {
+          padding: 6px;
+          color: #130029;
+          font-weight: 400;
+        }
+        .inventory .arrow-right button:hover {
+          color: #130029;
+        }
+        .inventory .arrow-right button:first-child {
+          font-weight: 600;
+        }
+        .inventory .empty {
+          display: flex;
+          text-align: center;
+          align-items: center;
+          vertical-align: middle;
+          justify-content: center;
+          height: calc(100vh - 62px);
+        }
+        .inventory .empty h2 {
+          font-size: 38px;
+        }
+        .inventory .empty img {
+          height: 220px;
+          width: 220px;
+          margin: 40px;
+        }
+        .inventory .empty p {
+          font-size: 28px;
+        }
+        .flex-row {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+        }
+        .flex-start {
+          justify-content: flex-start;
+        }
+      `}</style>
+    );
+  }
 }
+
+
+export default compose(
+  viewGameBySlugQuery,
+  listGamesQuery,
+  listItemsQuery,
+  graphql(localQueries.root, { name: 'root' }),
+)(Inventory);

@@ -1,33 +1,39 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {Form, Modal} from "react-bootstrap";
-import {connect} from "react-redux";
-import {FormattedMessage, FormattedHTMLMessage} from "react-intl";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+import * as log from 'loglevel';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
-import BGModal from "@/components/modal";
+import withFormHelper from '@/components/inputs/withFormHelper';
+import BGModal from '@/components/modal';
+import BGButton from '@/components/bgbutton';
 
 
-@connect(
-  state => ({
-    user: state.user,
-    network: state.network,
-  })
-)
-export default class SellPopup extends Component {
+@withFormHelper
+@injectIntl
+class SellPopup extends Component {
   static propTypes = {
     show: PropTypes.bool,
     onHide: PropTypes.func,
+    item: PropTypes.object,
   };
 
-  onSubmit(e) {
-    e.preventDefault();
+  static defaultProps = {
+    show: false,
+    onHide: () => {},
+    item: {},
+  };
+
+  onSubmit() {
+    log.info('Instantiating sell transaction...');
+    ::this.props.onHide();
   }
 
   render() {
-    const {show, onHide} = this.props;
+    const { show, onHide } = this.props;
 
     return (
-      <BGModal show={show} className="sell" onHide={onHide} backdropClassName="semi">
+      <BGModal show={show} className="sell" onHide={onHide} backdropClassName="semi" bsSize="lg">
         <style jsx global>{`
           .sell .modal-header {
             border: 0;
@@ -38,21 +44,14 @@ export default class SellPopup extends Component {
         `}</style>
         <Modal.Header closeButton />
         <Modal.Body>
-          <Form onSubmit={::this.onSubmit}>
-            <h2><FormattedMessage id="modals.sell.title" /></h2>
-            <br />
-
-            <p><FormattedMessage id="modals.sell.p1" /></p>
-
-            <br />
-            <br />
-
-            <p className="note">
-              <FormattedHTMLMessage id="modals.metamask-login.faq" />
-            </p>
-          </Form>
+          <FormattedMessage id="global.sell-for" />
+          <BGButton onClick={() => {
+            ::this.onSubmit();
+          }}><FormattedMessage id="global.sell-this-item" /></BGButton>
         </Modal.Body>
       </BGModal>
     );
   }
 }
+
+export default SellPopup;

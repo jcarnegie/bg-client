@@ -1,17 +1,16 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import Main from "@/components/layouts/main";
-import Header from "@/components/header/mobile";
-import MenuDrawer from "@/components/menudrawer";
-import ChatDrawer from "@/components/chatdrawer";
-import {Mobile} from "@/components/responsive";
+import Main from '@/components/layouts/Main';
+import Header from '@/components/header/mobile';
+import Footer from '@/components/footer/mobile';
+import MenuDrawer from '@/components/menudrawer';
+import { Mobile } from '@/components/responsive';
 
 
 @connect(
   state => ({
-    chat: state.chat,
     layout: state.layout,
   })
 )
@@ -23,25 +22,24 @@ class MobileLayout extends Component {
 
     return (
       <Mobile {...props}>
-        <Header />
-        <Main>
-          {props.main}
-        </Main>
-        <MenuDrawer show={props.layout.showMenu} />
-        <ChatDrawer show={props.chat.show} />
-        {props.children}
+        <div className="mobile-wrapper">
+          <Header />
+          <Main>
+            {props.children}
+          </Main>
+          <MenuDrawer show={props.layout.showMenu} />
+        </div>
+        <Footer />
       </Mobile>
     );
   }
 }
 
 MobileLayout.propTypes = {
-  main: PropTypes.any,
   children: PropTypes.any,
 };
 
 MobileLayout.defaultProps = {
-  main: null,
   children: null,
 };
 

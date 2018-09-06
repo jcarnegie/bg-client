@@ -1,4 +1,17 @@
 {
+  "global": {
+    "about": "About",
+    "description": "プレセール",
+    "faq": "Bitizenについて",
+    "remaining": "残り",
+    "rules": "ルール",
+    "all-games": "All Games",
+    "about-bitguild": "About BitGuild",
+    "coming-soon": "Coming Soon",
+    "play": "Play",
+    "sell": "販売",
+    "gift": "ギフト"
+  },
   "components": {
     "switchLanguage": "言語",
     "language": {
@@ -14,6 +27,15 @@
       "inventory": "インベントリ",
       "exchange": "交換",
       "community": "コミュニティ"
+    },
+    "footer": {
+      "for-players": "ユーザのために",
+      "faq": "FAQ",
+      "feedback": "<a href='https://docs.google.com/forms/d/1xDavZE4wBlceRDuxQDgroBO5lfrEL4Y4nsM8BfCH1AU/edit' target='_blank' rel='noopener noreferrer'>フィードバック</a>",
+      "for-developers": "開発のため",
+      "bug-bounty": "バグバウンティ",
+      "portal-sdk": "<a href='https://github.com/BitGuildPlatform/Documentation/blob/master/README.md' target='_blank' rel='noopener noreferrer'> ポータルSDK </a>",
+      "join": "Bitguildのコミュニティに 参加してください。"
     },
     "loader": {
       "loading": "ロード中"
@@ -51,9 +73,8 @@
   },
   "buttons": {
     "submit": "提出する",
+    "login": "ログイン",
     "register": "登録",
-    "sell": "販売",
-    "gift": "ギフト",
     "convert": "購入",
     "install": "MetaMaskをインストール",
     "send": "送信する"
@@ -96,6 +117,30 @@
     }
   },
   "pages": {
+    "bugbounty": {
+      "title": "バグバウンティ",
+      "hey-bitizens": "Bitizenの皆さん、こんにちは！",
+      "info": "あなたは、スマートコントラクトについてもっと知りたいいう関心を持ったデベロッパーですか？ それともスマートコントラクト関係で熟練の経験を積んでいるエンジニアでしょうか？ いずれにせよ、私たちのバグバウンティ・プログラムへ皆さんをご招待します。弊社製品に万全の保護を施し、コントラクトが非の打ち所のないものとなるように助けていただけないでしょうか。",
+      "conditions-header": "条件:",
+      "conditions-1": "このプログラムは、<a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/marketplace'>マーケットプレイス</a> および<a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/bitizens'>Bitizen</a>関係の弊社スマートコントラクトのいずれかに含まれるバグのみを対象としています。",
+      "conditions-2": "現時点では、これらのコントラクトはEthereumブロックチェーン用のSolidityで書かれているため、プログラムはこのエコシステムのみをターゲットにしています。",
+      "conditions-3": "最初にバグを報告した人が報酬を得ます（以下の提出プロセスをご覧ください）。Githubの「issue」日が証拠として利用されます。",
+      "rewards-header": "報酬とバグのカテゴリー:",
+      "rewards-info-1": "深刻度 0 - ユーザーの資金またはアイテムが、別のユーザーによる不正アクセスのリスクにさらされている。",
+      "rewards-reward-1": "<strong>報酬: 10 ETH + 800,000 PLAT</strong>",
+      "rewards-info-2": "深刻度 1 - ユーザーのステート（装備アイテム、出された注文など）が無許可のユーザーによって変更されるというリスクにさらされている。",
+      "rewards-reward-2": "<strong>報酬: 6 ETH + 600,000 PLAT</strong>",
+      "rewards-info-3": "深刻度 2 - BitGuildの資金/アイテム/ステートが無許可のユーザーによって変更されるというリスクにさらされている。",
+      "rewards-reward-3": "<strong>報酬: 3 ETH + 300,000 PLAT</strong>",
+      "rewards-info-4": "深刻度 3 - 該当製品に含まれ、この製品の動作を著しく変更する重大なバグ。",
+      "rewards-reward-4": "<strong>報酬: 50,000 PLAT</strong>",
+      "report-header": "いずれかの方法で報告を提出できます:",
+      "report-1": "1. 関連するrepoでGithubのissueを作成してください（上記リンク参照）。",
+      "report-2": "この <strong><a href='https://docs.google.com/forms/d/1oCHiiXUB5zxMCq_F31p2Na0BtImp0glnBfAC3hW5kfo/edit'>Googleフォーム</a></strong>に記入してください。",
+      "processing": "<strong>72時間</strong> 以内に皆さんによる提出の受領を通知し、<strong>10日</strong>以内に報告の検証に努め、弊社の結論を皆さんにお伝えします。",
+      "looking-forward": "皆さんからのお知らせを楽しみにしています！",
+      "team": "BitGuild チーム"
+    },
     "inventory": {
       "title": "インベントリ",
       "all": "すべて",
@@ -233,7 +278,134 @@
       "p9": "「スパム、質の低さ、不快な内容、コンテンツの複製は、選考の対象外となります。 気持ちよく参加しましょう！」"
     },
     "presale": {
-      "title": "Bitizens Presale"
+      "bitizens": {
+        "title": "Bitizenパイオニアプレセール",
+        "subtitle": "Bitizenへようこそ！",
+        "presale-stats-title": "IGO Stats",
+        "items-bought": "Items sold",
+        "items-left": "left",
+        "total-buyers": "Total buyers",
+        "stretch-goals-unlocked": "ロック解除済み",
+        "stretch-goals-locked": "locked",
+        "bonus-reward-1-title": "Dril'r Bot Pioneer-I",
+        "bonus-reward-1-description": "Once <strong>30%</strong> of all Bitizens pre-sale items are sold, every participant will be the proud new owner of a unique Dril’r Bot Pioneer-I paint job!",
+        "bonus-reward-2-title": "Pioneer's Rocket",
+        "bonus-reward-2-description": "Selling <strong>70%</strong> of all Bitizens pre-sale items will unlock something extra special for all participants - Your very own miniature rocket!",
+        "dividing-text": "ユニークで柔軟な目標も設定しました。プレセールの全参加者は、目標をクリアするとユニークなアイテムを獲得できます。Bitizenのビジョンを現実にするスペシャルなご褒美です！",
+        "drillrbot-title": "第1の目標:",
+        "drillrbot-text-1": "Bitizenプレセールアイテムすべてのうち30%の販売が終了すると、各参加者は、ユニークなドリラーボットの塗装ジョブの新しい所有者になります。",
+        "drillrbot-text-2": "そうです。このかわいい小さな仲間はERC721トークンであり、カスタマイズできるんです。 プレイヤーがドリラーボットをカスタマイズする一番の方法は塗装ジョブです。ここで取り上げられているジョブは、かなり特別なものです（プレセールが終わると入手できなくなります！）",
+        "rocket-title": "第2の目標:",
+        "rocket-text-1": "Bitizenプレセールアイテムすべてのうち70%を販売すると、全参加者はさらに特別なものを獲得できるようになります。ミニチュアロケットです！",
+        "rocket-text-2": "このミニロケットはアクセサリータイプのアイテムで、キャラクターに装備することができます。Bitizenの外観を高めたり、能力をブーストできます！ 上記の塗装ジョブのカスタマイズと同じように、このミニロケットは、Bitizenのプレセールが終了すると入手できなくなります！",
+        "final-text": "Rejoignez-nous alors que nous apportons notre amour pour les jeux en ligne aux blockchain avec Bitizens !",
+        "description-text": {
+          "p1": "プレセールイベントに参加して、次の限定アイテムをゲットしよう。 これらのアイテムを確実にゲットする唯一のチャンスです。数量限定なのでお見逃しなく！",
+          "p2": "Bitizenのプレセールに参加していただくと、私たちがプレイヤーの皆様を最優先する質の高いゲームを開発を行う助けになります。深みがあり、有意義。そして魅力に溢れるブロックチェーンゲーム体験を提供できるようになります。また、それだけではなくBitizenとBitGuildポータル両方のパイオニアとしてのステータスを紹介する助けにもなります。 ゲームがリリースされると、この特別な限定アイテムはゲーム内の従来の手段では入手できません。トレードする必要があります！",
+          "p3": "ゲームがリリースされると、この特別な限定アイテムはゲーム内の従来の手段では入手できません。トレードする必要があります！",
+          "p4": "クリプトゲームの歴史に一歩を刻み、今すぐBitizenのパイオニアになろう！"
+        },
+        "faq-text": {
+          "p1": "<strong>世界をもっとすばらしい場所にしませんか。皆様を招待いたします。</strong>",
+          "p2": "<strong>新しいクリプト世界の究極の目的地。Bitropolisへようこそ！</strong>",
+          "p3": "この無秩序な都市を訪れ、明るいデジタルの空からビットマインの深みまで、すべてをお楽しみください。 誰でも歓迎されます。必要なのは登録だけ。たった数クリックで、あなたのデジタル意識が新しい目的地に読み込まれます！",
+          "p4": "Bitropolisとは？",
+          "p5": "ブロックチェーンのこちら側は最も壮大なデジタル文明というだけであって、大したものではありません（おそらく逆側もそうですが... わざわざ行く必要もないでしょう）。 ここは、最高にワイルドな夢が実現する、秩序も際限もない都会のジャングルです。クリプトの世界で一山当てたければの話ですが！ 相互接続された新たな仮想世界のユートピアに旅立って、無限の可能性をお楽しみください。",
+          "p6": "私は誰？",
+          "p7": "誰にでもなれます！ 美しいBitropolisを訪れる人は誰でも誇りあるBitizenです！ この都市では、あなたの美しいポリゴンの顔をカスタマイズできます。心ゆくまで飾り付けをして、あなたの姿を周りの人たち全員に紹介しましょう。",
+          "p8": "それはすばらしい... でもなぜ滞在する必要があるのでしょうか？！",
+          "p9": "都市を栄えさせるためです！ 百聞は一見にしかず。見ればわかります！Bitropolisはまさに最高の場所なのです！ ここは誰にとってもチャンスに満ちた世界。また、誰もが最初から公平な状態です。 Bitropolisに住まないのは、2010年にビットコインでピザを一枚買うようなものです。賢い行動とは言えません！",
+          "p10": "OK、それじゃあどうしたらいいのか教えて！",
+          "p11": "Bitizen 1人につき、標準発行で、わずかに使用済みのドリラーボットRx-24が付与されます。 この信頼できる小さな掘削ロボットを使用すると、Bitropolisの鉱山から本物の宝の山を掘り当てることができます。 掘り当てたものはすべて工場で素晴らしい報酬と交換できるので、心ゆくまでまで掘り進めてください！",
+          "p12": "クール！ ...さて、次は？",
+          "p13": "栄光に浸って、レアでユニークな糸を紡いで誇らしく掲げ、そして、すべてを繰り返しましょう！ ここで見つけられるアイテムに限りはありません。また、Bitropolisで獲得したアイテムはすべて、保管したり、使ったりトレードしたりできます。またPLAT向けに販売することすらできます！ 何が見つかるかは分かりません…あなたのコレクションやお隣さんのコレクションを完成させる一品かもしれません（お隣さんに売る気があれば、の話ですが... 誰か「利益」って言いましたか？ 大儲けですね！）",
+          "p14": "すばらしいですね！ どうすれば開始できますか？",
+          "p15": "こちらをクリックすると、仮想世界Bitropolisへの片道切符を今すぐ予約することができます（見れば帰りたくなくなります）。 エコノミーシートのようなものはありません。Bitizenでは、最後までファーストクラスです！"
+        },
+        "rules-text": {
+          "p1": "<strong>制限:</strong>",
+          "l1": "2回、同じセットを購入することはできません。",
+          "l2": "複数回購入しても、各レベルのボーナスは1回だけ有効になります。",
+          "l3": "プレセールが完了すると、これらのアイテムは入手できなくなります。",
+          "l4": "パイオニアアイテムは、マーケットプレイスで販売することができます。",
+          "l5": "プレセールのすべてのアイテムの購入には、PLATのみ使用できます。",
+          "l6": "プレセールのすべての取引は最終的なものです。",
+          "p2": "<strong>配布:</strong>",
+          "l7": "パイオニアセット、アイテム、ボーナス報酬は、7月下旬に予定されるBitizenのワードローブのリリース時に入手できます。",
+          "l8": "アイテムは購入に使用するアカウントに獲得する必要があります。",
+          "l9": "ゲーム内でのアイテムの回収時、ガスによる手数料が適用される可能性があります。  "
+        },
+        "sets": {
+          "pioneer_of_the_wilds": {
+            "name": "荒野のパイオニア",
+            "description": "常に新しい冒険者を探す準備はできています。冒険者の装いは、クリプトゲームの最前線を感じさせてくれます。「流行になる前に」最前線へたどり着きましょう！",
+            "item1": {
+              "name": "ピスヘルメット"
+            },
+            "item2": {
+              "name": "探検ジャケット"
+            },
+            "item3": {
+              "name": "探検パンツ"
+            },
+            "item4": {
+              "name": "探検ブーツ"
+            }
+          },
+          "pioneer_of_the_seas": {
+            "name": "海のパイオニア",
+            "description": "想像もできない深海にダイブして、未踏の世界を見に行こう。",
+            "item1": {
+              "name": "深海ヘルメット"
+            },
+            "item2": {
+              "name": "ダイビングトップ"
+            },
+            "item3": {
+              "name": "ダイビングパンツ"
+            },
+            "item4": {
+              "name": "ウェイトブーツ"
+            }
+          },
+          "pioneer_of_the_skies": {
+            "name": "空のパイオニア",
+            "description": "ストイックなフライトスーツでレーダーの上を通過しよう。 この服でBitizenを装備すれば、うらやましがられること間違いなし！",
+            "item1": {
+              "name": "飛行ゴーグル"
+            },
+            "item2": {
+              "name": "パイロットジャケット"
+            },
+            "item3": {
+              "name": "フライトパンツ"
+            },
+            "item4": {
+              "name": "パイロットブーツ"
+            }
+          },
+          "pioneer_of_the_cyberscape": {
+            "name": "サイバースペースパイオニア",
+            "description": "5人のBitizenサイバー戦士の一人にロックイン。 チェーンの一部になれば、チェーンがあなたの一部に。",
+            "item1": {
+              "name": "サイバーヘルメット"
+            },
+            "item2": {
+              "name": "サイバーチェスト"
+            },
+            "item3": {
+              "name": "サイバーレギンス"
+            },
+            "item4": {
+              "name": "サイバーブーツ"
+            }
+          },
+          "pioneer_compass": {
+            "name": "パイオニアのコンパス",
+            "description": "この古代のコンパスは、常に道を示してくれますが、正確な目的地は誰にも分かりません。 「長く失われたBitropolisの中心を示している」という人もいますが、「あなたの心の奥の望みを示している」という人もいます。どちらにしても、マイニング中、何か素晴らしいものを見つけるチャンスが増大します！"
+          }
+        }
+      }
     }
   },
   "chat": {

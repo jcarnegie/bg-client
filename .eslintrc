@@ -5,6 +5,7 @@
     "plugin:react/recommended"
   ],
   "env": {
+    "jest": true,
     "mocha": true,
     "browser": true
   },
@@ -61,11 +62,11 @@
     "quotes": 0,
     "babel/quotes": [
       2,
-      "double"
+      "single"
     ],
     "object-curly-spacing": [
       2,
-      "never"
+      "always"
     ],
     "camelcase": [
       2,

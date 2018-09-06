@@ -1,64 +1,72 @@
-import React, {Component} from "react";
-import * as log from "loglevel";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import ScaleLoader from "react-spinners/dist/spinners/ScaleLoader";
-import MdAddCircle from "react-icons/lib/md/add-circle";
+import React, { Component } from 'react';
+import * as log from 'loglevel';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { isEmpty } from 'ramda';
+import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
+import MdAddCircle from 'react-icons/lib/md/add-circle';
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
 
-import Convert from "@/components/popups/convert";
+import {
+  viewUserByWalletQuery,
+  localQueries,
+  client,
+  localMutations,
+} from '@/shared/utils/apollo';
 
-import {USER_SHOW_REGISTER_WORKFLOW, SHOW_CONVERT_MODAL} from "@/shared/constants/actions";
+import Convert from '@/components/popups/convert';
+
+import { SHOW_CONVERT_MODAL } from '@/shared/constants/actions';
 
 
 @connect(
   state => ({
-    rate: state.rate,
-    user: state.user,
     layout: state.layout,
-    balanceETH: state.balanceETH,
-    balancePLAT: state.balancePLAT,
   })
 )
-export default class Balance extends Component {
+class Balance extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     layout: PropTypes.object,
-    rate: PropTypes.object,
+    data: PropTypes.object,
     user: PropTypes.object,
-    balanceETH: PropTypes.object,
-    balancePLAT: PropTypes.object,
   };
+  static defaultProps = {
+    data: {},
+    layout: {},
+  }
 
   state = {
     show: false,
-    balanceETH: this.props.balanceETH,
-    balancePLAT: this.props.balancePLAT,
+    balanceETH: this.props.data.balanceETH,
+    balancePLAT: this.props.data.balancePLAT,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.balanceETH.data !== prevState.balanceETH.data) {
-      return {
-        balanceETH: nextProps.balanceETH,
-      };
+    const { balanceETH, balancePLAT } = nextProps;
+    let props = {};
+    if (balanceETH !== prevState.balanceETH) {
+      props.balanceETH = balanceETH;
     }
 
-    if (nextProps.balancePLAT.data !== prevState.balancePLAT.data) {
-      return {
-        balancePLAT: nextProps.balancePLAT,
-      };
+    if (balancePLAT !== prevState.balancePLAT) {
+      props.balancePLAT = balancePLAT;
     }
 
-    return null;
+    return isEmpty(props) ? props : null;
   }
 
   onClick(e) {
     e.preventDefault();
-    if (!this.props.user.data) {
-      return this.props.dispatch({type: USER_SHOW_REGISTER_WORKFLOW, payload: true});
+    if (!this.props.user.viewUserByWallet) {
+      return client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
     }
 
-    if (!this.props.rate.data) {
-      log.info("No rate info is avaliable, so convert workflow may not work properly.");
+    if (!this.props.data.rate) {
+      log.info('No rate info is avaliable, so convert workflow may not work properly.');
     }
 
     this.setState({
@@ -67,7 +75,7 @@ export default class Balance extends Component {
   }
 
   onHide() {
-    this.props.dispatch({type: SHOW_CONVERT_MODAL, payload: false});
+    this.props.dispatch({ type: SHOW_CONVERT_MODAL, payload: false });
     this.setState({
       show: false,
     });
@@ -98,7 +106,7 @@ export default class Balance extends Component {
             cursor:  not-allowed;
           }
         `}</style>
-        <a href="#" className="plus" onClick={::this.onClick} disabled={!Boolean(this.props.rate.data)}>
+        <a href="#" className="plus" onClick={::this.onClick} disabled={!this.props.data.rate}>
           <MdAddCircle height="30" width="30" />
         </a>
       </span>
@@ -106,11 +114,8 @@ export default class Balance extends Component {
   }
 
   balances() {
-    const {balanceETH, balancePLAT} = this.state;
-
-    if (!Number.isFinite(balanceETH.data) || !Number.isFinite(balancePLAT.data)) {
-      return null;
-    }
+    const { data } = this.props;
+    const { loading, balanceETH, balancePLAT } = data;
     return (
       <span className="balance-text">
         <style jsx>{`
@@ -130,14 +135,14 @@ export default class Balance extends Component {
             text-align: right;
             float: left;
             clear: both;
-            line-height: 14px;
+            line-height: ${this.props.layout.type.mobile ? '20px' : '14px'};
           }
         `}</style>
         <div>
-          {this.props.balanceETH.isLoading ? this.textLoading() : <span className="balance-value">{balanceETH.data.toFixed(2)} ETH</span>}
+          {!Number.isFinite(balanceETH) || loading ? this.textLoading() : <span className="balance-value">{balanceETH.toFixed(2)} ETH</span>}
         </div>
         <div>
-          {this.props.balancePLAT.isLoading ? this.textLoading() : <span className="balance-value">{balancePLAT.data.toFixed(0)} PLAT</span>}
+          {!Number.isFinite(balancePLAT) || loading ? this.textLoading() : <span className="balance-value">{balancePLAT.toFixed(0)} PLAT</span>}
         </div>
       </span>
     );
@@ -151,7 +156,7 @@ export default class Balance extends Component {
             display: flex;
             align-items: center;
             color: white;
-            font-size: 13px;
+            font-size: ${this.props.layout.type.mobile ? '14px' : '13px'};
             font-weight: 100;
           }
         `}</style>
@@ -162,3 +167,9 @@ export default class Balance extends Component {
     );
   }
 }
+
+
+export default compose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root),
+)(Balance);

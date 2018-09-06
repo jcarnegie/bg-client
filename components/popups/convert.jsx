@@ -1,16 +1,27 @@
-import React, {Component} from "react";
-import * as log from "loglevel";
-import PropTypes from "prop-types";
-import {Button, Form, Glyphicon, Modal, Grid, Row, Col} from "react-bootstrap";
-import {connect} from "react-redux";
-import {FormattedMessage} from "react-intl";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button, Form, Glyphicon, Modal, Grid, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 
-import BGModal from "@/components/modal";
-import withFormHelper from "@/components/inputs/withFormHelper";
-import topupABI from "@/shared/contracts/topup";
-import {MESSAGE_ADD} from "@/shared/constants/actions";
-import networkConfig from "@/client/utils/network";
-import InputGroup from "@/components/inputs/input.group";
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
+import {
+  localQueries,
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
+import BGModal from '@/components/modal';
+import withFormHelper from '@/components/inputs/withFormHelper';
+
+import {
+  getTopupContract,
+} from '@/shared/utils/network';
+
+import InputGroup from '@/components/inputs/input.group';
 
 
 function precisionRound(number, precision) {
@@ -22,83 +33,80 @@ function precisionRound(number, precision) {
 @connect(
   state => ({
     analytics: state.analytics,
-    gas: state.gas,
-    rate: state.rate,
-    user: state.user,
-    network: state.network,
   })
 )
-export default class ConvertPopup extends Component {
+class ConvertPopup extends Component {
   static propTypes = {
     analytics: PropTypes.object,
     show: PropTypes.bool,
-    rate: PropTypes.object,
+    data: PropTypes.object,
     dispatch: PropTypes.func,
     onHide: PropTypes.func,
     setState: PropTypes.func,
     formData: PropTypes.object,
     user: PropTypes.object,
-    network: PropTypes.object,
-    gas: PropTypes.object,
   };
 
   state = {};
 
   componentDidMount() {
-    const {setState, rate} = this.props;
+    const { setState, data } = this.props;
     setState({
       eth: 1,
-      plat: rate.data,
+      plat: data.rate,
     });
   }
 
   static getDerivedStateFromProps(nextProps) {
-    if (!nextProps.rate.isLoading && nextProps.rate.success && nextProps.rate.data * nextProps.formData.eth !== nextProps.formData.plat) {
-      nextProps.setState({
-        plat: nextProps.rate.data * nextProps.formData.eth,
-      });
+    const { data, formData } = nextProps;
+    const { loading, rate } = data;
+    if (loading) return null;
+
+    const plat = rate * formData.eth;
+
+    if (plat !== formData.plat) {
+      nextProps.setState({ plat });
     }
 
     return null;
   }
 
   onChangeETH(e) {
-    const {setState, rate} = this.props;
+    const { setState, data } = this.props;
+    const { rate } = data;
     setState({
       eth: e.target.value,
-      plat: rate.data * e.target.value,
+      plat: rate * e.target.value,
     });
   }
 
   onChangePLAT(e) {
-    const {setState, rate} = this.props;
+    const { setState, data } = this.props;
+    const { rate } = data;
     setState({
-      eth: e.target.value / rate.data,
+      eth: e.target.value / rate,
       plat: e.target.value,
     });
   }
 
   onSubmit(e) {
     e.preventDefault();
-    const {network, user, gas, dispatch, formData} = this.props;
-    const contract = window.web3.eth.contract(topupABI).at(networkConfig[network.data.id].topup);
-    contract.buyTokens({
-        value: window.web3.toWei(precisionRound(formData.eth, 6), "ether"),
-        from: user.data.wallet,
+    const { data, dispatch, formData } = this.props;
+    const { wallet, gas, network } = data;
+    getTopupContract(network).buyTokens({
+        value: window.web3.toWei(precisionRound(formData.eth, 6), 'ether'),
+        from: wallet,
         gas: window.web3.toHex(15e4),
-        gasPrice: window.web3.toHex(gas.data.average),
+        gasPrice: window.web3.toHex(gas.average),
       },
       error => {
         if (error) {
-          return dispatch({
-            type: MESSAGE_ADD,
-            payload: error,
-          });
+          return null;
         }
         this.props.analytics.ga.event({
-          category: "Site Interaction",
-          action: "Purchase",
-          label: "Buy-Plat",
+          category: 'Site Interaction',
+          action: 'Purchase',
+          label: 'Buy-Plat',
         });
       }
     );
@@ -111,9 +119,10 @@ export default class ConvertPopup extends Component {
   }
 
   render() {
-    const {rate, show, onHide, formData} = this.props;
+    const { data, show, onHide, formData } = this.props;
+    const { rate } = data;
 
-    if (!rate.data) {
+    if (!rate) {
       return null;
     }
 
@@ -170,9 +179,9 @@ export default class ConvertPopup extends Component {
           <Form noValidate onSubmit={::this.onSubmit}>
           <Grid fluid>
               <Row>
-                <h2 className="convert-title">1 ETH = {rate.data} PLAT</h2>
+                <h2 className="convert-title">1 ETH = {rate} PLAT</h2>
               </Row>
-              <Row style={{display: "flex"}}>
+              <Row style={{ display: 'flex' }}>
                 <Col sm={5} className="no-padding">
                   <InputGroup
                     type="number"
@@ -191,8 +200,8 @@ export default class ConvertPopup extends Component {
                 <Col sm={5} className="no-padding">
                   <InputGroup
                     type="number"
-                    min={rate.data * step}
-                    step={rate.data * step}
+                    min={rate * step}
+                    step={rate * step}
                     name="plat"
                     value={precisionRound(formData.plat, 6)}
                     onChange={::this.onChangePLAT}
@@ -213,3 +222,9 @@ export default class ConvertPopup extends Component {
     );
   }
 }
+
+
+export default compose(
+  viewUserByWalletQuery,
+  graphql(localQueries.root),
+)(ConvertPopup);

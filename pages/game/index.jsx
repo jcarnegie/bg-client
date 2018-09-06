@@ -1,25 +1,21 @@
-import {DesktopLayout, MobileLayout} from "@/components/layouts";
-import Game from "@/components/game";
-import Chat from "@/components/chat";
-import {userLoginRouteGuard, ethNetworkRouteGuard} from "@/shared/utils";
+import React, { Component } from 'react';
 
-const GamePage = props => (
-  <>
-    <MobileLayout
-      main={<Game {...props} />}
-    />
-    <DesktopLayout
-      main={<Game {...props} />}
-      aside={<Chat {...props} />}
-    />
-  </>
-);
+import Layout from '@/components/layouts';
+import Game from '@/components/game';
 
-GamePage.getInitialProps = ctx => {
-  userLoginRouteGuard(ctx);
-  ethNetworkRouteGuard(ctx);
-  return Game.getInitialProps(ctx);
+
+class GamePage extends Component {
+  static getInitialProps = ctx => Game.getInitialProps(ctx);
+
+  render() {
+    return (
+      <Layout showFooter={false}>
+        <Game {...this.props} />
+      </Layout>
+    );
+  }
 };
 
 
 export default GamePage;
+

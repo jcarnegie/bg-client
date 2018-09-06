@@ -1,6 +1,6 @@
-import {Mobile, Desktop} from "@/components/responsive";
-import BGDesktopModal from "@/components/modal/desktop";
-import BGMobileModal from "@/components/modal/mobile";
+import { Mobile, Desktop } from '@/components/responsive';
+import BGDesktopModal from '@/components/modal/desktop';
+import BGMobileModal from '@/components/modal/mobile';
 
 
 export default function BGModal(props) {

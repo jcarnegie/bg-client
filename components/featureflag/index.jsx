@@ -1,8 +1,9 @@
-import React, { PureComponent, Component } from "react";
-import { featureOn, featureRouteGuard } from "@/shared/utils";
+import React from 'react'; /* eslint-disable-line no-unused-vars */
+import { featureOn } from '@/shared/utils';
 
-const FeatureFlag = ({flag, children}) => {
-      return featureOn(flag) ? (<>{children}</>) : null;
-}
+const FeatureFlag = ({ flag, off = false, children }) => {
+  const matchesFlag = featureOn(flag);
+  return (matchesFlag && !off) ? (<>{children}</>) : null;
+};
 
-export default FeatureFlag; 
+export default FeatureFlag;

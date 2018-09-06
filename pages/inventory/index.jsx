@@ -1,26 +1,36 @@
-import {DesktopContent, MobileContent, DesktopLayout, MobileLayout} from "@/components/layouts";
-import Inventory from "@/components/inventory";
-import Chat from "@/components/chat";
-import {userLoginRouteGuard, ethNetworkRouteGuard} from "@/shared/utils";
+import React, { Component } from 'react';
 
+import { compose } from 'react-apollo';
 
-const InventoryPage = props => (
-  <>
-    <MobileLayout
-      main={<MobileContent><Inventory {...props} /></MobileContent>}
-    />
-    <DesktopLayout
-      main={<DesktopContent><Inventory {...props} /></DesktopContent>}
-      aside={<Chat {...props} />}
-    />
-  </>
-);
+import {
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
 
-InventoryPage.getInitialProps = ctx => {
-  userLoginRouteGuard(ctx);
-  ethNetworkRouteGuard(ctx);
-  return {};
+import Layout, { Content } from '@/components/layouts';
+import Inventory from '@/components/inventory';
+
+class InventoryPage extends Component {
+  static getInitialProps = ctx => ({});
+
+  render() {
+    const { user } = this.props;
+    if (user.loading) return null;
+    return (
+      <>
+        <Layout.Mobile>
+          <Content.Mobile>
+            <Inventory {...this.props} />
+          </Content.Mobile>
+        </Layout.Mobile>
+        <Layout.Desktop>
+          <Content.Desktop>
+            <Inventory {...this.props} />
+          </Content.Desktop>
+        </Layout.Desktop>
+      </>
+    );
+  }
 };
 
 
-export default InventoryPage;
+export default compose(viewUserByWalletQuery)(InventoryPage);

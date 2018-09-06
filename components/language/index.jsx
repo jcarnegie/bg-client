@@ -1,61 +1,78 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {updateIntl} from "react-intl-redux";
-import {injectIntl, intlShape} from "react-intl";
-import {Image, MenuItem, DropdownButton} from "react-bootstrap";
-import {enabledLanguages, enabledLanguagesNativeText} from "@/shared/constants/language";
-import {localization} from "@/shared/intl/setup";
-import {UPDATE_USER} from "@/shared/constants/actions";
-import {Mobile, Desktop} from "@/components/responsive";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { updateIntl } from 'react-intl-redux';
+import { injectIntl, intlShape } from 'react-intl';
+import { Image, MenuItem, DropdownButton } from 'react-bootstrap';
+import { withRouter } from 'next/router';
+import { path } from 'ramda';
+import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
+import { localization } from '@/shared/intl/setup';
+import { Mobile, Desktop } from '@/components/responsive';
 
+import {
+  compose,
+} from 'react-apollo';
+
+import {
+  updateUser,
+  viewUserByWalletQuery,
+} from '@/shared/utils/apollo';
+
+@withRouter
 @injectIntl
-@connect(
-  state => ({
-    user: state.user
-  })
-)
-export default class Language extends Component {
+@connect()
+class Language extends Component {
   static propTypes = {
     user: PropTypes.object,
+    router: PropTypes.object,
     dispatch: PropTypes.func,
     intl: intlShape,
   };
 
   onSelect(language) {
-    const {dispatch} = this.props;
-
+    const { dispatch, user, router } = this.props;
+    const { route } = router;
+    const refreshRoutes = ['/game', '/sandbox']
     dispatch(updateIntl(localization[language]));
-    dispatch({
-      type: UPDATE_USER,
-      payload: {
-        language,
-      }
-    });
-    document.documentElement.setAttribute("lang", language);
+
+    document.documentElement.setAttribute('lang', language);
+    const viewUserByWallet = path(['viewUserByWallet'], user);
+    if (viewUserByWallet) updateUser(viewUserByWallet, { language });
+
+    if (refreshRoutes.includes(route)) window.location.reload();
   }
 
-  renderLanguageMenuItems(){
-    let dropDownLanguages = []
+  renderLanguageMenuItems() {
+    let dropDownLanguages = [];
 
-    for (let i = 0; i < enabledLanguagesNativeText.length; i++){
+    for (let i = 0; i < enabledLanguagesNativeText.length; i++) {
       dropDownLanguages.push(
         <MenuItem
           key={enabledLanguagesNativeText[i]}
           eventKey={ enabledLanguagesNativeText[i]}
-          onSelect={() => {this.onSelect(enabledLanguages[i])}}
+          onSelect={() => { this.onSelect(enabledLanguages[i]); }}
         >
           {<div className="native-language"> {enabledLanguagesNativeText[i]} </div>}
         </MenuItem>
-      )
+      );
     }
-    return dropDownLanguages
+    return dropDownLanguages;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { dispatch } = this.props;
+    const prevLang = path(['user', 'viewUserByWallet', 'language'], prevProps);
+    const language = path(['user', 'viewUserByWallet', 'language'], this.props);
+    if (prevLang !== language && language) {
+      dispatch(updateIntl(localization[language]));
+    }
   }
 
   render() {
-    const {user, intl} = this.props;
-
-    const language = !user.isLoading && user.success ? user.data.language : intl.locale;
+    const { user, intl } = this.props;
+    const { viewUserByWallet } = user;
+    const language = !user.loading && viewUserByWallet ? viewUserByWallet.language : intl.locale;
 
     return (
       <div className="lang-dropdown">
@@ -68,7 +85,8 @@ export default class Language extends Component {
             }
 
             .lang-menu .caret {
-              color: gray;
+              color: white;
+              transform: translate(0, 0) !important; /* Bootstrap overrides */
             }
             .lang-menu:hover .caret {
               color: white;
@@ -94,9 +112,11 @@ export default class Language extends Component {
               padding: 15px;
             }
 
-            .lang-dropdown .dropdown .btn img,
-            .lang-dropdown .dropdown .btn .caret {
+            .lang-dropdown .dropdown .btn img {
               transform: translateX(4px);
+            }
+            .lang-dropdown .dropdown .btn .caret {
+              transform: translate(0, -2px); 
             }
 
             .lang-dropdown .dropdown-menu {
@@ -134,6 +154,7 @@ export default class Language extends Component {
             .current-lang{
               color: white;
               padding-left: 12px;
+              vertical-align: middle;
             }
           `}</style>
         </Desktop>
@@ -153,51 +174,55 @@ export default class Language extends Component {
             .lang-dropdown {
               padding: 0 7px;
             }
-            .lang-dropdown .dropdown-menu {
+            .lang-dropdown .dropdown .btn .caret {
+              color: white;
+            }
+            .lang-dropdown .dropdown .btn img,
+            .lang-dropdown .dropdown .btn .caret {
+              transform: translateX(8px);
+            }
+            .lang-dropdown .dropdown .dropdown-menu li a:focus,
+            .lang-dropdown .dropdown .dropdown-menu li a:hover {
+              background: rgba(255, 255, 255, 0.15) !important;
+            }
+
+            .current-lang {
+              color: white;
+              padding-left: 22px;
+            }
+
+            .native-language {
+              color: white;
+              font-size: 15px;
+              margin-bottom: 10px;
+            }
+            .dropdown-menu {
               background-color: #BCC4DE;
               min-width: 0;
               margin-right: 10px;
               margin-top: 0;
               border-top-left-radius: 0;
               border-top-right-radius: 0;
-            }
-
-            .lang-dropdown .dropdown .btn .caret {
-              color: white;
-            }
-
-            .lang-dropdown .dropdown .btn img,
-            .lang-dropdown .dropdown .btn .caret {
-              transform: translateX(8px);
-            }
-
-            .lang-dropdown .dropdown .dropdown-menu li a:focus,
-            .lang-dropdown .dropdown .dropdown-menu li a:hover {
-              background: rgba(255, 255, 255, 0.15) !important;
-            }
-
-            .current-lang{
-              color: white;
-              padding-left: 22px;
-            }
-
-            .native-language{
-              color: white;
+              overflow-y: scroll !important;
+              height: 150px !important;
             }
           `}</style>
         </Mobile>
-        <DropdownButton 
+        <DropdownButton
           title={
             <span>
-              <Image src={`/static/images/language/globe.svg`} />
+              <Image src={'/static/images/language/globe.svg'} />
               <span className="current-lang">{language.toUpperCase()} </span>
             </span>
-          }            
-          className="lang-menu" id="lang-menu">
-        
+          }
+          className="lang-menu" id="lang-menu"
+        >
           {this.renderLanguageMenuItems()}
         </DropdownButton>
       </div>
     );
   }
 }
+
+
+export default compose(viewUserByWalletQuery)(Language);

@@ -1,5 +1,5 @@
 // TODO - consolidate global styles for text
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 
 function Article({

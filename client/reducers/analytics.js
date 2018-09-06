@@ -1,4 +1,4 @@
-import {GA_CREATE} from "@/shared/constants/actions";
+import { GA_CREATE } from '@/shared/constants/actions';
 
 const analytics = {
   ga: {},

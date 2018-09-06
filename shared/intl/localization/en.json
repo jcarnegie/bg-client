@@ -1,10 +1,22 @@
 {
   "global": {
     "about": "About",
+    "day": "day",
+    "days": "days",
     "description": "Pre-Sale",
+    "expired": "Expired",
+    "expires-in": "Expires in",
     "faq": "About Bitizens",
     "remaining": "remaining",
-    "rules": "Rules"
+    "rules": "Rules",
+    "all-games": "Games",
+    "about-bitguild": "About BitGuild",
+    "coming-soon": "Coming Soon",
+    "play": "Play",
+    "sell-for": "Sell for",
+    "sell-this-item": "Sell this item",
+    "sell": "Sell",
+    "gift": "Gift"
   },
   "components": {
     "switchLanguage": "Switch Language",
@@ -19,9 +31,23 @@
     },
     "menu": {
       "inventory": "My Items",
-      "marketplace": "Marketplace",
+      "marketplace": "Marketplace Beta",
       "exchange": "Exchange",
-      "community": "Community"
+      "community": "Community",
+      "presale": "IGO"
+    },
+    "newsletter": {
+      "subscribe": "Subscribe to our mailing list",
+      "sub-button": "Subscribe"
+    },
+    "footer": {
+      "for-players": "For Players",
+      "faq": "FAQ",
+      "feedback": "<a href='https://docs.google.com/forms/d/1xDavZE4wBlceRDuxQDgroBO5lfrEL4Y4nsM8BfCH1AU/edit' target='_blank' rel='noopener noreferrer'>Feedback</a>",
+      "for-developers": "For Developers",
+      "bug-bounty": "Bug Bounty",
+      "portal-sdk": "<a href='https://github.com/BitGuildPlatform/Documentation/blob/master/README.md' target='_blank' rel='noopener noreferrer'> Portal SDK </a>",
+      "join": "Join the BitGuild Community"
     },
     "loader": {
       "loading": "loading"
@@ -64,10 +90,11 @@
   "buttons": {
     "submit": "Submit",
     "register": "Register",
-    "sell": "Sell",
-    "gift": "Gift",
+    "login": "Login",
     "convert": "Purchase",
     "install": "Install MetaMask",
+    "renew": "renew",
+    "withdraw": "Withdraw",
     "send": "Send"
   },
   "errors": {
@@ -104,21 +131,69 @@
       "n2": "We can’t help you recover it if you lose access.",
       "text": "BitGuild requires all users to sign with their private key in order to safeguard against spoofing attempts.\n\nOur mission is to revolutionize the global gaming industry by creating a platform for a brand new class of games that live on the blockchain. Blockchain games completely redefine the relationship between players and developers by facilitating full and true ownership of in-game assets, cheap & safe item trading, cross-game compatibility of items & currency, and more. BitGuild’s team consists of cryptocurrency and gaming veterans with decades of experience building international large-scale gaming platforms and communities. BitGuild aims to host the best blockchain games and the largest blockchain gamer community online."
     },
-    "sell": {
+    "sell-feature-coming": {
       "title": "Stay tuned!",
-      "p1": "We will let you know as soon as you are able to sell items.",
-      "faq": "Questions? Check our <a href='/faq'>FAQ</a>"
+      "p1": "We will let you know as soon as you are able to sell items."
     }
   },
   "pages": {
+    "bugbounty": {
+      "title": "Bug Bounty",
+      "hey-bitizens": "Hey Bitizen!",
+      "info": "Are you a curious developer looking to learn more about smart contracts? Or maybe you are a well versed engineer with smart contract experience? Either way, we’re inviting you to participate in our bug bounty program and help us make our products rock solid, and our contracts ironclad.",
+      "conditions-header": "Conditions:",
+      "conditions-1": "The program covers only bugs in any of our smart contracts for <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/marketplace'>Marketplace</a> and <a href='https://github.com/BitGuildPlatform/Contracts/tree/master/contracts/bitizens'>Bitizens</a>.",
+      "conditions-2": "At the moment, those contracts are written in Solidity for Ethereum blockchain so the program targets this ecosystem only.",
+      "conditions-3": "Whoever reports the bug first, gets the reward (see the submission process below). Github issue date will be used as proof.",
+      "rewards-header": "Rewards and bug categories:",
+      "rewards-info-1": "Severity 0 - User funds or items are at risk of having unauthorized access by another user.",
+      "rewards-reward-1": "<strong>Reward: 10 ETH + 800,000 PLAT</strong>",
+      "rewards-info-2": "Severity 1 - User state (equipped items, placed orders, etc) is risk of being changed by unauthorized user.",
+      "rewards-reward-2": "<strong>Reward: 6 ETH + 600,000 PLAT</strong>",
+      "rewards-info-3": "Severity 2 - BitGuild funds/items/state is at risk of being changed by unauthorized user.",
+      "rewards-reward-3": "<strong>Reward: 3 ETH + 300,000 PLAT</strong>",
+      "rewards-info-4": "Severity 3 - Any major bug in the product logic that significantly changes its behavior.",
+      "rewards-reward-4": "<strong>Reward: 50,000 PLAT</strong>",
+      "report-header": "To submit a report, please do the following:",
+      "report-1": "Create a github issue in the relevant repo (see the links above).",
+      "report-2": "Fill this <strong><a href='https://docs.google.com/forms/d/1oCHiiXUB5zxMCq_F31p2Na0BtImp0glnBfAC3hW5kfo/edit'>Google Form</a></strong>.",
+      "processing": "We will acknowledge receival of your submission within <strong> 72 hours </strong>, and we’ll commit to validating the report, giving you our conclusion within <strong> 10 days </strong>.",
+      "looking-forward": "We are looking forward to hearing from you!",
+      "team": "BitGuild Team"
+    },
     "inventory": {
       "title": "My Items",
+      "listed-for-sale": "Listed for sale",
+      "sale-in-progress": "Sale in progress",
+      "list-in-progress": "List in progress",
+      "extend-in-progress": "Extend in progress",
+      "withdraw-in-progress": "Withdraw in progress",
       "all": "All",
       "all-items": "All Items",
+      "on-sale": "For Sale",
       "back-to-game": "Back to game",
       "tx": "Transaction in progress",
       "empty": "You have no items yet!",
       "faq": "Learn more about items in <a href='/faq'>FAQ</a>"
+    },
+    "marketplace": {
+      "title": "Marketplace",
+      "games": "All Games",
+      "expires-in": "Expires in ",
+      "expires-today": "Expires today",
+      "days": "days",
+      "day": "day",
+      "listed-for": "Listed for ",
+      "renew": "RENEW",
+      "withdraw": "WITHDRAW",
+      "sell-for": "Sell for",
+      "sell-this-item": "SELL THIS ITEM",
+      "bitguild-fee-1": "BitGuild charges a ",
+      "bitguild-fee-2": "fee on all trades. ",
+      "bitguild-fee-3": "You will get ",
+      "bitguild-fee-4": "for this sale",
+      "buy-for": "BUY FOR ",
+      "empty": "No items are listed for sale right now, check back later!"
     },
     "faq": {
       "title": "FAQ",
@@ -373,7 +448,7 @@
           },
           "pioneer_compass": {
             "name": "Pioneer's Compass",
-            "description": "This ancient compass always shows the way, but no one know where to exactly. Some say it points to the long-lost heart of Bitropolis, others say it points to your innermost desires - Either way, it increases your chance to find something nice while mining!"
+            "description": "This ancient compass always shows the way, but no one knows where to exactly. Some say it points to the long-lost heart of Bitropolis, others say it points to your innermost desires - Either way, it increases your chance to find something nice while mining!"
           }
         }
       }

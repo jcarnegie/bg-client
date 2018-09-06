@@ -1,23 +1,20 @@
-import {DesktopLayout, MobileLayout} from "@/components/layouts";
-import Market from "@/components/market";
-import Chat from "@/components/chat";
-import { featureOn, featureRouteGuard } from "@/shared/utils";
+import Layout from '@/components/layouts';
+
+import Market from '@/components/market';
 
 
 const MarketPlace = props => (
   <>
-    <MobileLayout
-      main={<Market {...props} />}
-    />
-    <DesktopLayout
-      main={<Market {...props} />}
-      aside={<Chat {...props} />}
-    />
+    <Layout.Mobile>
+      <Market {...props} />
+    </Layout.Mobile>
+    <Layout.Desktop>
+      <Market {...props} />
+    </Layout.Desktop>
   </>
 );
 
 MarketPlace.getInitialProps = ctx => {
-  featureRouteGuard(ctx, featureOn("marketplace"));
   return {};
 };
 

@@ -5,6 +5,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - docker pull $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG || true
   build:
     commands:
       - echo Build started on `date`
@@ -19,10 +20,12 @@ phases:
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       - printf '[{"name":"portalclient","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
+      - zip build.zip imagedefinitions.json
+      - aws s3 cp build.zip s3://bg-codebuild/$IMAGE_REPO_NAME/
 artifacts:
     files: 
       - imagedefinitions.json
 cache:
     paths:
       - '/root/.node_modules/**/*'
-      - '/root/.build/**/*' 
+      - '/root/.build/**/*'

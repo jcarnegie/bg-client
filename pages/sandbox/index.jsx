@@ -1,20 +1,20 @@
-import {DesktopLayout, MobileLayout} from "@/components/layouts";
-import Sandbox from "@/components/sandbox";
-import Chat from "@/components/chat";
+import React, { Component } from 'react';
+
+import Layout from '@/components/layouts';
+import Sandbox from '@/components/sandbox';
 
 
-const SandboxPage = props => (
-  <>
-    <MobileLayout
-      main={<Sandbox {...props} />}
-    />
-    <DesktopLayout
-      main={<Sandbox {...props} />}
-      aside={<Chat {...props} />}
-    />
-  </>
-);
+class SandboxPage extends Component {
+  static getInitialProps = ctx => Sandbox.getInitialProps(ctx);
 
-SandboxPage.getInitialProps = ctx => Sandbox.getInitialProps(ctx);
+  render() {
+    return (
+      <Layout showFooter={false}>
+        <Sandbox {...this.props} />
+      </Layout>
+    );
+  }
+};
+
 
 export default SandboxPage;

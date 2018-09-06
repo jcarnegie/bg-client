@@ -1,42 +1,35 @@
-import PropTypes from "prop-types";
-import Header from "@/components/header/desktop";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import Main from "@/components/layouts/main";
-import Aside from "@/components/layouts/aside";
-import {Desktop} from "@/components/responsive";
+import Header from '@/components/header/desktop';
+import Footer from '@/components/footer/desktop';
+import Main from '@/components/layouts/Main';
+import { Desktop } from '@/components/responsive';
 
-import style from "@/shared/constants/style";
 
-
-function DesktopLayout(props) {
-  const aside = props.aside ? (
-    <Aside offsetTop={style.header.height}>
-      {props.aside}
-    </Aside>
-  ) : null;
-
+function DesktopLayout({ children, ...props }) {
   return (
     <Desktop {...props}>
-      <Header />
-      <Main offsetRight={style.aside.width}>
-        {props.main}
-      </Main>
-      {aside}
-      {props.children}
+      <div className="wrapper">
+        <Header />
+        <Main>
+          {children}
+        </Main>
+      </div>
+      <Footer />
     </Desktop>
   );
 }
 
 DesktopLayout.propTypes = {
-  main: PropTypes.any,
-  aside: PropTypes.any,
+  dispatch: PropTypes.func,
   children: PropTypes.any,
-};
+}
 
 DesktopLayout.defaultProps = {
-  aside: null,
-  main: null,
   children: null,
-};
+}
+
 
 export default DesktopLayout;

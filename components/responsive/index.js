@@ -1,4 +1,4 @@
-import Desktop from "@/components/responsive/desktop";
-import Mobile from "@/components/responsive/mobile";
+import Desktop from '@/components/responsive/desktop';
+import Mobile from '@/components/responsive/mobile';
 
-export {Desktop, Mobile};
+export { Desktop, Mobile };

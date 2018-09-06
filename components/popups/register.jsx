@@ -1,32 +1,42 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import cx from "classnames";
-import {Button, Form, Modal} from "react-bootstrap";
-import BGModal from "@/components/modal";
-import {FormattedMessage, injectIntl, intlShape} from "react-intl";
-import {connect} from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
+import * as log from 'loglevel';
+import { Button, Form, Modal } from 'react-bootstrap';
 
-import withFormHelper from "@/components/inputs/withFormHelper";
-import {updateIntl} from "react-intl-redux/lib/index";
-import {localization} from "@/shared/intl/setup";
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { connect } from 'react-redux';
 
-import {email, nickName, wallet} from "@/shared/constants/placeholder";
-import {reEmail} from "@/shared/constants/regexp";
-import {CREATE_USER, MESSAGE_ADD} from "@/shared/constants/actions";
-import {enabledLanguages} from "@/shared/constants/language";
-import InputGroupValidation from "@/components/inputs/input.group.validation";
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
+import BGModal from '@/components/modal';
+import withFormHelper from '@/components/inputs/withFormHelper';
+import { updateIntl } from 'react-intl-redux/lib/index';
+import { localization } from '@/shared/intl/setup';
+
+import { email, nickName, wallet } from '@/shared/constants/placeholder';
+import { reEmail } from '@/shared/constants/regexp';
+import { enabledLanguages } from '@/shared/constants/language';
+import InputGroupValidation from '@/components/inputs/input.group.validation';
+
+import {
+  client,
+  localQueries,
+  createUser,
+} from '@/shared/utils/apollo';
 
 
 @withFormHelper
 @injectIntl
 @connect(
   state => ({
-    account: state.account,
     analytics: state.analytics,
-    messages: state.messages,
   })
 )
-export default class RegisterPopup extends Component {
+class RegisterPopup extends Component {
   static defaultProps = {
     onHide: () => {},
   }
@@ -41,15 +51,14 @@ export default class RegisterPopup extends Component {
     show: PropTypes.bool,
     onHide: PropTypes.func,
     intl: intlShape,
-    messages: PropTypes.array,
   };
 
   state = {};
 
   static getDerivedStateFromProps(nextProps) {
-    if (nextProps.formData.wallet !== nextProps.account.wallet) {
+    if (nextProps.formData.wallet !== nextProps.data.wallet) {
       nextProps.setState({
-        wallet: nextProps.account.wallet,
+        wallet: nextProps.data.wallet,
       });
     }
 
@@ -73,18 +82,18 @@ export default class RegisterPopup extends Component {
   }
 
   isValid() {
-    const {intl, formData} = this.props;
+    const { intl, formData } = this.props;
 
     let e;
     let isValid = true;
     for (let i in formData) {
       switch (i) {
-        case "wallet":
+        case 'wallet':
           if (!window.web3.isAddress(formData[i])) {
             e = document.getElementsByName(i)[0];
-            e.parentNode.parentNode.classList.add("has-error");
+            e.parentNode.parentNode.classList.add('has-error');
             e.setCustomValidity(intl.formatMessage({
-              id: "fields.wallet.invalid",
+              id: 'fields.wallet.invalid',
             }));
             isValid = false;
           }
@@ -98,76 +107,61 @@ export default class RegisterPopup extends Component {
   }
 
   static toHex(text) {
-    return "0x" + Buffer.from(text, "utf8").toString("hex");
+    return '0x' + Buffer.from(text, 'utf8').toString('hex');
   }
 
   sign() {
-    const {dispatch, intl, formData} = this.props;
-    const message = RegisterPopup.toHex(intl.formatMessage({id: "modals.register.text"}));
+    const { intl, formData } = this.props;
+    const message = RegisterPopup.toHex(intl.formatMessage({ id: 'modals.register.text' }));
 
     window.web3.currentProvider.sendAsync({
-      method: "personal_sign",
+      method: 'personal_sign',
       params: [message, formData.wallet],
       from: formData.wallet,
     }, (err, result) => {
       if (err || result.error) {
-        dispatch({
-          type: MESSAGE_ADD,
-          payload: err || result.error,
-        });
+        log.error(err || result.error);
         return;
       }
 
       window.web3.currentProvider.sendAsync({
-        method: "personal_ecRecover",
+        method: 'personal_ecRecover',
         params: [message, result.result],
         from: formData.wallet,
-      }, (err, recovered) => {
+      }, async(err, recovered) => {
         if (err || result.error) {
-          dispatch({
-            type: MESSAGE_ADD,
-            payload: err || result.error,
-          });
-
-          this.props.analytics.ga.event({
-            category: "Site Interaction",
-            action: "Sign-up",
-            label: "Create account",
-          });
           return;
         }
 
-        if (recovered.result === formData.wallet) {
-          dispatch({
-            type: CREATE_USER,
-            payload: formData,
-          });
-        } else {
-          dispatch({
-            type: MESSAGE_ADD,
-            payload: new Error(intl.formatMessage({
-              id: "errors.spoofing-attempt",
-            }, {
-              wallet1: recovered.result,
-              wallet2: formData.wallet,
-            })),
-          });
+        if (recovered.result !== formData.wallet) {
+          log.error(new Error(intl.formatMessage({ id: 'errors.spoofing-attempt' }, {
+            wallet1: recovered.result,
+            wallet2: formData.wallet,
+          })));
+          return;
         }
+
+        await createUser(intl.locale, formData);
+        this.props.analytics.ga.event({
+          category: 'Site Interaction',
+          action: 'Sign-up',
+          label: 'Create account',
+        });
+        await client.resetStore();
       });
     });
   }
 
   onChangeLang(e) {
-    const {dispatch, onChange} = this.props;
+    const { dispatch, onChange } = this.props;
     dispatch(updateIntl(localization[e.target.value]));
     onChange(e);
   }
 
   render() {
-    const {show, formData, onChange, onHide} = this.props;
-
+    const { show, formData, onChange, onHide } = this.props;
     return (
-      <BGModal show={show} className={cx("register", {show})} onHide={onHide}>
+      <BGModal show={show} className={cx('register', { show })} onHide={onHide}>
         <Modal.Body>
           <Form onSubmit={::this.onSubmit}>
             <h2>
@@ -199,7 +193,7 @@ export default class RegisterPopup extends Component {
             <InputGroupValidation
               type="email"
               name="email"
-              pattern={reEmail.source.replace("a-z", "a-zA-Z")} // there is no `i` flag
+              pattern={reEmail.source.replace('a-z', 'a-zA-Z')} // there is no `i` flag
               defaultValue={formData.email}
               onChange={onChange}
               placeholder={email}
@@ -228,3 +222,7 @@ export default class RegisterPopup extends Component {
     );
   }
 }
+
+export default compose(
+  graphql(localQueries.root)
+)(RegisterPopup);
