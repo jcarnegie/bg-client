@@ -80,6 +80,14 @@ const typeDefs = `
 `;
 
 export const mutations = {
+  register: gql`
+    mutation register($email: String, $wallet: String, $signature: String, $nickName: String, $language: String) {
+      register(email: $email, wallet: $wallet, signature: $signature, nickName: $nickName, language: $language) {
+        user { id }
+        tokenData { accessToken refreshToken expiresIn }
+      }
+    }
+  `,
   listItemForSale: gql`
     mutation listItemForSale ($userId: Int!, $itemId: Int!, $saleListingId: Int!, $saleTxnHash: String!, $salePrice: Int!) {
       listItemForSale(userId: $userId, itemId: $itemId, saleListingId: $saleListingId, saleTxnHash: $saleTxnHash, salePrice: $salePrice) {
