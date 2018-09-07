@@ -95,7 +95,8 @@
     "install": "Install MetaMask",
     "renew": "renew",
     "withdraw": "Withdraw",
-    "send": "Send"
+    "send": "Send",
+    "create-password": "Create Password"
   },
   "errors": {
     "method-not-allowed": "Method not allowed",
