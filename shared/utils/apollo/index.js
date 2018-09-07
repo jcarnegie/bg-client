@@ -118,7 +118,7 @@ export const mutations = {
   updateUser: gql`
     mutation updateUser($id: ID!, $payload: UserUpdatePayload!) {
       updateUser(id: $id, payload: $payload) {
-        id wallet nickName email language
+        id language
       }
     }
   `,
