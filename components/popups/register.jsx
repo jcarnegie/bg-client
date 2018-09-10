@@ -141,6 +141,14 @@ class RegisterPopup extends Component {
           return;
         }
 
+        // Compose data
+        // TODO: clone?
+        const wallets = [];
+        wallets.push(formData.wallet);
+        formData.wallets = wallets;
+        formData.lastWalletUsed = formData.wallet;
+        console.log('zzz formData: ', formData);
+
         await createUser(intl.locale, formData);
         this.props.analytics.ga.event({
           category: 'Site Interaction',

@@ -119,14 +119,14 @@ export const mutations = {
   createUser: gql`
     mutation createUser($payload: UserCreatePayload!) {
       createUser(payload: $payload) {
-        id wallet nickName email language
+        id wallet nickName email language wallets lastWalletUsed
       }
     }
   `,
   updateUser: gql`
     mutation updateUser($id: ID!, $payload: UserUpdatePayload!) {
       updateUser(id: $id, payload: $payload) {
-        id wallet nickName email language
+        id wallet nickName email language wallets lastWalletUsed
       }
     }
   `,
@@ -149,7 +149,7 @@ export const queries = {
   viewUserByWallet: gql`
     query viewUserByWallet($wallet: String!) {
       viewUserByWallet(wallet: $wallet) {
-        id wallet nickName language
+        id wallet nickName language wallets lastWalletUsed
       }
     }
   `,
@@ -467,7 +467,14 @@ export const listMarketplaceItemsQuery = graphql(queries.listMarketplaceItems, {
 
 export const createUser = async(locale, data) => {
   const newUser = merge(data, { language: locale });
-  const userFields = ['wallet', 'email', 'nickName', 'language'];
+  const userFields = [
+    'wallet',
+    'email',
+    'nickName',
+    'language',
+    'wallets',
+    'lastWalletUsed',
+  ];
   const variables = { payload: pickAll(userFields, newUser) };
   return client.mutate({ mutation: mutations.createUser, variables });
 };
