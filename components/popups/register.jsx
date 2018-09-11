@@ -160,23 +160,6 @@ class RegisterPopup extends Component {
     });
   }
 
-  createSignature() {
-    window.web3.currentProvider.sendAsync({
-      method: 'personal_sign',
-      params: [RegisterPopup.toHex('BitGuild'), window.web3.eth.accounts[0]],
-      from: window.web3.eth.accounts[0],
-    }, (err, result) => {
-      if (err || result.error) {
-        log.error(err || result.error);
-        return null;
-      }
-      console.log('result', result);
-      this.setState({
-        signature: result.result,
-      });
-    });
-  }
-
   onChangeLang(e) {
     const { dispatch, onChange } = this.props;
     dispatch(updateIntl(localization[e.target.value]));
@@ -232,10 +215,6 @@ class RegisterPopup extends Component {
               placeholder={nickName}
               required
             />
-
-            <Button className="btn-block text-uppercase" onClick={::this.createSignature}>
-              <FormattedMessage id="buttons.create-password" />
-            </Button>
 
             <p className="note"><FormattedMessage id="modals.register.n1" /></p>
             <p className="note"><FormattedMessage id="modals.register.n2" /></p>
