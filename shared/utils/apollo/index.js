@@ -81,10 +81,34 @@ const typeDefs = `
 
 export const mutations = {
   register: gql`
-    mutation register($email: String, $wallet: String, $signature: String, $nickName: String, $language: String) {
+    mutation register($email: String!, $wallet: String!, $signature: String!, $nickName: String!, $language: String!) {
       register(email: $email, wallet: $wallet, signature: $signature, nickName: $nickName, language: $language) {
+        user { id nickName language }
+        tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
+      }
+    }
+  `,
+  createSigningMessage: gql`
+    mutation createSigningMessage($wallet: String!, $action: String) {
+      createSigningMessage(wallet: $wallet, action: $action) {
+        nonce
+        signingMessage
+      }
+    }
+  `,
+  login: gql`
+    mutation login($wallet: String!, $signature: String!) {
+      login(wallet: $wallet, signature: $signature) {
         user { id }
-        tokenData { accessToken refreshToken expiresIn }
+        tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
+      }
+    }
+  `,
+  setCurrentWallet: gql`
+    mutation setCurrentWallet($currentWallet: String) {
+      setCurrentWallet(currentWallet: $currentWallet) {
+        user { id }
+        tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
       }
     }
   `,
@@ -478,7 +502,6 @@ export const createUser = async(locale, data) => {
   const variables = { payload: pickAll(userFields, newUser) };
   return client.mutate({ mutation: mutations.createUser, variables });
 };
-
 
 export const updateUser = async(user, newUser) => {
   const { data } = await client.query({ query: queries.viewUserByWallet, variables: { wallet: getWeb3Wallet() } });

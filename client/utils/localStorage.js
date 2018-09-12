@@ -3,7 +3,7 @@ import * as log from 'loglevel';
 
 export const getItem = key => {
   try {
-    return window.sessionStorage.getItem(key);
+    return window.localStorage.getItem(key);
   } catch (e) {
     log.error(e);
     return null;
@@ -12,7 +12,7 @@ export const getItem = key => {
 
 export const setItem = (key, value) => {
   try {
-    window.sessionStorage.setItem(key, value);
+    window.localStorage.setItem(key, value);
     return true;
   } catch (e) {
     log.error(e);

@@ -23,7 +23,7 @@
   "license": "closed",
   "dependencies": {
     "@zeit/next-css": "0.2.0",
-    "apollo-boost": "0.1.13",
+    "apollo-boost": "0.1.15",
     "bluebird": "3.5.1",
     "body-parser": "1.18.3",
     "classnames": "2.2.6",
