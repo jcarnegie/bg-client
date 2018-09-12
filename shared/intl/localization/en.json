@@ -143,6 +143,9 @@
     }
   },
   "pages": {
+    "register": {
+      "already-registered": "Already registered? Log in here."
+    },
     "bugbounty": {
       "title": "Bug Bounty",
       "hey-bitizens": "Hey Bitizen!",

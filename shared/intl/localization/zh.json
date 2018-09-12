@@ -126,6 +126,9 @@
     }
   },
   "pages": {
+    "register": {
+      "already-registered": "已经注册？在此登录。"
+    },
     "bugbounty": {
       "title": "漏洞悬赏",
       "hey-bitizens": "Bitizen，您好！",

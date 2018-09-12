@@ -72,12 +72,12 @@ function GlobalStyles({ style }) {
           font-size: 1.2em;
         }
 
-        a {
+        a, .bg-link {
           color: #314B88;
           cursor: pointer;
           text-decoration: none;
         }
-        a:hover {
+        a:hover, .bg-link:hover {
           font-weight: 500;
           text-decoration: none;
         }

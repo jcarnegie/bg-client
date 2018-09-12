@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import * as log from 'loglevel';
 import Router from 'next/router';
 import { path } from 'ramda';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { FormattedHTMLMessage, FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { updateIntl } from 'react-intl-redux/lib/index';
 import { connect } from 'react-redux';
 
 import withFormHelper from '@/components/inputs/withFormHelper';
+import { withRoot } from '@/components/wrappers';
 import { localization } from '@/shared/intl/setup';
 import {
   withWallet,
@@ -15,13 +16,14 @@ import {
 import {
   email as emailPlaceholder,
   nickName as nickNamePlaceholder,
-  wallet as walletPlaceholder,
 } from '@/shared/constants/placeholder';
 import { reEmail } from '@/shared/constants/regexp';
 import { enabledLanguages } from '@/shared/constants/language';
 import BGButton from '@/components/bgbutton';
 import DataLoading from '@/components/DataLoading';
 import InputGroupValidation from '@/components/inputs/input.group.validation';
+import NetworkNotSupported from '@/components/NetworkNotSupported';
+import LoginToWeb3 from '@/components/LoginToWeb3';
 
 import {
   client,
@@ -44,10 +46,10 @@ class Register extends Component {
     dispatch: PropTypes.func,
     wallet: PropTypes.string,
     intl: intlShape,
+    root: PropTypes.object,
   };
 
   state = {
-    language: 'en',
     nickName: '',
     email: '',
     registering: false,
@@ -74,11 +76,11 @@ class Register extends Component {
   async sign() {
     const {
       wallet,
+      intl,
     } = this.props;
     const {
       email,
       nickName,
-      language,
     } = this.state;
 
     const { data } = await client.mutate({
@@ -106,7 +108,7 @@ class Register extends Component {
             wallet,
             nickName,
             signature: result.result,
-            language,
+            language: intl.locale,
           },
         });
         const registerSuccess = path(['register'], data);
@@ -141,41 +143,17 @@ class Register extends Component {
 
   onChangeLanguage(language) {
     this.props.dispatch(updateIntl(localization[language]));
-    this.onChange('language', language);
-  }
-
-  loading() {
-    return (
-      <div style={{ width: '500px', margin: '100px auto' }}>
-        <DataLoading />
-      </div>
-    );
-  }
-
-  registerSuccess() {
-    return (
-      <div style={{ width: '500px', margin: '100px auto' }}>
-        Success!
-      </div>
-    );
-  }
-
-  loginToWeb3() {
-    return (
-      <div style={{ width: '500px', margin: '100px auto' }}>
-        Login to web3
-      </div>
-    );
   }
 
   registerForm() {
-    const { wallet } = this.props;
+    const { wallet, intl } = this.props;
     return (
-      <div style={{ width: '500px', margin: '100px auto' }}>
+      <div className="register-form">
         <h2><FormattedMessage id="modals.register.title" /></h2>
         <InputGroupValidation
           name="language"
           componentClass="select"
+          value={intl.locale}
           onChange={e => ::this.onChangeLanguage(e.target.value)}
           required
         >
@@ -188,8 +166,7 @@ class Register extends Component {
         <InputGroupValidation
           type="text"
           name="wallet"
-          defaultValue={wallet}
-          placeholder={walletPlaceholder}
+          value={wallet}
           maxLength="42"
           minLength="42"
           required
@@ -219,22 +196,51 @@ class Register extends Component {
         <BGButton className="btn-block text-uppercase" onClick={() => ::this.sign(wallet)}>
           <FormattedMessage id="buttons.register" />
         </BGButton>
+
+        <div className="register-already-registered bg-link" onClick={() => Router.push('/login')}>
+          <FormattedHTMLMessage id="pages.register.already-registered" />
+        </div>
       </div>
     );
   }
 
-  render() {
-    if (!this.props.wallet) {
-      return ::this.loginToWeb3();
+  component() {
+    const { wallet, root } = this.props;
+    if (!root.network.available) {
+      return <DataLoading />;
+    }
+    if (!root.network.supported) {
+      return <NetworkNotSupported />;
+    }
+    if (!wallet) {
+      return <LoginToWeb3 />;
     }
     if (this.state.registering) {
-      return ::this.loading();
+      return <DataLoading />;
     }
     if (this.state.registerSuccess) {
-      return ::this.registerSuccess();
+      return (
+        <div className="register-success">
+          Success!
+        </div>
+      );
     }
     return ::this.registerForm();
   }
+
+  render() {
+    return (
+      <div className="register">
+      <style jsx>{`
+        .register {
+          max-width: 500px;
+          margin: 150px auto 0 auto;
+        }
+      `}</style>
+        {::this.component()}
+      </div>
+    );
+  }
 }
 
-export default withWallet(Register);
+export default withRoot(withWallet(Register));

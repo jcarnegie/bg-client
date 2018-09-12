@@ -125,6 +125,9 @@
     }
   },
   "pages": {
+    "register": {
+      "already-registered": "Já registrado? Entre aqui."
+    },
     "bugbounty": {
       "title": "Busca de Bugs",
       "hey-bitizens": "Olá, Bitizen!",

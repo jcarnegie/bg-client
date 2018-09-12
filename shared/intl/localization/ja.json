@@ -122,6 +122,9 @@
     }
   },
   "pages": {
+    "register": {
+      "already-registered": "すでに登録？ここでログイン。"
+    },
     "bugbounty": {
       "title": "バグバウンティ",
       "hey-bitizens": "Bitizenの皆さん、こんにちは！",

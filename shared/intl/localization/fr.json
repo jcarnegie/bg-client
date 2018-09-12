@@ -126,6 +126,9 @@
     }
   },
   "pages": {
+    "register": {
+      "already-registered": "Déjà enregistré? Connectez-vous ici."
+    },
     "bugbounty": {
       "title": "Chasse aux bugs",
       "hey-bitizens": "Chers Bitizen !",
