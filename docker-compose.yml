@@ -8,12 +8,10 @@ services:
             POSTGRES_PASSWORD: password
         volumes:
           - ./tmp/pgdata:/var/lib/postgresql/data
-
     redis:
         image: redis
         ports:
             - 6379:6379
-
     api:
         build:
             context: ../PortalApi
@@ -32,6 +30,8 @@ services:
             PG_USER: postgres
             PG_PASS: password
             PG_DB: postgres
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
             WS_GETH_SERVER: ws://docker.for.mac.localhost:8546
             MARKETPLACE_CONTRACT_ADDR: 0x627a61ffc925306e76d0c8cc23e3434d9c203b32
             ETH_NETWORK: 4
