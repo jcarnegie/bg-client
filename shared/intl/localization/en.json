@@ -7,7 +7,7 @@
     "expired": "Expired",
     "expires-in": "Expires in",
     "faq": "About Bitizens",
-    "Login": "Login",
+    "login": "Login",
     "remaining": "remaining",
     "rules": "Rules",
     "all-games": "Games",
@@ -40,6 +40,10 @@
     "newsletter": {
       "subscribe": "Subscribe to our mailing list",
       "sub-button": "Subscribe"
+    },
+    "login": {
+      "wallet": "Wallet",
+      "register": "Need to register? Register <a href='http://localhost:5000/register' rel='noopener noreferrer'>here</a>."
     },
     "footer": {
       "for-players": "For Players",

@@ -3,6 +3,7 @@
     "about": "A propos",
     "description": "Prévente",
     "faq": "À propos de Bitizens",
+    "login": "S'identifier",
     "remaining": "Quantité restante",
     "rules": "Règles",
     "all-games": "All Games",
@@ -22,6 +23,10 @@
       "pt": "Português",
       "es": "Español",
       "ru": "Русский"
+    },
+    "login": {
+      "wallet": "Portefeuille",
+      "register": "Besoin de vous inscrire? Inscrivez - vous <a href='http://localhost:5000/register' rel='noopener noreferrer'>ici</a>"
     },
     "menu": {
       "inventory": "Mes Objets",

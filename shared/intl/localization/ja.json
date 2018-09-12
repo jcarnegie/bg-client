@@ -3,6 +3,7 @@
     "about": "About",
     "description": "プレセール",
     "faq": "Bitizenについて",
+    "login": "ログイン",
     "remaining": "残り",
     "rules": "ルール",
     "all-games": "All Games",
@@ -22,6 +23,10 @@
       "pt": "Português",
       "es": "Español",
       "ru": "Русский"
+    },
+    "login": {
+      "wallet": "財布",
+      "register": "登録が必要ですか？ <a href='http://localhost:5000/register' rel='noopener noreferrer'>ここに</a> 登録."
     },
     "menu": {
       "inventory": "インベントリ",

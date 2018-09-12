@@ -6,6 +6,7 @@
     "expired": "Expired",
     "expires-in": "Expires in",
     "faq": "О Bitizens",
+    "login": "авторизоваться",
     "remaining": "В наличии",
     "rules": "Правила",
     "all-games": "All Games",
@@ -27,6 +28,10 @@
       "pt": "Português",
       "es": "Español",
       "ru": "Русский"
+    },
+    "login": {
+      "wallet": "бумажник",
+      "register": "Нужно зарегистрироваться? Зарегистрируйтесь <a href='http://localhost:5000/register' rel='noopener noreferrer'>здесь</a>."
     },
     "menu": {
       "inventory": "Мои предметы",

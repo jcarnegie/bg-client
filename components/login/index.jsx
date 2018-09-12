@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as log from 'loglevel';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { path } from 'ramda';
 
@@ -72,7 +72,6 @@ class Login extends Component {
         // accessToken,
         refreshToken,
       } = tokenData;
-
       bgLocalStorage.setItem('refreshToken', refreshToken);
 
       this.props.analytics.ga.event({
@@ -86,12 +85,43 @@ class Login extends Component {
   render() {
     const { wallet } = this.props;
     return (
-      <div style={{ width: '500px', margin: '100px auto' }}>
-        <h2><FormattedMessage id="global.Login" /></h2>
-
+      <div className="login-container">
+        <style jsx>{`
+          .login-container {
+            width: 500px;
+            margin: 100px auto;
+          }
+          .login-header {
+            margin-bottom: 20px;
+          }
+          .login-wallet {
+            width: 100%;
+            font-weight: 500;
+            margin-bottom: 5px;
+          }
+          .login-wallet-input {
+            width: 100%;
+            margin-bottom: 10px;
+          }
+          .login-register-route{
+            display: inline-block;
+            margin-top: 20px;
+            font-weight: .8em;
+          }
+        `}</style>
+        <h2 className="login-header">
+          <FormattedMessage id="global.login" />
+        </h2>
+        <span className="login-wallet">
+          <FormattedMessage id="components.login.wallet" />
+        </span>
+        <input className="login-wallet-input" readOnly defaultValue={wallet}></input>
         <BGButton className="btn-block text-uppercase" onClick={() => ::this.sign(wallet)}>
           <FormattedMessage id="buttons.login" />
         </BGButton>
+        <span className="login-register-route">
+          <FormattedHTMLMessage id="components.login.register" />
+        </span>
       </div>
     );
   }
