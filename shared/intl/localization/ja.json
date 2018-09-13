@@ -26,7 +26,7 @@
     },
     "login": {
       "wallet": "財布",
-      "register": "登録が必要ですか？ <a href='http://localhost:5000/register' rel='noopener noreferrer'>ここに</a> 登録."
+      "register": "登録が必要ですか？ ここに 登録."
     },
     "menu": {
       "inventory": "インベントリ",

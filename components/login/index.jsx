@@ -4,6 +4,7 @@ import * as log from 'loglevel';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { path } from 'ramda';
+import Router from 'next/router';
 
 import BGButton from '@/components/bgbutton';
 import {
@@ -103,10 +104,13 @@ class Login extends Component {
             width: 100%;
             margin-bottom: 10px;
           }
-          .login-register-route{
+          .login-register-route {
             display: inline-block;
             margin-top: 20px;
             font-weight: .8em;
+          }
+          .login-register-route:hover {
+            cursor: pointer;
           }
         `}</style>
         <h2 className="login-header">
@@ -119,7 +123,7 @@ class Login extends Component {
         <BGButton className="btn-block text-uppercase" onClick={() => ::this.sign(wallet)}>
           <FormattedMessage id="buttons.login" />
         </BGButton>
-        <span className="login-register-route">
+        <span className="login-register-route" onClick={() => Router.push('/register')}>
           <FormattedHTMLMessage id="components.login.register" />
         </span>
       </div>

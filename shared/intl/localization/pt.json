@@ -26,7 +26,7 @@
     },
     "login": {
       "wallet": "Carteira",
-      "register": "Precisa se registrar? Registre-se <a href='http://localhost:5000/register' rel='noopener noreferrer'>aqui</a>."
+      "register": "Precisa se registrar? Registre-se aqui."
     },
     "menu": {
       "inventory": "Meus Itens",

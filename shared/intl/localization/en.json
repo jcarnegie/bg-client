@@ -43,7 +43,7 @@
     },
     "login": {
       "wallet": "Wallet",
-      "register": "Need to register? Register <a href='http://localhost:5000/register' rel='noopener noreferrer'>here</a>."
+      "register": "Need to register? Register here."
     },
     "footer": {
       "for-players": "For Players",
