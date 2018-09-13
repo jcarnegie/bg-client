@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 
 import Layout from '@/components/layouts';
-import Login from '@/components/login';
+import LinkWallets from '@/components/link';
 
 
-class LoginPage extends Component {
+class LinkWalletsPage extends Component {
   render() {
     return (
       <Layout showFooter={false}>
-        <Login {...this.props} />
+        <LinkWallets {...this.props} />
       </Layout>
     );
   }
 };
 
 
-export default LoginPage;
+export default LinkWalletsPage;
 
