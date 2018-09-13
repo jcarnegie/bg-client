@@ -82,6 +82,9 @@ class RegisterButton extends Component {
           const { root } = this.props;
           const { network } = root;
 
+          /* Network must be defined (apollo cache instantiation issue?) */
+          if (!network) return null;
+
           /* Delay Hack to prevent flicker of register button on initial render */
           if (this.state.timeout) return null;
 

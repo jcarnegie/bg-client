@@ -57,6 +57,8 @@ class Web3 extends Component {
 
     const path = pathname || router.pathname;
 
+    /* Network must be defined (apollo cache instantiation issue?) */
+    if (!network) return null;
     /* If we haven't read the wallet state from web3, don't render any modals */
     if (!path || (!path.match(AUTH_ROUTES_REGEX) && !showUserRegistrationWorkflow)) return null;
 
