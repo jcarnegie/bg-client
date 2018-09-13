@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const express = require('express');
+const proxy = require('express-http-proxy');
 const compression = require('compression');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -7,6 +8,7 @@ const morgan = require('morgan');
 const Next = require('next');
 const pathMatch = require('path-match');
 const { parse } = require('url');
+const cookieParser = require('cookie-parser')
 
 const dev = process.env.NODE_ENV !== 'production';
 const next = Next({ dev });
@@ -49,18 +51,25 @@ next.prepare().then(() => {
   app.use(bodyParser.urlencoded({
     extended: true,
   }));
+  app.use(cookieParser());
   app.use(morgan('tiny')); // "default", "short", "tiny", "dev"
   app.use('/', express.static(path.join(__dirname, './static')));
   app.use(pre);
   app.use(cors);
   app.use(responsive);
 
-  app.get('/ping', (request, response) => {
-    response.status(200).json({ pong: true });
+  app.get('/ping', (req, res) => {
+    res.status(200).json({ pong: true });
   });
 
-  app.get('/favicon.png', (request, response) => {
-    response.sendFile(path.join(__dirname, './static/favicon.png'));
+  if (process.env.DEPLOYED_ENV === 'local') {
+    app.use('/api', proxy('http://api:7000', {
+      proxyReqPathResolver: () => '/api',
+    }));
+  }
+
+  app.get('/favicon.png', (req, res) => {
+    res.sendFile(path.join(__dirname, './static/favicon.png'));
   });
 
   app.get('/game/:slug', (req, res) => {

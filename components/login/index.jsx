@@ -70,10 +70,11 @@ class Login extends Component {
         tokenData,
       } = data.login;
       const {
-        // accessToken,
+        accessToken,
         refreshToken,
       } = tokenData;
       bgLocalStorage.setItem('refreshToken', refreshToken);
+      bgLocalStorage.setItem('accessToken', accessToken);
 
       this.props.analytics.ga.event({
         category: 'Site Interaction',

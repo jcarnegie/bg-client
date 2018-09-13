@@ -9,8 +9,9 @@ import {
   Query,
 } from 'react-apollo';
 
+import withApollo from '@/shared/utils/apollo/withApollo';
+
 import {
-  client,
   queries,
   localQueries,
   localMutations,
@@ -60,10 +61,13 @@ if (process.env.DEPLOYED_ENV === 'production') {
 class BGApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
     const { isServer } = ctx;
-
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     const web3ModalsProps = Web3Modals.WrappedComponent.getInitialProps(ctx);
-    const locals = isServer ? ctx.res.locals : {};
+    let locals = {};
+    if (isServer) {
+      const { req, res } = ctx;
+      locals = res.locals;
+    }
     return { pageProps, web3ModalsProps, locals };
   }
 
@@ -75,7 +79,7 @@ class BGApp extends App {
     this.props.store.dispatch({ type: APP_INIT });
     this.props.store.dispatch({ type: APP_RESIZE });
     const state = this.props.store.getState();
-
+    const { apolloClient } = this.props;
     /* Bootstrap Google Analytics */
     this.props.store.dispatch({
       type: GA_CREATE,
@@ -95,7 +99,7 @@ class BGApp extends App {
           log.error(error);
         } else {
           log.info(`New block, tx: ${latestBlock}`);
-          await client.mutate({
+          await apolloClient.mutate({
             mutation: localMutations.updateLatestBlock,
             variables: { tx: latestBlock },
           });
@@ -108,8 +112,10 @@ class BGApp extends App {
       interval: window.setInterval(async() => {
         if (!web3IsInstalled()) return;
 
-        const { data } = await client.query({ query: localQueries.root });
+        const { data } = await apolloClient.query({ query: localQueries.root });
         const { network, wallet } = data;
+
+        log.info('network:', network);
 
         const currentNetworkId = await asyncGetNetworkId();
         const currentWallet = getWeb3Wallet();
@@ -128,7 +134,7 @@ class BGApp extends App {
         );
         /* Network or wallet has changed */
         if (networkHasChanged || walletHasChanged) {
-          await client.mutate({
+          await apolloClient.mutate({
             mutation: localMutations.updateNetworkAndWallet,
             variables: {
               ...currentNetwork,
@@ -156,6 +162,7 @@ class BGApp extends App {
       web3ModalsProps,
       store,
       locals,
+      apolloClient,
     } = this.props;
 
     const {
@@ -166,7 +173,7 @@ class BGApp extends App {
       <Container>
         <GlobalStyles style={style} />
         <WalletContext.Provider value={{ wallet }}>
-          <ApolloProvider client={client}>
+          <ApolloProvider client={apolloClient}>
             <IntlProvider store={store}>
               <>
                 <ResizeListener />
@@ -180,16 +187,20 @@ class BGApp extends App {
                     );
                   }}
                 </Query>
-                <Query
-                  query={queries.viewUserByWallet}
-                  variables={{ wallet }}
-                >
-                  {({ data }) => {
-                    if ((!data || (data && !data.viewUserByWallet) || (data && data.loading)) && (data && data.error)) return <DataLoading />;
-                    if (data && data.error) log.error('error occurred');
-                    return <Component {...pageProps} {...locals} />;
-                  }}
-                </Query>
+                {
+                  wallet ? (
+                    <Query
+                      query={queries.viewUserByWallet}
+                      variables={{ wallet }}
+                      ssr
+                    >
+                      {({ loading }) => {
+                        if (loading) return null;
+                        return <Component {...pageProps} {...locals} />;
+                      }}
+                    </Query>
+                  ) : <Component {...pageProps} {...locals} />
+                }
               </>
             </IntlProvider>
           </ApolloProvider>
@@ -199,4 +210,4 @@ class BGApp extends App {
   }
 }
 
-export default withRedux(configureStore)(BGApp);
+export default withApollo(withRedux(configureStore)(BGApp));

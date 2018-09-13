@@ -8,8 +8,9 @@ import {
 } from 'ramda';
 
 import { getWeb3Wallet } from '@/shared/utils/network';
+import { client } from '@/shared/utils/apollo/withApollo';
 
-export { client } from './client';
+export { client } from '@/shared/utils/apollo/withApollo';
 
 if (typeof global !== 'undefined') {
   global.fetch = require('node-fetch');
@@ -26,7 +27,7 @@ export const mutations = {
   register: gql`
     mutation register($email: String!, $wallet: String!, $signature: String!, $nickName: String!, $language: String!) {
       register(email: $email, wallet: $wallet, signature: $signature, nickName: $nickName, language: $language) {
-        user { id nickName language }
+        user { id nickName language wallets }
         tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
       }
     }
@@ -42,7 +43,7 @@ export const mutations = {
   login: gql`
     mutation login($wallet: String!, $signature: String!) {
       login(wallet: $wallet, signature: $signature) {
-        user { id }
+        user { id nickName language wallets }
         tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
       }
     }
@@ -50,7 +51,7 @@ export const mutations = {
   setCurrentWallet: gql`
     mutation setCurrentWallet($currentWallet: String) {
       setCurrentWallet(currentWallet: $currentWallet) {
-        user { id }
+        user { id nickName language wallets }
         tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
       }
     }

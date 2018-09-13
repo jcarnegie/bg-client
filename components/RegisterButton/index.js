@@ -1,3 +1,4 @@
+import * as log from 'loglevel';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
@@ -82,6 +83,9 @@ class RegisterButton extends Component {
           const { root } = this.props;
           const { network } = root;
 
+          log.info('RegisterButton render. root:', root);
+          log.info('RegisterButton render. network:', network);
+
           /* Network must be defined (apollo cache instantiation issue?) */
           if (!network) return null;
 
@@ -94,7 +98,7 @@ class RegisterButton extends Component {
           }
 
           /* Not on supported network, show "login" */
-          if (!network || !network.supported) {
+          if (!network.supported) {
             return ::this.renderButtonWithText(<FormattedMessage id="buttons.login" />);
           }
 
