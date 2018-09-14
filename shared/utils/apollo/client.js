@@ -45,9 +45,8 @@ const create = (initialState, { getToken }) => {
 
   const request = async operation => {
     const accessToken = getToken();
-    operation.setContext({
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    const headers = { Authorization: `Bearer ${accessToken}` };
+    operation.setContext({ headers });
   };
 
   const requestLink = new ApolloLink((operation, forward) =>
@@ -76,6 +75,7 @@ const create = (initialState, { getToken }) => {
   });
 
   const client = new ApolloClient({
+    ssrMode: true,
     link: ApolloLink.from([
       onError(onErrorHandler),
       requestLink,

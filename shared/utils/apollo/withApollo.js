@@ -36,7 +36,7 @@ export default App => {
     static async getInitialProps(ctx) {
       const { Component, router, ctx: { req, res } } = ctx;
       const apollo = initApollo({}, {
-        getToken: req => getToken(req),
+        getToken: () => getToken(req),
       });
 
       ctx.ctx.apolloClient = apollo;

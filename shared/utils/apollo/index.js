@@ -101,6 +101,13 @@ export const mutations = {
 };
 
 export const queries = {
+  me: gql`
+    query me {
+      me {
+        id nickName language wallets
+      }
+    }
+  `,
   listItems: gql`
     query listItems($userId: ID!, $language: String!) {
       listItems(userId: $userId, language: $language) {

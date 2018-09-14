@@ -73,6 +73,7 @@ class Login extends Component {
         accessToken,
         refreshToken,
       } = tokenData;
+
       bgLocalStorage.setItem('refreshToken', refreshToken);
       bgLocalStorage.setItem('accessToken', accessToken);
 
@@ -81,6 +82,8 @@ class Login extends Component {
         action: 'Sign-up',
         label: 'Create account',
       });
+
+      Router.push('/');
     });
   }
 

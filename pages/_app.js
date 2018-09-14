@@ -38,6 +38,7 @@ import ResizeListener from '@/components/resizelistener';
 import Web3Modals from '@/components/popups/Web3Modals';
 import GlobalStyles from '@/components/GlobalStyles';
 import DataLoading from '@/components/DataLoading';
+import { withMe } from '@/components/wrappers';
 
 import style from '@/shared/constants/style';
 import {
@@ -169,6 +170,8 @@ class BGApp extends App {
       wallet,
     } = this.state;
 
+    const ComponentWithMe = withMe(Component);
+
     return (
       <Container>
         <GlobalStyles style={style} />
@@ -187,20 +190,7 @@ class BGApp extends App {
                     );
                   }}
                 </Query>
-                {
-                  wallet ? (
-                    <Query
-                      query={queries.viewUserByWallet}
-                      variables={{ wallet }}
-                      ssr
-                    >
-                      {({ loading }) => {
-                        if (loading) return null;
-                        return <Component {...pageProps} {...locals} />;
-                      }}
-                    </Query>
-                  ) : <Component {...pageProps} {...locals} />
-                }
+                <ComponentWithMe {...pageProps} {...locals} />
               </>
             </IntlProvider>
           </ApolloProvider>
