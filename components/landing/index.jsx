@@ -180,7 +180,7 @@ class GameList extends Component {
       <div onClick={() => Router.push({ pathname: '/presale', query: { slug } }, `/presale/${slug}`)} className="promotional-banner presale-banner">
         <style jsx>{`
           .promotional-banner.presale-banner {
-            background: linear-gradient(to right, #8AAFF2, #5180EB);;
+            background: linear-gradient(to right, #8AAFF2, #5180EB);
             color: ${style.colors.logos};
             border-bottom: 1px solid #c7c6f2;
             height: 200px;
