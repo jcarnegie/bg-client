@@ -10,8 +10,11 @@ services:
           - ./tmp/pgdata:/var/lib/postgresql/data
     redis:
         image: redis
+        command: ["redis-server", "--appendonly", "yes"]
         ports:
             - 6379:6379
+        volumes:
+            - ./tmp/redis:/data
     api:
         build:
             context: ../PortalApi
