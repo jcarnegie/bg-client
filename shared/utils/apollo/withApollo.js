@@ -3,7 +3,7 @@ import cookie from 'cookie';
 import PropTypes from 'prop-types';
 import { getDataFromTree } from 'react-apollo';
 import Head from 'next/head';
-const { pathOr } = 'ramda';
+import { pathOr } from 'ramda';
 
 import * as localStorage from '@/client/utils/localStorage';
 import { initApollo } from './client';
