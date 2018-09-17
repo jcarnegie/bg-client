@@ -9,6 +9,8 @@ import {
   Query,
 } from 'react-apollo';
 
+import { setMobileDetect, mobileParser } from 'react-responsive-redux'
+
 import withApollo from '@/shared/utils/apollo/withApollo';
 
 import {
@@ -61,13 +63,15 @@ if (process.env.DEPLOYED_ENV === 'production') {
 
 class BGApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
-    const { isServer } = ctx;
+    const { isServer, store } = ctx;
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     const web3ModalsProps = Web3Modals.WrappedComponent.getInitialProps(ctx);
     let locals = {};
+
     if (isServer) {
       const { req, res } = ctx;
-      locals = res.locals;
+      const mobileDetect = mobileParser(req);
+      store.dispatch(setMobileDetect(mobileDetect));
     }
     return { pageProps, web3ModalsProps, locals };
   }
@@ -170,8 +174,6 @@ class BGApp extends App {
       wallet,
     } = this.state;
 
-    const ComponentWithMe = withMe(Component);
-
     return (
       <Container>
         <GlobalStyles style={style} />
@@ -190,7 +192,7 @@ class BGApp extends App {
                     );
                   }}
                 </Query>
-                <ComponentWithMe {...pageProps} {...locals} />
+                <Component {...pageProps} {...locals} />
               </>
             </IntlProvider>
           </ApolloProvider>

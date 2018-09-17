@@ -6,7 +6,7 @@ import Main from '@/components/layouts/Main';
 import Header from '@/components/header/mobile';
 import Footer from '@/components/footer/mobile';
 import MenuDrawer from '@/components/menudrawer';
-import { Mobile } from '@/components/responsive';
+import { MobileScreen } from 'react-responsive-redux';
 
 
 @connect(
@@ -21,7 +21,7 @@ class MobileLayout extends Component {
     delete props.dispatch; /* Cannot pass dispatch prop to children */
 
     return (
-      <Mobile {...props}>
+      <MobileScreen {...props}>
         <div className="mobile-wrapper">
           <Header />
           <Main>
@@ -30,7 +30,7 @@ class MobileLayout extends Component {
           <MenuDrawer show={props.layout.showMenu} />
         </div>
         <Footer />
-      </Mobile>
+      </MobileScreen>
     );
   }
 }

@@ -16,7 +16,6 @@ const handle = next.getRequestHandler();
 
 const cors = require('./server/routes/cors');
 const pre = require('./server/routes/pre');
-const responsive = require('./server/routes/responsive');
 
 const route = pathMatch();
 
@@ -56,7 +55,6 @@ next.prepare().then(() => {
   app.use('/', express.static(path.join(__dirname, './static')));
   app.use(pre);
   app.use(cors);
-  app.use(responsive);
 
   app.get('/ping', (req, res) => {
     res.status(200).json({ pong: true });

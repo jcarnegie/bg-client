@@ -14,7 +14,8 @@ import {
 } from 'react-apollo';
 
 import Router from 'next/router';
-import { Mobile, Desktop } from '@/components/responsive';
+import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
+
 import style from '@/shared/constants/style';
 
 import {
@@ -825,14 +826,14 @@ class GameList extends Component {
             position: relative;
           }
         `}</style>
-        <Desktop>
+        <DesktopScreen>
           {::this.desktopBackgroundSections()}
           {::this.desktopContent()}
-        </Desktop>
-        <Mobile>
+        </DesktopScreen>
+        <MobileScreen>
           {::this.mobileBackgroundSections()}
           {::this.mobileContent()}
-        </Mobile>
+        </MobileScreen>
       </div>
     );
   }

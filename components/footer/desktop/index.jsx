@@ -30,7 +30,7 @@ class Footer extends Component {
         <style jsx global>{`
           .footer {
             position: relative;
-            height: ${Router.router.route === '/' && !user ? '190px' : '130px'};
+            height: ${Router.router && Router.router.route === '/' && !user ? '190px' : '130px'};
             width: calc(100% - ${this.props.offsetRight || '0px'});
             transition: ${style.transition.default};
             display: ${hide ? 'none' : 'flex'};

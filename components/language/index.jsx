@@ -8,7 +8,8 @@ import { withRouter } from 'next/router';
 import { path } from 'ramda';
 import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
 import { localization } from '@/shared/intl/setup';
-import { Mobile, Desktop } from '@/components/responsive';
+import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
+
 
 import {
   compose,
@@ -76,7 +77,7 @@ class Language extends Component {
 
     return (
       <div className="lang-dropdown">
-        <Desktop>
+        <DesktopScreen>
           <style jsx global>{`
             /* Global to affect Bootstrap styles */
             .lang-menu {
@@ -157,8 +158,8 @@ class Language extends Component {
               vertical-align: middle;
             }
           `}</style>
-        </Desktop>
-        <Mobile>
+        </DesktopScreen>
+        <MobileScreen>
           <style jsx global>{`
             .lang-menu,
             .lang-dropdown .dropdown .dropdown-menu,
@@ -207,7 +208,7 @@ class Language extends Component {
               height: 150px !important;
             }
           `}</style>
-        </Mobile>
+        </MobileScreen>
         <DropdownButton
           title={
             <span>

@@ -21,7 +21,7 @@ class Footer extends Component {
           .footer {
             position: relative;
             width: 100%;
-            height: ${Router.router.route === '/' && !user ? '305px' : '240px'};
+            height: ${Router.router && Router.router.route === '/' && !user ? '305px' : '240px'};
             display: ${hide ? 'none' : null};
             background-color: #B6D0F7;
           }

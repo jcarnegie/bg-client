@@ -1,20 +1,23 @@
-import Layout, { Content } from '@/components/layouts';
+import Layout from '@/components/layouts';
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import FAQ from '@/components/faq';
 
-
-const FAQPage = props => (
-  <>
-    <Layout.Mobile>
-      <Content.Mobile>
-        <FAQ {...props} />
-      </Content.Mobile>
-    </Layout.Mobile>
-    <Layout.Desktop>
-      <Content.Desktop>
-        <FAQ {...props} />
-      </Content.Desktop>
-    </Layout.Desktop>
-  </>
-);
+@connect(
+  state => ({
+    responsive: state.responsive,
+  })
+)
+class FAQPage extends Component {
+  render() {
+    return (
+      <Layout>
+        <Layout.Content>
+          <FAQ />
+        </Layout.Content>
+      </Layout>
+    );
+  }
+}
 
 export default FAQPage;

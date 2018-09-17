@@ -5,4 +5,6 @@ const FOOTER_ROUTE_BLACKLIST = [
   '/sandbox',
 ];
 
-export const shouldFooterHide = () => FOOTER_ROUTE_BLACKLIST.includes(Router.router.route);
+export const shouldFooterHide = () => {
+  return process.browser ? FOOTER_ROUTE_BLACKLIST.includes(Router.router.route) : true
+};

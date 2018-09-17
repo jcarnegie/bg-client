@@ -19,7 +19,7 @@ import {
   getBitizensIGOContractAddress,
 } from '@/shared/utils/network';
 
-import { Mobile, Desktop } from '@/components/responsive';
+import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 import ItemSetDetailsCard from '@/components/ItemSetDetailsCard';
 
 import style from '@/shared/constants/style';
@@ -327,12 +327,12 @@ class Presale extends Component {
         <Col md={12}>
           <div className="title-section">
             <div className="title-image">
-              <Mobile>
+              <MobileScreen>
                 <Image src={`/static/images/games/${this.props.slug}/icon.jpg`} height={70} width={90} />
-              </Mobile>
-              <Desktop>
+              </MobileScreen>
+              <DesktopScreen>
                 <Image src={`/static/images/games/${this.props.slug}/icon.jpg`} height={100} width={129} />
-              </Desktop>
+              </DesktopScreen>
             </div>
             <div className="titles">
               <h1 className="title with-subtitle"><FormattedMessage id={`pages.presale.${this.props.slug}.title`} /></h1>
