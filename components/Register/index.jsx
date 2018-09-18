@@ -28,6 +28,7 @@ import LoginToWeb3 from '@/components/LoginToWeb3';
 import {
   client,
   mutations,
+  queries,
 } from '@/shared/utils/apollo';
 
 import * as bgLocalStorage from '@/client/utils/localStorage';
@@ -117,7 +118,7 @@ class Register extends Component {
           registering: false,
           registerSuccess,
           error,
-        }, () => {
+        }, async() => {
           if (!registerSuccess) return;
           const {
             // user,
