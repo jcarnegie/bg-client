@@ -11,13 +11,6 @@ import {
   localQueries,
 } from '@/shared/utils/apollo';
 
-
-import {
-  AUTH_ROUTES_REGEX,
-  requireUserLoginAndSupportedNetwork,
-} from '@/shared/utils';
-
-
 const ActiveLink = ({
   children,
   router = Router,
@@ -37,8 +30,6 @@ const ActiveLink = ({
   const handleClick = e => {
     e.preventDefault();
     if (!isStringHref) return router.push(href, as);
-    if (!href.match(AUTH_ROUTES_REGEX)) return router.push(href);
-    if (!requireUserLoginAndSupportedNetwork(user, network)) return;
     return router.push(href);
   };
 

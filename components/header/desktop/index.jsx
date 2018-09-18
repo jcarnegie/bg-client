@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import { pathOr } from 'ramda';
 
 import style from '@/shared/constants/style';
 
@@ -12,6 +14,15 @@ import Language from '@/components/language';
 import Balance from '@/components/balance';
 import User from '@/components/user';
 
+import {
+  compose,
+  graphql,
+} from 'react-apollo';
+
+import {
+  localQueries,
+  queries,
+} from '@/shared/utils/apollo';
 
 @injectIntl
 class Header extends Component {
@@ -101,6 +112,7 @@ class Header extends Component {
   }
 
   settings() {
+    const user = pathOr(null, ['me'], this.props);
     return (
       <div className="settings">
         <style jsx>{`
@@ -116,15 +128,16 @@ class Header extends Component {
             align-items: center;
           }
         `}</style>
-          <Balance />
-          <User />
-        <Language />
-        <RegisterButton />
+          <Balance user={user} />
+          <User user={user} />
+        <Language user={user} />
+        { !user && <RegisterButton /> }
       </div>
     );
   }
 
   render() {
+    console.log('zzz nav desktop props: ', this.props);
     return (
       <header className="header">
         <style jsx>{`
@@ -147,4 +160,7 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default compose(
+  graphql(queries.me, { name: 'me' }),
+  graphql(localQueries.root, { name: 'root' }),
+)(Header);

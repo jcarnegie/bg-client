@@ -10,14 +10,8 @@ import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants
 import { localization } from '@/shared/intl/setup';
 import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 
-
-import {
-  compose,
-} from 'react-apollo';
-
 import {
   updateUser,
-  viewUserByWalletQuery,
 } from '@/shared/utils/apollo';
 
 @withRouter
@@ -38,8 +32,8 @@ class Language extends Component {
     dispatch(updateIntl(localization[language]));
 
     document.documentElement.setAttribute('lang', language);
-    const viewUserByWallet = path(['viewUserByWallet'], user);
-    if (viewUserByWallet) updateUser(viewUserByWallet, { language });
+    const me = path(['me'], user);
+    if (me) updateUser(me, { language });
 
     if (refreshRoutes.includes(route)) window.location.reload();
   }
@@ -63,8 +57,8 @@ class Language extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { dispatch } = this.props;
-    const prevLang = path(['user', 'viewUserByWallet', 'language'], prevProps);
-    const language = path(['user', 'viewUserByWallet', 'language'], this.props);
+    const prevLang = path(['user', 'me', 'language'], prevProps);
+    const language = path(['user', 'me', 'language'], this.props);
     if (prevLang !== language && language) {
       dispatch(updateIntl(localization[language]));
     }
@@ -72,8 +66,8 @@ class Language extends Component {
 
   render() {
     const { user, intl } = this.props;
-    const { viewUserByWallet } = user;
-    const language = !user.loading && viewUserByWallet ? viewUserByWallet.language : intl.locale;
+    const { me } = user;
+    const language = !user.loading && me ? me.language : intl.locale;
 
     return (
       <div className="lang-dropdown">
@@ -92,7 +86,7 @@ class Language extends Component {
             .lang-menu:hover .caret {
               color: white;
             }
-            
+
             .lang-menu > a {
               line-height: 32px !important; /* Bootstrap overrides*/
             }
@@ -102,7 +96,7 @@ class Language extends Component {
               display: flex;
               align-items: center;
             }
-            
+
             .lang-dropdown,
             .lang-dropdown .dropdown,
             .lang-dropdown .dropdown .btn {
@@ -117,7 +111,7 @@ class Language extends Component {
               transform: translateX(4px);
             }
             .lang-dropdown .dropdown .btn .caret {
-              transform: translate(0, -2px); 
+              transform: translate(0, -2px);
             }
 
             .lang-dropdown .dropdown-menu {
@@ -133,7 +127,7 @@ class Language extends Component {
             .lang-dropdown .dropdown .dropdown-menu li a:hover {
               background: #F7F7F7 !important;
             }
-           
+
             .lang-menu img,
             .lang-dropdown .dropdown .dropdown-menu li a img {
               width: 25px;
@@ -145,7 +139,7 @@ class Language extends Component {
             }
 
             .lang-dropdown > div > ul > li:nth-child(1) > a > img
-            
+
             .lang-dropdown {
               line-height: 0;
               list-style-type: none;
@@ -226,4 +220,4 @@ class Language extends Component {
 }
 
 
-export default compose(viewUserByWalletQuery)(Language);
+export default Language;

@@ -61,7 +61,8 @@ class Balance extends Component {
 
   onClick(e) {
     e.preventDefault();
-    if (!this.props.user.viewUserByWallet) {
+    if (!this.props.user) {
+      // TODO: redirect to login
       return client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
     }
 
@@ -170,6 +171,5 @@ class Balance extends Component {
 
 
 export default compose(
-  viewUserByWalletQuery,
   graphql(localQueries.root),
 )(Balance);

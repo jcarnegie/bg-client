@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'react-apollo';
 import { path } from 'ramda';
 import cx from 'classnames';
 
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 
-import { viewUserByWalletQuery } from '@/shared/utils/apollo';
 import style from '@/shared/constants/style';
 
 @connect(
@@ -36,11 +34,11 @@ class User extends Component {
 
   render() {
     const { user, layout } = this.props;
-    const { viewUserByWallet, loading } = user;
-    if (user.error || !viewUserByWallet) return null;
+    const { me, loading } = user;
+    if (user.error || !me) return null;
 
-    const nickName = path(['nickName'], viewUserByWallet);
-    const wallet = path(['wallet'], viewUserByWallet);
+    const nickName = path(['nickName'], me);
+    const wallet = path(['lastWalletUsed'], me);
 
     return (
       <div className="user">
@@ -112,4 +110,4 @@ class User extends Component {
   }
 }
 
-export default compose(viewUserByWalletQuery)(User);
+export default User;

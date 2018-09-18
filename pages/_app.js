@@ -120,10 +120,11 @@ class BGApp extends App {
         if (!web3IsInstalled()) return;
         const meQuery = await apolloClient.query({ query: queries.me });
         const { data } = await apolloClient.query({ query: localQueries.root });
-        const { network, wallet } = data;
+        const { network } = data;
 
-        // log.info('network:', network, 'me: ', me);
         const me = pathOr({}, ['data', 'me'], meQuery);
+        const wallet = path(['lastWalletUsed'], me);
+        // log.info('network:', network, 'me: ', me);
         const wallets = pathOr([], ['wallets'], me);
         const currentNetworkId = await asyncGetNetworkId();
         const currentWallet = getWeb3Wallet();
@@ -135,6 +136,7 @@ class BGApp extends App {
         };
 
         const networkHasChanged = !network.id || (parseInt(network.id, 10) !== parseInt(currentNetworkId, 10));
+        // TODO: logic has been moved to below
         const walletHasChanged = Boolean(
           (wallet && !currentWallet) || /* log out */
           (!wallet && currentWallet) || /* log in */
@@ -142,6 +144,7 @@ class BGApp extends App {
         );
         /* Network or wallet has changed */
         if (networkHasChanged || walletHasChanged) {
+          // TODO: we only need to update the network, wallet will come from me object
           await apolloClient.mutate({
             mutation: localMutations.updateNetworkAndWallet,
             variables: {
@@ -151,7 +154,6 @@ class BGApp extends App {
           });
           this.setState({
             network: currentNetwork,
-            wallet: currentWallet,
           });
         }
 
@@ -168,6 +170,10 @@ class BGApp extends App {
             // TODO: Route guard check
             return Router.replace('/login');
           }
+          if (!currentWallet && path && path.match(AUTH_ROUTES_REGEX)) {
+            // TODO: ask to login metamask for route-guarded page and no metamask wallet detected
+            Router.replace('/login');
+          }
           if (!wallets.includes(currentWallet)) {
             // NOTE: figure out how to handle user who does not want to link wallet...
             // Currently we force them onto the /link page
@@ -176,7 +182,7 @@ class BGApp extends App {
             // set current wallet
             await apolloClient.mutate({
               mutation: mutations.setCurrentWallet,
-              variables: { wallet: currentWallet },
+              variables: { currentWallet },
             });
           }
         }
@@ -197,11 +203,15 @@ class BGApp extends App {
       store,
       locals,
       apolloClient,
+      me,
     } = this.props;
 
     const {
       wallet,
     } = this.state;
+
+    const wallet = path(['lastWalletUsed'], me);
+    console.log('zzz remove wallet state wallet: ', wallet);
 
     return (
       <Container>
