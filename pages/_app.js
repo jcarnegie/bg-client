@@ -149,15 +149,17 @@ class BGApp extends App {
           userWalletHasChanged
         );
         /* Network or wallet has changed */
-        if (networkHasChanged || walletOutOfSyncWithSession) {
+        if (networkHasChanged || walletOutOfSyncWithSession || (web3Wallet !== this.state.wallet)) {
           // TODO: we only need to update the network, wallet will come from me object
-          await apolloClient.mutate({
-            mutation: localMutations.updateNetworkAndWallet,
-            variables: {
-              ...currentNetwork,
-              wallet: web3Wallet,
-            },
-          });
+          if (web3Wallet) {
+            await apolloClient.mutate({
+              mutation: localMutations.updateNetworkAndWallet,
+              variables: {
+                ...currentNetwork,
+                wallet: web3Wallet,
+              },
+            });
+          }
           this.setState({
             network: currentNetwork,
             web3Wallet,
