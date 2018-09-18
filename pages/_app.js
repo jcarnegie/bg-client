@@ -115,7 +115,7 @@ class BGApp extends App {
       });
     }
 
-    const wallets = pathOr([], ['user', 'wallets'], this.props);
+    const wallets = pathOr([], ['me', 'wallets'], this.props);
     const path = pathOr('', ['location', 'pathname'], window);
 
     /* Network and wallet polling */
