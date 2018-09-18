@@ -4,6 +4,7 @@ import * as log from 'loglevel';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { path } from 'ramda';
+import Router from 'next/router';
 
 import BGButton from '@/components/bgbutton';
 import {
@@ -49,7 +50,7 @@ class LinkWallets extends Component {
 
     window.web3.currentProvider.sendAsync({
       method: 'personal_sign',
-      params: [Login.toHex(signingMessage), wallet],
+      params: [LinkWallets.toHex(signingMessage), wallet],
       from: wallet,
     }, async(err, result) => {
       if (err || result.error) {
@@ -58,7 +59,7 @@ class LinkWallets extends Component {
       }
 
       const { data } = await client.mutate({
-        mutation: mutations.login,
+        mutation: mutations.linkWallet,
         variables: {
           wallet,
           signature: result.result,
@@ -76,8 +77,8 @@ class LinkWallets extends Component {
 
       this.props.analytics.ga.event({
         category: 'Site Interaction',
-        action: 'Sign-up',
-        label: 'Create account',
+        action: 'Link-Wallet',
+        label: 'Link wallet',
       });
     });
   }
@@ -85,43 +86,58 @@ class LinkWallets extends Component {
   render() {
     const { wallet } = this.props;
     return (
-      <div className="login-container">
+      <div className="link-wallet-container">
         <style jsx>{`
-          .login-container {
+          .link-wallet-container {
             width: 500px;
             margin: 100px auto;
           }
-          .login-header {
+          .link-wallet-header {
             margin-bottom: 20px;
           }
-          .login-wallet {
+          .link-wallet-button-group {
+            margin-top: 20px;
+          }
+          .link-wallet-input {
+            width: 100%;
+            margin-bottom: 10px;
+          }
+          .link-wallet-text {
             width: 100%;
             font-weight: 500;
             margin-bottom: 5px;
           }
-          .login-wallet-input {
-            width: 100%;
-            margin-bottom: 10px;
-          }
           .login-register-route{
-            display: inline-block;
             margin-top: 20px;
             font-weight: .8em;
           }
+          .login-register-route:hover {
+            cursor: pointer;
+          }
         `}</style>
-        <h2 className="login-header">
-          <FormattedMessage id="global.login" />
+        <h2 className="link-wallet-header">
+          <FormattedMessage id="pages.link-wallet.new-wallet-found" />
         </h2>
-        <span className="login-wallet">
-          <FormattedMessage id="components.login.wallet" />
-        </span>
-        <input className="login-wallet-input" readOnly defaultValue={wallet}></input>
-        <BGButton className="btn-block text-uppercase" onClick={() => ::this.sign(wallet)}>
-          <FormattedMessage id="buttons.login" />
-        </BGButton>
-        <span className="login-register-route">
-          <FormattedHTMLMessage id="components.login.register" />
-        </span>
+        <input className="link-wallet-input" readOnly defaultValue={wallet}></input>
+
+        <div className="link-wallet-button-group">
+          <span className="link-wallet-text">
+            <FormattedHTMLMessage id="pages.link-wallet.link-wallet" />
+          </span>
+          <BGButton className="btn-block text-uppercase" onClick={() => ::this.sign(wallet)}>
+            <FormattedMessage id="pages.link-wallet.cta" />
+          </BGButton>
+        </div>
+
+
+        <div className="link-wallet-button-group">
+          <div className="login-register-route" onClick={() => Router.push('/login')}>
+            <FormattedHTMLMessage id="pages.register.already-registered" />
+          </div>
+          <div className="login-register-route" onClick={() => Router.push('/register')}>
+            <FormattedHTMLMessage id="components.login.register" />
+          </div>
+        </div>
       </div>
     );
   }

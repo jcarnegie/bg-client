@@ -48,6 +48,14 @@ export const mutations = {
       }
     }
   `,
+  linkWallet: gql`
+    mutation linkWallet($wallet: String!, $signature: String!) {
+      linkWallet(wallet: $wallet, signature: $signature) {
+        user { id }
+        tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
+      }
+    }
+  `,
   setCurrentWallet: gql`
     mutation setCurrentWallet($currentWallet: String) {
       setCurrentWallet(currentWallet: $currentWallet) {

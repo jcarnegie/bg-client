@@ -147,6 +147,11 @@
       "register": "register",
       "login": "login"
     },
+    "link-wallet": {
+      "cta": "Link Wallet",
+      "new-wallet-found": "New Wallet Found",
+      "link-wallet": "Link new wallet to your account?"
+    },
     "bugbounty": {
       "title": "Bug Bounty",
       "hey-bitizens": "Hey Bitizen!",
