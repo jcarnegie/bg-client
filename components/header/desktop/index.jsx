@@ -23,6 +23,9 @@ import {
   localQueries,
   queries,
 } from '@/shared/utils/apollo';
+import {
+  WalletContext,
+} from '@/shared/utils/context';
 
 @injectIntl
 class Header extends Component {
@@ -111,7 +114,7 @@ class Header extends Component {
     );
   }
 
-  settings() {
+  settings(isCurrentWalletLinked) {
     const user = pathOr(null, ['me'], this.props);
     return (
       <div className="settings">
@@ -128,33 +131,51 @@ class Header extends Component {
             align-items: center;
           }
         `}</style>
-        <Balance user={user} />
-        <User user={user} />
-        <Language user={user} />
+        {isCurrentWalletLinked && (
+          <>
+            <Balance user={user} />
+            <User user={user} />
+          </>
+        )}
         <RegisterButton user={user} />
+        <Language user={user} />
       </div>
     );
   }
 
   render() {
     return (
-      <header className="header">
-        <style jsx>{`
-          .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            z-index: 1060; /* Bootstrap modal is 1040, 1050 - MenuDrawer is 1030 */
-            background-color: ${style.colors.primary};
-            height: ${style.header.height};
-            border-bottom: ${style.header.border};
-          }
-        `}</style>
-        {::this.navigation()}
-        {::this.settings()}
-      </header>
+      <WalletContext.Consumer>
+        {({
+          web3Wallet,
+          network,
+          networkHasChanged,
+          isUserLoggedOutOfMetaMask,
+          userNeedsToLogInOrRegister,
+          userWalletHasChanged,
+          isCurrentWalletLinked,
+        }) => {
+          return (
+            <header className="header">
+              <style jsx>{`
+                .header {
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  right: 0;
+                  width: 100%;
+                  z-index: 1060; /* Bootstrap modal is 1040, 1050 - MenuDrawer is 1030 */
+                  background-color: ${style.colors.primary};
+                  height: ${style.header.height};
+                  border-bottom: ${style.header.border};
+                }
+              `}</style>
+              {::this.navigation()}
+              {::this.settings(isCurrentWalletLinked)}
+            </header>
+          );
+        }}
+      </WalletContext.Consumer>
     );
   }
 }

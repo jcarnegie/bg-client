@@ -125,7 +125,7 @@ class BGApp extends App {
         const me = pathOr({}, ['data', 'me'], meQuery);
         const wallets = pathOr([], ['wallets'], me);
         const currentNetworkId = await asyncGetNetworkId();
-        const metamaskWallet = getWeb3Wallet();
+        const web3Wallet = getWeb3Wallet();
         const currentNetwork = {
           id: currentNetworkId,
           name: networkIdToName(currentNetworkId),
@@ -136,12 +136,12 @@ class BGApp extends App {
         const networkHasChanged = !network.id || (parseInt(network.id, 10) !== parseInt(currentNetworkId, 10));
         const lastWalletUsed = path(['lastWalletUsed'], me)
 
-        const isUserLoggedOutOfMetaMask = (lastWalletUsed && !metamaskWallet); /* log out */
-        const userNeedsToLogInOrRegister = (!lastWalletUsed && metamaskWallet); /* log in */
-        const userWalletHasChanged = ((lastWalletUsed !== metamaskWallet) && (lastWalletUsed && metamaskWallet)); /* Different wallet */
+        const isUserLoggedOutOfMetaMask = (lastWalletUsed && !web3Wallet); /* log out */
+        const userNeedsToLogInOrRegister = (!lastWalletUsed && web3Wallet); /* log in */
+        const userWalletHasChanged = ((lastWalletUsed !== web3Wallet) && (lastWalletUsed && web3Wallet)); /* Different wallet */
         const pathname = pathOr('', ['location', 'pathname'], window);
         const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
-        const isCurrentWalletLinked = wallets.includes(metamaskWallet);
+        const isCurrentWalletLinked = wallets.includes(web3Wallet);
 
         const walletOutOfSyncWithSession = Boolean(
           isUserLoggedOutOfMetaMask ||
@@ -155,12 +155,12 @@ class BGApp extends App {
             mutation: localMutations.updateNetworkAndWallet,
             variables: {
               ...currentNetwork,
-              wallet: metamaskWallet,
+              wallet: web3Wallet,
             },
           });
           this.setState({
             network: currentNetwork,
-            wallet: metamaskWallet,
+            web3Wallet,
             networkHasChanged,
             isUserLoggedOutOfMetaMask,
             userNeedsToLogInOrRegister,
@@ -171,12 +171,12 @@ class BGApp extends App {
 
         /* Wallet has changed */
         if (walletOutOfSyncWithSession) {
-          console.log('lastWalletUsed: ', path(['lastWalletUsed'], me), ' metamaskWallet: ', metamaskWallet, ' out of sync, update: ', walletOutOfSyncWithSession)
+          console.log('lastWalletUsed: ', path(['lastWalletUsed'], me), ' web3Wallet: ', web3Wallet, ' out of sync, update: ', walletOutOfSyncWithSession)
           if (userWalletHasChanged && isCurrentWalletLinked) {
             /* Update session */
             await apolloClient.mutate({
               mutation: mutations.setCurrentWallet,
-              variables: { currentWallet: metamaskWallet },
+              variables: { currentWallet: web3Wallet },
             });
           }
           /* Send user to link wallet */
@@ -212,7 +212,7 @@ class BGApp extends App {
 
     const {
       network,
-      metamaskWallet,
+      web3Wallet,
       networkHasChanged,
       isUserLoggedOutOfMetaMask,
       userNeedsToLogInOrRegister,
@@ -226,7 +226,7 @@ class BGApp extends App {
         <WalletContext.Provider
           value={{
             network,
-            metamaskWallet,
+            web3Wallet,
             networkHasChanged,
             isUserLoggedOutOfMetaMask,
             userNeedsToLogInOrRegister,

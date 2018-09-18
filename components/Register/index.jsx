@@ -11,14 +11,13 @@ import withFormHelper from '@/components/inputs/withFormHelper';
 import { withRoot } from '@/components/wrappers';
 import { localization } from '@/shared/intl/setup';
 import {
-  withWallet,
+  WalletContext,
 } from '@/shared/utils/context';
 import {
   email as emailPlaceholder,
   nickName as nickNamePlaceholder,
 } from '@/shared/constants/placeholder';
 import { reEmail } from '@/shared/constants/regexp';
-import { enabledLanguages } from '@/shared/constants/language';
 import BGButton from '@/components/bgbutton';
 import DataLoading from '@/components/DataLoading';
 import InputGroupValidation from '@/components/inputs/input.group.validation';
@@ -46,26 +45,30 @@ class Register extends Component {
   static propTypes = {
     analytics: PropTypes.object,
     dispatch: PropTypes.func,
-    wallet: PropTypes.string,
     intl: intlShape,
     root: PropTypes.object,
+    layout: PropTypes.shape({
+      type: PropTypes.shape({
+        mobile: PropTypes.bool,
+        desktop: PropTypes.bool,
+      }),
+    })
   };
+
+  static defaultProps = {
+    layout: {
+      type: {
+        mobile: false,
+        desktop: true,
+      },
+    },
+  }
 
   state = {
     nickName: '',
     email: '',
     registering: false,
   };
-
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.formData.language !== nextProps.intl.locale) {
-      nextProps.setState({
-        language: nextProps.intl.locale,
-      });
-    }
-
-    return null;
-  }
 
   onChange(k, v) {
     this.setState({ [k]: v });
@@ -75,11 +78,11 @@ class Register extends Component {
     return '0x' + Buffer.from(text, 'utf8').toString('hex');
   }
 
-  async sign() {
+  async sign(web3Wallet) {
     const {
-      wallet,
       intl,
     } = this.props;
+
     const {
       email,
       nickName,
@@ -87,15 +90,15 @@ class Register extends Component {
 
     const { data } = await client.mutate({
       mutation: mutations.createSigningMessage,
-      variables: { wallet, action: 'register' },
+      variables: { wallet: web3Wallet, action: 'register' },
     });
 
     const signingMessage = path(['createSigningMessage', 'signingMessage'], data);
 
     window.web3.currentProvider.sendAsync({
       method: 'personal_sign',
-      params: [Register.toHex(signingMessage), wallet],
-      from: wallet,
+      params: [Register.toHex(signingMessage), web3Wallet],
+      from: web3Wallet,
     }, async(err, result) => {
       if (err || result.error) {
         log.error(err || result.error);
@@ -107,7 +110,7 @@ class Register extends Component {
           mutation: mutations.register,
           variables: {
             email,
-            wallet,
+            wallet: web3Wallet,
             nickName,
             signature: result.result,
             language: intl.locale,
@@ -140,20 +143,16 @@ class Register extends Component {
             label: 'Create account',
           });
 
+          // TODO - redirect to last context / requested route
           Router.push('/');
         });
       });
     });
   }
 
-  onChangeLanguage(language) {
-    this.props.dispatch(updateIntl(localization[language]));
-  }
-
-  registerForm() {
-    const { wallet, intl, layout } = this.props;
+  registerForm(web3Wallet) {
+    const { intl, layout } = this.props;
     const mobile = layout.type.mobile;
-
     return (
       <div className="register-form">
         <style jsx>{`
@@ -169,14 +168,6 @@ class Register extends Component {
           }
           .register-form p {
             text-align: center;
-          }
-          .select-language {
-            width: 100%;
-            background: transparent;
-            height: 40px;
-            margin-bottom: 10px;
-            border: 2px solid black;
-            text-indent: 45px;
           }
           :global(.btn-register) {
             font-size: 18px !important;
@@ -227,11 +218,6 @@ class Register extends Component {
             background-color: #D7DEF6 !important;
             padding: 10px 0px 10px 0px !important;
           }
-          .language-icon {
-            position: absolute;
-            padding-top: 8px;
-            padding-left: 15px;
-          }
         `}</style>
         <div className="register-select-btn">
           <BGButton className="btn-block-registration-active text-uppercase">
@@ -243,19 +229,6 @@ class Register extends Component {
         </div>
         <h1><FormattedMessage id="modals.register.title" /></h1>
         <p className="note"><FormattedMessage id="modals.register.n1" /></p>
-        <span>
-          <img src="/static/images/language/globe.svg" className="language-icon" />
-          <select
-            className="select-language"
-            onChange={e => ::this.onChangeLanguage(e.target.value)}
-          >
-            {enabledLanguages.map(language =>
-              (<FormattedMessage key={language} id={`components.language.${language}`}>
-                {formattedMessage => <option selected={intl.locale === language} key={language} value={language} >{formattedMessage}</option>}
-              </FormattedMessage>)
-            )}
-          </select>
-        </span>
         <InputGroupValidation
           name="nickName"
           type="text"
@@ -274,7 +247,7 @@ class Register extends Component {
         <InputGroupValidation
           type="text"
           name="wallet"
-          value={wallet}
+          value={web3Wallet}
           maxLength="42"
           minLength="42"
           required
@@ -283,15 +256,15 @@ class Register extends Component {
 
         <br />
 
-        <BGButton className="btn-block btn-register text-uppercase" onClick={() => ::this.sign(wallet)}>
+        <BGButton className="btn-block btn-register text-uppercase" onClick={() => ::this.sign(web3Wallet)}>
           <FormattedMessage id="buttons.register" />
         </BGButton>
       </div>
     );
   }
 
-  component() {
-    const { wallet, root } = this.props;
+  component(web3Wallet) {
+    const { root } = this.props;
      if (!root.network) return null;
 
     if (!root.network.available) {
@@ -300,7 +273,7 @@ class Register extends Component {
     if (!root.network.supported) {
       return <NetworkNotSupported />;
     }
-    if (!wallet) {
+    if (!web3Wallet) {
       return <LoginToWeb3 />;
     }
     if (this.state.registering) {
@@ -313,7 +286,7 @@ class Register extends Component {
         </div>
       );
     }
-    return ::this.registerForm();
+    return ::this.registerForm(web3Wallet);
   }
 
   render() {
@@ -321,48 +294,62 @@ class Register extends Component {
     const mobile = layout.type.mobile;
 
     return (
-      <div className="register">
-        <style jsx>{`
-          .register {
-            background: linear-gradient(to bottom, #B4D0F5, #D8D8EF);
-            height: ${mobile ? null : 'calc(100vh - 62px)'};
-          }
-          .register-image-container {
-            display: flex;
-            align-items: center;
-            width: ${mobile ? '100%' : '50%'};
-            float: left;
-            height: ${mobile ? null : '100%'};
-            margin-top: ${mobile ? '30px' : null};
-            margin-bottom: ${mobile ? '30px' : null};
-          }
-          .register-image {
-            border-radius: 50%;
-            width: 70%;
-            display: block;
-            margin-left: auto;
-            margin-right: 15%;
-            position: relative;
-            max-width: 500px;
-            max-height: 500px;
-          }
-          .register-container {
-            display: flex;
-            align-items: center;
-            width: ${mobile ? '100%' : '50%'};
-            height: ${mobile ? null : '100%'};
-            padding-bottom: ${mobile ? '30px' : null};
-          }
-        `}</style>
-        <div className="register-image-container">
-          <img src="/static/images/misc/auth.png" className="register-image" />
-        </div>
-        <div className="register-container">
-          {::this.component()}
-        </div>
-      </div>
+      <WalletContext.Consumer>
+        {({
+          web3Wallet,
+          network,
+          networkHasChanged,
+          isUserLoggedOutOfMetaMask,
+          userNeedsToLogInOrRegister,
+          userWalletHasChanged,
+          isCurrentWalletLinked,
+        }) => {
+          return (
+            <div className="register">
+              <style jsx>{`
+                .register {
+                  background: linear-gradient(to bottom, #B4D0F5, #D8D8EF);
+                  height: ${mobile ? null : 'calc(100vh - 62px)'};
+                }
+                .register-image-container {
+                  display: flex;
+                  align-items: center;
+                  width: ${mobile ? '100%' : '50%'};
+                  float: left;
+                  height: ${mobile ? null : '100%'};
+                  margin-top: ${mobile ? '30px' : null};
+                  margin-bottom: ${mobile ? '30px' : null};
+                }
+                .register-image {
+                  border-radius: 50%;
+                  width: 70%;
+                  display: block;
+                  margin-left: auto;
+                  margin-right: 15%;
+                  position: relative;
+                  max-width: 500px;
+                  max-height: 500px;
+                }
+                .register-container {
+                  display: flex;
+                  align-items: center;
+                  width: ${mobile ? '100%' : '50%'};
+                  height: ${mobile ? null : '100%'};
+                  padding-bottom: ${mobile ? '30px' : null};
+                }
+              `}</style>
+              <div className="register-image-container">
+                <img src="/static/images/misc/auth.png" className="register-image" />
+              </div>
+              <div className="register-container">
+                {::this.component(web3Wallet)}
+              </div>
+            </div>
+          );
+        }}
+      </WalletContext.Consumer>
     );
   }
 }
 
-export default withRoot(withWallet(Register));
+export default withRoot(Register);

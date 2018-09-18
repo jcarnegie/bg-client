@@ -8,7 +8,7 @@ import Router from 'next/router';
 
 import BGButton from '@/components/bgbutton';
 import {
-  withWallet,
+  WalletContext,
 } from '@/shared/utils/context';
 import {
   client,
@@ -28,7 +28,6 @@ class LinkWallets extends Component {
   static propTypes = {
     analytics: PropTypes.object,
     dispatch: PropTypes.func,
-    wallet: PropTypes.string,
   };
 
   state = {};
@@ -37,22 +36,18 @@ class LinkWallets extends Component {
     return '0x' + Buffer.from(text, 'utf8').toString('hex');
   }
 
-  async sign() {
-    const {
-      wallet,
-    } = this.props;
-
+  async sign(web3Wallet) {
     const { data } = await client.mutate({
       mutation: mutations.createSigningMessage,
-      variables: { wallet, action: 'linkWallet' },
+      variables: { wallet: web3Wallet, action: 'linkWallet' },
     });
 
     const signingMessage = path(['createSigningMessage', 'signingMessage'], data);
 
     window.web3.currentProvider.sendAsync({
       method: 'personal_sign',
-      params: [LinkWallets.toHex(signingMessage), wallet],
-      from: wallet,
+      params: [LinkWallets.toHex(signingMessage), web3Wallet],
+      from: web3Wallet,
     }, async(err, result) => {
       if (err || result.error) {
         log.error(err || result.error);
@@ -62,7 +57,7 @@ class LinkWallets extends Component {
       const { data } = await client.mutate({
         mutation: mutations.linkWallet,
         variables: {
-          wallet,
+          wallet: web3Wallet,
           signature: result.result,
         },
       });
@@ -87,67 +82,83 @@ class LinkWallets extends Component {
         action: 'Link-Wallet',
         label: 'Link wallet',
       });
+
+      // TODO - redirect to last context / requested route
+      Router.push('/');
     });
   }
 
   render() {
-    const { wallet } = this.props;
     return (
-      <div className="link-wallet-container">
-        <style jsx>{`
-          .link-wallet-container {
-            width: 500px;
-            margin: 100px auto;
-          }
-          .link-wallet-header {
-            margin-bottom: 20px;
-          }
-          .link-wallet-button-group {
-            margin-top: 20px;
-          }
-          .link-wallet-input {
-            width: 100%;
-            margin-bottom: 10px;
-          }
-          .link-wallet-text {
-            width: 100%;
-            font-weight: 500;
-            margin-bottom: 5px;
-          }
-          .login-register-route{
-            margin-top: 20px;
-            font-weight: .8em;
-          }
-          .login-register-route:hover {
-            cursor: pointer;
-          }
-        `}</style>
-        <h2 className="link-wallet-header">
-          <FormattedMessage id="pages.link-wallet.new-wallet-found" />
-        </h2>
-        <input className="link-wallet-input" readOnly defaultValue={wallet}></input>
+      <WalletContext.Consumer>
+        {({
+          web3Wallet,
+          network,
+          networkHasChanged,
+          isUserLoggedOutOfMetaMask,
+          userNeedsToLogInOrRegister,
+          userWalletHasChanged,
+          isCurrentWalletLinked,
+        }) => {
+          return (
+            <div className="link-wallet-container">
+              <style jsx>{`
+                .link-wallet-container {
+                  width: 500px;
+                  margin: 100px auto;
+                }
+                .link-wallet-header {
+                  margin-bottom: 20px;
+                }
+                .link-wallet-button-group {
+                  margin-top: 20px;
+                }
+                .link-wallet-input {
+                  width: 100%;
+                  margin-bottom: 10px;
+                }
+                .link-wallet-text {
+                  width: 100%;
+                  font-weight: 500;
+                  margin-bottom: 5px;
+                }
+                .login-register-route{
+                  margin-top: 20px;
+                  font-weight: .8em;
+                }
+                .login-register-route:hover {
+                  cursor: pointer;
+                }
+              `}</style>
+              <h2 className="link-wallet-header">
+                <FormattedMessage id="pages.link-wallet.new-wallet-found" />
+              </h2>
+              <input className="link-wallet-input" readOnly defaultValue={web3Wallet}></input>
 
-        <div className="link-wallet-button-group">
-          <span className="link-wallet-text">
-            <FormattedHTMLMessage id="pages.link-wallet.link-wallet" />
-          </span>
-          <BGButton className="btn-block text-uppercase" onClick={() => ::this.sign(wallet)}>
-            <FormattedMessage id="pages.link-wallet.cta" />
-          </BGButton>
-        </div>
+              <div className="link-wallet-button-group">
+                <span className="link-wallet-text">
+                  <FormattedHTMLMessage id="pages.link-wallet.link-wallet" />
+                </span>
+                <BGButton className="btn-block text-uppercase" onClick={() => ::this.sign(web3Wallet)}>
+                  <FormattedMessage id="pages.link-wallet.cta" />
+                </BGButton>
+              </div>
 
 
-        <div className="link-wallet-button-group">
-          <div className="login-register-route" onClick={() => Router.push('/login')}>
-            <FormattedHTMLMessage id="pages.register.already-registered" />
-          </div>
-          <div className="login-register-route" onClick={() => Router.push('/register')}>
-            <FormattedHTMLMessage id="components.login.register" />
-          </div>
-        </div>
-      </div>
+              <div className="link-wallet-button-group">
+                <div className="login-register-route" onClick={() => Router.push('/login')}>
+                  <FormattedHTMLMessage id="pages.register.already-registered" />
+                </div>
+                <div className="login-register-route" onClick={() => Router.push('/register')}>
+                  <FormattedHTMLMessage id="components.login.register" />
+                </div>
+              </div>
+            </div>
+          );
+        }}
+      </WalletContext.Consumer>
     );
   }
 }
 
-export default withWallet(LinkWallets);
+export default LinkWallets;
