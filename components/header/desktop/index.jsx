@@ -128,16 +128,15 @@ class Header extends Component {
             align-items: center;
           }
         `}</style>
-          <Balance user={user} />
-          <User user={user} />
+        <Balance user={user} />
+        <User user={user} />
         <Language user={user} />
-        { !user && <RegisterButton /> }
+        <RegisterButton user={user} />
       </div>
     );
   }
 
   render() {
-    // console.log('zzz nav desktop props: ', this.props);
     return (
       <header className="header">
         <style jsx>{`

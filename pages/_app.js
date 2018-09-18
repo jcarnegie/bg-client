@@ -123,11 +123,9 @@ class BGApp extends App {
         const { network } = data;
 
         const me = pathOr({}, ['data', 'me'], meQuery);
-        const wallet = path(['lastWalletUsed'], me);
-        // log.info('network:', network, 'me: ', me);
         const wallets = pathOr([], ['wallets'], me);
         const currentNetworkId = await asyncGetNetworkId();
-        const currentWallet = getWeb3Wallet();
+        const metamaskWallet = getWeb3Wallet();
         const currentNetwork = {
           id: currentNetworkId,
           name: networkIdToName(currentNetworkId),
@@ -138,12 +136,12 @@ class BGApp extends App {
         const networkHasChanged = !network.id || (parseInt(network.id, 10) !== parseInt(currentNetworkId, 10));
         const lastWalletUsed = path(['lastWalletUsed'], me)
 
-        const isUserLoggedOutOfMetaMask = (lastWalletUsed && !currentWallet); /* log out */
-        const userNeedsToLogInOrRegister = (!lastWalletUsed && currentWallet); /* log in */
-        const userWalletHasChanged = ((lastWalletUsed !== currentWallet) && (lastWalletUsed && currentWallet)); /* Different wallet */
+        const isUserLoggedOutOfMetaMask = (lastWalletUsed && !metamaskWallet); /* log out */
+        const userNeedsToLogInOrRegister = (!lastWalletUsed && metamaskWallet); /* log in */
+        const userWalletHasChanged = ((lastWalletUsed !== metamaskWallet) && (lastWalletUsed && metamaskWallet)); /* Different wallet */
         const pathname = pathOr('', ['location', 'pathname'], window);
         const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
-        const isCurrentWalletLinked = wallets.includes(currentWallet);
+        const isCurrentWalletLinked = wallets.includes(metamaskWallet);
 
         const walletOutOfSyncWithSession = Boolean(
           isUserLoggedOutOfMetaMask ||
@@ -157,22 +155,28 @@ class BGApp extends App {
             mutation: localMutations.updateNetworkAndWallet,
             variables: {
               ...currentNetwork,
-              wallet: currentWallet,
+              wallet: metamaskWallet,
             },
           });
-          this.setState({ network: currentNetwork, wallet: currentWallet });
+          this.setState({
+            network: currentNetwork,
+            wallet: metamaskWallet,
+            networkHasChanged,
+            isUserLoggedOutOfMetaMask,
+            userNeedsToLogInOrRegister,
+            userWalletHasChanged,
+            isCurrentWalletLinked,
+          });
         }
 
-        // Login state debugging
-        console.log('lastWalletUsed: ', path(['lastWalletUsed'], me), ' currentWallet: ',
-          currentWallet, ' out of sync, update: ', walletOutOfSyncWithSession)
         /* Wallet has changed */
         if (walletOutOfSyncWithSession) {
+          console.log('lastWalletUsed: ', path(['lastWalletUsed'], me), ' metamaskWallet: ', metamaskWallet, ' out of sync, update: ', walletOutOfSyncWithSession)
           if (userWalletHasChanged && isCurrentWalletLinked) {
             /* Update session */
             await apolloClient.mutate({
               mutation: mutations.setCurrentWallet,
-              variables: { currentWallet },
+              variables: { currentWallet: metamaskWallet },
             });
           }
           /* Send user to link wallet */
@@ -206,13 +210,30 @@ class BGApp extends App {
       me,
     } = this.props;
 
-    const wallet = path(['lastWalletUsed'], me);
-    console.log('zzz remove wallet state wallet: ', wallet);
+    const {
+      network,
+      metamaskWallet,
+      networkHasChanged,
+      isUserLoggedOutOfMetaMask,
+      userNeedsToLogInOrRegister,
+      userWalletHasChanged,
+      isCurrentWalletLinked,
+    } = this.state;
 
     return (
       <Container>
         <GlobalStyles style={style} />
-        <WalletContext.Provider value={{ wallet }}>
+        <WalletContext.Provider
+          value={{
+            network,
+            metamaskWallet,
+            networkHasChanged,
+            isUserLoggedOutOfMetaMask,
+            userNeedsToLogInOrRegister,
+            userWalletHasChanged,
+            isCurrentWalletLinked,
+          }}
+        >
           <ApolloProvider client={apolloClient}>
             <IntlProvider store={store}>
               <>

@@ -112,12 +112,12 @@ class Game extends Component {
           }
         `}</style>
         <WalletContext.Consumer>
-          {({ wallet }) => {
-            if (!wallet) return <DataLoading />;
+          {({ web3Wallet }) => {
+            if (!web3Wallet) return <DataLoading />;
             return (
               <Query
                 query={queries.viewUserByWallet}
-                variables={{ wallet }}
+                variables={{ wallet: web3Wallet }}
               >
                 {({ data }) => {
                   if (!data || !data.viewUserByWallet || data.error || data.loading) {

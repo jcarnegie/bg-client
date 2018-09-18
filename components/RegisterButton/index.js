@@ -22,13 +22,9 @@ import { WalletContext } from '@/shared/utils/context';
 class RegisterButton extends Component {
   static propTypes = {
     root: PropTypes.shape({
-      wallet: PropTypes.string,
       network: PropTypes.object,
+      user: PropTypes.object,
     }),
-  }
-
-  state = {
-    timeout: null,
   }
 
   renderButtonWithText(text) {
@@ -65,32 +61,21 @@ class RegisterButton extends Component {
     );
   }
 
-  componentDidMount() {
-    this.setState({
-      /* Delay Hack to prevent flicker of register button on initial render */
-      timeout: setTimeout(() => this.setState({ timeout: null }), 2000),
-    });
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.state.timeout);
-  }
-
   render() {
+    const { user } = this.props;
     return (
       <WalletContext.Consumer>
-        {({ wallet }) => {
-          const { root } = this.props;
-          const { network } = root;
-
-          // log.info('RegisterButton render. root:', root);
-          // log.info('RegisterButton render. network:', network);
-
-          /* Network must be defined (apollo cache instantiation issue?) */
+        {({
+          web3Wallet,
+          network,
+          networkHasChanged,
+          isUserLoggedOutOfMetaMask,
+          userNeedsToLogInOrRegister,
+          userWalletHasChanged,
+          isCurrentWalletLinked,
+        }) => {
+          /* Network must be defined */
           if (!network) return null;
-
-          /* Delay Hack to prevent flicker of register button on initial render */
-          if (this.state.timeout) return null;
 
           /* If user does not have web3, show "register" */
           if (!network.available) {
@@ -98,41 +83,18 @@ class RegisterButton extends Component {
           }
 
           /* Not on supported network, show "login" */
-          if (!network.supported) {
+          /* Render login if error */
+          if (!network.supported || path(['error'], user)) {
             return ::this.renderButtonWithText(<FormattedMessage id="buttons.login" />);
           }
 
-          /* Render register if no wallet */
-          if (!wallet) return ::this.renderButtonWithText(<FormattedMessage id="buttons.login" />);
+          /* Render null if user loading */
+          if (path(['loading'], user)) return null;
 
-          return (
-            <Query
-              query={queries.viewUserByWallet}
-              variables={{ wallet }}
-              fetchPolicy="no-cache"
-            >
-              {({ data }) => {
-                /* Render null if loading */
-                if (data && data.loading) return null;
-
-                /* Render register if error */
-                if (data && data.error) return ::this.renderButtonWithText(<FormattedMessage id="buttons.register" />);
-
-
-                /* If wallet and user are available, show nothing */
-                if (path(['viewUserByWallet'], data)) {
-                  return null;
-                }
-
-                /* If user is logged into web3 but does not have a user account, show "register" */
-                if (!path(['viewUserByWallet'], data)) {
-                  return ::this.renderButtonWithText(<FormattedMessage id="buttons.register" />);
-                }
-
-                return null;
-              }}
-            </Query>
-          );
+          /* If user wallet is not linked */
+          if (userWalletHasChanged && isCurrentWalletLinked) {
+            return ::this.renderButtonWithText(<FormattedMessage id="global.link-wallet" />);
+          }  
         }}
       </WalletContext.Consumer>
     );
@@ -140,6 +102,4 @@ class RegisterButton extends Component {
 }
 
 
-export default compose(
-  graphql(localQueries.root, { name: 'root' }),
-)(RegisterButton);
+export default RegisterButton;
