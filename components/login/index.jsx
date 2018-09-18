@@ -13,6 +13,7 @@ import {
 import {
   client,
   mutations,
+  queries,
 } from '@/shared/utils/apollo';
 
 import * as bgLocalStorage from '@/client/utils/localStorage';
@@ -78,12 +79,16 @@ class Login extends Component {
       bgLocalStorage.setItem('refreshToken', refreshToken);
       bgLocalStorage.setItem('accessToken', accessToken);
 
+      // add me data into apollo cache
+      const { me } = await client.query({ query: queries.me });
+
       this.props.analytics.ga.event({
         category: 'Site Interaction',
         action: 'Sign-up',
         label: 'Create account',
       });
 
+      // TODO: retrieve global state path and redirect
       Router.push('/');
     });
   }

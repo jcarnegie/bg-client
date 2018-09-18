@@ -2,7 +2,9 @@ import App, { Container } from 'next/app';
 import React from 'react';
 import { Provider as IntlProvider } from 'react-intl-redux';
 import withRedux from 'next-redux-wrapper';
+import Router from 'next/router';
 import * as log from 'loglevel';
+import { pathOr } from 'ramda';
 
 import {
   ApolloProvider,
@@ -32,6 +34,7 @@ import {
 } from '@/shared/utils/network';
 
 import { WalletContext } from '@/shared/utils/context';
+import { AUTH_ROUTES_REGEX } from '@/shared/utils';
 
 import BGReactGA from '@/client/utils/BGReactGA';
 import configureStore from '@/client/utils/store';
@@ -112,6 +115,9 @@ class BGApp extends App {
       });
     }
 
+    const wallets = pathOr([], ['user', 'wallets'], this.props);
+    const path = pathOr('', ['location', 'pathname'], window);
+
     /* Network and wallet polling */
     this.setState({
       interval: window.setInterval(async() => {
@@ -139,6 +145,16 @@ class BGApp extends App {
         );
         /* Network or wallet has changed */
         if (networkHasChanged || walletHasChanged) {
+          // redirect to link wallet if wallet is not in current wallets
+          // TODO: save current pathName
+
+          if (wallets.length === 0 && path && path.match(AUTH_ROUTES_REGEX)) {
+            // TODO: Route guard check
+            Router.replace('/login');
+          } else if (!wallets.includes(currentWallet)) {
+            Router.replace('/link');
+          }
+
           await apolloClient.mutate({
             mutation: localMutations.updateNetworkAndWallet,
             variables: {

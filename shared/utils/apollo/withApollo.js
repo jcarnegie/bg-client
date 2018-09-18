@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { getDataFromTree } from 'react-apollo';
 import Head from 'next/head';
 import { pathOr } from 'ramda';
+import { queries } from '@/shared/utils/apollo';
 
 import * as localStorage from '@/client/utils/localStorage';
 import { initApollo } from './client';
@@ -41,10 +42,15 @@ export default App => {
 
       ctx.ctx.apolloClient = apollo;
 
+      // get user
+      const { data } = await apollo.query({ query: queries.me });
+      const { me } = data;
+
       let appProps = {};
       if (App.getInitialProps) {
         appProps = await App.getInitialProps(ctx);
       }
+      appProps.me = me;
 
       if (res && res.finished) {
         // When redirecting, the response is finished.

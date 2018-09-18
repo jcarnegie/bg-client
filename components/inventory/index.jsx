@@ -314,5 +314,6 @@ export default compose(
   viewGameBySlugQuery,
   listGamesQuery,
   listItemsQuery,
+  graphql(queries.me, { name: 'me' }),
   graphql(localQueries.root, { name: 'root' }),
 )(Inventory);

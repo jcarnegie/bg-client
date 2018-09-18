@@ -14,15 +14,9 @@ import User from '@/components/user';
 
 
 @injectIntl
-@connect(
-  state => ({
-    chat: state.chat,
-  })
-)
 class Header extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
-    chat: PropTypes.object,
   };
 
   navigation() {

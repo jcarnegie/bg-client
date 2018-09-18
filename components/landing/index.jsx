@@ -15,7 +15,6 @@ import {
 import {
   queries,
   localQueries,
-  viewUserByWalletQuery,
 } from '@/shared/utils/apollo';
 
 import {
@@ -355,7 +354,7 @@ class GameList extends Component {
 }
 
 export default compose(
-  viewUserByWalletQuery,
+  graphql(queries.me, { name: 'me' }),
   graphql(queries.listGames, { name: 'games' }),
   graphql(localQueries.root, { name: 'root' })
 )(GameList);
