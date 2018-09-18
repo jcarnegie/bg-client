@@ -40,7 +40,6 @@ import BGReactGA from '@/client/utils/BGReactGA';
 import configureStore from '@/client/utils/store';
 
 import ResizeListener from '@/components/resizelistener';
-import Web3Modals from '@/components/popups/Web3Modals';
 import GlobalStyles from '@/components/GlobalStyles';
 import DataLoading from '@/components/DataLoading';
 import { withMe } from '@/components/wrappers';
@@ -68,7 +67,6 @@ class BGApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
     const { isServer, store } = ctx;
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
-    const web3ModalsProps = Web3Modals.WrappedComponent.getInitialProps(ctx);
     let locals = {};
 
     if (isServer) {
@@ -76,7 +74,7 @@ class BGApp extends App {
       const mobileDetect = mobileParser(req);
       store.dispatch(setMobileDetect(mobileDetect));
     }
-    return { pageProps, web3ModalsProps, locals };
+    return { pageProps, locals };
   }
 
   state = {
@@ -198,16 +196,6 @@ class BGApp extends App {
             <IntlProvider store={store}>
               <>
                 <ResizeListener />
-                <Query query={localQueries.root}>
-                  {({ loading, error, data }) => {
-                    if (loading || error) return null;
-                    return (
-                      <>
-                        <Web3Modals {...web3ModalsProps} />
-                      </>
-                    );
-                  }}
-                </Query>
                 <Component {...pageProps} {...locals} />
               </>
             </IntlProvider>
