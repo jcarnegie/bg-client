@@ -124,11 +124,14 @@ class Register extends Component {
             tokenData,
           } = data.register;
           const {
-            // accessToken,
+            accessToken,
             refreshToken,
           } = tokenData;
 
+          bgLocalStorage.setItem('accessToken', accessToken);
           bgLocalStorage.setItem('refreshToken', refreshToken);
+
+          await client.query({ query: queries.me });
 
           this.props.analytics.ga.event({
             category: 'Site Interaction',
