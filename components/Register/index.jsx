@@ -23,6 +23,7 @@ import DataLoading from '@/components/DataLoading';
 import InputGroupValidation from '@/components/inputs/input.group.validation';
 import NetworkNotSupported from '@/components/NetworkNotSupported';
 import LoginToWeb3 from '@/components/LoginToWeb3';
+import InstallWeb3 from '@/components/InstallWeb3';
 
 import {
   client,
@@ -268,7 +269,7 @@ class Register extends Component {
      if (!root.network) return null;
 
     if (!root.network.available) {
-      return <DataLoading />;
+      return <InstallWeb3 />;
     }
     if (!root.network.supported) {
       return <NetworkNotSupported />;

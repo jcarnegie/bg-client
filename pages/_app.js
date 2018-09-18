@@ -117,7 +117,13 @@ class BGApp extends App {
     /* Network and wallet polling */
     this.setState({
       interval: window.setInterval(async() => {
-        if (!web3IsInstalled()) return;
+        const pathname = pathOr('', ['location', 'pathname'], window);
+        const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
+
+        if (!web3IsInstalled()) {
+          /* Route guard */
+          return isPagePublic ? null : Router.replace('/register');
+        }
         const meQuery = await apolloClient.query({ query: queries.me });
         const { data } = await apolloClient.query({ query: localQueries.root });
         const { network } = data;
@@ -139,8 +145,6 @@ class BGApp extends App {
         const isUserLoggedOutOfMetaMask = (lastWalletUsed && !web3Wallet); /* log out */
         const userNeedsToLogInOrRegister = (!lastWalletUsed && web3Wallet); /* log in */
         const userWalletHasChanged = ((lastWalletUsed !== web3Wallet) && (lastWalletUsed && web3Wallet)); /* Different wallet */
-        const pathname = pathOr('', ['location', 'pathname'], window);
-        const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
         const isCurrentWalletLinked = wallets.includes(web3Wallet);
 
         const walletOutOfSyncWithSession = Boolean(
@@ -185,11 +189,11 @@ class BGApp extends App {
           if (userWalletHasChanged && !isCurrentWalletLinked) {
             return Router.replace('/link');
           }
-          /* Route guard */
-          if (!isPagePublic) {
-            if (isUserLoggedOutOfMetaMask || userNeedsToLogInOrRegister) {
-              return Router.replace('/login');
-            }
+        }
+        /* Route guard */
+        if (!isPagePublic) {
+          if (isUserLoggedOutOfMetaMask || userNeedsToLogInOrRegister) {
+            return Router.replace('/login');
           }
         }
       }, WEB3_ACCOUNT_POLLING_INTERVAL),
