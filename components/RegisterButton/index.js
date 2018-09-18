@@ -83,8 +83,8 @@ class RegisterButton extends Component {
           const { root } = this.props;
           const { network } = root;
 
-          log.info('RegisterButton render. root:', root);
-          log.info('RegisterButton render. network:', network);
+          // log.info('RegisterButton render. root:', root);
+          // log.info('RegisterButton render. network:', network);
 
           /* Network must be defined (apollo cache instantiation issue?) */
           if (!network) return null;

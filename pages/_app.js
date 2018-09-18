@@ -4,7 +4,7 @@ import { Provider as IntlProvider } from 'react-intl-redux';
 import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
 import * as log from 'loglevel';
-import { pathOr } from 'ramda';
+import { path, pathOr } from 'ramda';
 
 import {
   ApolloProvider,
@@ -16,6 +16,7 @@ import { setMobileDetect, mobileParser } from 'react-responsive-redux'
 import withApollo from '@/shared/utils/apollo/withApollo';
 
 import {
+  mutations,
   queries,
   localQueries,
   localMutations,
@@ -113,19 +114,17 @@ class BGApp extends App {
       });
     }
 
-    const wallets = pathOr([], ['me', 'wallets'], this.props);
-    const path = pathOr('', ['location', 'pathname'], window);
-
     /* Network and wallet polling */
     this.setState({
       interval: window.setInterval(async() => {
         if (!web3IsInstalled()) return;
-
+        const meQuery = await apolloClient.query({ query: queries.me });
         const { data } = await apolloClient.query({ query: localQueries.root });
         const { network, wallet } = data;
 
-        log.info('network:', network);
-
+        // log.info('network:', network, 'me: ', me);
+        const me = pathOr({}, ['data', 'me'], meQuery);
+        const wallets = pathOr([], ['wallets'], me);
         const currentNetworkId = await asyncGetNetworkId();
         const currentWallet = getWeb3Wallet();
         const currentNetwork = {
@@ -143,16 +142,6 @@ class BGApp extends App {
         );
         /* Network or wallet has changed */
         if (networkHasChanged || walletHasChanged) {
-          // redirect to link wallet if wallet is not in current wallets
-          // TODO: save current pathName
-
-          if (wallets.length === 0 && path && path.match(AUTH_ROUTES_REGEX)) {
-            // TODO: Route guard check
-            Router.replace('/login');
-          } else if (!wallets.includes(currentWallet)) {
-            Router.replace('/link');
-          }
-
           await apolloClient.mutate({
             mutation: localMutations.updateNetworkAndWallet,
             variables: {
@@ -164,6 +153,32 @@ class BGApp extends App {
             network: currentNetwork,
             wallet: currentWallet,
           });
+        }
+
+        const walletOutOfSyncWithCookie = me && path(['lastWalletUsed'], me) !== currentWallet;
+        // Login state debugging
+        console.log('lastWalletUsed: ', path(['lastWalletUsed'], me), ' currentWallet: ',
+          currentWallet, ' out of sync, update: ', walletOutOfSyncWithCookie)
+        /* Wallet has changed */
+        if (walletOutOfSyncWithCookie) {
+          // redirect to link wallet if wallet is not in current wallets
+          // TODO: save current pathName
+          const path = pathOr('', ['location', 'pathname'], window);
+          if (wallets.length === 0 && path && path.match(AUTH_ROUTES_REGEX)) {
+            // TODO: Route guard check
+            return Router.replace('/login');
+          }
+          if (!wallets.includes(currentWallet)) {
+            // NOTE: figure out how to handle user who does not want to link wallet...
+            // Currently we force them onto the /link page
+            Router.replace('/link');
+          } else {
+            // set current wallet
+            await apolloClient.mutate({
+              mutation: mutations.setCurrentWallet,
+              variables: { wallet: currentWallet },
+            });
+          }
         }
       }, WEB3_ACCOUNT_POLLING_INTERVAL),
     });
