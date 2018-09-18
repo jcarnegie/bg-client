@@ -13,6 +13,7 @@ import {
 import {
   client,
   mutations,
+  queries,
 } from '@/shared/utils/apollo';
 
 import * as bgLocalStorage from '@/client/utils/localStorage';
@@ -70,10 +71,16 @@ class LinkWallets extends Component {
         tokenData,
       } = data.login;
       const {
-        // accessToken,
+        accessToken,
         refreshToken,
       } = tokenData;
+
+      bgLocalStorage.setItem('accessToken', accessToken);
       bgLocalStorage.setItem('refreshToken', refreshToken);
+
+      // add me data into apollo cache
+      const { me } = await client.query({ query: queries.me });
+      console.log('zzz linkWallet me: ', me);
 
       this.props.analytics.ga.event({
         category: 'Site Interaction',

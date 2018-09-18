@@ -51,7 +51,7 @@ export const mutations = {
   linkWallet: gql`
     mutation linkWallet($wallet: String!, $signature: String!) {
       linkWallet(wallet: $wallet, signature: $signature) {
-        user { id }
+        user { id wallets lastWalletUsed }
         tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
       }
     }
@@ -112,7 +112,7 @@ export const queries = {
   me: gql`
     query me {
       me {
-        id nickName language wallets
+        id nickName language wallets lastWalletUsed
       }
     }
   `,
