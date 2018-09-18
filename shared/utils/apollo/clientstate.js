@@ -54,26 +54,14 @@ export const clientState = {
       updateNetworkAndWallet: async(_, { wallet, ...network }, { cache, getCacheKey }) => {
         log.info(`Setting network to ${network.name} with id ${network.id}. Wallet: ${wallet}`);
 
-        if (!wallet) {
-          try {
-            log.info('Trying to manually invalidate user in apollo cache.');
-            delete cache.data.data['User:1'];
-          } catch (e) {
-            log.error(e);
-          }
-        }
-
         let data = {
           network: {
             ...network,
             __typename: 'Network',
           },
-          wallet: (wallet || null),
         };
 
-
         await cache.writeData({ data });
-
 
         // const gasStationResponse = await fetch(ETH_GAS_STATION_ENDPOINT).then(res => res.json());
         // log.info(`Fetched gas from ${ETH_GAS_STATION_ENDPOINT}`);
@@ -87,6 +75,7 @@ export const clientState = {
         //     },
         //   },
         // });
+
         log.info(`Fetched rate from oracle contract on ${name} network.`);
         const ETHPrice = await bluebird.promisify(getOracleContract(network).ETHPrice)();
         const rate = window.web3.fromWei(ETHPrice, 'ether').toNumber();

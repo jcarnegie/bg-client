@@ -44,7 +44,7 @@ class LinkWallets extends Component {
 
     const { data } = await client.mutate({
       mutation: mutations.createSigningMessage,
-      variables: { wallet, action: 'login' },
+      variables: { wallet, action: 'linkWallet' },
     });
 
     const signingMessage = path(['createSigningMessage', 'signingMessage'], data);
@@ -69,7 +69,7 @@ class LinkWallets extends Component {
       const {
         // user,
         tokenData,
-      } = data.login;
+      } = data.linkWallet;
       const {
         accessToken,
         refreshToken,

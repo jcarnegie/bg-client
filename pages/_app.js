@@ -136,14 +136,22 @@ class BGApp extends App {
         };
 
         const networkHasChanged = !network.id || (parseInt(network.id, 10) !== parseInt(currentNetworkId, 10));
-        // TODO: logic has been moved to below
-        const walletHasChanged = Boolean(
-          (wallet && !currentWallet) || /* log out */
-          (!wallet && currentWallet) || /* log in */
-          (wallet !== currentWallet && (wallet || currentWallet)) /* Different wallet */
+        const lastWalletUsed = path(['lastWalletUsed'], me)
+
+        const isUserLoggedOutOfMetaMask = (lastWalletUsed && !currentWallet); /* log out */
+        const userNeedsToLogInOrRegister = (!lastWalletUsed && currentWallet); /* log in */
+        const userWalletHasChanged = ((lastWalletUsed !== currentWallet) && (lastWalletUsed && currentWallet)); /* Different wallet */
+        const pathname = pathOr('', ['location', 'pathname'], window);
+        const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
+        const isCurrentWalletLinked = wallets.includes(currentWallet);
+
+        const walletOutOfSyncWithSession = Boolean(
+          isUserLoggedOutOfMetaMask ||
+          userNeedsToLogInOrRegister ||
+          userWalletHasChanged
         );
         /* Network or wallet has changed */
-        if (networkHasChanged || walletHasChanged) {
+        if (networkHasChanged || walletOutOfSyncWithSession) {
           // TODO: we only need to update the network, wallet will come from me object
           await apolloClient.mutate({
             mutation: localMutations.updateNetworkAndWallet,
@@ -152,38 +160,30 @@ class BGApp extends App {
               wallet: currentWallet,
             },
           });
-          this.setState({
-            network: currentNetwork,
-          });
+          this.setState({ network: currentNetwork, wallet: currentWallet });
         }
 
-        const walletOutOfSyncWithCookie = me && path(['lastWalletUsed'], me) !== currentWallet;
         // Login state debugging
         console.log('lastWalletUsed: ', path(['lastWalletUsed'], me), ' currentWallet: ',
-          currentWallet, ' out of sync, update: ', walletOutOfSyncWithCookie)
+          currentWallet, ' out of sync, update: ', walletOutOfSyncWithSession)
         /* Wallet has changed */
-        if (walletOutOfSyncWithCookie) {
-          // redirect to link wallet if wallet is not in current wallets
-          // TODO: save current pathName
-          const path = pathOr('', ['location', 'pathname'], window);
-          if (wallets.length === 0 && path && path.match(AUTH_ROUTES_REGEX)) {
-            // TODO: Route guard check
-            return Router.replace('/login');
-          }
-          if (!currentWallet && path && path.match(AUTH_ROUTES_REGEX)) {
-            // TODO: ask to login metamask for route-guarded page and no metamask wallet detected
-            Router.replace('/login');
-          }
-          if (!wallets.includes(currentWallet)) {
-            // NOTE: figure out how to handle user who does not want to link wallet...
-            // Currently we force them onto the /link page
-            Router.replace('/link');
-          } else {
-            // set current wallet
+        if (walletOutOfSyncWithSession) {
+          if (userWalletHasChanged && isCurrentWalletLinked) {
+            /* Update session */
             await apolloClient.mutate({
               mutation: mutations.setCurrentWallet,
               variables: { currentWallet },
             });
+          }
+          /* Send user to link wallet */
+          if (userWalletHasChanged && !isCurrentWalletLinked) {
+            return Router.replace('/link');
+          }
+          /* Route guard */
+          if (!isPagePublic) {
+            if (isUserLoggedOutOfMetaMask || userNeedsToLogInOrRegister) {
+              return Router.replace('/login');
+            }
           }
         }
       }, WEB3_ACCOUNT_POLLING_INTERVAL),
@@ -205,10 +205,6 @@ class BGApp extends App {
       apolloClient,
       me,
     } = this.props;
-
-    const {
-      wallet,
-    } = this.state;
 
     const wallet = path(['lastWalletUsed'], me);
     console.log('zzz remove wallet state wallet: ', wallet);

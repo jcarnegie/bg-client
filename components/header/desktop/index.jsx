@@ -137,7 +137,7 @@ class Header extends Component {
   }
 
   render() {
-    console.log('zzz nav desktop props: ', this.props);
+    // console.log('zzz nav desktop props: ', this.props);
     return (
       <header className="header">
         <style jsx>{`
