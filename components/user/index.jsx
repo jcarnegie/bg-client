@@ -25,6 +25,7 @@ class User extends Component {
   };
 
   truncatedField(str = '') {
+    if (!str) return null;
     return str.length > 10 ? `${str.substring(0, 10)}...` : str;
   }
 

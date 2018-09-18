@@ -92,17 +92,11 @@ export const mutations = {
       }
     }
   `,
-  createUser: gql`
-    mutation createUser($payload: UserCreatePayload!) {
-      createUser(payload: $payload) {
-        id wallet nickName email language wallets lastWalletUsed
-      }
-    }
-  `,
   updateUser: gql`
     mutation updateUser($id: ID!, $payload: UserUpdatePayload!) {
       updateUser(id: $id, payload: $payload) {
-        id wallet nickName email language wallets lastWalletUsed
+        user { id nickName language wallets }
+        tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
       }
     }
   `,
@@ -301,24 +295,8 @@ export const listMarketplaceItemsQuery = graphql(queries.listMarketplaceItems, {
   },
 });
 
-export const createUser = async(locale, data) => {
-  const newUser = merge(data, { language: locale });
-  const userFields = [
-    'wallet',
-    'email',
-    'nickName',
-    'language',
-    'wallets',
-    'lastWalletUsed',
-  ];
-  const variables = { payload: pickAll(userFields, newUser) };
-  return client.mutate({ mutation: mutations.createUser, variables });
-};
-
-export const updateUser = async(user, newUser) => {
-  const { data } = await client.query({ query: queries.viewUserByWallet, variables: { wallet: getWeb3Wallet() } });
-  const { viewUserByWallet } = data;
-  const variables = { id: viewUserByWallet.id, payload: dissoc('__typename', merge(viewUserByWallet, newUser)) };
+export const updateUser = async(id, payload) => {
+  const variables = { id, payload: dissoc('__typename', payload) };
   return client.mutate({
     mutation: mutations.updateUser,
     variables,

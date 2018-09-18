@@ -33,7 +33,7 @@ class Language extends Component {
 
     document.documentElement.setAttribute('lang', language);
     const me = path(['me'], user);
-    if (me) updateUser(me, { language });
+    if (me) updateUser(me.id, { language });
 
     if (refreshRoutes.includes(route)) window.location.reload();
   }
