@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import { getDataFromTree } from 'react-apollo';
 import Head from 'next/head';
 import { pathOr } from 'ramda';
-import { queries } from '@/shared/utils/apollo';
-
 import * as localStorage from '@/client/utils/localStorage';
+import redirect from '@/shared/utils/redirect';
+import { queries } from '@/shared/utils/apollo';
+import { web3IsInstalled } from '@/shared/utils/network';
 import { initApollo } from './client';
 
 export let client = null;
@@ -27,7 +28,7 @@ const getToken = req => {
   } else {
     return parseCookies(req).accessToken;
   }
-}
+};
 
 export default App => {
   return class WithData extends React.Component {
@@ -35,6 +36,7 @@ export default App => {
     static propTypes = { apolloState: PropTypes.object.isRequired }
 
     static async getInitialProps(ctx) {
+      console.log('withApollo.getInitialProps');
       const { Component, router, ctx: { req, res } } = ctx;
       const apollo = initApollo({}, {
         getToken: () => getToken(req),

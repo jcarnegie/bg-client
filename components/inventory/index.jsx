@@ -215,6 +215,7 @@ class Inventory extends Component {
 	render() {
     const { items, games, root } = this.props;
     const { network } = root;
+    return null;
     return (
       <Query
         query={queries.viewUserByWallet}

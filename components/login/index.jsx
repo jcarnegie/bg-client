@@ -87,7 +87,7 @@ class Login extends Component {
         label: 'Create account',
       });
       const referrer = pathOr('/', ['query', 'pathname'], this.props);
-      Router.replace(referrer, referrer);
+      Router.replace(referrer);
     });
   }
 
