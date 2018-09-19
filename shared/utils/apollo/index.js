@@ -195,9 +195,19 @@ export const localQueries = {
 };
 
 export const localMutations = {
-  updateNetworkAndWallet: gql`
-    mutation updateNetworkAndWallet($id: Int!, $available: Boolean!, $name: String!, $supported: Boolean!, $wallet: String) {
-      updateNetworkAndWallet(id: $id, available: $available, name: $name, supported: $supported, wallet: $wallet) @client
+  updateWallet: gql`
+    mutation updateWallet($wallet: String) {
+      updateWallet(wallet: $wallet) @client
+    }
+  `,
+  updateUserBalances: gql`
+    mutation updateUserBalances {
+      updateUserBalances @client
+    }
+  `,
+  updateNetwork: gql`
+    mutation updateNetwork($id: Int!, $available: Boolean!, $name: String!, $supported: Boolean!) {
+      updateNetwork(id: $id, available: $available, name: $name, supported: $supported) @client
     }
   `,
   updateLatestBlock: gql`

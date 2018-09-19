@@ -144,8 +144,8 @@ class Register extends Component {
             label: 'Create account',
           });
 
-          // TODO - redirect to last context / requested route
-          Router.push('/');
+          const referrer = pathOr('/', ['query', 'pathname'], this.props);
+          Router.replace(referrer, referrer);
         });
       });
     });

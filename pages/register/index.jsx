@@ -5,6 +5,10 @@ import Register from '@/components/Register';
 
 
 class RegisterPage extends Component {
+  static getInitialProps({ query }) {
+    return { query };
+  }
+
   render() {
     return (
       <Layout showFooter={false}>

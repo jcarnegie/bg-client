@@ -5,6 +5,9 @@ import LinkWallets from '@/components/link';
 
 
 class LinkWalletsPage extends Component {
+  static getInitialProps({ query }) {
+    return { query };
+  }
   render() {
     return (
       <Layout showFooter={false}>

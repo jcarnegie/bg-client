@@ -5,6 +5,10 @@ import Login from '@/components/login';
 
 
 class LoginPage extends Component {
+  static getInitialProps({ query }) {
+    return { query };
+  }
+
   render() {
     return (
       <Layout showFooter={false}>

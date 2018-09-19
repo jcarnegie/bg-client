@@ -51,9 +51,28 @@ export const clientState = {
         });
         return null;
       },
-      updateNetworkAndWallet: async(_, { wallet, ...network }, { cache, getCacheKey }) => {
-        log.info(`Setting network to ${network.name} with id ${network.id}. Wallet: ${wallet}`);
-
+      updateUserBalances: async(_, $, { cache, getCacheKey }) => {
+        const { network, wallet } = await cache.readQuery({ query: localQueries.root });
+        console.log('updateUserBalances data: ', network, wallet);
+        if (!network || !wallet) return null;
+        let balanceETH = 0;
+        let balancePLAT = 0;
+        const balanceResponseETH = await bluebird.promisify(window.web3.eth.getBalance)(wallet);
+        balanceETH = window.web3.fromWei(balanceResponseETH, 'ether').toNumber();
+        const balanceResponsePLAT = await bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(wallet);
+        balancePLAT = window.web3.fromWei(balanceResponsePLAT, 'ether').toNumber();
+        await cache.writeData({ data: { balanceETH, balancePLAT } });
+      },
+      updateWallet: async(_, { wallet }, { cache, getCacheKey }) => {
+        console.log('updateWallet wallet: ', wallet);
+        if (!wallet) return null;
+        log.info(`Setting wallet to ${wallet}.`);
+        await cache.writeData({ data: { wallet } });
+        return null;
+      },
+      updateNetwork: async(_, { ...network }, { cache, getCacheKey }) => {
+        console.log('updateNetwork network: ', network);
+        log.info(`Setting network to ${network.name} with id ${network.id}.`);
         let data = {
           network: {
             ...network,
@@ -81,18 +100,6 @@ export const clientState = {
         const rate = window.web3.fromWei(ETHPrice, 'ether').toNumber();
         await cache.writeData({ data: { rate } });
         log.info(`Set rate to ${rate.toString()}.`);
-        if (!web3IsInstalled()) return null;
-        if (networkIsSupported(network)) {
-          let balanceETH = 0;
-          let balancePLAT = 0;
-          if (wallet) {
-            const balanceResponseETH = await bluebird.promisify(window.web3.eth.getBalance)(wallet);
-            balanceETH = window.web3.fromWei(balanceResponseETH, 'ether').toNumber();
-            const balanceResponsePLAT = await bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(wallet);
-            balancePLAT = window.web3.fromWei(balanceResponsePLAT, 'ether').toNumber();
-          }
-          await cache.writeData({ data: { balanceETH, balancePLAT } });
-        }
         return null;
       },
       toggleUserRegistrationWorkflow: async(_, { on = null }, { cache, getCacheKey }) => {

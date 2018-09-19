@@ -93,7 +93,7 @@ class RegisterButton extends Component {
 
           /* If user wallet is not linked */
           if (userWalletHasChanged && isCurrentWalletLinked) {
-            return ::this.renderButtonWithText(<FormattedMessage id="global.link-wallet" />);
+            return null;
           }  
         }}
       </WalletContext.Consumer>
