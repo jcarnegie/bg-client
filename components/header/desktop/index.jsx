@@ -24,7 +24,7 @@ import {
   queries,
 } from '@/shared/utils/apollo';
 import {
-  WalletContext,
+  GlobalContext,
 } from '@/shared/utils/context';
 
 @injectIntl
@@ -145,7 +145,7 @@ class Header extends Component {
 
   render() {
     return (
-      <WalletContext.Consumer>
+      <GlobalContext.Consumer>
         {({
           web3Wallet,
           network,
@@ -175,7 +175,7 @@ class Header extends Component {
             </header>
           );
         }}
-      </WalletContext.Consumer>
+      </GlobalContext.Consumer>
     );
   }
 }

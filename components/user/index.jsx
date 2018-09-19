@@ -6,7 +6,7 @@ import cx from 'classnames';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 
 import {
-  WalletContext,
+  GlobalContext,
 } from '@/shared/utils/context';
 
 import style from '@/shared/constants/style';
@@ -44,7 +44,7 @@ class User extends Component {
     const nickName = path(['nickName'], me);
 
     return (
-      <WalletContext.Consumer>
+      <GlobalContext.Consumer>
         {({ web3Wallet }) => {
           return (
             <div className="user">
@@ -114,7 +114,7 @@ class User extends Component {
             </div>
           );
         }}
-      </WalletContext.Consumer>
+      </GlobalContext.Consumer>
     );
   }
 }

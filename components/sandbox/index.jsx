@@ -15,7 +15,7 @@ import {
 } from '@/shared/utils/apollo';
 
 import {
-  WalletContext,
+  GlobalContext,
 } from '@/shared/utils/context';
 
 import DataLoading from '@/components/DataLoading';
@@ -76,7 +76,7 @@ class SandBox extends Component {
             display: block;
           }
         `}</style>
-        <WalletContext.Consumer>
+        <GlobalContext.Consumer>
           {({ web3Wallet }) => {
             if (!web3Wallet) return <DataLoading />;
             return (
@@ -94,7 +94,7 @@ class SandBox extends Component {
               </Query>
             );
           }}
-        </WalletContext.Consumer>
+        </GlobalContext.Consumer>
       </div>
     );
   }

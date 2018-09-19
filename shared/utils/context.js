@@ -1,13 +1,8 @@
 import React from 'react';
 
-export const WalletContext = React.createContext({ wallet: null });
+export const GlobalContext = React.createContext({
+  me: null,
+  wallet: null,
+  // Todo: set other defaults in future?
+});
 
-export const withWallet = Component => function ComponentWithWallet(props) {
-  return (
-    <WalletContext.Consumer>
-      {({ wallet }) => {
-        return <Component {...props} wallet={wallet} />;
-      }}
-    </WalletContext.Consumer>
-  );
-};

@@ -11,7 +11,7 @@ import withFormHelper from '@/components/inputs/withFormHelper';
 import { withRoot } from '@/components/wrappers';
 import { localization } from '@/shared/intl/setup';
 import {
-  WalletContext,
+  GlobalContext,
 } from '@/shared/utils/context';
 import {
   email as emailPlaceholder,
@@ -295,7 +295,7 @@ class Register extends Component {
     const mobile = layout.type.mobile;
 
     return (
-      <WalletContext.Consumer>
+      <GlobalContext.Consumer>
         {({
           web3Wallet,
           network,
@@ -348,7 +348,7 @@ class Register extends Component {
             </div>
           );
         }}
-      </WalletContext.Consumer>
+      </GlobalContext.Consumer>
     );
   }
 }

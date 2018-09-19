@@ -34,7 +34,7 @@ import {
   networkIdIsSupported,
 } from '@/shared/utils/network';
 
-import { WalletContext } from '@/shared/utils/context';
+import { GlobalContext } from '@/shared/utils/context';
 import { AUTH_ROUTES_REGEX } from '@/shared/utils';
 
 import BGReactGA from '@/client/utils/BGReactGA';
@@ -116,14 +116,37 @@ class BGApp extends App {
 
     /* Network and wallet polling */
     this.setState({
-      walletInterval:  window.setInterval(async() => {
+      walletInterval: window.setInterval(async() => {
+        // metamask not installed --> redirect to /register
+        // metamask installed, logged out --> redirect to /login
+        // wallet changed --> update user balance, either setCurrentWallet or redirect to /link
+        // network changed --> update localStorage for network, update user balance
+
+        // if (mmNotInstalled()) {
+
+        // }
+
+        // if (mmLoggedOut()) {
+
+        // }
+
+        // if (userWalletHasChanged()) {
+        //   await updateUserBalances();
+        //   await setCurrentWallet();
+        //   redirect('/link');
+        // }
+
+        // if (networkChanged()) {
+
+        // }
+
+        const pathname = pathOr('', ['location', 'pathname'], window);
+        const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
+
         if (!web3IsInstalled()) {
           /* Route guard */
           return isPagePublic ? null : Router.replace('/register');
         }
-        const pathname = pathOr('', ['location', 'pathname'], window);
-        const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
-
         const meQuery = await apolloClient.query({ query: queries.me });
         const { data } = await apolloClient.query({ query: localQueries.root });
         console.log('walletInterval data: ', data);
@@ -133,7 +156,7 @@ class BGApp extends App {
         const wallets = pathOr([], ['wallets'], me);
         const web3Wallet = getWeb3Wallet();
 
-        const lastWalletUsed = path(['lastWalletUsed'], me)
+        const lastWalletUsed = path(['lastWalletUsed'], me);
 
         const isUserLoggedOutOfMetaMask = Boolean(!web3Wallet);
         const userNeedsToLogInOrRegister = Boolean(!lastWalletUsed && web3Wallet);
@@ -247,7 +270,7 @@ class BGApp extends App {
     return (
       <Container>
         <GlobalStyles style={style} />
-        <WalletContext.Provider
+        <GlobalContext.Provider
           value={{
             network,
             web3Wallet,
@@ -256,6 +279,7 @@ class BGApp extends App {
             userNeedsToLogInOrRegister,
             userWalletHasChanged,
             isCurrentWalletLinked,
+            me,
           }}
         >
           <ApolloProvider client={apolloClient}>
@@ -266,7 +290,7 @@ class BGApp extends App {
               </>
             </IntlProvider>
           </ApolloProvider>
-        </WalletContext.Provider>
+        </GlobalContext.Provider>
       </Container>
     );
   }

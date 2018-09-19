@@ -8,7 +8,7 @@ import Router from 'next/router';
 
 import BGButton from '@/components/bgbutton';
 import {
-  WalletContext,
+  GlobalContext,
 } from '@/shared/utils/context';
 import {
   client,
@@ -188,7 +188,7 @@ class Login extends Component {
     const mobile = layout.type.mobile;
 
     return (
-      <WalletContext.Consumer>
+      <GlobalContext.Consumer>
         {({
           web3Wallet,
           network,
@@ -278,7 +278,7 @@ class Login extends Component {
             </div>
           );
         }}
-      </WalletContext.Consumer>
+      </GlobalContext.Consumer>
     );
   }
 }

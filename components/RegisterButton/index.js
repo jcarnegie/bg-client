@@ -16,7 +16,7 @@ import {
   localMutations,
 } from '@/shared/utils/apollo';
 
-import { WalletContext } from '@/shared/utils/context';
+import { GlobalContext } from '@/shared/utils/context';
 
 
 class RegisterButton extends Component {
@@ -64,7 +64,7 @@ class RegisterButton extends Component {
   render() {
     const { user } = this.props;
     return (
-      <WalletContext.Consumer>
+      <GlobalContext.Consumer>
         {({
           web3Wallet,
           network,
@@ -96,7 +96,7 @@ class RegisterButton extends Component {
             return null;
           }  
         }}
-      </WalletContext.Consumer>
+      </GlobalContext.Consumer>
     );
   }
 }
