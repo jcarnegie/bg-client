@@ -9,6 +9,7 @@ import redirect from '@/shared/utils/redirect';
 import { queries } from '@/shared/utils/apollo';
 import { web3IsInstalled } from '@/shared/utils/network';
 import { initApollo } from './client';
+import { AUTH_ROUTES_REGEX } from '@/shared/utils';
 
 export let client = null;
 
@@ -47,6 +48,15 @@ export default App => {
       // get user
       const { data } = await apollo.query({ query: queries.me });
       const { me } = data;
+
+      // route guard
+      const pathname = pathOr('', ['url'], req);
+      const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
+      const hasSession = pathOr(false, ['id'], me);
+
+      if (!hasSession && !isPagePublic) {
+        redirect(ctx.ctx, '/login');
+      }
 
       let appProps = {};
       if (App.getInitialProps) {
