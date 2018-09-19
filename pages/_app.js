@@ -107,7 +107,7 @@ class BGApp extends App {
 
   isWalletLinked(wallet, me) {
     const wallets = pathOr([], ['wallets'], me);
-    return !contains(wallet, wallets);
+    return contains(wallet, wallets);
   }
 
   async networkAndWalletPoller() {
@@ -143,7 +143,7 @@ class BGApp extends App {
       console.log('calling updateUserBalances mutation');
       await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
       if (this.hasSession(me)) {
-        if (this.isWalletLinked(me, web3Wallet)) {
+        if (!this.isWalletLinked(me, web3Wallet)) {
           console.log('redirecting to link wallet page');
           redirect({}, '/link');
         } else {
