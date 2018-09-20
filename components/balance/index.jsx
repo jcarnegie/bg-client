@@ -25,9 +25,9 @@ class Balance extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     layout: PropTypes.object,
-    balanceETH: PropTypes.float,
-    balancePLAT: PropTypes.integer,
-    rate: PropTypes.integer,
+    balanceETH: PropTypes.number,
+    balancePLAT: PropTypes.number,
+    rate: PropTypes.number,
     user: PropTypes.object,
   };
   static defaultProps = {

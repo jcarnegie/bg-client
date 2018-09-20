@@ -110,11 +110,68 @@ class BGApp extends App {
     return contains(wallet, wallets);
   }
 
+  async networkChanged(currentNetworkId) {
+    const { apolloClient } = this.props;
+    const { data } = await apolloClient.query({
+      query: localQueries.root,
+    });
+    const network = pathOr({}, ['network'], data);
+    return !network.id || (parseInt(network.id, 10) !== parseInt(currentNetworkId, 10));
+  }
+
+  async handleWalletHasChanged(me, web3Wallet) {
+    const { apolloClient } = this.props;
+    log.info('calling updateUserBalances mutation');
+    await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
+    if (this.hasSession(me)) {
+      if (!this.isWalletLinked(me, web3Wallet)) {
+        log.ingo('redirecting to link wallet page');
+        redirect({}, '/link');
+      } else {
+        await apolloClient.mutate({
+          mutation: mutations.setCurrentWallet,
+          variables: {
+            currentWallet: web3Wallet,
+          },
+        });
+      }
+    }
+    const isCurrentWalletLinked = this.isWalletLinked(me, web3Wallet);
+    this.setState({
+      web3Wallet,
+      isCurrentWalletLinked,
+    });
+  }
+
+  async handleNetworkChanged(currentNetworkId, web3Wallet) {
+    const { apolloClient } = this.props;
+    log.info('network changed:', currentNetworkId);
+    const currentNetwork = {
+      id: currentNetworkId,
+      name: networkIdToName(currentNetworkId),
+      supported: networkIdIsSupported(currentNetworkId),
+      available: true,
+    };
+    await apolloClient.mutate({
+      mutation: localMutations.updateNetwork,
+      variables: {
+        ...currentNetwork,
+      },
+    });
+    if (web3Wallet) {
+      await apolloClient.mutate({
+        mutation: localMutations.updateUserBalances,
+      });
+    }
+  }
+
+  /**
+   * metamask not installed --> redirect to /register
+   * metamask installed, logged out --> redirect to /login
+   * wallet changed --> update user balance, either setCurrentWallet or redirect to /link
+   * network changed --> update localStorage for network, update user balance
+   */
   async networkAndWalletPoller() {
-    // metamask not installed --> redirect to /register
-    // metamask installed, logged out --> redirect to /login
-    // wallet changed --> update user balance, either setCurrentWallet or redirect to /link
-    // network changed --> update localStorage for network, update user balance
     const { apolloClient } = this.props;
     const pathname = pathOr('', ['location', 'pathname'], window);
     const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
@@ -134,149 +191,40 @@ class BGApp extends App {
       redirect({}, '/login');
     }
 
+    const currentNetworkId = await asyncGetNetworkId();
     const meQuery = await apolloClient.query({ query: queries.me });
     const me = pathOr({}, ['data', 'me'], meQuery);
     const web3Wallet = getWeb3Wallet();
-    const isCurrentWalletLinked = this.isWalletLinked(me, web3Wallet);
 
-    const hasChanged = this.userWalletHasChanged(me);
-    if (hasChanged) {
-      console.log('calling updateUserBalances mutation');
-      await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
-      if (this.hasSession(me)) {
-        if (!isCurrentWalletLinked) {
-          console.log('redirecting to link wallet page');
-          redirect({}, '/link');
-        } else {
-          await apolloClient.mutate({
-            mutation: mutations.setCurrentWallet,
-            variables: {
-              currentWallet: web3Wallet,
-            },
-          });
-        }
-      }
-      this.setState({
-        web3Wallet,
-        isCurrentWalletLinked,
-      });
+    if (this.userWalletHasChanged(me)) {
+      await this.handleWalletHasChanged(me, web3Wallet);
     }
 
-    // if (networkChanged()) {
+    if (await this.networkChanged(currentNetworkId)) {
+      await this.handleNetworkChanged(currentNetworkId, web3Wallet);
+    }
 
-    // }
-
-    
-    // const { data } = await apolloClient.query({
-    //   query: localQueries.root
-    // });
-    // console.log('walletInterval data: ', data);
-    // const { network } = data;
-
-    // const me = pathOr({}, ['data', 'me'], meQuery);
-    // const wallets = pathOr([], ['wallets'], me);
-    // const web3Wallet = getWeb3Wallet();
-
-    // const lastWalletUsed = path(['lastWalletUsed'], me);
-
-    // const isUserLoggedOutOfMetaMask = Boolean(!web3Wallet);
-    // const userNeedsToLogInOrRegister = Boolean(!lastWalletUsed && web3Wallet);
-    // const userWalletHasChanged = Boolean((lastWalletUsed !== web3Wallet) && (lastWalletUsed && web3Wallet)); /* Different wallet */
-    // const isCurrentWalletLinked = Boolean(wallets.includes(web3Wallet));
-
-    // const walletOutOfSyncWithSession = Boolean(
-    //   isUserLoggedOutOfMetaMask ||
-    //   userNeedsToLogInOrRegister ||
-    //   userWalletHasChanged
-    // );
-
-    // if (web3Wallet !== this.state.web3Wallet) {
-    //   await apolloClient.mutate({
-    //     mutation: localMutations.updateWallet,
-    //     variables: {
-    //       wallet: web3Wallet
-    //     },
-    //   });
-    //   if (network) {
-    //     await apolloClient.mutate({
-    //       mutation: localMutations.updateUserBalances
-    //     });
-    //   }
-    //   this.setState({
-    //     web3Wallet,
-    //     isUserLoggedOutOfMetaMask,
-    //     userNeedsToLogInOrRegister,
-    //     userWalletHasChanged,
-    //     isCurrentWalletLinked,
-    //   });
-    // }
-
-    // /* Wallet has changed */
-    // if (walletOutOfSyncWithSession) {
-    //   if (userWalletHasChanged && isCurrentWalletLinked) {
-    //     /* Update session */
-    //     await apolloClient.mutate({
-    //       mutation: mutations.setCurrentWallet,
-    //       variables: {
-    //         currentWallet: web3Wallet
-    //       },
-    //     });
-    //   }
-    //   /* Send user to link wallet */
-    //   if (userWalletHasChanged && !isCurrentWalletLinked) {
-    //     return Router.replace({
-    //       pathname: '/link',
-    //       query: { pathname }
-    //     }, '/link');
-    //   }
-    // }
-    // /* Route guard */
-    // if (!isPagePublic) {
-    //   if (isUserLoggedOutOfMetaMask || userNeedsToLogInOrRegister) {
-    //     return Router.replace({
-    //       pathname: '/login',
-    //       query: { pathname }
-    //     }, '/login');
-    //   }
-    // }
     setTimeout(::this.networkAndWalletPoller, WEB3_ACCOUNT_POLLING_INTERVAL);
   }
 
-  async networkPoller() {
+  async componentWillMount() {
+    // Initialize Apollo local cache
     const { apolloClient } = this.props;
-    const { data } = await apolloClient.query({
-      query: localQueries.root
-    });
-    console.log('networkInterval data: ', data);
-    const network = pathOr({}, ['network'], data);
-    const currentNetworkId = await asyncGetNetworkId();
-    const currentNetwork = {
-      id: currentNetworkId,
-      name: networkIdToName(currentNetworkId),
-      supported: networkIdIsSupported(currentNetworkId),
-      available: true,
-    };
-    const networkHasChanged = !network.id || (parseInt(network.id, 10) !== parseInt(currentNetworkId, 10));
+    const meQuery = await apolloClient.query({ query: queries.me });
+    const me = pathOr({}, ['data', 'me'], meQuery);
     const web3Wallet = getWeb3Wallet();
-    /* Network or wallet has changed */
-    if (networkHasChanged) {
-      // TODO: we only need to update the network, wallet will come from me object
-      await apolloClient.mutate({
-        mutation: localMutations.updateNetwork,
-        variables: {
-          ...currentNetwork,
-        },
-      });
-      if (web3Wallet) {
-        await apolloClient.mutate({
-          mutation: localMutations.updateUserBalances
-        });
+    this.setState({
+      isCurrentWalletLinked: contains(web3Wallet, me.wallets),
+    });
+    const result1 = await apolloClient.mutate({
+      mutation: localMutations.updateWallet,
+      variables: {
+        wallet: web3Wallet,
       }
-      this.setState({
-        network: currentNetwork,
-      });
-    }
-    setTimeout(::this.networkPoller, WEB3_ACCOUNT_POLLING_INTERVAL);
+    });
+    log.info('updateWallet:', result1);
+    const result2 = await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
+    log.info('updateUserBalances:', result2);
   }
 
   componentDidMount() {
@@ -317,17 +265,10 @@ class BGApp extends App {
     }
   }
 
-  componentWillUnmount() {
-    window.clearInterval(this.state.networkInterval);
-    window.clearInterval(this.state.walletInterval);
-    this.setState({ networkInterval: null, walletInterval: null });
-  }
-
   render() {
     const {
       Component,
       pageProps,
-      web3ModalsProps,
       store,
       locals,
       apolloClient,

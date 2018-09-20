@@ -23,9 +23,9 @@ if (typeof global !== 'undefined') {
 export const uri = () => {
   if (process.env.DEPLOYED_ENV === 'local') {
     return process.browser ? 'http://127.0.0.1:5000/api/' : process.env.API_URL;
-  }  
+  }
   return process.browser ? '/api/' : (process.env.API_URL || 'http://api:7000/api/');
-}
+};
 
 let apolloClient = null;
 
@@ -89,6 +89,8 @@ const create = (initialState, { getToken }) => {
 };
 
 export const initApollo = (initialState, options) => {
+  log.info('in initApollo');
+  log.info('clientState:', clientState);
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (!process.browser) {

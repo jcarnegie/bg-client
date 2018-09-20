@@ -2,7 +2,7 @@ import * as log from 'loglevel';
 import bluebird from 'bluebird';
 import {
   web3IsInstalled,
-  networkIsSupported,
+  getWeb3Wallet,
   getOracleContract,
   getBitGuildTokenContract,
 } from '@/shared/utils/network';
@@ -11,7 +11,7 @@ import { typeDefs } from './typedefs';
 
 export const clientState = {
   defaults: {
-    wallet: null,
+    wallet: getWeb3Wallet(),
     rate: null,
     gifts: [],
     balanceETH: 0,
@@ -52,8 +52,9 @@ export const clientState = {
         return null;
       },
       updateUserBalances: async(_, $, { cache, getCacheKey }) => {
+        log.info('in updateUserBalances');
         const { network, wallet } = await cache.readQuery({ query: localQueries.root });
-        console.log('updateUserBalances data: ', network, wallet);
+        log.info('updateUserBalances data: ', network, wallet);
         if (!network || !wallet) return null;
         let balanceETH = 0;
         let balancePLAT = 0;
@@ -61,17 +62,19 @@ export const clientState = {
         balanceETH = window.web3.fromWei(balanceResponseETH, 'ether').toNumber();
         const balanceResponsePLAT = await bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(wallet);
         balancePLAT = window.web3.fromWei(balanceResponsePLAT, 'ether').toNumber();
+        log.info('balanceETH:', balanceETH);
+        log.info('balancePLAT:', balancePLAT);
         await cache.writeData({ data: { balanceETH, balancePLAT } });
       },
       updateWallet: async(_, { wallet }, { cache, getCacheKey }) => {
-        console.log('updateWallet wallet: ', wallet);
+        log.info('updateWallet wallet: ', wallet);
         if (!wallet) return null;
         log.info(`Setting wallet to ${wallet}.`);
         await cache.writeData({ data: { wallet } });
         return null;
       },
       updateNetwork: async(_, { ...network }, { cache, getCacheKey }) => {
-        console.log('updateNetwork network: ', network);
+        log.info('updateNetwork network: ', network);
         log.info(`Setting network to ${network.name} with id ${network.id}.`);
         let data = {
           network: {
