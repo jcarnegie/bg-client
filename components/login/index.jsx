@@ -120,6 +120,7 @@ class Login extends Component {
             height: 45px;
             font-size: 14px;
             font-weight: 300;
+            text-align: center;
           }
           .login-register-route {
             width: ${mobile ? '100%' : '50%'};
