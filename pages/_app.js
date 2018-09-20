@@ -137,13 +137,14 @@ class BGApp extends App {
     const meQuery = await apolloClient.query({ query: queries.me });
     const me = pathOr({}, ['data', 'me'], meQuery);
     const web3Wallet = getWeb3Wallet();
+    const isCurrentWalletLinked = this.isWalletLinked(me, web3Wallet);
 
     const hasChanged = this.userWalletHasChanged(me);
     if (hasChanged) {
       console.log('calling updateUserBalances mutation');
       await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
       if (this.hasSession(me)) {
-        if (!this.isWalletLinked(me, web3Wallet)) {
+        if (!isCurrentWalletLinked) {
           console.log('redirecting to link wallet page');
           redirect({}, '/link');
         } else {
@@ -155,7 +156,10 @@ class BGApp extends App {
           });
         }
       }
-      this.setState({ web3Wallet });
+      this.setState({
+        web3Wallet,
+        isCurrentWalletLinked,
+      });
     }
 
     // if (networkChanged()) {
