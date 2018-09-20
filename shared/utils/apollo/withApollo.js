@@ -55,7 +55,7 @@ export default App => {
       const hasSession = pathOr(false, ['id'], me);
       const hasAccessToken = pathOr(false, ['cookies', 'accessToken'], req);
 
-      if (!hasAccessToken) {
+      if (!process.browser && hasAccessToken && !hasSession) {
         redirect(ctx.ctx, '/refreshtoken');
       }
       if (!hasSession && !isPagePublic) {
