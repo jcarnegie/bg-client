@@ -48,6 +48,7 @@ import style from '@/shared/constants/style';
 import {
   APP_INIT,
   APP_RESIZE,
+  APP_LAYOUT_SET_DEFAULTS,
   GA_CREATE,
 } from '@/shared/constants/actions';
 
@@ -68,13 +69,13 @@ class BGApp extends App {
     const { isServer, store } = ctx;
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     let locals = {};
-
+    let mobileDetect = {};
     if (isServer) {
       const { req } = ctx;
-      const mobileDetect = mobileParser(req);
+      mobileDetect = mobileParser(req);
       store.dispatch(setMobileDetect(mobileDetect));
     }
-    return { pageProps, locals };
+    return { pageProps, locals, mobileDetect };
   }
 
   state = {
@@ -190,7 +191,13 @@ class BGApp extends App {
   }
 
   async componentWillMount() {
+    const { store, mobileDetect } = this.props;
+    store.dispatch({
+      type: APP_LAYOUT_SET_DEFAULTS,
+      payload: { type: mobileDetect },
+    });
     if (!process.browser) return null;
+    this.props.store.dispatch({ type: APP_RESIZE });
     const web3Wallet = getWeb3Wallet();
 
     if (!this.isPagePublic()) {
@@ -222,12 +229,12 @@ class BGApp extends App {
   }
 
   componentDidMount() {
-    this.props.store.dispatch({ type: APP_INIT });
-    this.props.store.dispatch({ type: APP_RESIZE });
-    const state = this.props.store.getState();
+    const { store } = this.props;
+    store.dispatch({ type: APP_INIT });
+    const state = store.getState();
     const { apolloClient } = this.props;
     /* Bootstrap Google Analytics */
-    this.props.store.dispatch({
+    store.dispatch({
       type: GA_CREATE,
       payload: new BGReactGA(process.env.GOOGLE_ANALYTICS_TRACKING_ID),
     });

@@ -1,5 +1,7 @@
+import { merge } from 'ramda';
 import {
   APP_RESIZE,
+  APP_LAYOUT_SET_DEFAULTS,
   SHOW_CONVERT_MODAL,
   LAYOUT_MOBILE_MENU_SHOW,
 } from '@/shared/constants/actions';
@@ -27,6 +29,8 @@ export default function itemsReducer(state = layout, action) {
       return Object.assign({}, state, {
         showMenu: action.payload.showMenu,
       });
+    case APP_LAYOUT_SET_DEFAULTS:
+      return Object.assign({}, state, { type: merge(state.type, action.payload.type) });
     case APP_RESIZE:
       const { innerWidth } = window;
       const { innerHeight } = window;
