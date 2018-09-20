@@ -53,7 +53,11 @@ export default App => {
       const pathname = pathOr('', ['url'], req);
       const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
       const hasSession = pathOr(false, ['id'], me);
+      const hasAccessToken = pathOr(false, ['cookies', 'accessToken'], req);
 
+      if (!hasAccessToken) {
+        redirect(ctx.ctx, '/refreshtoken');
+      }
       if (!hasSession && !isPagePublic) {
         redirect(ctx.ctx, '/login');
       }
