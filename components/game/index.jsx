@@ -3,17 +3,13 @@ import queryString from 'query-string';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  compose,
-  graphql,
   Query,
 } from 'react-apollo';
 import { path } from 'ramda';
 
 import {
-  viewGameBySlugQuery,
-  queries,
-  localQueries,
-} from '@/shared/utils/apollo';
+  gameQuery,
+} from '@/shared/utils/apollo/game';
 
 import {
   GlobalContext,
@@ -59,11 +55,10 @@ class Game extends Component {
 
   renderGame(game, user, query) {
     let url = '';
-
     try {
-      url = game.viewGameBySlug.url + (game.viewGameBySlug.url.includes('?') ? '&' : '?') + queryString.stringify(query);
-      if (process.env.DEPLOYED_ENV !== 'production' && game.viewGameBySlug.stagingUrl) {
-        url = game.viewGameBySlug.stagingUrl + (game.viewGameBySlug.stagingUrl.includes('?') ? '&' : '?') + queryString.stringify(query);
+      url = game.url + (game.url.includes('?') ? '&' : '?') + queryString.stringify(query);
+      if (process.env.DEPLOYED_ENV !== 'production' && game.stagingUrl) {
+        url = game.stagingUrl + (game.stagingUrl.includes('?') ? '&' : '?') + queryString.stringify(query);
       }
       log.info(`game URL: ${url}`);
     } catch (err) {
@@ -97,10 +92,7 @@ class Game extends Component {
   }
 
   render() {
-    const { root, game, query } = this.props;
-    if (!root || !game) return <DataLoading />;
-    if (root.loading || game.loading) return <DataLoading />;
-    if (!root.network.supported) return null;
+    const { query } = this.props;
     return (
       <div id="game-component-wrapper">
         <style jsx global>{`
@@ -112,19 +104,19 @@ class Game extends Component {
           }
         `}</style>
         <GlobalContext.Consumer>
-          {({ web3Wallet }) => {
+          {({ web3Wallet, me }) => {
             if (!web3Wallet) return <DataLoading />;
             return (
               <Query
-                query={queries.viewUserByWallet}
-                variables={{ wallet: web3Wallet }}
+                query={gameQuery}
+                variables={{ slug: this.props.slug }}
               >
                 {({ data }) => {
-                  if (!data || !data.viewUserByWallet || data.error || data.loading) {
+                  if (!data || data.error || data.loading) {
                     if (path(['error'], data)) log.error('error occurred');
                     return <DataLoading />;
                   }
-                  return ::this.renderGame(game, data.viewUserByWallet, query);
+                  return ::this.renderGame(data.viewGameBySlug, me, query);
                 }}
               </Query>
             );
@@ -135,7 +127,4 @@ class Game extends Component {
   }
 }
 
-export default compose(
-  viewGameBySlugQuery,
-  graphql(localQueries.root, { name: 'root' })
-)(Game);
+export default Game;
