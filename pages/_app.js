@@ -4,11 +4,10 @@ import { Provider as IntlProvider } from 'react-intl-redux';
 import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
 import * as log from 'loglevel';
-import { contains, path, pathOr } from 'ramda';
+import { contains, pathOr } from 'ramda';
 
 import {
   ApolloProvider,
-  Query,
 } from 'react-apollo';
 
 import { setMobileDetect, mobileParser } from 'react-responsive-redux';
@@ -44,8 +43,6 @@ import configureStore from '@/client/utils/store';
 
 import ResizeListener from '@/components/resizelistener';
 import GlobalStyles from '@/components/GlobalStyles';
-import DataLoading from '@/components/DataLoading';
-import { withMe } from '@/components/wrappers';
 
 import style from '@/shared/constants/style';
 import {
@@ -73,7 +70,7 @@ class BGApp extends App {
     let locals = {};
 
     if (isServer) {
-      const { req, res } = ctx;
+      const { req } = ctx;
       const mobileDetect = mobileParser(req);
       store.dispatch(setMobileDetect(mobileDetect));
     }
@@ -84,25 +81,22 @@ class BGApp extends App {
     web3Wallet: getWeb3Wallet(),
   }
 
-  metamaskInstalled() {
-    return web3IsInstalled();
-  }
-
   metamaskLoggedIn() {
     if (!web3IsInstalled()) return false;
-    return web3.eth.accounts[0];
+    return window.web3.eth.accounts[0];
   }
 
   hasSession(me) {
     return me.id;
   }
 
+  isPagePublic() {
+    const { router } = this.props;
+    return !router.pathname.match(AUTH_ROUTES_REGEX);
+  }
+
   userWalletHasChanged() {
-    const web3Wallet = getWeb3Wallet();
-    return web3Wallet !== this.state.web3Wallet;
-    // const lastWalletUsed = path(['lastWalletUsed'], me);
-    // console.log('me, lastWalletUsed, web3Wallet:', me, lastWalletUsed, web3Wallet);
-    // return Boolean((lastWalletUsed !== web3Wallet) && (web3Wallet));
+    return getWeb3Wallet() !== this.state.web3Wallet;
   }
 
   isWalletLinked(wallet, me) {
@@ -121,10 +115,11 @@ class BGApp extends App {
 
   async handleWalletHasChanged(me, web3Wallet) {
     const { apolloClient } = this.props;
+    const isCurrentWalletLinked = me && this.isWalletLinked(me, web3Wallet);
     log.info('calling updateUserBalances mutation');
     await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
     if (this.hasSession(me)) {
-      if (!this.isWalletLinked(me, web3Wallet)) {
+      if (!isCurrentWalletLinked) {
         log.ingo('redirecting to link wallet page');
         redirect({}, '/link');
       } else {
@@ -136,7 +131,6 @@ class BGApp extends App {
         });
       }
     }
-    const isCurrentWalletLinked = this.isWalletLinked(me, web3Wallet);
     this.setState({
       web3Wallet,
       isCurrentWalletLinked,
@@ -173,20 +167,8 @@ class BGApp extends App {
    */
   async networkAndWalletPoller() {
     const { apolloClient } = this.props;
-    const pathname = pathOr('', ['location', 'pathname'], window);
-    const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
 
-    // Todo: this isn't the place to handle MM not
-    // installed - move to _app.js or withApollo
-    // or elsewhere (componentWillMount?)
-    // NOTE: need to do this for detecting not logged
-    // in to MM at app startup
-    // if (this.metamaskNotInstalled()) {
-    //   /* Route guard */
-    //   return isPagePublic ? null : Router.replace('/register', '/register');
-    // }
-
-    if (!this.metamaskLoggedIn() && !isPagePublic) {
+    if (!this.metamaskLoggedIn() && !this.isPagePublic()) {
       log.info('not logged in to metamask on route guarded page - redirecting to /login');
       redirect({}, '/login');
     }
@@ -208,23 +190,35 @@ class BGApp extends App {
   }
 
   async componentWillMount() {
-    // Initialize Apollo local cache
+    if (!process.browser) return null;
+    const web3Wallet = getWeb3Wallet();
+
+    if (!this.isPagePublic()) {
+      const { router } = this.props;
+      const { pathname } = router;
+      /* Web3 install guard */
+      if (!web3IsInstalled()) {
+        return Router.push({ pathname: '/register', query: { pathname } }, '/register');
+      }
+      /* MetaMask login guard */
+      if (!web3Wallet) {
+        return Router.push({ pathname: '/login', query: { pathname } }, '/login}');
+      }
+    }
+
     const { apolloClient } = this.props;
     const meQuery = await apolloClient.query({ query: queries.me });
     const me = pathOr({}, ['data', 'me'], meQuery);
-    const web3Wallet = getWeb3Wallet();
-    this.setState({
-      isCurrentWalletLinked: contains(web3Wallet, me.wallets),
-    });
-    const result1 = await apolloClient.mutate({
+    const wallets = pathOr([], ['wallets'], me);
+
+    this.setState({ isCurrentWalletLinked: contains(web3Wallet, wallets) });
+    const updateWalletResult = await apolloClient.mutate({
       mutation: localMutations.updateWallet,
-      variables: {
-        wallet: web3Wallet,
-      }
+      variables: { wallet: web3Wallet },
     });
-    log.info('updateWallet:', result1);
-    const result2 = await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
-    log.info('updateUserBalances:', result2);
+    log.info('updateWalletResult:', updateWalletResult);
+    const updateUserBalancesResult = await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
+    log.info('updateUserBalancesResult:', updateUserBalancesResult);
   }
 
   componentDidMount() {
@@ -257,11 +251,8 @@ class BGApp extends App {
           });
         }
       });
-    }
 
-    if (process.browser) {
       setTimeout(::this.networkAndWalletPoller, WEB3_ACCOUNT_POLLING_INTERVAL);
-      // setTimeout(::this.networkPoller, WEB3_ACCOUNT_POLLING_INTERVAL);
     }
   }
 

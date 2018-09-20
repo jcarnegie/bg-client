@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { getDataFromTree } from 'react-apollo';
 import Head from 'next/head';
 import { pathOr } from 'ramda';
+import * as log from 'loglevel';
 import * as localStorage from '@/client/utils/localStorage';
 import redirect from '@/shared/utils/redirect';
 import { queries } from '@/shared/utils/apollo';
-import { web3IsInstalled } from '@/shared/utils/network';
 import { initApollo } from './client';
 import { AUTH_ROUTES_REGEX } from '@/shared/utils';
 
@@ -55,7 +55,7 @@ export default App => {
       const hasSession = pathOr(false, ['id'], me);
       const hasAccessToken = pathOr(false, ['cookies', 'accessToken'], req);
 
-      if (!process.browser && hasAccessToken && !hasSession) {
+      if (!process.browser && !hasAccessToken && hasSession) {
         redirect(ctx.ctx, '/refreshtoken');
       }
       if (!hasSession && !isPagePublic) {
@@ -91,7 +91,7 @@ export default App => {
           // Prevent Apollo Client GraphQL errors from crashing SSR.
           // Handle them in components via the data.error prop:
           // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
-          console.error('Error while running `getDataFromTree`', error);
+          log.error('Error while running `getDataFromTree`', error);
         }
 
         // getDataFromTree does not call componentWillUnmount
