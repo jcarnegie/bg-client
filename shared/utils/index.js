@@ -24,10 +24,6 @@ export const featureOn = feature => contains(env, propOr([], feature, features))
 export const AUTH_ROUTES_REGEX = new RegExp('^(\/inventory|\/game|\/sandbox)', 'i'); /* eslint-disable-line no-useless-escape */
 
 export const requireUserLoginAndSupportedNetwork = (user = {}, network = {}) => {
-  /* User is loading still */
-  const loadingUser = path(['loading'], user);
-  if (loadingUser) return false;
-
   /* Network is not supported */
   if (!network.supported && network.supported !== null) {
     showRegistrationWorkflow();
@@ -35,7 +31,7 @@ export const requireUserLoginAndSupportedNetwork = (user = {}, network = {}) => 
   }
 
   /* User is not defined, show registration workflow */
-  if (!path(['viewUserByWallet'], user)) {
+  if (!path(['id'], user)) {
     showRegistrationWorkflow();
     return false;
   }

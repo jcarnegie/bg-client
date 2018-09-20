@@ -8,11 +8,6 @@ import {
   injectIntl,
 } from 'react-intl';
 
-import {
-  compose,
-  graphql,
-} from 'react-apollo';
-
 import Router from 'next/router';
 import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 
@@ -20,12 +15,16 @@ import style from '@/shared/constants/style';
 
 import {
   localQueries,
-  viewUserByWalletQuery,
 } from '@/shared/utils/apollo';
+
+import {
+  GlobalContext,
+} from '@/shared/utils/context';
 
 import {
   requireUserLoginAndSupportedNetwork,
 } from '@/shared/utils';
+import { Query } from 'react-apollo';
 
 
 @injectIntl
@@ -53,9 +52,7 @@ class GameList extends Component {
     dispatch: () => {},
   }
 
-  navigateToGame(slug) {
-    const { user, root } = this.props;
-
+  navigateToGame(slug, root, user) {
     if (!requireUserLoginAndSupportedNetwork(user, path(['network'], root))) return log.info('User not logged in, rejecting navigateToGame.');
 
     this.props.analytics.ga.event({
@@ -66,19 +63,13 @@ class GameList extends Component {
 
     /* FIXME - interim solution to handle iframe memory issues */
     return window.location.replace(`/game/${slug}`);
-    Router.push({
-        pathname: '/game',
-        query: { slug },
-      },
-      `/game/${slug}`
-    );
   }
 
   navigateToPresale(slug) {
     Router.push({ pathname: '/presale', query: { slug } }, `/presale/${slug}`);
   }
 
-  desktopBackgroundSections() {
+  desktopBackgroundSections(root, user) {
     return (
       <div className="background-sections">
         <style jsx>{`
@@ -176,7 +167,7 @@ class GameList extends Component {
         `}</style>
 
         <section className="game-landing-background-section">
-          <div className="game-landing-background-section-banner" onClick={() => ::this.navigateToGame('bitizens')} />
+          <div className="game-landing-background-section-banner" onClick={() => ::this.navigateToGame('bitizens', root, user)} />
         </section>
         <img className="game-landing-background-boy-and-girl" src={'/static/images/games/bitizens/landing/boy_and_girl.png'} />
         <section className="game-landing-background-section game-landing-background-section-ocean">
@@ -195,7 +186,7 @@ class GameList extends Component {
     );
   }
 
-  desktopContent() {
+  desktopContent(root, user) {
     return (
       <div className="content-sections-wrapper">
         <style jsx>{`
@@ -396,10 +387,10 @@ class GameList extends Component {
         `}</style>
         <section className="content-section play-now">
           <p>Create & customize your personal 3D Bitizen, and  discover what Bitropolis has to offer. Take your first steps in a new social blockchain experience today!</p>
-          <button onClick={() => ::this.navigateToGame('bitizens')}>PLAY NOW</button>
+          <button onClick={() => ::this.navigateToGame('bitizens', root, user)}>PLAY NOW</button>
         </section>
         <section className="content-section video">
-          <iframe src="https://www.youtube.com/embed/MiEFHUgOvMk?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen />
+          <iframe src="https://www.youtube.com/embed/MiEFHUgOvMk?rel=0&amp;showinfo=0" frameBorder="0" allow="autoplay; encrypted-media" allowFullscreen />
         </section>
         <section className="content-section single-title bitizen-features">
           <h2>BITIZEN FEATURES</h2>
@@ -432,20 +423,20 @@ class GameList extends Component {
           <h2>LIMITED PRE-SALE ITEMS</h2>
         </section>
         <section className="content-section limited-presale-items">
-          <img src={'/static/images/games/bitizens/landing/wilds.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
-          <img src={'/static/images/games/bitizens/landing/skies.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
-          <img src={'/static/images/games/bitizens/landing/seas.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
-          <img src={'/static/images/games/bitizens/landing/cyberspace.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
+          <img src={'/static/images/games/bitizens/landing/wilds.png'} onClick={() => ::this.navigateToPresale('bitizens', root, user)} />
+          <img src={'/static/images/games/bitizens/landing/skies.png'} onClick={() => ::this.navigateToPresale('bitizens', root, user)} />
+          <img src={'/static/images/games/bitizens/landing/seas.png'} onClick={() => ::this.navigateToPresale('bitizens', root, user)} />
+          <img src={'/static/images/games/bitizens/landing/cyberspace.png'} onClick={() => ::this.navigateToPresale('bitizens', root, user)} />
         </section>
         <section className="content-section limited-presale-text">
           <p>We&apos;re offering you a change to secure some unique, limited-run items! These fancy outfits are only obtainable during the pre-sale, and will not be available for direct purchase ever again once the pre-sale concludes!</p>
-          <button onClick={() => ::this.navigateToPresale('bitizens')}>SEE PRE-SALE</button>
+          <button onClick={() => ::this.navigateToPresale('bitizens', root, user)}>SEE PRE-SALE</button>
         </section>
       </div>
     );
   }
 
-  mobileBackgroundSections() {
+  mobileBackgroundSections(root, user) {
     return (
       <div className="background-sections">
         <style jsx>{`
@@ -546,7 +537,7 @@ class GameList extends Component {
         `}</style>
 
         <section className="game-landing-background-section">
-          <div className="game-landing-background-section-banner" onClick={() => ::this.navigateToGame('bitizens')} />
+          <div className="game-landing-background-section-banner" onClick={() => ::this.navigateToGame('bitizens', root, user)} />
         </section>
         <img className="game-landing-background-boy-and-girl" src={'/static/images/games/bitizens/landing/boy_and_girl.png'} />
         <section className="game-landing-background-section game-landing-background-section-ocean">
@@ -565,7 +556,7 @@ class GameList extends Component {
     );
   }
 
-  mobileContent() {
+  mobileContent(root, user) {
     return (
       <div className="content-sections-wrapper">
         <style jsx>{`
@@ -767,7 +758,7 @@ class GameList extends Component {
         `}</style>
         <section className="content-section play-now">
           <p>Create & customize your personal 3D Bitizen, and  discover what Bitropolis has to offer. Take your first steps in a new social blockchain experience today!</p>
-          <button onClick={() => ::this.navigateToGame('bitizens')}>PLAY NOW</button>
+          <button onClick={() => ::this.navigateToGame('bitizens', root, user)}>PLAY NOW</button>
         </section>
         <section className="content-section video">
           <iframe src="https://www.youtube.com/embed/MiEFHUgOvMk?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen />
@@ -803,43 +794,54 @@ class GameList extends Component {
           <h2>LIMITED PRE-SALE ITEMS</h2>
         </section>
         <section className="content-section limited-presale-items">
-          <img src={'/static/images/games/bitizens/landing/wilds.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
-          <img src={'/static/images/games/bitizens/landing/skies.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
-          <img src={'/static/images/games/bitizens/landing/seas.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
-          <img src={'/static/images/games/bitizens/landing/cyberspace.png'} onClick={() => ::this.navigateToPresale('bitizens')} />
+          <img src={'/static/images/games/bitizens/landing/wilds.png'} onClick={() => ::this.navigateToPresale('bitizens', root, user)} />
+          <img src={'/static/images/games/bitizens/landing/skies.png'} onClick={() => ::this.navigateToPresale('bitizens', root, user)} />
+          <img src={'/static/images/games/bitizens/landing/seas.png'} onClick={() => ::this.navigateToPresale('bitizens', root, user)} />
+          <img src={'/static/images/games/bitizens/landing/cyberspace.png'} onClick={() => ::this.navigateToPresale('bitizens', root, user)} />
         </section>
         <section className="content-section limited-presale-text">
           <p>We&apos;re offering you a change to secure some unique, limited-run items! These fancy outfits are only obtainable during the pre-sale, and will not be available for direct purchase ever again once the pre-sale concludes!</p>
-          <button onClick={() => ::this.navigateToPresale('bitizens')}>SEE PRE-SALE</button>
+          <button onClick={() => ::this.navigateToPresale('bitizens', root, user)}>SEE PRE-SALE</button>
         </section>
       </div>
     );
   }
 
 
-  render() {
+  render(root, user) {
     return (
-      <div className="game-landing">
-        <style jsx>{`
-          .game-landing {
-            width: 100%;
-            position: relative;
-          }
-        `}</style>
-        <DesktopScreen>
-          {::this.desktopBackgroundSections()}
-          {::this.desktopContent()}
-        </DesktopScreen>
-        <MobileScreen>
-          {::this.mobileBackgroundSections()}
-          {::this.mobileContent()}
-        </MobileScreen>
-      </div>
+      <GlobalContext.Consumer>
+        {({ me }) => {
+          return (
+            <Query
+              query={localQueries.root}
+            >
+              {({ data }) => {
+                return (
+                  <div className="game-landing">
+                    <style jsx>{`
+                      .game-landing {
+                        width: 100%;
+                        position: relative;
+                      }
+                    `}</style>
+                    <DesktopScreen>
+                      {::this.desktopBackgroundSections(data, me)}
+                      {::this.desktopContent(data, me)}
+                    </DesktopScreen>
+                    <MobileScreen>
+                      {::this.mobileBackgroundSections(data, me)}
+                      {::this.mobileContent(data, me)}
+                    </MobileScreen>
+                  </div>
+                );
+              }}
+            </Query>
+          );
+        }}
+      </GlobalContext.Consumer>
     );
   }
 }
 
-export default compose(
-  viewUserByWalletQuery,
-  graphql(localQueries.root, { name: 'root' })
-)(GameList);
+export default GameList;
