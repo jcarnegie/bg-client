@@ -118,6 +118,7 @@ class BGApp extends App {
     const { apolloClient } = this.props;
     const isCurrentWalletLinked = me && this.isWalletLinked(me, web3Wallet);
     log.info('calling updateUserBalances mutation');
+    await apolloClient.mutate({ mutation: localMutations.updateWallet, variables: { wallet: web3Wallet } });
     await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
     if (this.hasSession(me)) {
       if (!isCurrentWalletLinked) {
@@ -178,7 +179,6 @@ class BGApp extends App {
     const meQuery = await apolloClient.query({ query: queries.me });
     const me = pathOr({}, ['data', 'me'], meQuery);
     const web3Wallet = getWeb3Wallet();
-
     if (this.userWalletHasChanged(me)) {
       await this.handleWalletHasChanged(me, web3Wallet);
     }

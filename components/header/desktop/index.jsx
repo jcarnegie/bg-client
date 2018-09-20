@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import { FormattedMessage, injectIntl } from 'react-intl';
-// import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
-import { Query } from 'react-apollo';
 
 import style from '@/shared/constants/style';
 
@@ -14,19 +11,25 @@ import Language from '@/components/language';
 import Balance from '@/components/balance';
 import User from '@/components/user';
 
-import {
-  localQueries,
-} from '@/shared/utils/apollo';
-import {
-  GlobalContext,
-} from '@/shared/utils/context';
-import DataLoading from '@/components/DataLoading';
-import DataError from '@/components/DataError';
+import { withGlobalContext } from '@/shared/utils/context';
+import { withRoot } from '@/components/wrappers';
+
 
 @injectIntl
+@withGlobalContext
+@withRoot
 class Header extends Component {
   static propTypes = {
-    dispatch: PropTypes.func,
+    ctx: PropTypes.shape({
+      isCurrentWalletLinked: PropTypes.bool,
+      userNeedsToLogInOrRegister: PropTypes.bool,
+      me: PropTypes.object,
+    }),
+    root: PropTypes.shape({
+      balanceETH: PropTypes.number,
+      balancePLAT: PropTypes.number,
+      rate: PropTypes.number,
+    }),
   };
 
   navigation() {
@@ -110,7 +113,9 @@ class Header extends Component {
     );
   }
 
-  settings(isCurrentWalletLinked, user, balanceETH, balancePLAT, rate) {
+  settings() {
+    const { balanceETH, balancePLAT, rate } = this.props.root;
+    const { me } = this.props.ctx;
     return (
       <div className="settings">
         <style jsx>{`
@@ -126,62 +131,34 @@ class Header extends Component {
             align-items: center;
           }
         `}</style>
-        {isCurrentWalletLinked && (
-          <>
-            <Balance user={user} balanceETH={balanceETH} balancePLAT={balancePLAT} rate={rate} />
-            <User user={user} />
-          </>
-        )}
-        <RegisterButton user={user} />
-        <Language user={user} />
+        <Balance user={me} balanceETH={balanceETH} balancePLAT={balancePLAT} rate={rate} />
+        {this.props.ctx.isCurrentWalletLinked && <User user={me} />}
+        <RegisterButton show={this.props.ctx.userNeedsToLogInOrRegister} user={me} />
+        <Language user={me} />
       </div>
     );
   }
 
   render() {
+    console.log('render', this.props)
     return (
-      <GlobalContext.Consumer>
-        {({
-          web3Wallet,
-          network,
-          networkHasChanged,
-          isUserLoggedOutOfMetaMask,
-          userNeedsToLogInOrRegister,
-          userWalletHasChanged,
-          isCurrentWalletLinked,
-          me,
-        }) => {
-          return (
-            <Query
-              query={localQueries.root}
-            >
-              {({ loading, error, data, refetch }) => {
-                if (data.loading) return <DataLoading />;
-                if (data.error) return <DataError />;
-                return (
-                  <header className="header">
-                    <style jsx>{`
-                      .header {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        width: 100%;
-                        z-index: 1060; /* Bootstrap modal is 1040, 1050 - MenuDrawer is 1030 */
-                        background-color: ${style.colors.primary};
-                        height: ${style.header.height};
-                        border-bottom: ${style.header.border};
-                      }
-                    `}</style>
-                    {::this.navigation()}
-                    {::this.settings(isCurrentWalletLinked, me, data.balanceETH, data.balancePLAT, data.rate)}
-                  </header>
-                );
-              }}
-            </Query>
-          );
-        }}
-      </GlobalContext.Consumer>
+      <header className="header">
+        <style jsx>{`
+          .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1060; /* Bootstrap modal is 1040, 1050 - MenuDrawer is 1030 */
+            background-color: ${style.colors.primary};
+            height: ${style.header.height};
+            border-bottom: ${style.header.border};
+          }
+        `}</style>
+        {::this.navigation()}
+        {::this.settings()}
+      </header>
     );
   }
 }

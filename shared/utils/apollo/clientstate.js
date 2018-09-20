@@ -65,6 +65,7 @@ export const clientState = {
         log.info('balanceETH:', balanceETH);
         log.info('balancePLAT:', balancePLAT);
         await cache.writeData({ data: { balanceETH, balancePLAT } });
+        return null;
       },
       updateWallet: async(_, { wallet }, { cache, getCacheKey }) => {
         log.info('updateWallet wallet: ', wallet);

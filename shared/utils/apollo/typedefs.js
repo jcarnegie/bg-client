@@ -22,7 +22,9 @@ export const typeDefs = `
   }
 
   type Mutation {
-    updateNetworkAndWallet(id: Int!, available: Boolean!, name: String!, supported: Boolean!, wallet: String) Network
+    updateNetwork(id: Int!, available: Boolean!, name: String!, supported: Boolean!) Network
+    updateWallet(wallet: String)
+    updateUserBalances()
     updateGas(average: Int!, fast: Int!, fastest: Int!) Gas
     updateLatestBlock(tx: String!) String
     toggleUserRegistrationWorkflow(on: Boolean) Boolean

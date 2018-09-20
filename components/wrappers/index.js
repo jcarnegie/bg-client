@@ -16,7 +16,7 @@ export const withRoot = Component => function ComponentWithRoot(props) {
   );
 };
 
-export const withMe = (Component) => function ComponentWithMe(props) {
+export const withMe = Component => function ComponentWithMe(props) {
  return (
     <Query ssr query={queries.me}>
       {({ loading, data = {} }) => {
