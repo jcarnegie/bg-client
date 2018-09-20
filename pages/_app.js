@@ -121,7 +121,7 @@ class BGApp extends App {
     await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
     if (this.hasSession(me)) {
       if (!isCurrentWalletLinked) {
-        log.ingo('redirecting to link wallet page');
+        log.info('redirecting to link wallet page');
         redirect({}, '/link');
       } else {
         await apolloClient.mutate({
