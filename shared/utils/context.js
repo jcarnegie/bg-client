@@ -5,4 +5,3 @@ export const GlobalContext = React.createContext({
   wallet: null,
   // Todo: set other defaults in future?
 });
-
