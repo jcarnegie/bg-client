@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { path } from 'ramda';
 import cx from 'classnames';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 
@@ -37,12 +36,7 @@ class User extends Component {
   }
 
   render() {
-    const { user, layout } = this.props;
-    const { me, loading } = user;
-    if (user.error || !me) return null;
-
-    const nickName = path(['nickName'], me);
-
+    const { layout, user } = this.props;
     return (
       <GlobalContext.Consumer>
         {({ web3Wallet }) => {
@@ -107,8 +101,8 @@ class User extends Component {
                   })}>
                   <img src="/static/images/icons/avatar_my.png" className="avatar" />
                   <span className="text">
-                    <span className="name" title={nickName}>{loading ? this.fieldLoader() : this.truncatedField(nickName)}</span>
-                    <span className="wallet" title={web3Wallet}>{loading ? this.fieldLoader() : this.truncatedField(web3Wallet)}</span>
+                    <span className="name" title={user.nickName}>{this.truncatedField(user.nickName)}</span>
+                    <span className="wallet" title={web3Wallet}>{this.truncatedField(web3Wallet)}</span>
                   </span>
                 </div>
             </div>

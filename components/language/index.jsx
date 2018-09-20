@@ -28,7 +28,7 @@ class Language extends Component {
   onSelect(language) {
     const { dispatch, user, router } = this.props;
     const { route } = router;
-    const refreshRoutes = ['/game', '/sandbox']
+    const refreshRoutes = ['/game', '/sandbox'];
     dispatch(updateIntl(localization[language]));
 
     document.documentElement.setAttribute('lang', language);
@@ -66,8 +66,7 @@ class Language extends Component {
 
   render() {
     const { user, intl } = this.props;
-    const { me } = user;
-    const language = !user.loading && me ? me.language : intl.locale;
+    const language = user ? user.language : intl.locale;
 
     return (
       <div className="lang-dropdown">

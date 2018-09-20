@@ -4,7 +4,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 // import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { pathOr } from 'ramda';
+import { Query } from 'react-apollo';
 
 import style from '@/shared/constants/style';
 
@@ -15,17 +15,13 @@ import Balance from '@/components/balance';
 import User from '@/components/user';
 
 import {
-  compose,
-  graphql,
-} from 'react-apollo';
-
-import {
   localQueries,
-  queries,
 } from '@/shared/utils/apollo';
 import {
   GlobalContext,
 } from '@/shared/utils/context';
+import DataLoading from '@/components/DataLoading';
+import DataError from '@/components/DataError';
 
 @injectIntl
 class Header extends Component {
@@ -114,8 +110,7 @@ class Header extends Component {
     );
   }
 
-  settings(isCurrentWalletLinked) {
-    const user = pathOr(null, ['me'], this.props);
+  settings(isCurrentWalletLinked, user, balanceETH, balancePLAT, rate) {
     return (
       <div className="settings">
         <style jsx>{`
@@ -133,7 +128,7 @@ class Header extends Component {
         `}</style>
         {isCurrentWalletLinked && (
           <>
-            <Balance user={user} />
+            <Balance user={user} balanceETH={balanceETH} balancePLAT={balancePLAT} rate={rate} />
             <User user={user} />
           </>
         )}
@@ -154,25 +149,36 @@ class Header extends Component {
           userNeedsToLogInOrRegister,
           userWalletHasChanged,
           isCurrentWalletLinked,
+          me,
         }) => {
           return (
-            <header className="header">
-              <style jsx>{`
-                .header {
-                  position: fixed;
-                  top: 0;
-                  left: 0;
-                  right: 0;
-                  width: 100%;
-                  z-index: 1060; /* Bootstrap modal is 1040, 1050 - MenuDrawer is 1030 */
-                  background-color: ${style.colors.primary};
-                  height: ${style.header.height};
-                  border-bottom: ${style.header.border};
-                }
-              `}</style>
-              {::this.navigation()}
-              {::this.settings(isCurrentWalletLinked)}
-            </header>
+            <Query
+              query={localQueries.root}
+            >
+              {({ loading, error, data, refetch }) => {
+                if (data.loading) return <DataLoading />;
+                if (data.error) return <DataError />;
+                return (
+                  <header className="header">
+                    <style jsx>{`
+                      .header {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        width: 100%;
+                        z-index: 1060; /* Bootstrap modal is 1040, 1050 - MenuDrawer is 1030 */
+                        background-color: ${style.colors.primary};
+                        height: ${style.header.height};
+                        border-bottom: ${style.header.border};
+                      }
+                    `}</style>
+                    {::this.navigation()}
+                    {::this.settings(isCurrentWalletLinked, me, data.balanceETH, data.balancePLAT, data.rate)}
+                  </header>
+                );
+              }}
+            </Query>
           );
         }}
       </GlobalContext.Consumer>
@@ -180,7 +186,4 @@ class Header extends Component {
   }
 }
 
-export default compose(
-  graphql(queries.me, { name: 'me' }),
-  graphql(localQueries.root, { name: 'root' }),
-)(Header);
+export default Header;
