@@ -11,14 +11,23 @@ import {
   map,
   prop,
 } from 'ramda';
+import fetchWithRefresh from './fetch';
 import { localMutations } from './index';
 import { clientState } from './clientstate';
 
-if (typeof global !== 'undefined') {
-  global.fetch = require('node-fetch');
-} else {
-  const fetch = require('isomorphic-fetch'); /* eslint-disable-line no-unused-vars */
-}
+let apolloClient = null;
+
+// if (typeof global !== 'undefined') {
+//   global.fetch = require('node-fetch');
+// } else {
+//   const fetch = require('isomorphic-fetch'); /* eslint-disable-line no-unused-vars */
+// }
+
+// if (typeof global !== 'undefined') {
+//   global.fetch = fetchWithRefresh;
+// } else {
+//   const fetch = fetchWithRefresh; /* eslint-disable-line no-unused-vars */
+// }
 
 export const uri = () => {
   if (process.env.DEPLOYED_ENV === 'local') {
@@ -26,8 +35,6 @@ export const uri = () => {
   }
   return process.browser ? '/api/' : (process.env.API_URL || 'http://api:7000/api/');
 };
-
-let apolloClient = null;
 
 const create = (initialState, { getToken }) => {
   const onErrorHandler = ({ graphQLErrors, networkError }) => {
@@ -72,6 +79,7 @@ const create = (initialState, { getToken }) => {
   const httpLink = new HttpLink({
     uri: uri(),
     credentials: 'same-origin',
+    fetch: fetchWithRefresh,
   });
 
   const client = new ApolloClient({
@@ -89,8 +97,6 @@ const create = (initialState, { getToken }) => {
 };
 
 export const initApollo = (initialState, options) => {
-  log.info('in initApollo');
-  log.info('clientState:', clientState);
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (!process.browser) {
