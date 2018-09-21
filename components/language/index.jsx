@@ -5,11 +5,10 @@ import { updateIntl } from 'react-intl-redux';
 import { injectIntl, intlShape } from 'react-intl';
 import { Image, MenuItem, DropdownButton } from 'react-bootstrap';
 import { withRouter } from 'next/router';
-import { path } from 'ramda';
+import { path, pathOr } from 'ramda';
+import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
 import { localization } from '@/shared/intl/setup';
-import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
-
 import {
   updateUser,
 } from '@/shared/utils/apollo';
@@ -26,14 +25,15 @@ class Language extends Component {
   };
 
   onSelect(language) {
-    const { dispatch, user, router } = this.props;
+    const { dispatch, intl, user, router } = this.props;
     const { route } = router;
     const refreshRoutes = ['/game', '/sandbox'];
-    dispatch(updateIntl(localization[language]));
 
-    document.documentElement.setAttribute('lang', language);
-    const me = path(['me'], user);
-    if (me) updateUser(me.id, { language });
+    if (language !== path(['locale'], intl)) {
+      document.documentElement.setAttribute('lang', language);
+      dispatch(updateIntl(localization[language]));
+      if (user) updateUser(user.id, { language });
+    }
 
     if (refreshRoutes.includes(route)) window.location.reload();
   }
@@ -55,18 +55,8 @@ class Language extends Component {
     return dropDownLanguages;
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { dispatch } = this.props;
-    const prevLang = path(['user', 'me', 'language'], prevProps);
-    const language = path(['user', 'me', 'language'], this.props);
-    if (prevLang !== language && language) {
-      dispatch(updateIntl(localization[language]));
-    }
-  }
-
   render() {
-    const { user, intl } = this.props;
-    const language = user ? user.language : intl.locale;
+    const { intl } = this.props;
 
     return (
       <div className="lang-dropdown">
@@ -206,7 +196,7 @@ class Language extends Component {
           title={
             <span>
               <Image src={'/static/images/language/globe.svg'} />
-              <span className="current-lang">{language.toUpperCase()} </span>
+              <span className="current-lang">{pathOr('en', ['locale'], intl).toUpperCase()} </span>
             </span>
           }
           className="lang-menu" id="lang-menu"

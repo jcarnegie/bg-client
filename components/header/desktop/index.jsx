@@ -140,7 +140,6 @@ class Header extends Component {
   }
 
   render() {
-    console.log('render', this.props)
     return (
       <header className="header">
         <style jsx>{`

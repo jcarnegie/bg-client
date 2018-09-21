@@ -11,7 +11,8 @@ import {
 } from 'react-apollo';
 
 import { setMobileDetect, mobileParser } from 'react-responsive-redux';
-
+import { updateIntl } from 'react-intl-redux';
+import { localization } from '@/shared/intl/setup';
 import withApollo from '@/shared/utils/apollo/withApollo';
 
 import {
@@ -192,6 +193,11 @@ class BGApp extends App {
 
   async componentWillMount() {
     const { store, mobileDetect } = this.props;
+    const { apolloClient } = this.props;
+    const meQuery = await apolloClient.query({ query: queries.me });
+    const me = pathOr({}, ['data', 'me'], meQuery);
+    const language = pathOr('en', ['language'], me);
+    if (language) store.dispatch(updateIntl(localization[language]));
     store.dispatch({
       type: APP_LAYOUT_SET_DEFAULTS,
       payload: { type: mobileDetect },
@@ -213,9 +219,6 @@ class BGApp extends App {
       }
     }
 
-    const { apolloClient } = this.props;
-    const meQuery = await apolloClient.query({ query: queries.me });
-    const me = pathOr({}, ['data', 'me'], meQuery);
     const wallets = pathOr([], ['wallets'], me);
 
     this.setState({ isCurrentWalletLinked: contains(web3Wallet, wallets) });
