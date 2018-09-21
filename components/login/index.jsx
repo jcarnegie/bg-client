@@ -8,7 +8,7 @@ import Router from 'next/router';
 
 import BGButton from '@/components/bgbutton';
 import {
-  GlobalContext,
+  withGlobalContext,
 } from '@/shared/utils/context';
 import {
   client,
@@ -21,6 +21,7 @@ import DataLoading from '@/components/DataLoading';
 import NetworkNotSupported from '@/components/NetworkNotSupported';
 import LoginToWeb3 from '@/components/LoginToWeb3';
 import InstallWeb3 from '@/components/InstallWeb3';
+
 import { withRoot } from '@/components/wrappers';
 
 @connect(
@@ -29,6 +30,8 @@ import { withRoot } from '@/components/wrappers';
     analytics: state.analytics,
   })
 )
+@withGlobalContext
+@withRoot
 class Login extends Component {
   static propTypes = {
     analytics: PropTypes.object,
@@ -41,7 +44,8 @@ class Login extends Component {
     return '0x' + Buffer.from(text, 'utf8').toString('hex');
   }
 
-  async sign(web3Wallet) {
+  async sign() {
+    const { web3Wallet } = this.props.ctx;
     const { data } = await client.mutate({
       mutation: mutations.createSigningMessage,
       variables: { wallet: web3Wallet, action: 'login' },
@@ -91,7 +95,8 @@ class Login extends Component {
     });
   }
 
-  loginForm(web3Wallet) {
+  loginForm() {
+    const { web3Wallet } = this.props.ctx;
     const mobile = pathOr(false, ['layout', 'type'], this.props);
     return (
       <div className="login-block">
@@ -151,25 +156,29 @@ class Login extends Component {
           <FormattedMessage id="components.login.wallet" />
         </span>
         <input className="login-wallet-input" readOnly defaultValue={web3Wallet}></input>
-        <BGButton className="btn-block login-btn text-uppercase" onClick={() => ::this.sign(web3Wallet)}>
+        <BGButton className="btn-block login-btn text-uppercase" onClick={() => ::this.sign()}>
           <FormattedMessage id="buttons.login" />
         </BGButton>
       </div>
     );
   }
 
-  component(web3Wallet) {
+  component() {
     const { root } = this.props;
-     if (!root.network) return null;
+    const { web3Wallet } = this.props.ctx;
 
+    if (!process.browser) {
+      return ::this.loginForm();
+    }
+    if (!root.network) return null;
+    if (!web3Wallet) {
+      return <LoginToWeb3 />;
+    }
     if (!root.network.available) {
       return <InstallWeb3 />;
     }
     if (!root.network.supported) {
       return <NetworkNotSupported />;
-    }
-    if (!web3Wallet) {
-      return <LoginToWeb3 />;
     }
     if (this.state.registering) {
       return <DataLoading />;
@@ -181,107 +190,92 @@ class Login extends Component {
         </div>
       );
     }
-    return ::this.loginForm(web3Wallet);
+    return ::this.loginForm();
   }
 
   render() {
     const { layout } = this.props;
     const mobile = layout.type.mobile;
-
     return (
-      <GlobalContext.Consumer>
-        {({
-          web3Wallet,
-          network,
-          networkHasChanged,
-          isUserLoggedOutOfMetaMask,
-          userNeedsToLogInOrRegister,
-          userWalletHasChanged,
-          isCurrentWalletLinked,
-        }) => {
-          return (
-            <div className="login">
-              <style jsx>{`
-                .login {
-                  background: linear-gradient(to bottom, #B4D0F5, #D8D8EF);
-                  height: ${mobile ? null : 'calc(100vh - 62px)'};
-                }
-                .login-container {
-                  display: flex;
-                  align-items: center;
-                  width: ${mobile ? '100%' : '50%'};
-                  height: ${mobile ? null : '100%'};
-                  padding-bottom: ${mobile ? '30px' : null};
-                }
-                .login-image-container {
-                  display: flex;
-                  align-items: center;
-                  width: ${mobile ? '100%' : '50%'};
-                  float: left;
-                  height: ${mobile ? null : '100%'};
-                  margin-top: ${mobile ? '30px' : null};
-                  margin-bottom: ${mobile ? '30px' : null};
-                }
-                .login-image {
-                  border-radius: 50%;
-                  width: 70%;
-                  display: block;
-                  margin-left: auto;
-                  margin-right: 15%;
-                  position: relative;
-                  max-width: 500px;
-                  max-height: 500px;
-                }
-                :global(.login-block) {
-                  width: ${mobile ? '75%' : '50%'};
-                  display: block;
-                  margin-right: auto;
-                  margin-left: ${mobile ? 'auto' : '15%'};
-                }
-                :global(.login-btn) {
-                  width: 100% !important;
-                  font-size: 18px !important;
-                  font-weight: 500 !important
-                }
-                :global(.btn-block-login-active) {
-                  color: white;
-                  background: #314B88;
-                  font-size: 12px;
-                  font-weight: 100;
-                  margin: 0;
-                  border: 0;
-                  border-radius: 2px;
-                  text-transform: uppercase;
-                  letter-spacing: 1px;
-                  width: 50%;
-                  padding: 10px 0px 10px 0px !important;
-                }
-                :global(.btn-block-login) {
-                  color: #6C5A5A !important;
-                  font-size: 12px;
-                  font-weight: 100;
-                  margin: 0;
-                  border: 0;
-                  border-radius: 2px;
-                  text-transform: uppercase;
-                  letter-spacing: 1px;
-                  width: 50%;
-                  background-color: #D7DEF6 !important;
-                  padding: 10px 0px 10px 0px !important;
-                }
-              `}</style>
-              <div className="login-image-container">
-                <img src="/static/images/misc/auth.png" className="login-image" />
-              </div>
-              <div className="login-container">
-                {::this.component(web3Wallet)}
-              </div>
-            </div>
-          );
-        }}
-      </GlobalContext.Consumer>
+      <div className="login">
+        <style jsx>{`
+          .login {
+            background: linear-gradient(to bottom, #B4D0F5, #D8D8EF);
+            height: ${mobile ? null : 'calc(100vh - 62px)'};
+          }
+          .login-container {
+            display: flex;
+            align-items: center;
+            width: ${mobile ? '100%' : '50%'};
+            height: ${mobile ? null : '100%'};
+            padding-bottom: ${mobile ? '30px' : null};
+          }
+          .login-image-container {
+            display: flex;
+            align-items: center;
+            width: ${mobile ? '100%' : '50%'};
+            float: left;
+            height: ${mobile ? null : '100%'};
+            margin-top: ${mobile ? '30px' : null};
+            margin-bottom: ${mobile ? '30px' : null};
+          }
+          .login-image {
+            border-radius: 50%;
+            width: 70%;
+            display: block;
+            margin-left: auto;
+            margin-right: 15%;
+            position: relative;
+            max-width: 500px;
+            max-height: 500px;
+          }
+          :global(.login-block) {
+            width: ${mobile ? '75%' : '50%'};
+            display: block;
+            margin-right: auto;
+            margin-left: ${mobile ? 'auto' : '15%'};
+          }
+          :global(.login-btn) {
+            width: 100% !important;
+            font-size: 18px !important;
+            font-weight: 500 !important
+          }
+          :global(.btn-block-login-active) {
+            color: white;
+            background: #314B88;
+            font-size: 12px;
+            font-weight: 100;
+            margin: 0;
+            border: 0;
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 50%;
+            padding: 10px 0px 10px 0px !important;
+          }
+          :global(.btn-block-login) {
+            color: #6C5A5A !important;
+            font-size: 12px;
+            font-weight: 100;
+            margin: 0;
+            border: 0;
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 50%;
+            background-color: #D7DEF6 !important;
+            padding: 10px 0px 10px 0px !important;
+          }
+        `}</style>
+        <div className="login-image-container">
+          <img src="/static/images/misc/auth.png" className="login-image" />
+        </div>
+        <div className="login-container">
+          {::this.component()}
+        </div>
+      </div>
     );
   }
 }
 
-export default withRoot(Login);
+export default Login;

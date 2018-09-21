@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as log from 'loglevel';
 import Router from 'next/router';
-import { path } from 'ramda';
+import { path, pathOr } from 'ramda';
 import { FormattedHTMLMessage, FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { updateIntl } from 'react-intl-redux/lib/index';
 import { connect } from 'react-redux';
 
 import withFormHelper from '@/components/inputs/withFormHelper';
 import { withRoot } from '@/components/wrappers';
-import { localization } from '@/shared/intl/setup';
 import {
-  GlobalContext,
+  withGlobalContext,
 } from '@/shared/utils/context';
 import {
   email as emailPlaceholder,
@@ -42,6 +40,8 @@ import * as bgLocalStorage from '@/client/utils/localStorage';
     analytics: state.analytics,
   })
 )
+@withGlobalContext
+@withRoot
 class Register extends Component {
   static propTypes = {
     analytics: PropTypes.object,
@@ -53,7 +53,7 @@ class Register extends Component {
         mobile: PropTypes.bool,
         desktop: PropTypes.bool,
       }),
-    })
+    }),
   };
 
   static defaultProps = {
@@ -79,10 +79,11 @@ class Register extends Component {
     return '0x' + Buffer.from(text, 'utf8').toString('hex');
   }
 
-  async sign(web3Wallet) {
+  async sign() {
     const {
       intl,
     } = this.props;
+    const { web3Wallet } = this.props.ctx;
 
     const {
       email,
@@ -151,8 +152,9 @@ class Register extends Component {
     });
   }
 
-  registerForm(web3Wallet) {
-    const { intl, layout } = this.props;
+  registerForm() {
+    const { layout } = this.props;
+    const { web3Wallet } = this.props.ctx;
     const mobile = layout.type.mobile;
     return (
       <div className="register-form">
@@ -257,25 +259,29 @@ class Register extends Component {
 
         <br />
 
-        <BGButton className="btn-block btn-register text-uppercase" onClick={() => ::this.sign(web3Wallet)}>
+        <BGButton className="btn-block btn-register text-uppercase" onClick={() => ::this.sign()}>
           <FormattedMessage id="buttons.register" />
         </BGButton>
       </div>
     );
   }
 
-  component(web3Wallet) {
+  component() {
     const { root } = this.props;
-     if (!root.network) return null;
+    const { web3Wallet } = this.props.ctx;
 
+    if (!process.browser) {
+      return ::this.registerForm();
+    }
+    if (!root.network) return null;
+    if (!web3Wallet) {
+      return <LoginToWeb3 />;
+    }
     if (!root.network.available) {
       return <InstallWeb3 />;
     }
     if (!root.network.supported) {
       return <NetworkNotSupported />;
-    }
-    if (!web3Wallet) {
-      return <LoginToWeb3 />;
     }
     if (this.state.registering) {
       return <DataLoading />;
@@ -287,68 +293,53 @@ class Register extends Component {
         </div>
       );
     }
-    return ::this.registerForm(web3Wallet);
+    return ::this.registerForm();
   }
 
   render() {
     const { layout } = this.props;
     const mobile = layout.type.mobile;
-
     return (
-      <GlobalContext.Consumer>
-        {({
-          web3Wallet,
-          network,
-          networkHasChanged,
-          isUserLoggedOutOfMetaMask,
-          userNeedsToLogInOrRegister,
-          userWalletHasChanged,
-          isCurrentWalletLinked,
-        }) => {
-          return (
-            <div className="register">
-              <style jsx>{`
-                .register {
-                  background: linear-gradient(to bottom, #B4D0F5, #D8D8EF);
-                  height: ${mobile ? null : 'calc(100vh - 62px)'};
-                }
-                .register-image-container {
-                  display: flex;
-                  align-items: center;
-                  width: ${mobile ? '100%' : '50%'};
-                  float: left;
-                  height: ${mobile ? null : '100%'};
-                  margin-top: ${mobile ? '30px' : null};
-                  margin-bottom: ${mobile ? '30px' : null};
-                }
-                .register-image {
-                  border-radius: 50%;
-                  width: 70%;
-                  display: block;
-                  margin-left: auto;
-                  margin-right: 15%;
-                  position: relative;
-                  max-width: 500px;
-                  max-height: 500px;
-                }
-                .register-container {
-                  display: flex;
-                  align-items: center;
-                  width: ${mobile ? '100%' : '50%'};
-                  height: ${mobile ? null : '100%'};
-                  padding-bottom: ${mobile ? '30px' : null};
-                }
-              `}</style>
-              <div className="register-image-container">
-                <img src="/static/images/misc/auth.png" className="register-image" />
-              </div>
-              <div className="register-container">
-                {::this.component(web3Wallet)}
-              </div>
-            </div>
-          );
-        }}
-      </GlobalContext.Consumer>
+      <div className="register">
+        <style jsx>{`
+          .register {
+            background: linear-gradient(to bottom, #B4D0F5, #D8D8EF);
+            height: ${mobile ? null : 'calc(100vh - 62px)'};
+          }
+          .register-image-container {
+            display: flex;
+            align-items: center;
+            width: ${mobile ? '100%' : '50%'};
+            float: left;
+            height: ${mobile ? null : '100%'};
+            margin-top: ${mobile ? '30px' : null};
+            margin-bottom: ${mobile ? '30px' : null};
+          }
+          .register-image {
+            border-radius: 50%;
+            width: 70%;
+            display: block;
+            margin-left: auto;
+            margin-right: 15%;
+            position: relative;
+            max-width: 500px;
+            max-height: 500px;
+          }
+          .register-container {
+            display: flex;
+            align-items: center;
+            width: ${mobile ? '100%' : '50%'};
+            height: ${mobile ? null : '100%'};
+            padding-bottom: ${mobile ? '30px' : null};
+          }
+        `}</style>
+        <div className="register-image-container">
+          <img src="/static/images/misc/auth.png" className="register-image" />
+        </div>
+        <div className="register-container">
+          {::this.component()}
+        </div>
+      </div>
     );
   }
 }
