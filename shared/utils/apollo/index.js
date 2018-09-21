@@ -64,6 +64,13 @@ export const mutations = {
       }
     }
   `,
+  refreshToken: gql`
+    mutation refreshToken($refreshToken: String!) {
+      refreshToken(refreshToken: $refreshToken) {
+        accessToken refreshToken refreshExpiresAt accessExpiresAt
+      }
+    }
+  `,
   listItemForSale: gql`
     mutation listItemForSale ($userId: Int!, $itemId: Int!, $saleListingId: Int!, $saleTxnHash: String!, $salePrice: Int!) {
       listItemForSale(userId: $userId, itemId: $itemId, saleListingId: $saleListingId, saleTxnHash: $saleTxnHash, salePrice: $salePrice) {

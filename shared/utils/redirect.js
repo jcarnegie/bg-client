@@ -5,7 +5,7 @@ export default (context, target) => {
     // server
     // 303: "See other"
     context.res.writeHead(303, {
-      Location: target
+      Location: target,
     });
     context.res.end();
   } else {

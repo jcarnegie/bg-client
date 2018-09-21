@@ -55,7 +55,18 @@ export default App => {
       const hasSession = pathOr(false, ['id'], me);
       const hasAccessToken = pathOr(false, ['cookies', 'accessToken'], req);
 
-      if (!process.browser && !hasAccessToken && hasSession) {
+      /* Server side: refreshToken is stored on localStorage on client only.
+         We should always redirect to /refreshtoken page first to check for
+         refreshToken
+       */
+      if (
+        !process.browser &&
+        // TODO: revert "hasAccessToken" once we keep accessToken cookie never expire
+        !hasAccessToken &&
+        !hasSession &&
+        !isPagePublic &&
+        pathname !== '/refreshtoken'
+      ) {
         redirect(ctx.ctx, '/refreshtoken');
       }
       if (!hasSession && !isPagePublic) {

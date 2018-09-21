@@ -214,7 +214,7 @@ class BGApp extends App {
       }
       /* MetaMask login guard */
       if (!web3Wallet) {
-        return Router.push({ pathname: '/login', query: { pathname } }, '/login}');
+        return Router.push({ pathname: '/login', query: { pathname } }, '/login');
       }
     }
 
