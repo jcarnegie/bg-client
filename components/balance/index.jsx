@@ -157,7 +157,7 @@ class Balance extends Component {
           }
         `}</style>
         <Convert show={this.state.show || this.props.layout.showConvertModal} onHide={::this.onHide} />
-        {::this.plus()}
+        {/* {::this.plus()} */}
         {::this.balances()}
       </div>
     );
