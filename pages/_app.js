@@ -221,16 +221,17 @@ class BGApp extends App {
     const wallets = pathOr([], ['wallets'], me);
 
     this.setState({ isCurrentWalletLinked: contains(web3Wallet, wallets) });
-    const updateWalletResult = await apolloClient.mutate({
-      mutation: localMutations.updateWallet,
-      variables: { wallet: web3Wallet },
-    });
-    log.info('updateWalletResult:', updateWalletResult);
-    const updateUserBalancesResult = await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
-    log.info('updateUserBalancesResult:', updateUserBalancesResult);
+
+    if (web3Wallet) {
+      await apolloClient.mutate({
+        mutation: localMutations.updateWallet,
+        variables: { wallet: web3Wallet },
+      });
+      await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
+    }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { store } = this.props;
     store.dispatch({ type: APP_INIT });
     const state = store.getState();
@@ -262,6 +263,20 @@ class BGApp extends App {
       });
 
       setTimeout(::this.networkAndWalletPoller, WEB3_ACCOUNT_POLLING_INTERVAL);
+    } else {
+      /* Set defaults for no network */
+      const currentNetwork = {
+        id: 1,
+        name: 'main',
+        supported: false,
+        available: false,
+      };
+      await apolloClient.mutate({
+        mutation: localMutations.updateNetwork,
+        variables: {
+          ...currentNetwork,
+        },
+      });
     }
   }
 

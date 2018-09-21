@@ -52,10 +52,9 @@ export const clientState = {
         return null;
       },
       updateUserBalances: async(_, $, { cache, getCacheKey }) => {
-        log.info('in updateUserBalances');
         const { network, wallet } = await cache.readQuery({ query: localQueries.root });
         log.info('updateUserBalances data: ', network, wallet);
-        if (!network || !wallet) return null;
+        if (!network || !network.available || !wallet) return null;
         let balanceETH = 0;
         let balancePLAT = 0;
         const balanceResponseETH = await bluebird.promisify(window.web3.eth.getBalance)(wallet);
@@ -85,6 +84,8 @@ export const clientState = {
         };
 
         await cache.writeData({ data });
+
+        if (!network.available) return null;
 
         // const gasStationResponse = await fetch(ETH_GAS_STATION_ENDPOINT).then(res => res.json());
         // log.info(`Fetched gas from ${ETH_GAS_STATION_ENDPOINT}`);

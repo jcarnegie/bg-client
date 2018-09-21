@@ -213,7 +213,8 @@ class Inventory extends Component {
 
 
 	render() {
-  const { me } = this.props.ctx;
+    const { me } = this.props.ctx;
+    if (!me) return null;
     return (
       <Query
         query={inventoryQuery}

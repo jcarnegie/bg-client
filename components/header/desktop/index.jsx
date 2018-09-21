@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import style from '@/shared/constants/style';
 
-import RegisterButton from '@/components/RegisterButton';
+import LoginButton from '@/components/LoginButton';
 import ActiveLink from '@/components/activelink';
 import Language from '@/components/language';
 import Balance from '@/components/balance';
@@ -114,7 +114,11 @@ class Header extends Component {
   }
 
   settings() {
-    const { balanceETH, balancePLAT, rate } = this.props.root;
+    const {
+      balanceETH,
+      balancePLAT,
+      rate,
+    } = this.props.root;
     const { me } = this.props.ctx;
     return (
       <div className="settings">
@@ -133,8 +137,8 @@ class Header extends Component {
         `}</style>
         <Balance user={me} balanceETH={balanceETH} balancePLAT={balancePLAT} rate={rate} />
         {this.props.ctx.isCurrentWalletLinked && <User user={me} />}
-        <RegisterButton show={this.props.ctx.userNeedsToLogInOrRegister} user={me} />
         <Language user={me} />
+        <LoginButton show={!me} />
       </div>
     );
   }
