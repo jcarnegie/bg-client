@@ -116,20 +116,21 @@ class InventoryItem extends ItemBase {
 
   async onGiftSubmit(data) {
     const {
-      user,
+      ctx,
       item,
       game,
       root,
     } = this.props;
+    const { me } = ctx;
 
     const { network } = root;
 
     if (this.isValid(data.wallet)) {
       /* TODO - move to shared/utils/contracts.js */
       const contract = window.web3.eth.contract(nftABI).at(game.nft[network.id]);
-      contract.safeTransferFrom(user.viewUserByWallet.wallet, data.wallet, item.tokenId, {
+      contract.safeTransferFrom(me.lastWalletUsed, data.wallet, item.tokenId, {
         gas: window.web3.toHex(15e4),
-        gasPrice: window.web3.toHex(this.props.data.gas.average),
+        gasPrice: window.web3.toHex(this.props.root.gas.average),
       },
         (error, tx) => {
           if (error) {
