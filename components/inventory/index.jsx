@@ -34,9 +34,10 @@ import {
   getAttrsFromItems,
   getCategoriesFromItemAttrs,
 } from '@/client/utils/item';
-import {
-  GlobalContext,
-} from '@/shared/utils/context';
+
+import { withGlobalContext } from '@/shared/utils/context';
+import { withRoot } from '@/components/wrappers';
+
 import DataLoading from '@/components/DataLoading';
 import DataError from '@/components/DataError';
 
@@ -44,6 +45,8 @@ import { InventoryItem } from '@/components/item';
 
 
 @injectIntl
+@withGlobalContext
+@withRoot
 class Inventory extends Component {
 	static propTypes = {
 		items: PropTypes.object,
@@ -52,7 +55,12 @@ class Inventory extends Component {
 		root: PropTypes.object,
 		lastLocation: PropTypes.shape({
       pathname: PropTypes.string,
-		}),
+    }),
+    ctx: PropTypes.shape({
+      isCurrentWalletLinked: PropTypes.bool,
+      userNeedsToLogInOrRegister: PropTypes.bool,
+      me: PropTypes.object,
+    }),
 	};
 
 	state = {
@@ -205,28 +213,23 @@ class Inventory extends Component {
 
 
 	render() {
+  const { me } = this.props.ctx;
     return (
-      <GlobalContext.Consumer>
-        {({ web3Wallet, me }) => {
+      <Query
+        query={inventoryQuery}
+        variables={{ userId: me.id, language: me.language }}
+      >
+        {({ loading, error, data, refetch }) => {
+          if (data.loading) return <DataLoading />;
+          if (data.error) return <DataError />;
           return (
-            <Query
-              query={inventoryQuery}
-              variables={{ userId: me.id, language: me.language }}
-            >
-              {({ loading, error, data, refetch }) => {
-                if (data.loading) return <DataLoading />;
-                if (data.error) return <DataError />;
-                return (
-                <div className="inventory">
-                    {this.indexStyle()}
-                    {::this.renderInventory(data)}
-                </div>
-                )
-            }}
-            </Query>
+          <div className="inventory">
+              {this.indexStyle()}
+              {::this.renderInventory(data, me)}
+          </div>
           );
         }}
-      </GlobalContext.Consumer>
+      </Query>
 		);
 	}
 
