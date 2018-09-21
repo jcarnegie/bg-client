@@ -25,7 +25,6 @@ class Game extends Component {
     dispatch: PropTypes.func,
     data: PropTypes.object,
     game: PropTypes.object,
-    user: PropTypes.object,
     slug: PropTypes.string,
     query: PropTypes.object,
     root: PropTypes.object,
@@ -35,9 +34,6 @@ class Game extends Component {
     dispatch: () => {},
     game: {
       viewGameBySlug: {},
-    },
-    user: {
-      viewUserByWallet: {},
     },
     slug: '',
     query: {},
