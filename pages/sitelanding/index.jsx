@@ -1,16 +1,20 @@
-import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 import Layout from '@/components/layouts';
 import Landing from '@/components/landing';
 
+import { Query } from 'react-apollo';
+import { sitelandingQuery } from '@/shared/utils/apollo/sitelanding';
+
+
 const SiteLandingPage = props => (
   <Layout>
-    <MobileScreen>
-      <Landing {...props} />
-    </MobileScreen>
-    <DesktopScreen>
-      <Landing {...props} />
-    </DesktopScreen>
+    <Query query={sitelandingQuery}>
+      {({ data, loading }) => {
+        if (loading) return null;
+        return <Landing {...props} games={data} />;
+      }}
+    </Query>
   </Layout>
 );
+
 
 export default SiteLandingPage;

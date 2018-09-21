@@ -8,15 +8,6 @@ import { connect } from 'react-redux';
 import Router from 'next/router';
 
 import {
-  compose,
-  graphql,
-} from 'react-apollo';
-
-import {
-  queries,
-} from '@/shared/utils/apollo';
-
-import {
   requireUserLoginAndSupportedNetwork,
 } from '@/shared/utils';
 import { withGlobalContext } from '@/shared/utils/context';
@@ -355,6 +346,4 @@ class GameList extends Component {
   }
 }
 
-export default compose(
-  graphql(queries.listGames, { name: 'games' }),
-)(GameList);
+export default GameList;
