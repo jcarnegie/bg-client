@@ -4,7 +4,7 @@ import cx from 'classnames';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Image, DropdownButton, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { compose, Query } from 'react-apollo';
+import { Query } from 'react-apollo';
 import {
   contains,
   filter,
@@ -20,10 +20,8 @@ import DataLoading from '@/components/DataLoading';
 import DataError from '@/components/DataError';
 
 import {
-  queries,
-  listGamesQuery,
-  viewUserByWalletQuery,
-} from '@/shared/utils/apollo';
+  marketplaceQuery,
+} from '@/shared/utils/apollo/marketplace';
 
 import {
   calcMaxItemsStats,
@@ -33,26 +31,24 @@ import { MarketplaceItem } from '@/components/item';
 
 // import itemList from './items.test.json';
 
-
 @injectIntl
 @connect(
   state => ({
     layout: state.layout,
-    game: state.game,
   })
 )
-class Market extends Component {
+export default class Market extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     items: PropTypes.object,
     games: PropTypes.object,
     game: PropTypes.object,
-    user: PropTypes.object,
     layout: PropTypes.object,
     lastLocation: PropTypes.shape({
       pathname: PropTypes.string,
     }),
     marketItems: PropTypes.object,
+    intl: PropTypes.object,
   }
 
   state = {
@@ -641,19 +637,12 @@ class Market extends Component {
   }
 
   render() {
-    const { games, user } = this.props;
-
-    if (!games || !user) return <DataLoading />;
-    if (games.error) return <div>Error!</div>;
-
-    let { listGames } = games;
-    let { viewUserByWallet } = user;
+    const { intl } = this.props;
     return (
       <Query
-        query={queries.listMarketplaceItems}
+        query={marketplaceQuery}
         variables={{
-          userId: (viewUserByWallet) ? viewUserByWallet.id : null,
-          language: (viewUserByWallet) ? viewUserByWallet.language : null,
+          language: intl.locale,
           gameId: this.state.gameFilter === false ? null : this.state.gameFilter,
           sort: this.state.itemsSort,
           andNotCategories: this.state.secondaryCategories,
@@ -662,9 +651,10 @@ class Market extends Component {
         }}
       >
         {({ loading, error, data, refetch }) => {
+          if (loading) return <DataLoading />;
           if (error) return <DataError />;
 
-          const { listMarketplaceItems } = data;
+          const { listMarketplaceItems, listGames } = data;
           // const listMarketplaceItems = itemList;
 
           if (!this.listMarketplaceItems || this.listMarketplaceItems.length === 0) {
@@ -672,8 +662,6 @@ class Market extends Component {
           } else if (this.listMarketplaceItems[0].game.id !== this.state.gameFilter) {
             this.listMarketplaceItems = listMarketplaceItems;
           }
-
-          const loadingAny = loading || games.loading || user.loading;
 
           return (
             <div className={this.state.mobile ? 'mobile-market' : 'marketplace'}>
@@ -686,8 +674,8 @@ class Market extends Component {
                 flex-direction: column;
               }
             `}</style>
-              {this.renderPrimaryFilters(this.listMarketplaceItems, listGames, loadingAny)}
-              {this.renderItemGrid(listMarketplaceItems, listGames, refetch, loadingAny)}
+              {this.renderPrimaryFilters(this.listMarketplaceItems, listGames, loading)}
+              {this.renderItemGrid(listMarketplaceItems, listGames, refetch, loading)}
             </div>
           );
         }}
@@ -695,8 +683,3 @@ class Market extends Component {
     );
   };
 };
-
-export default compose(
-  viewUserByWalletQuery,
-  listGamesQuery,
-)(Market);
