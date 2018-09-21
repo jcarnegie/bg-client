@@ -1,17 +1,16 @@
 import App, { Container } from 'next/app';
 import React from 'react';
-import { Provider as IntlProvider } from 'react-intl-redux';
+import { Provider as IntlProvider, updateIntl } from 'react-intl-redux';
 import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
 import * as log from 'loglevel';
-import { contains, pathOr } from 'ramda';
+import { contains, pathOr, path } from 'ramda';
 
 import {
   ApolloProvider,
 } from 'react-apollo';
 
 import { setMobileDetect, mobileParser } from 'react-responsive-redux';
-import { updateIntl } from 'react-intl-redux';
 import { localization } from '@/shared/intl/setup';
 import withApollo from '@/shared/utils/apollo/withApollo';
 
@@ -196,7 +195,7 @@ class BGApp extends App {
     const { apolloClient } = this.props;
     const meQuery = await apolloClient.query({ query: queries.me });
     const me = pathOr({}, ['data', 'me'], meQuery);
-    const language = pathOr('en', ['language'], me);
+    const language = path(['language'], me);
     if (language) store.dispatch(updateIntl(localization[language]));
     store.dispatch({
       type: APP_LAYOUT_SET_DEFAULTS,
