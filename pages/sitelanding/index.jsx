@@ -2,7 +2,6 @@ import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 import Layout from '@/components/layouts';
 import Landing from '@/components/landing';
 
-
 const SiteLandingPage = props => (
   <Layout>
     <MobileScreen>

@@ -7,11 +7,9 @@ import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import MDCheck from 'react-icons/lib/md/check';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
-import {
-  compose,
-  graphql,
-} from 'react-apollo';
-import { pathOr } from 'ramda';
+import { Query } from 'react-apollo';
+
+import redirect from '@/shared/utils/redirect';
 
 import {
   getBitGuildTokenContract,
@@ -27,15 +25,11 @@ import {
   SHOW_CONVERT_MODAL,
 } from '@/shared/constants/actions';
 
-import {
-  client,
-  localMutations,
-  localQueries,
-  viewUserByWalletQuery,
-  queries,
-  listItemsQuery,
-} from '@/shared/utils/apollo';
+import { client } from '@/shared/utils/apollo';
+import { presaleQuery } from '@/shared/utils/apollo/presale';
 
+import { withGlobalContext } from '@/shared/utils/context';
+import { withRoot } from '@/components/wrappers';
 
 const PLAT_DISCOUNT = 50;
 const TOTAL_ITEMS_COUNT = 139;
@@ -81,17 +75,21 @@ const SETS = [
     layout: state.layout,
   }),
 )
-class Presale extends Component {
+@withGlobalContext
+@withRoot
+export default class Presale extends Component {
   static propTypes = {
     slug: PropTypes.string,
     data: PropTypes.shape({
       network: PropTypes.object,
       balancePLAT: PropTypes.number,
     }),
-    user: PropTypes.object,
+    // user: PropTypes.object,
     layout: PropTypes.object,
     items: PropTypes.object,
     dispatch: PropTypes.func,
+    ctx: PropTypes.object,
+    root: PropTypes.object,
   }
 
   state = {
@@ -103,16 +101,8 @@ class Presale extends Component {
     counter: 0,
   }
 
-  static getInitialProps({ err, req, res, query, store, isServer }) {
-    if (err) {
-      log.error(err);
-    }
-    return { ...query };
-  }
-
   async logPurchase(tx, set) {
-    const { user } = this.props;
-    const { viewUserByWallet } = user;
+    const { me } = this.props.ctx;
     const mutation = gql`
       mutation createPresaleTicket($payload:CreatePresaleTicketPayload!) {
         createPresaleTicket(payload:$payload) {
@@ -126,10 +116,10 @@ class Presale extends Component {
       payload: {
         setId: set.tokenId,
         price: set.price - PLAT_DISCOUNT,
-        wallet: viewUserByWallet.wallet,
+        wallet: me.lastWalletUsed,
         transactionHash: tx,
         GameId: BITIZENS_GAME_ID,
-        UserId: viewUserByWallet.id,
+        UserId: me.id,
       },
     };
     const ticket = await client.mutate({ mutation, variables });
@@ -188,7 +178,7 @@ class Presale extends Component {
   }
 
   getQtyOfItemRemaining(setId) {
-    const { network } = this.props.data;
+    const { network } = this.props.root;
     if (!network || !network.id) return;
     const IGOContract = getBitizensIGOContract(network);
 
@@ -202,18 +192,19 @@ class Presale extends Component {
     });
   }
 
-  purchase(set) {
+  purchase(set, tickets) {
     log.info('User purchase flow for set: ', set);
-    const { balancePLAT, network } = this.props.data;
-    if (!this.props.data.network) {
+    const { me } = this.props.ctx;
+    const { balancePLAT, network } = this.props.root;
+    if (!network) {
       log.error('Network has not loaded.');
-      client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
+      redirect({}, '/register');
       return;
     }
 
-    if (!this.props.user.viewUserByWallet) {
+    if (!me) {
       log.info('User must be logged in to purchase item.');
-      client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
+      redirect({}, '/register');
       return;
     }
 
@@ -227,7 +218,7 @@ class Presale extends Component {
       return;
     }
 
-    if (::this.userHasAlreadyPurchasedItem(set.tokenId)) {
+    if (::this.userHasAlreadyPurchasedItem(set.tokenId, tickets)) {
       log.error('User has already purchased this item.');
       return;
     }
@@ -243,12 +234,11 @@ class Presale extends Component {
     });
   }
 
-  userHasAlreadyPurchasedItem(setId) {
-    const { listUserPresaleTickets } = this.props.listUserPresaleTickets;
-    return Boolean(listUserPresaleTickets && listUserPresaleTickets.find(txObj => txObj.setId === setId));
+  userHasAlreadyPurchasedItem(setId, tickets=[]) {
+    return Boolean(tickets.find(txObj => txObj.setId === setId));
   }
 
-  setSection(set) {
+  setSection(set, tickets) {
     const itemIndices = [1, 2, 3, 4];
     const remainingForSet = this.state[`qtyOf${set.tokenId}`];
     return (
@@ -275,10 +265,10 @@ class Presale extends Component {
         <Col xs={6} sm={5}>
           <ItemSetDetailsCard
             key={set.id}
-            disabled={(remainingForSet === 0 || ::this.userHasAlreadyPurchasedItem(set.tokenId))}
-            onClick={() => ::this.purchase(set)}
+            disabled={(remainingForSet === 0 || ::this.userHasAlreadyPurchasedItem(set.tokenId, tickets))}
+            onClick={() => ::this.purchase(set, tickets)}
             title={<FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.name`} />}
-            subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}</>}
+            subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}}</>}
             itemImage={<Image responsive src={remainingForSet === 0 ? `/static/images/games/${this.props.slug}/presale/sold.png` : `/static/images/games/${this.props.slug}/presale/${set.id}/thumbnail.jpg`} />}
             setDetails={
               set.tokenId !== 20 ? itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>) : null
@@ -544,70 +534,67 @@ class Presale extends Component {
   }
 
   render() {
+    log.info('rendering presale page');
+    const { me } = this.props.ctx;
     return (
-      <div className="presale">
-        <style jsx global>{`
-          .presale .row {
-            margin-bottom: 20px;
-          }
-          .presale .popover {
-            padding: 0;
-          }
-        `}</style>
-        {::this.presaleTitles()}
-        {::this.presaleBanner()}
-        {::this.presaleInfo()}
+      <Query
+        query={presaleQuery}
+        skip={!me}
+      >
+        {({ loading, error, data, refetch }) => {
+          return (
+            <div className="presale">
+              <style jsx global>{`
+            .presale .row {
+              margin-bottom: 20px;
+            }
+            .presale .popover {
+              padding: 0;
+            }
+          `}</style>
+          {::this.presaleTitles()}
+          {::this.presaleBanner()}
+          {::this.presaleInfo()}
+    
+          {SETS.map(set => ::this.setSection(set, data.listUserPresaleTickets))}
+    
+          <br />
 
-        {SETS.map(set => ::this.setSection(set))}
-
-        <br />
-
-        <Row>
-          <Col xs={12}>
-            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.dividing-text`} /></p>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} sm={2}>
-            <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_drillrbot.png`} />
-          </Col>
-          <Col xs={12} sm={10}>
-            <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-title`} /></strong></p>
-            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-text-1`} /></p>
-            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-text-2`} /></p>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} sm={2}>
-            <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_rocket.png`} />
-          </Col>
-          <Col xs={12} sm={10}>
-            <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-title`} /></strong></p>
-            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-text-1`} /></p>
-            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-text-2`} /></p>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.final-text`} /></p>
-          </Col>
-        </Row>
-      </div>
+              <Row>
+                <Col xs={12}>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.dividing-text`} /></p>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12} sm={2}>
+                  <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_drillrbot.png`} />
+                </Col>
+                <Col xs={12} sm={10}>
+                  <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-title`} /></strong></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-text-1`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-text-2`} /></p>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12} sm={2}>
+                  <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_rocket.png`} />
+                </Col>
+                <Col xs={12} sm={10}>
+                  <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-title`} /></strong></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-text-1`} /></p>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-text-2`} /></p>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12}>
+                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.final-text`} /></p>
+                </Col>
+              </Row>
+            </div>
+          );
+        }
+      }
+      </Query>
     );
   }
 }
-
-export default compose(
-  viewUserByWalletQuery,
-  graphql(localQueries.root),
-  graphql(queries.listUserPresaleTickets, {
-    name: 'listUserPresaleTickets',
-    options: props => ({
-      variables: {
-        wallet: pathOr(null, ['user', 'viewUserByWallet', 'wallet'], props),
-        userId: pathOr(null, ['user', 'viewUserByWallet', 'id'], props),
-      },
-    }),
-  }),
-  listItemsQuery,
-)(Presale);

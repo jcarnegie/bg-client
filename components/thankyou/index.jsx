@@ -7,7 +7,6 @@ import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
     layout: state.layout,
   })
 )
-
 export default class ThankYou extends Component {
   render() {
     const { layout } = this.props;
