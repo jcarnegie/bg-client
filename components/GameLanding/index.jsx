@@ -104,13 +104,13 @@ class GameList extends Component {
           .ocean {
             background: rgba(45,95,135,1);
             /* Slant -45deg */
-            {/*background: -moz-linear-gradient(-45deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
+            /*background: -moz-linear-gradient(-45deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
             background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(45,95,135,1)), color-stop(28%, rgba(45,99,138,1)), color-stop(48%, rgba(40,125,159,1)), color-stop(69%, rgba(44,116,150,1)), color-stop(100%, rgba(45,96,135,1)));
             background: -webkit-linear-gradient(-45deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
             background: -o-linear-gradient(-45deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
             background: -ms-linear-gradient(-45deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
             background: linear-gradient(135deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2d5f87', endColorstr='#2d6087', GradientType=1 );*/}
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2d5f87', endColorstr='#2d6087', GradientType=1 );*/
             /* Vertical */
             background: -moz-linear-gradient(top, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
             background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(45,95,135,1)), color-stop(28%, rgba(45,99,138,1)), color-stop(48%, rgba(40,125,159,1)), color-stop(69%, rgba(44,116,150,1)), color-stop(100%, rgba(45,96,135,1)));
@@ -474,13 +474,13 @@ class GameList extends Component {
           .ocean {
             background: rgba(45,95,135,1);
             /* Slant -45deg */
-            {/*background: -moz-linear-gradient(-45deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
+            /*background: -moz-linear-gradient(-45deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
             background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(45,95,135,1)), color-stop(28%, rgba(45,99,138,1)), color-stop(48%, rgba(40,125,159,1)), color-stop(69%, rgba(44,116,150,1)), color-stop(100%, rgba(45,96,135,1)));
             background: -webkit-linear-gradient(-45deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
             background: -o-linear-gradient(-45deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
             background: -ms-linear-gradient(-45deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
             background: linear-gradient(135deg, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2d5f87', endColorstr='#2d6087', GradientType=1 );*/}
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2d5f87', endColorstr='#2d6087', GradientType=1 );*/
             /* Vertical */
             background: -moz-linear-gradient(top, rgba(45,95,135,1) 0%, rgba(45,99,138,1) 28%, rgba(40,125,159,1) 48%, rgba(44,116,150,1) 69%, rgba(45,96,135,1) 100%);
             background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(45,95,135,1)), color-stop(28%, rgba(45,99,138,1)), color-stop(48%, rgba(40,125,159,1)), color-stop(69%, rgba(44,116,150,1)), color-stop(100%, rgba(45,96,135,1)));

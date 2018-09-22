@@ -287,8 +287,6 @@ class ItemPopup extends Component {
             min-height: 160px;
           }
           .buyMobileImage {
-            {/* height: 35%;
-            width: 35%; */}
             margin-top: -30px;
           }
           .buyImage{

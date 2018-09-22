@@ -11,10 +11,9 @@
             "extensions": [".css", ".less"]
           }
         ],
-        "styled-jsx/babel",
         "react-hot-loader/babel",
-        "transform-decorators-legacy",
-        "transform-class-properties",
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        ["@babel/plugin-proposal-class-properties", { "loose": true }],
         "transform-object-rest-spread",
         "transform-function-bind",
         "transform-async-generator-functions"
@@ -31,10 +30,9 @@
             "extensions": [".css", ".less"]
           }
         ],
-        "styled-jsx/babel",
         "react-hot-loader/babel",
-        "transform-decorators-legacy",
-        "transform-class-properties",
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        ["@babel/plugin-proposal-class-properties", { "loose": true }],
         "transform-object-rest-spread",
         "transform-function-bind",
         "transform-async-generator-functions"
