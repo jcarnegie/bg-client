@@ -21,8 +21,10 @@ import ItemPopup from '@/components/popups/itempopup';
 import Item from './Item';
 import ItemBase from './ItemBase';
 
+import { withGlobalContext } from '@/shared/utils/context';
 
 @injectIntl
+@withGlobalContext
 class MarketplaceItem extends ItemBase {
   static propTypes = {
     dispatch: PropTypes.func,

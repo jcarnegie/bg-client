@@ -175,7 +175,6 @@ class BGApp extends App {
       redirect({}, '/login');
     }
 
-    const currentNetworkId = await asyncGetNetworkId();
     const meQuery = await apolloClient.query({ query: queries.me });
     const me = pathOr({}, ['data', 'me'], meQuery);
     const web3Wallet = getWeb3Wallet();
@@ -183,8 +182,13 @@ class BGApp extends App {
       await this.handleWalletHasChanged(me, web3Wallet);
     }
 
-    if (await this.networkChanged(currentNetworkId)) {
-      await this.handleNetworkChanged(currentNetworkId, web3Wallet);
+    try {
+      const currentNetworkId = await asyncGetNetworkId();
+      if (await this.networkChanged(currentNetworkId)) {
+        await this.handleNetworkChanged(currentNetworkId, web3Wallet);
+      }
+    } catch (e) {
+      log.error('Failed to get network:', e);
     }
 
     setTimeout(::this.networkAndWalletPoller, WEB3_ACCOUNT_POLLING_INTERVAL);
