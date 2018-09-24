@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import Router from 'next/router';
+import { path } from 'ramda';
 
 
 class LoginButton extends Component {
@@ -11,6 +12,9 @@ class LoginButton extends Component {
 
   render() {
     if (!this.props.show) return null;
+    const pathname = path(['router', 'pathname'], Router);
+    const shouldShowButton = pathname !== '/login' && pathname !== '/register' && pathname !== '/link';
+    if (!shouldShowButton) return null;
     return (
       <button className="register-button" onClick={() => Router.push('/login')}>
         <style jsx>{`

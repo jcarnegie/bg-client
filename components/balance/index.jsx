@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import * as log from 'loglevel';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isEmpty } from 'ramda';
+import { isEmpty, path } from 'ramda';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 import MdAddCircle from 'react-icons/lib/md/add-circle';
+import Router from 'next/router';
 
 import {
   client,
   localMutations,
 } from '@/shared/utils/apollo';
+
+import {
+  GlobalContext,
+} from '@/shared/utils/context';
 
 import Convert from '@/components/popups/convert';
 
@@ -113,38 +118,47 @@ class Balance extends Component {
   balances() {
     const { balanceETH, balancePLAT } = this.props;
     return (
-      <span className="balance-text">
-        <style jsx>{`
-          .balance-text {
-            margin:  0 0 0 8px;
-          }
-          .balance-text > * {
-            display: block;
-            line-height: 13px;
-          }
-          :global(.balance-text > *) {
-            display: flex;
-          }
-          .balance-value {
-            text-transform: uppercase;
-            display: block;
-            text-align: right;
-            float: left;
-            clear: both;
-            line-height: ${this.props.layout.type.mobile ? '20px' : '14px'};
-          }
-        `}</style>
-        <div>
-          {!Number.isFinite(balanceETH) || <span className="balance-value">{balanceETH.toFixed(2)} ETH</span>}
-        </div>
-        <div>
-          {!Number.isFinite(balancePLAT) || <span className="balance-value">{balancePLAT.toFixed(0)} PLAT</span>}
-        </div>
-      </span>
+      <GlobalContext.Consumer>
+        {({ web3Wallet }) => {
+          if (!web3Wallet) return null;
+          return (
+            <span className="balance-text">
+              <style jsx>{`
+            .balance-text {
+              margin:  0 0 0 8px;
+            }
+            .balance-text > * {
+              display: block;
+              line-height: 13px;
+            }
+            :global(.balance-text > *) {
+              display: flex;
+            }
+            .balance-value {
+              text-transform: uppercase;
+              display: block;
+              text-align: right;
+              float: left;
+              clear: both;
+              line-height: ${this.props.layout.type.mobile ? '20px' : '14px'};
+            }
+          `}</style>
+              <div>
+                {!Number.isFinite(balanceETH) || <span className="balance-value">{balanceETH.toFixed(2)} ETH</span>}
+              </div>
+              <div>
+                {!Number.isFinite(balancePLAT) || <span className="balance-value">{balancePLAT.toFixed(0)} PLAT</span>}
+              </div>
+            </span>
+          );
+        }}
+      </GlobalContext.Consumer>
     );
   }
 
   render() {
+    const pathname = path(['router', 'pathname'], Router);
+    if (!pathname || pathname === '/login' || pathname === '/register') return null;
     return (
       <div className="balance">
         <style jsx>{`
