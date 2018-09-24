@@ -120,6 +120,7 @@ class Header extends Component {
       rate,
     } = this.props.root;
     const { me } = this.props.ctx;
+
     return (
       <div className="settings">
         <style jsx>{`
@@ -136,7 +137,10 @@ class Header extends Component {
           }
         `}</style>
         <Balance user={me} balanceETH={balanceETH} balancePLAT={balancePLAT} rate={rate} />
-        {this.props.ctx.isCurrentWalletLinked && <User user={me} />}
+        {
+          this.props.ctx.isCurrentWalletLinked &&
+          <User user={me} />
+        }
         <Language user={me} />
         <LoginButton show={!me} />
       </div>

@@ -195,8 +195,13 @@ class BGApp extends App {
   }
 
   async componentWillMount() {
-    const { store, mobileDetect } = this.props;
-    const { apolloClient } = this.props;
+    const {
+      apolloClient,
+      mobileDetect,
+      router,
+      store,
+    } = this.props;
+    const { pathname } = router;
     const meQuery = await apolloClient.query({ query: queries.me });
     const me = pathOr({}, ['data', 'me'], meQuery);
     const language = path(['language'], me);
@@ -208,10 +213,26 @@ class BGApp extends App {
     if (!process.browser) return null;
     this.props.store.dispatch({ type: APP_RESIZE });
     const web3Wallet = getWeb3Wallet();
+    const isLoggedIn = web3Wallet && this.hasSession(me);
+
+    /* Redirect to landing page if user is already logged in but on login or register page */
+    if (isLoggedIn && (pathname === '/login' || pathname === '/register')) {
+      redirect({}, '/');
+    }
+
+    /* Link wallets page route guard */
+    if (pathname === '/link') {
+      if (!isLoggedIn) {
+        /* User not logged in, cannot link, redirect to login */
+        redirect({}, '/login');
+      }
+      if (isLoggedIn && !this.userWalletHasChanged(me)) {
+        /* User wallet has not changed, nothing to link, redirect to landing page */
+        redirect({}, '/');
+      }
+    }
 
     if (!this.isPagePublic()) {
-      const { router } = this.props;
-      const { pathname } = router;
       /* Web3 install guard */
       if (!web3IsInstalled()) {
         return Router.push({ pathname: '/register', query: { pathname } }, '/register');
