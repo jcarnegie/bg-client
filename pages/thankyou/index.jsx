@@ -1,11 +1,12 @@
+import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 import Layout from '@/components/layouts';
 import ThankYou from '@/components/thankyou';
 
 
 const ThankYouPage = props => {
   return (
-    <>
-      <Layout.Mobile>
+    <Layout>
+      <MobileScreen>
         <div className="bg-thankyou">
           <style jsx>{`
             .bg-thankyou {
@@ -16,8 +17,8 @@ const ThankYouPage = props => {
           `}</style>
           <ThankYou {...props} />
         </div>
-      </Layout.Mobile>
-      <Layout.Desktop>
+      </MobileScreen>
+      <DesktopScreen>
         <div className="bg-thankyou">
           <style jsx>{`
             .bg-thankyou {
@@ -28,8 +29,8 @@ const ThankYouPage = props => {
           `}</style>
           <ThankYou {...props} />
         </div>
-      </Layout.Desktop>
-    </>
+      </DesktopScreen>
+    </Layout>
   );
 };
 

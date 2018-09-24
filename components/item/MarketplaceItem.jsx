@@ -4,18 +4,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { path } from 'ramda';
 import * as log from 'loglevel';
-
-import {
-  compose,
-  graphql,
-} from 'react-apollo';
-
-import {
-  client,
-  localQueries,
-  viewUserByWalletQuery,
-  localMutations,
-} from '@/shared/utils/apollo';
+import Router from 'next/router';
 
 import {
   getContractFromGame,
@@ -32,8 +21,10 @@ import ItemPopup from '@/components/popups/itempopup';
 import Item from './Item';
 import ItemBase from './ItemBase';
 
+import { withGlobalContext } from '@/shared/utils/context';
 
 @injectIntl
+@withGlobalContext
 class MarketplaceItem extends ItemBase {
   static propTypes = {
     dispatch: PropTypes.func,
@@ -58,8 +49,8 @@ class MarketplaceItem extends ItemBase {
 
   onShowBuy(e) {
     e.preventDefault();
-    if (!this.props.user.viewUserByWallet) {
-      return client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
+    if (!this.props.ctx.me) {
+      Router.push('/login');
     }
 
     this.setState({ buy: true });
@@ -70,12 +61,12 @@ class MarketplaceItem extends ItemBase {
   }
 
   async onSubmit() {
-    const { data, game, item, user, onBuy } = this.props;
+    const { data, game, item, ctx, onBuy } = this.props;
     const { network } = data;
 
     const results = await buyItem({
       network,
-      user: user.viewUserByWallet,
+      user: ctx.me,
       item,
       price: parseFloat(item.salePrice || 0, 10),
       contract: getContractFromGame(game, network),
@@ -85,9 +76,9 @@ class MarketplaceItem extends ItemBase {
   }
 
   renderButtons() {
-    const { item, user } = this.props;
+    const { item, ctx } = this.props;
     const lastOwner = path(['lastOwner', 'id'], item);
-    const userId = path(['viewUserByWallet', 'id'], user);
+    const userId = path(['me', 'id'], ctx);
 
     const extendAndWithdrawButtons = (
       <div className="item-button-bar">
@@ -140,7 +131,7 @@ class MarketplaceItem extends ItemBase {
   }
 
   render() {
-    const { item, game, user } = this.props;
+    const { item, game, ctx } = this.props;
     return (
       <>
         <ItemPopup
@@ -153,7 +144,7 @@ class MarketplaceItem extends ItemBase {
         />
         <Item
           item={item}
-          user={user}
+          user={ctx.me}
           buttons={::this.renderButtons()}
           handler={::this.props.handler}
         />
@@ -163,7 +154,4 @@ class MarketplaceItem extends ItemBase {
 }
 
 
-export default compose(
-  graphql(localQueries.root),
-  viewUserByWalletQuery
-)(MarketplaceItem);
+export default MarketplaceItem;

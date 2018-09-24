@@ -17,22 +17,12 @@ import {
 import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
 
 import {
-  compose,
-  graphql,
   Query,
 } from 'react-apollo';
 
 import {
-  viewGameBySlugQuery,
-  listGamesQuery,
-  listItemsQuery,
-  localQueries,
-  queries,
-} from '@/shared/utils/apollo';
-
-import {
-  getWeb3Wallet,
-} from '@/shared/utils/network';
+  inventoryQuery,
+} from '@/shared/utils/apollo/inventory';
 
 import {
   getConfigForGame,
@@ -44,6 +34,10 @@ import {
   getAttrsFromItems,
   getCategoriesFromItemAttrs,
 } from '@/client/utils/item';
+
+import { withGlobalContext } from '@/shared/utils/context';
+import { withRoot } from '@/components/wrappers';
+
 import DataLoading from '@/components/DataLoading';
 import DataError from '@/components/DataError';
 
@@ -51,6 +45,8 @@ import { InventoryItem } from '@/components/item';
 
 
 @injectIntl
+@withGlobalContext
+@withRoot
 class Inventory extends Component {
 	static propTypes = {
 		items: PropTypes.object,
@@ -59,7 +55,12 @@ class Inventory extends Component {
 		root: PropTypes.object,
 		lastLocation: PropTypes.shape({
       pathname: PropTypes.string,
-		}),
+    }),
+    ctx: PropTypes.shape({
+      isCurrentWalletLinked: PropTypes.bool,
+      userNeedsToLogInOrRegister: PropTypes.bool,
+      me: PropTypes.object,
+    }),
 	};
 
 	state = {
@@ -89,9 +90,8 @@ class Inventory extends Component {
 		}
 	}
 
-	renderInventory() {
-    const { items, games } = this.props;
-		return items.listItems && items.listItems.length ? this.renderTabs(games.listGames, items.listItems) : this.renderEmpty();
+	renderInventory(queryData) {
+		return queryData.listItems && queryData.listItems.length ? this.renderTabs(queryData.listGames, queryData.listItems) : this.renderEmpty();
 	}
 
 	renderBackToGameButton() {
@@ -213,23 +213,21 @@ class Inventory extends Component {
 
 
 	render() {
-    const { items, games, root } = this.props;
-    const { network } = root;
+    const { me } = this.props.ctx;
+    if (!me) return null;
     return (
       <Query
-        query={queries.viewUserByWallet}
-        variables={{ wallet: getWeb3Wallet() }}
+        query={inventoryQuery}
+        variables={{ userId: me.id, language: me.language }}
       >
-        {({ data }) => {
-          if (data.loading || items.loading || games.loading) return <DataLoading />;
-          if (data.error || items.error || games.error) return <DataError />;
-          if (!network.supported) return null;
-          const { viewUserByWallet } = data;
+        {({ loading, error, data, refetch }) => {
+          if (data.loading) return <DataLoading />;
+          if (data.error) return <DataError />;
           return (
-            <div className="inventory">
+          <div className="inventory">
               {this.indexStyle()}
-              {::this.renderInventory({ user: viewUserByWallet })}
-            </div>
+              {::this.renderInventory(data, me)}
+          </div>
           );
         }}
       </Query>
@@ -309,10 +307,4 @@ class Inventory extends Component {
   }
 }
 
-
-export default compose(
-  viewGameBySlugQuery,
-  listGamesQuery,
-  listItemsQuery,
-  graphql(localQueries.root, { name: 'root' }),
-)(Inventory);
+export default Inventory;

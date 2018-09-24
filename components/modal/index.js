@@ -1,4 +1,4 @@
-import { Mobile, Desktop } from '@/components/responsive';
+import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 import BGDesktopModal from '@/components/modal/desktop';
 import BGMobileModal from '@/components/modal/mobile';
 
@@ -6,12 +6,12 @@ import BGMobileModal from '@/components/modal/mobile';
 export default function BGModal(props) {
   return (
     <>
-      <Mobile>
+      <MobileScreen>
         <BGMobileModal {...props} />
-      </Mobile>
-      <Desktop>
+      </MobileScreen>
+      <DesktopScreen>
         <BGDesktopModal {...props} />
-      </Desktop>
+      </DesktopScreen>
     </>
   );
 };

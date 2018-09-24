@@ -3,6 +3,7 @@
     "about": "About",
     "description": "プレセール",
     "faq": "Bitizenについて",
+    "login": "ログイン",
     "remaining": "残り",
     "rules": "ルール",
     "all-games": "All Games",
@@ -22,6 +23,10 @@
       "pt": "Português",
       "es": "Español",
       "ru": "Русский"
+    },
+    "login": {
+      "wallet": "財布",
+      "register": "登録が必要ですか？ ここに 登録."
     },
     "menu": {
       "inventory": "インベントリ",
@@ -117,6 +122,9 @@
     }
   },
   "pages": {
+    "register": {
+      "already-registered": "すでに登録？ここでログイン。"
+    },
     "bugbounty": {
       "title": "バグバウンティ",
       "hey-bitizens": "Bitizenの皆さん、こんにちは！",

@@ -1,26 +1,11 @@
-import ApolloBoostClient from 'apollo-boost';
-import bluebird from 'bluebird';
-import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import * as log from 'loglevel';
 import {
-  merge,
-  pickAll,
   dissoc,
-  filter,
-  propEq,
-  map,
-  prop,
 } from 'ramda';
 
-import {
-  web3IsInstalled,
-  getWeb3Wallet,
-  networkIsSupported,
-  getOracleContract,
-  getBitGuildTokenContract,
-} from '@/shared/utils/network';
+import { client } from '@/shared/utils/apollo/withApollo';
 
+export { client } from '@/shared/utils/apollo/withApollo';
 
 if (typeof global !== 'undefined') {
   global.fetch = require('node-fetch');
@@ -33,53 +18,54 @@ export const uri = (process.env.NODE_ENV === 'development' ? 'http://localhost:7
 
 const toGwei = value => (Number(window.web3.toWei(value / 10, 'shannon')) + 1000000000); // gwei
 
-const typeDefs = `
-  type Network {
-    id: Int
-    available: Boolean
-    name: String
-    supported: Boolean
-  }
-
-  type Gas {
-    average: Int
-    fast: Int
-    fastest: Int
-  }
-
-  type Gift {
-    tx: String
-  }
-
-  type ValidationMessage {
-    name: String
-    reason: String
-  }
-
-  type Mutation {
-    updateNetworkAndWallet(id: Int!, available: Boolean!, name: String!, supported: Boolean!, wallet: String) Network
-    updateGas(average: Int!, fast: Int!, fastest: Int!) Gas
-    updateLatestBlock(tx: String!) String
-    toggleUserRegistrationWorkflow(on: Boolean) Boolean
-    validationAddAll(validationMessages: [ValidationMessage]) Boolean
-    removeValidation(name: String!) Boolean
-  }
-
-  type Query {
-    wallet: String
-    rate: Number
-    gifts: [Gift]
-    validationMessages: [ValidationMessage]
-    latestBlock: String
-    showUserRegistrationWorkflow: Boolean
-    network: [Network]
-    gas: Gas
-    balanceETH: Number
-    balancePLAT: Number
-  }
-`;
-
 export const mutations = {
+  register: gql`
+    mutation register($email: String!, $wallet: String!, $signature: String!, $nickName: String!, $language: String!) {
+      register(email: $email, wallet: $wallet, signature: $signature, nickName: $nickName, language: $language) {
+        user { id nickName language wallets }
+        tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
+      }
+    }
+  `,
+  createSigningMessage: gql`
+    mutation createSigningMessage($wallet: String!, $action: String) {
+      createSigningMessage(wallet: $wallet, action: $action) {
+        nonce
+        signingMessage
+      }
+    }
+  `,
+  login: gql`
+    mutation login($wallet: String!, $signature: String!) {
+      login(wallet: $wallet, signature: $signature) {
+        user { id nickName language wallets }
+        tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
+      }
+    }
+  `,
+  linkWallet: gql`
+    mutation linkWallet($wallet: String!, $signature: String!) {
+      linkWallet(wallet: $wallet, signature: $signature) {
+        user { id wallets lastWalletUsed }
+        tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
+      }
+    }
+  `,
+  setCurrentWallet: gql`
+    mutation setCurrentWallet($currentWallet: String) {
+      setCurrentWallet(currentWallet: $currentWallet) {
+        user { id nickName language wallets }
+        tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
+      }
+    }
+  `,
+  refreshToken: gql`
+    mutation refreshToken($refreshToken: String!) {
+      refreshToken(refreshToken: $refreshToken) {
+        accessToken refreshToken refreshExpiresAt accessExpiresAt
+      }
+    }
+  `,
   listItemForSale: gql`
     mutation listItemForSale ($userId: Int!, $itemId: Int!, $saleListingId: Int!, $saleTxnHash: String!, $salePrice: Int!) {
       listItemForSale(userId: $userId, itemId: $itemId, saleListingId: $saleListingId, saleTxnHash: $saleTxnHash, salePrice: $salePrice) {
@@ -108,54 +94,21 @@ export const mutations = {
       }
     }
   `,
-  createUser: gql`
-    mutation createUser($payload: UserCreatePayload!) {
-      createUser(payload: $payload) {
-        id wallet nickName email language
-      }
-    }
-  `,
   updateUser: gql`
     mutation updateUser($id: ID!, $payload: UserUpdatePayload!) {
       updateUser(id: $id, payload: $payload) {
-        id wallet nickName email language
+        user { id nickName language wallets }
+        tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
       }
     }
   `,
 };
 
 export const queries = {
-  listItems: gql`
-    query listItems($userId: ID!, $language: String!) {
-      listItems(userId: $userId, language: $language) {
-        id presale lan tokenId image name description attrs saleExpiration salePrice saleState lastOwner {id} categories game { id }
-      }
-    }
-  `,
-  listGames: gql`{
-    listGames {
-      id name slug url stagingUrl api nft itemsForSaleCount enabled comingSoon
-      bannerImage thumbnailImage categoryIcon config
-    }
-  }`,
-  viewUserByWallet: gql`
-    query viewUserByWallet($wallet: String!) {
-      viewUserByWallet(wallet: $wallet) {
-        id wallet nickName language
-      }
-    }
-  `,
-  viewGameBySlug: gql`
-    query viewGameBySlug($slug: String!) {
-      viewGameBySlug(slug: $slug) {
-        id name slug url stagingUrl api nft
-      }
-    }
-  `,
-  listMarketplaceItems: gql`
-      query listMarketplaceItems($language: String, $userId: Int, $gameId: Int, $categories: [String], $andNotCategories: [String], $sort: Value) {
-        listMarketplaceItems(language: $language, userId: $userId, gameId: $gameId, categories: $categories, andNotCategories: $andNotCategories, sort: $sort) {
-        id lan tokenId name description image attrs categories salePrice saleExpiration saleState lastOwner {id} saleExpiration saleCurrency game {id} user {id}
+  me: gql`
+    query me {
+      me {
+        id nickName language wallets lastWalletUsed
       }
     }
   `,
@@ -210,9 +163,19 @@ export const localQueries = {
 };
 
 export const localMutations = {
-  updateNetworkAndWallet: gql`
-    mutation updateNetworkAndWallet($id: Int!, $available: Boolean!, $name: String!, $supported: Boolean!, $wallet: String) {
-      updateNetworkAndWallet(id: $id, available: $available, name: $name, supported: $supported, wallet: $wallet) @client
+  updateWallet: gql`
+    mutation updateWallet($wallet: String) {
+      updateWallet(wallet: $wallet) @client
+    }
+  `,
+  updateUserBalances: gql`
+    mutation updateUserBalances {
+      updateUserBalances @client
+    }
+  `,
+  updateNetwork: gql`
+    mutation updateNetwork($id: Int!, $available: Boolean!, $name: String!, $supported: Boolean!) {
+      updateNetwork(id: $id, available: $available, name: $name, supported: $supported) @client
     }
   `,
   updateLatestBlock: gql`
@@ -242,233 +205,9 @@ export const localMutations = {
   `,
 };
 
-const onError = ({ graphQLErrors, networkError }) => {
-  if (networkError) log.info(`[Network error]: ${networkError}`);
-  if (graphQLErrors) {
-    graphQLErrors.map(({ message, locations, path }) => (
-      log.info(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`))
-    );
-    const dupErrors = filter(propEq('name', 'UniqueConstraintError'), graphQLErrors);
-    const validationMessages = map(err => ({ ...err, __typename: 'ValidationMessage' }), map(prop('data'), dupErrors));
-    client.mutate({ mutation: localMutations.validationAddAll, variables: { validationMessages } });
-  }
-  return null;
-};
 
-export const createApolloClient = () => new ApolloBoostClient({
-  uri,
-  onError,
-  clientState: {
-    defaults: {
-      wallet: null,
-      rate: null,
-      gifts: [],
-      balanceETH: 0,
-      balancePLAT: 0,
-      latestBlock: '',
-      validationMessages: [],
-      showUserRegistrationWorkflow: false,
-      network: {
-        id: null,
-        name: null,
-        supported: null,
-        available: null,
-        __typename: 'Network',
-      },
-      gas: {
-        average: 8,
-        fast: 16,
-        fastest: 30,
-        __typename: 'Gas',
-      },
-    },
-    resolvers: {
-      Mutation: {
-        updateLatestBlock: async(_, { tx }, { cache, getCacheKey }) => {
-          if (!web3IsInstalled()) return null;
-          await cache.writeData({ data: { latestBlock: tx } });
-          const { gifts } = await cache.readQuery({ query: localQueries.gifts });
-          const result = await Promise.all(gifts.map(gift =>
-            // will return null while transaction is in process
-            bluebird.promisify(window.web3.eth.getTransactionReceipt)(gift.tx)
-          ));
-          const hashes = result.filter(tx => tx).map(tx => tx.transactionHash);
-          cache.writeData({
-            data: {
-              gifts: gifts.filter(gift => !hashes.includes(gift.tx)),
-            },
-          });
-          return null;
-        },
-        updateNetworkAndWallet: async(_, { wallet, ...network }, { cache, getCacheKey }) => {
-          log.info(`Setting network to ${network.name} with id ${network.id}. Wallet: ${wallet}`);
-
-          if (!wallet) {
-            try {
-              log.info('Trying to manually invalidate user in apollo cache.');
-              delete cache.data.data['User:1'];
-            } catch (e) {
-              log.error(e);
-            }
-          }
-
-          let data = {
-            network: {
-              ...network,
-              __typename: 'Network',
-            },
-            wallet: (wallet || null),
-          };
-
-
-          await cache.writeData({ data });
-
-
-          // const gasStationResponse = await fetch(ETH_GAS_STATION_ENDPOINT).then(res => res.json());
-          // log.info(`Fetched gas from ${ETH_GAS_STATION_ENDPOINT}`);
-          // await cache.writeData({
-          //   data: {
-          //     gas: {
-          //       average: toGwei(gasStationResponse.average),
-          //       fast: toGwei(gasStationResponse.fast),
-          //       fastest: toGwei(gasStationResponse.fastest),
-          //       __typename: 'Gas',
-          //     },
-          //   },
-          // });
-          log.info(`Fetched rate from oracle contract on ${name} network.`);
-          const ETHPrice = await bluebird.promisify(getOracleContract(network).ETHPrice)();
-          const rate = window.web3.fromWei(ETHPrice, 'ether').toNumber();
-          await cache.writeData({ data: { rate } });
-          log.info(`Set rate to ${rate.toString()}.`);
-          if (!web3IsInstalled()) return null;
-          if (networkIsSupported(network)) {
-            let balanceETH = 0;
-            let balancePLAT = 0;
-            if (wallet) {
-              const balanceResponseETH = await bluebird.promisify(window.web3.eth.getBalance)(wallet);
-              balanceETH = window.web3.fromWei(balanceResponseETH, 'ether').toNumber();
-              const balanceResponsePLAT = await bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(wallet);
-              balancePLAT = window.web3.fromWei(balanceResponsePLAT, 'ether').toNumber();
-            }
-            await cache.writeData({ data: { balanceETH, balancePLAT } });
-          }
-          return null;
-        },
-        toggleUserRegistrationWorkflow: async(_, { on = null }, { cache, getCacheKey }) => {
-          if (typeof on === 'boolean') {
-            await cache.writeData({ data: { showUserRegistrationWorkflow: Boolean(on) } });
-            return on;
-          } else {
-            const { showUserRegistrationWorkflow } = await cache.readQuery({ query: localQueries.root });
-            await cache.writeData({ data: { showUserRegistrationWorkflow: !showUserRegistrationWorkflow } });
-            return !showUserRegistrationWorkflow;
-          }
-        },
-        validationAddAll: async(_, { validationMessages }, { cache, getCacheKey }) => {
-          const data = await cache.readQuery({ query: localQueries.root });
-          const allMsgs = data.validationMessages.concat(validationMessages);
-          await cache.writeData({ data: { validationMessages: allMsgs } });
-          return null;
-        },
-        removeValidation: async(_, { name }, { cache, getCacheKey }) => {
-          const data = await cache.readQuery({ query: localQueries.root });
-          const validationMessages = data.validationMessages.filter(msg => (msg.name !== name));
-          await cache.writeData({ data: { validationMessages } });
-          return null;
-        },
-        removeAllValidations: async(_, variables, { cache }) => {
-          await cache.writeData({ data: { validationMessages: [] } });
-          return null;
-        },
-      },
-    },
-    typeDefs,
-  },
-});
-
-export const client = createApolloClient();
-
-export const viewUserByWalletQuery = graphql(queries.viewUserByWallet, {
-  name: 'user',
-  options: props => {
-    log.trace('Running viewUserByWalletQuery with props: ', props);
-    return ({
-      variables: { wallet: typeof window !== 'undefined' && window.web3 && (window.web3.eth.accounts[0] || null) },
-      ssr: false,
-      fetchPolicy: 'no-cache',
-    });
-  },
-});
-
-export const listGamesQuery = graphql(queries.listGames, { name: 'games' });
-
-export const listItemsQuery = graphql(queries.listItems, {
-  name: 'items',
-  skip: props => (props.user && props.user.loading),
-  options: props => {
-    log.trace('Running listItemsQuery with props: ', props);
-    const user = props.user.viewUserByWallet ? props.user.viewUserByWallet : props.user;
-    return ({
-      variables: {
-        language: user.language,
-        userId: user.id,
-      },
-      pollInterval: 30000,
-    });
-  },
-});
-
-export const viewGameBySlugQuery = graphql(queries.viewGameBySlug, {
-  name: 'game',
-  skip: props => !props.slug,
-  options: props => {
-    log.trace('Running viewGameBySlugQuery with props: ', props);
-    return ({
-      variables: {
-        slug: props.slug || (props.game && props.game.slug),
-      },
-    });
-  },
-});
-
-export const listMarketplaceItemsQuery = graphql(queries.listMarketplaceItems, {
-  name: 'marketItems',
-  skip: props => {
-    return (
-      !props.user || !props.games ||
-      (props.user && props.user.loading) || (props.games && props.games.loading)
-    );
-  },
-  options: props => {
-    log.info('Running listMarketplaceItemsQuery with props: ', props);
-    const user = props.user.viewUserByWallet ? props.user.viewUserByWallet : props.user;
-    const games = props.games.listGames ? props.games.listGames : props.games;
-
-    return ({
-      variables: {
-        language: 'en',
-        userId: user.id,
-        gameId: games[0].id,
-        categories: [],
-        sort: null,
-      },
-    });
-  },
-});
-
-export const createUser = async(locale, data) => {
-  const newUser = merge(data, { language: locale });
-  const userFields = ['wallet', 'email', 'nickName', 'language'];
-  const variables = { payload: pickAll(userFields, newUser) };
-  return client.mutate({ mutation: mutations.createUser, variables });
-};
-
-
-export const updateUser = async(user, newUser) => {
-  const { data } = await client.query({ query: queries.viewUserByWallet, variables: { wallet: getWeb3Wallet() } });
-  const { viewUserByWallet } = data;
-  const variables = { id: viewUserByWallet.id, payload: dissoc('__typename', merge(viewUserByWallet, newUser)) };
+export const updateUser = async(id, payload) => {
+  const variables = { id, payload: dissoc('__typename', payload) };
   return client.mutate({
     mutation: mutations.updateUser,
     variables,

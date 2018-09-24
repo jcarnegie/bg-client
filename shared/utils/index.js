@@ -10,6 +10,8 @@ import {
 
 const env = process.env.DEPLOYED_ENV || 'local';
 
+export const toHex = text => `0x${Buffer.from(text, 'utf8').toString('hex')}`;
+
 export const showRegistrationWorkflow = () => client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
 
 export function featureRouteGuard({ res }, featureOn) {
@@ -24,10 +26,6 @@ export const featureOn = feature => contains(env, propOr([], feature, features))
 export const AUTH_ROUTES_REGEX = new RegExp('^(\/inventory|\/game|\/sandbox)', 'i'); /* eslint-disable-line no-useless-escape */
 
 export const requireUserLoginAndSupportedNetwork = (user = {}, network = {}) => {
-  /* User is loading still */
-  const loadingUser = path(['loading'], user);
-  if (loadingUser) return false;
-
   /* Network is not supported */
   if (!network.supported && network.supported !== null) {
     showRegistrationWorkflow();
@@ -35,7 +33,7 @@ export const requireUserLoginAndSupportedNetwork = (user = {}, network = {}) => 
   }
 
   /* User is not defined, show registration workflow */
-  if (!path(['viewUserByWallet'], user)) {
+  if (!path(['id'], user)) {
     showRegistrationWorkflow();
     return false;
   }

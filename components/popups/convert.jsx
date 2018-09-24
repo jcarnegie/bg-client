@@ -4,15 +4,7 @@ import { Button, Form, Glyphicon, Modal, Grid, Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
-import {
-  compose,
-  graphql,
-} from 'react-apollo';
-
-import {
-  localQueries,
-  viewUserByWalletQuery,
-} from '@/shared/utils/apollo';
+import { withRoot } from '@/components/wrappers';
 
 import BGModal from '@/components/modal';
 import withFormHelper from '@/components/inputs/withFormHelper';
@@ -35,32 +27,31 @@ function precisionRound(number, precision) {
     analytics: state.analytics,
   })
 )
+@withRoot
 class ConvertPopup extends Component {
   static propTypes = {
     analytics: PropTypes.object,
     show: PropTypes.bool,
-    data: PropTypes.object,
     dispatch: PropTypes.func,
     onHide: PropTypes.func,
     setState: PropTypes.func,
     formData: PropTypes.object,
-    user: PropTypes.object,
+    root: PropTypes.object,
   };
 
   state = {};
 
   componentDidMount() {
-    const { setState, data } = this.props;
+    const { setState, root } = this.props;
     setState({
       eth: 1,
-      plat: data.rate,
+      plat: root.rate,
     });
   }
 
   static getDerivedStateFromProps(nextProps) {
-    const { data, formData } = nextProps;
-    const { loading, rate } = data;
-    if (loading) return null;
+    const { root, formData } = nextProps;
+    const { rate } = root;
 
     const plat = rate * formData.eth;
 
@@ -72,8 +63,8 @@ class ConvertPopup extends Component {
   }
 
   onChangeETH(e) {
-    const { setState, data } = this.props;
-    const { rate } = data;
+    const { setState, root } = this.props;
+    const { rate } = root;
     setState({
       eth: e.target.value,
       plat: rate * e.target.value,
@@ -81,8 +72,8 @@ class ConvertPopup extends Component {
   }
 
   onChangePLAT(e) {
-    const { setState, data } = this.props;
-    const { rate } = data;
+    const { setState, root } = this.props;
+    const { rate } = root;
     setState({
       eth: e.target.value / rate,
       plat: e.target.value,
@@ -91,8 +82,8 @@ class ConvertPopup extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const { data, dispatch, formData } = this.props;
-    const { wallet, gas, network } = data;
+    const { root, formData } = this.props;
+    const { wallet, gas, network } = root;
     getTopupContract(network).buyTokens({
         value: window.web3.toWei(precisionRound(formData.eth, 6), 'ether'),
         from: wallet,
@@ -119,8 +110,8 @@ class ConvertPopup extends Component {
   }
 
   render() {
-    const { data, show, onHide, formData } = this.props;
-    const { rate } = data;
+    const { root, show, onHide, formData } = this.props;
+    const { rate } = root;
 
     if (!rate) {
       return null;
@@ -224,7 +215,4 @@ class ConvertPopup extends Component {
 }
 
 
-export default compose(
-  viewUserByWalletQuery,
-  graphql(localQueries.root),
-)(ConvertPopup);
+export default ConvertPopup;

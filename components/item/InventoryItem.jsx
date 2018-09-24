@@ -7,19 +7,9 @@ import * as log from 'loglevel';
 import nftABI from '@/shared/contracts/ERC721/abi.json';
 
 import {
-  compose,
-  graphql,
-} from 'react-apollo';
-
-import {
   getMarketplaceContractAddress,
   getContractFromGame,
 } from '@/shared/utils/network';
-
-import {
-  localQueries,
-  viewUserByWalletQuery,
-} from '@/shared/utils/apollo';
 
 import {
   listItem,
@@ -32,11 +22,16 @@ import {
 import style from '@/shared/constants/style';
 import ItemPopup from '@/components/popups/itempopup';
 
+import { withGlobalContext } from '@/shared/utils/context';
+import { withRoot } from '@/components/wrappers';
+
 import Item from './Item';
 import ItemBase from './ItemBase';
 
 @connect()
 @injectIntl
+@withGlobalContext
+@withRoot
 class InventoryItem extends ItemBase {
   static propTypes = {
     item: PropTypes.shape({
@@ -57,6 +52,12 @@ class InventoryItem extends ItemBase {
     }),
     onSell: PropTypes.func,
     onBuy: PropTypes.func,
+    root: PropTypes.object,
+    ctx: PropTypes.shape({
+      isCurrentWalletLinked: PropTypes.bool,
+      userNeedsToLogInOrRegister: PropTypes.bool,
+      me: PropTypes.object,
+    }),
   };
 
   static defaultProps = {
@@ -77,15 +78,16 @@ class InventoryItem extends ItemBase {
     const {
       item,
       game,
-      user,
       onSell,
+      root,
     } = this.props;
 
-    const { network } = this.props.data;
+    const { me } = this.props.ctx;
+    const { network } = root;
 
     log.info('Beginning sell transaction...');
     const result = await listItem({
-      user: user.viewUserByWallet,
+      user: me,
       item,
       contract: getContractFromGame(game, network),
       to: getMarketplaceContractAddress(network),
@@ -114,17 +116,21 @@ class InventoryItem extends ItemBase {
 
   async onGiftSubmit(data) {
     const {
-      user,
+      ctx,
       item,
       game,
+      root,
     } = this.props;
+    const { me } = ctx;
+
+    const { network } = root;
 
     if (this.isValid(data.wallet)) {
       /* TODO - move to shared/utils/contracts.js */
-      const contract = window.web3.eth.contract(nftABI).at(game.nft[this.props.data.network.id]);
-      contract.safeTransferFrom(user.viewUserByWallet.wallet, data.wallet, item.tokenId, {
+      const contract = window.web3.eth.contract(nftABI).at(game.nft[network.id]);
+      contract.safeTransferFrom(me.lastWalletUsed, data.wallet, item.tokenId, {
         gas: window.web3.toHex(15e4),
-        gasPrice: window.web3.toHex(this.props.data.gas.average),
+        gasPrice: window.web3.toHex(this.props.root.gas.average),
       },
         (error, tx) => {
           if (error) {
@@ -220,7 +226,9 @@ class InventoryItem extends ItemBase {
   }
 
   render() {
-    const { item, game, user } = this.props;
+    const { item, game } = this.props;
+    const { me } = this.props.ctx;
+
     return (
       <div className="inventory-item">
         <style jsx>{`
@@ -247,7 +255,7 @@ class InventoryItem extends ItemBase {
         />
         <Item
           item={item}
-          user={user}
+          user={me}
           buttons={item.presale ? ::this.renderPresaleButton() : ::this.renderButtons()}
         />
       </div>
@@ -256,7 +264,4 @@ class InventoryItem extends ItemBase {
 }
 
 
-export default compose(
-  viewUserByWalletQuery,
-  graphql(localQueries.root),
-)(InventoryItem);
+export default InventoryItem;

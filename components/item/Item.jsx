@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
 import style from '@/shared/constants/style';
-
+import { withGlobalContext } from '@/shared/utils/context';
 
 const notNil = compose(not, isNil);
 
@@ -18,6 +18,7 @@ const notNil = compose(not, isNil);
     layout: state.layout,
   })
 )
+@withGlobalContext
 class Item extends Component {
   static propTypes = {
     item: PropTypes.shape({
@@ -29,6 +30,7 @@ class Item extends Component {
       saleExpiration: PropTypes.string,
       saleState: PropTypes.string,
     }),
+    ctx: PropTypes.object,
     game: PropTypes.shape({
       nft: PropTypes.object,
     }),
@@ -100,8 +102,8 @@ class Item extends Component {
 
   priceBanner() {
     let { salePrice, saleState } = this.props.item;
-    const { user } = this.props;
-    const userId = path(['viewUserByWallet', 'id'], user);
+    const { ctx } = this.props;
+    const userId = path(['id'], ctx.me);
     const lastOwner = path(['lastOwner', 'id'], this.props.item);
 
     let listedFor = (

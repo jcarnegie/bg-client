@@ -1,28 +1,35 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import style from '@/shared/constants/style';
 
-import RegisterButton from '@/components/RegisterButton';
+import LoginButton from '@/components/LoginButton';
 import ActiveLink from '@/components/activelink';
 import Language from '@/components/language';
 import Balance from '@/components/balance';
 import User from '@/components/user';
 
+import { withGlobalContext } from '@/shared/utils/context';
+import { withRoot } from '@/components/wrappers';
+
 
 @injectIntl
-@connect(
-  state => ({
-    chat: state.chat,
-  })
-)
+@withGlobalContext
+@withRoot
 class Header extends Component {
   static propTypes = {
-    dispatch: PropTypes.func,
-    chat: PropTypes.object,
+    ctx: PropTypes.shape({
+      isCurrentWalletLinked: PropTypes.bool,
+      userNeedsToLogInOrRegister: PropTypes.bool,
+      me: PropTypes.object,
+    }),
+    root: PropTypes.shape({
+      balanceETH: PropTypes.number,
+      balancePLAT: PropTypes.number,
+      rate: PropTypes.number,
+    }),
   };
 
   navigation() {
@@ -107,6 +114,12 @@ class Header extends Component {
   }
 
   settings() {
+    const {
+      balanceETH,
+      balancePLAT,
+      rate,
+    } = this.props.root;
+    const { me } = this.props.ctx;
     return (
       <div className="settings">
         <style jsx>{`
@@ -122,10 +135,10 @@ class Header extends Component {
             align-items: center;
           }
         `}</style>
-          <Balance />
-          <User />
-        <Language />
-        <RegisterButton />
+        <Balance user={me} balanceETH={balanceETH} balancePLAT={balancePLAT} rate={rate} />
+        {this.props.ctx.isCurrentWalletLinked && <User user={me} />}
+        <Language user={me} />
+        <LoginButton show={!me} />
       </div>
     );
   }

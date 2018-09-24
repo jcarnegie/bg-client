@@ -1,17 +1,18 @@
 import Layout from '@/components/layouts';
+import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 import GameLanding from '@/components/GameLanding';
 
 
 const GameLandingPage = props => {
   return (
-    <>
-      <Layout.Mobile>
+    <Layout>
+      <MobileScreen>
         <GameLanding {...props} />
-      </Layout.Mobile>
-      <Layout.Desktop>
+      </MobileScreen>
+      <DesktopScreen>
         <GameLanding {...props} />
-      </Layout.Desktop>
-    </>
+      </DesktopScreen>
+    </Layout>
   );
 };
 

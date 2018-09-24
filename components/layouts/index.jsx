@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-import { Desktop, Mobile } from '@/components/responsive';
+import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 import MobileHeader from '@/components/header/mobile';
 import MobileFooter from '@/components/footer/mobile';
 import DesktopHeader from '@/components/header/desktop';
@@ -36,17 +35,17 @@ class Layout extends Component {
   render() {
     return (
       <>
-        <Desktop><DesktopHeader /></Desktop>
-        <Mobile><MobileHeader /></Mobile>
+        <DesktopScreen><DesktopHeader /></DesktopScreen>
+        <MobileScreen><MobileHeader /></MobileScreen>
           <Main>
             {this.props.children}
           </Main>
-          <Mobile><MenuDrawer show={this.props.layout.showMenu} /></Mobile>
+          <MobileScreen><MenuDrawer show={this.props.layout.showMenu} /></MobileScreen>
         {
           this.props.showFooter ? (
             <>
-              <Desktop><DesktopFooter /></Desktop>
-              <Mobile><MobileFooter /></Mobile>
+              <DesktopScreen><DesktopFooter /></DesktopScreen>
+              <MobileScreen><MobileFooter /></MobileScreen>
             </>
           ) : null
         }

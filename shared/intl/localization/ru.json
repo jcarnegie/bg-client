@@ -6,6 +6,7 @@
     "expired": "Expired",
     "expires-in": "Expires in",
     "faq": "О Bitizens",
+    "login": "авторизоваться",
     "remaining": "В наличии",
     "rules": "Правила",
     "all-games": "All Games",
@@ -27,6 +28,10 @@
       "pt": "Português",
       "es": "Español",
       "ru": "Русский"
+    },
+    "login": {
+      "wallet": "бумажник",
+      "register": "Нужно зарегистрироваться? Зарегистрируйтесь здесь."
     },
     "menu": {
       "inventory": "Мои предметы",
@@ -125,6 +130,9 @@
     }
   },
   "pages": {
+    "register": {
+      "already-registered": "Уже зарегистрирован? Войдите здесь."
+    },
     "bugbounty": {
       "title": "Награда за обнаруженные ошибки в программном обеспечении",
       "hey-bitizens": "Привет, Bitizen!",

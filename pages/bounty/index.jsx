@@ -1,11 +1,12 @@
+import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 import Layout from '@/components/layouts';
 import Bugbounty from '@/components/bugbounty';
 
 
 const BugBountyPage = props => {
   return (
-    <>
-      <Layout.Mobile>
+    <Layout>
+      <MobileScreen>
         <div className="bg-bounty">
           <style jsx>{`
             .bg-bounty {
@@ -15,8 +16,8 @@ const BugBountyPage = props => {
           `}</style>
           <Bugbounty {...props} />
         </div>
-      </Layout.Mobile>
-      <Layout.Desktop>
+      </MobileScreen>
+      <DesktopScreen>
         <div className="bg-bounty">
           <style jsx>{`
             .bg-bounty {
@@ -26,8 +27,8 @@ const BugBountyPage = props => {
           `}</style>
           <Bugbounty {...props} />
         </div>
-      </Layout.Desktop>
-    </>
+      </DesktopScreen>
+    </Layout>
   );
 };
 

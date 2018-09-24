@@ -1,22 +1,6 @@
 import PropTypes from 'prop-types';
 import Router, { withRouter } from 'next/router';
 
-import {
-  compose,
-  graphql,
-} from 'react-apollo';
-
-import {
-  viewUserByWalletQuery,
-  localQueries,
-} from '@/shared/utils/apollo';
-
-
-import {
-  AUTH_ROUTES_REGEX,
-  requireUserLoginAndSupportedNetwork,
-} from '@/shared/utils';
-
 
 const ActiveLink = ({
   children,
@@ -26,19 +10,14 @@ const ActiveLink = ({
   style,
   activeStyle,
   className,
-  user,
-  data,
   ...rest
 }) => {
   const allStyle = Object.assign({}, style, activeStyle);
-  const { network } = data;
   const isStringHref = typeof href === 'string';
 
   const handleClick = e => {
     e.preventDefault();
     if (!isStringHref) return router.push(href, as);
-    if (!href.match(AUTH_ROUTES_REGEX)) return router.push(href);
-    if (!requireUserLoginAndSupportedNetwork(user, network)) return;
     return router.push(href);
   };
 
@@ -59,8 +38,7 @@ ActiveLink.propTypes = {
   style: PropTypes.object,
   activeStyle: PropTypes.object,
   as: PropTypes.any,
-  user: PropTypes.object,
-  data: PropTypes.object,
+  root: PropTypes.object,
 };
 
 ActiveLink.defaultProps = {
@@ -71,11 +49,7 @@ ActiveLink.defaultProps = {
   style: {},
   activeStyle: {},
   as: '',
-  user: {},
-  data: {},
+  root: {},
 };
 
-export default compose(
-  viewUserByWalletQuery,
-  graphql(localQueries.root)
-)(withRouter(ActiveLink));
+export default withRouter(ActiveLink);

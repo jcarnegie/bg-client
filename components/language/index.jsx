@@ -5,18 +5,12 @@ import { updateIntl } from 'react-intl-redux';
 import { injectIntl, intlShape } from 'react-intl';
 import { Image, MenuItem, DropdownButton } from 'react-bootstrap';
 import { withRouter } from 'next/router';
-import { path } from 'ramda';
+import { path, pathOr } from 'ramda';
+import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
 import { localization } from '@/shared/intl/setup';
-import { Mobile, Desktop } from '@/components/responsive';
-
-import {
-  compose,
-} from 'react-apollo';
-
 import {
   updateUser,
-  viewUserByWalletQuery,
 } from '@/shared/utils/apollo';
 
 @withRouter
@@ -31,14 +25,15 @@ class Language extends Component {
   };
 
   onSelect(language) {
-    const { dispatch, user, router } = this.props;
+    const { dispatch, intl, user, router } = this.props;
     const { route } = router;
-    const refreshRoutes = ['/game', '/sandbox']
-    dispatch(updateIntl(localization[language]));
+    const refreshRoutes = ['/game', '/sandbox'];
 
-    document.documentElement.setAttribute('lang', language);
-    const viewUserByWallet = path(['viewUserByWallet'], user);
-    if (viewUserByWallet) updateUser(viewUserByWallet, { language });
+    if (language !== path(['locale'], intl)) {
+      document.documentElement.setAttribute('lang', language);
+      dispatch(updateIntl(localization[language]));
+      if (user) updateUser(user.id, { language });
+    }
 
     if (refreshRoutes.includes(route)) window.location.reload();
   }
@@ -60,23 +55,12 @@ class Language extends Component {
     return dropDownLanguages;
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { dispatch } = this.props;
-    const prevLang = path(['user', 'viewUserByWallet', 'language'], prevProps);
-    const language = path(['user', 'viewUserByWallet', 'language'], this.props);
-    if (prevLang !== language && language) {
-      dispatch(updateIntl(localization[language]));
-    }
-  }
-
   render() {
-    const { user, intl } = this.props;
-    const { viewUserByWallet } = user;
-    const language = !user.loading && viewUserByWallet ? viewUserByWallet.language : intl.locale;
+    const { intl } = this.props;
 
     return (
       <div className="lang-dropdown">
-        <Desktop>
+        <DesktopScreen>
           <style jsx global>{`
             /* Global to affect Bootstrap styles */
             .lang-menu {
@@ -91,7 +75,7 @@ class Language extends Component {
             .lang-menu:hover .caret {
               color: white;
             }
-            
+
             .lang-menu > a {
               line-height: 32px !important; /* Bootstrap overrides*/
             }
@@ -101,7 +85,7 @@ class Language extends Component {
               display: flex;
               align-items: center;
             }
-            
+
             .lang-dropdown,
             .lang-dropdown .dropdown,
             .lang-dropdown .dropdown .btn {
@@ -116,7 +100,7 @@ class Language extends Component {
               transform: translateX(4px);
             }
             .lang-dropdown .dropdown .btn .caret {
-              transform: translate(0, -2px); 
+              transform: translate(0, -2px);
             }
 
             .lang-dropdown .dropdown-menu {
@@ -132,7 +116,7 @@ class Language extends Component {
             .lang-dropdown .dropdown .dropdown-menu li a:hover {
               background: #F7F7F7 !important;
             }
-           
+
             .lang-menu img,
             .lang-dropdown .dropdown .dropdown-menu li a img {
               width: 25px;
@@ -144,7 +128,7 @@ class Language extends Component {
             }
 
             .lang-dropdown > div > ul > li:nth-child(1) > a > img
-            
+
             .lang-dropdown {
               line-height: 0;
               list-style-type: none;
@@ -157,8 +141,8 @@ class Language extends Component {
               vertical-align: middle;
             }
           `}</style>
-        </Desktop>
-        <Mobile>
+        </DesktopScreen>
+        <MobileScreen>
           <style jsx global>{`
             .lang-menu,
             .lang-dropdown .dropdown .dropdown-menu,
@@ -207,12 +191,12 @@ class Language extends Component {
               height: 150px !important;
             }
           `}</style>
-        </Mobile>
+        </MobileScreen>
         <DropdownButton
           title={
             <span>
               <Image src={'/static/images/language/globe.svg'} />
-              <span className="current-lang">{language.toUpperCase()} </span>
+              <span className="current-lang">{pathOr('en', ['locale'], intl).toUpperCase()} </span>
             </span>
           }
           className="lang-menu" id="lang-menu"
@@ -225,4 +209,4 @@ class Language extends Component {
 }
 
 
-export default compose(viewUserByWalletQuery)(Language);
+export default Language;

@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import Header from '@/components/header/desktop';
 import Footer from '@/components/footer/desktop';
 import Main from '@/components/layouts/Main';
-import { Desktop } from '@/components/responsive';
+import { DesktopScreen } from 'react-responsive-redux';
 
 
 function DesktopLayout({ children, ...props }) {
   return (
-    <Desktop {...props}>
+    <DesktopScreen {...props}>
       <div className="wrapper">
         <Header />
         <Main>
@@ -18,7 +18,7 @@ function DesktopLayout({ children, ...props }) {
         </Main>
       </div>
       <Footer />
-    </Desktop>
+    </DesktopScreen>
   );
 }
 

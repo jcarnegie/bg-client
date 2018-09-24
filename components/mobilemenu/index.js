@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import RegisterButton from '@/components/RegisterButton';
+import LoginButton from '@/components/LoginButton';
 
 import {
   LAYOUT_MOBILE_MENU_SHOW,
@@ -98,7 +98,7 @@ class MobileMenu extends Component {
           }
         `}</style>
         <MenuToggle />
-        <RegisterButton />
+        <LoginButton />
       </div>
     );
   }

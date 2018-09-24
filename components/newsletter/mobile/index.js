@@ -5,7 +5,7 @@ import MdClear from 'react-icons/lib/md/clear';
 
 import style from '@/shared/constants/style';
 import BGButton from '@/components/bgbutton';
-import { Mobile } from '@/components/responsive';
+import { MobileScreen } from 'react-responsive-redux';
 
 
 export default class Newsletter extends Component {
@@ -33,7 +33,7 @@ export default class Newsletter extends Component {
     }
 
     return (
-      <Mobile>
+      <MobileScreen>
         <div className={containerClass}>
           <style jsx>{`
               .newsletter {
@@ -150,7 +150,7 @@ export default class Newsletter extends Component {
             </form>
           </div>
         </div>
-      </Mobile>
+      </MobileScreen>
     );
   }
 }

@@ -2,34 +2,28 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as log from 'loglevel';
 
-import {
-  compose,
-  graphql,
-  Query,
-} from 'react-apollo';
 import { path } from 'ramda';
 
-import {
-  queries,
-  localQueries,
-} from '@/shared/utils/apollo';
-
-import {
-  WalletContext,
-} from '@/shared/utils/context';
-
-import DataLoading from '@/components/DataLoading';
+import { withGlobalContext } from '@/shared/utils/context';
+import { withRoot } from '@/components/wrappers';
 
 import GameIframeConnection from '@/components/GameIframeConnection';
 import { defaultLanguage } from '@/shared/constants/language';
 import style from '@/shared/constants/style';
 
 const BITGUILD_INFO_URL = 'https://bitguild.info/';
-
+@withGlobalContext
+@withRoot
 class SandBox extends Component {
   static propTypes = {
     query: PropTypes.shape({
       url: PropTypes.string,
+    }),
+    root: PropTypes.object,
+    ctx: PropTypes.shape({
+      isCurrentWalletLinked: PropTypes.bool,
+      userNeedsToLogInOrRegister: PropTypes.bool,
+      me: PropTypes.object,
     }),
   };
 
@@ -64,8 +58,10 @@ class SandBox extends Component {
 
   render() {
     const { root, query } = this.props;
-    if (!root || root.loading) return <DataLoading />;
-    if (!root.network.supported) return null;
+    const { network } = root;
+    const { me } = this.props.ctx;
+
+    if (!network.supported) return null;
     return (
       <div id="game-component-wrapper">
         <style jsx global>{`
@@ -76,30 +72,10 @@ class SandBox extends Component {
             display: block;
           }
         `}</style>
-        <WalletContext.Consumer>
-          {({ wallet }) => {
-            if (!wallet) return <DataLoading />;
-            return (
-              <Query
-                query={queries.viewUserByWallet}
-                variables={{ wallet }}
-              >
-                {({ data }) => {
-                  if (!data || !data.viewUserByWallet || data.error || data.loading) {
-                    if (path(['error'], data)) log.error('error occurred');
-                    return <DataLoading />;
-                  }
-                  return ::this.renderGame(data.viewUserByWallet, query);
-                }}
-              </Query>
-            );
-          }}
-        </WalletContext.Consumer>
+          {this.renderGame(me, query)}
       </div>
     );
   }
 }
 
-export default compose(
-  graphql(localQueries.root, { name: 'root' })
-)(SandBox);
+export default SandBox;

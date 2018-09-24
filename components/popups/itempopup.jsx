@@ -5,15 +5,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage, intlShape } from 'react-intl';
 import { compose, filter, isNil, map, not } from 'ramda';
 
-import {
-  compose as apolloCompose,
-  graphql,
-} from 'react-apollo';
-
-import {
-  localQueries,
-  viewUserByWalletQuery,
-} from '@/shared/utils/apollo';
+import { withRoot } from '@/components/wrappers';
 
 import BGModal from '@/components/modal';
 import { isValidItemCategory, itemStats } from '@/client/utils/item';
@@ -29,6 +21,7 @@ const notNil = compose(not, isNil);
     layout: state.layout,
   })
 )
+@withRoot
 class ItemPopup extends Component {
   static propTypes = {
     type: PropTypes.string,
@@ -208,8 +201,8 @@ class ItemPopup extends Component {
   }
 
   async getFeeAsync() {
-    const { data, show } = this.props;
-    const { network } = data;
+    const { root, show } = this.props;
+    const { network } = root;
     const { sellPrice } = this.state;
 
     if (!show || !network) return;
@@ -294,8 +287,6 @@ class ItemPopup extends Component {
             min-height: 160px;
           }
           .buyMobileImage {
-            {/* height: 35%;
-            width: 35%; */}
             margin-top: -30px;
           }
           .buyImage{
@@ -649,7 +640,4 @@ class ItemPopup extends Component {
   }
 }
 
-export default apolloCompose(
-  viewUserByWalletQuery,
-  graphql(localQueries.root),
-)(ItemPopup);
+export default ItemPopup;

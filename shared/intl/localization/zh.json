@@ -3,6 +3,7 @@
     "about": "About",
     "description": "预售",
     "faq": "关于 Bitizen",
+    "login": "登录",
     "remaining": "剩余",
     "rules": "规则",
     "all-games": "All Games",
@@ -22,6 +23,10 @@
       "pt": "Português",
       "es": "Español",
       "ru": "Русский"
+    },
+    "login": {
+      "wallet": "钱包",
+      "register": "需要注册？在这里 注册."
     },
     "menu": {
       "inventory": "我的物品",
@@ -121,6 +126,9 @@
     }
   },
   "pages": {
+    "register": {
+      "already-registered": "已经注册？在此登录。"
+    },
     "bugbounty": {
       "title": "漏洞悬赏",
       "hey-bitizens": "Bitizen，您好！",

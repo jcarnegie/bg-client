@@ -8,20 +8,10 @@ import { connect } from 'react-redux';
 import Router from 'next/router';
 
 import {
-  compose,
-  graphql,
-} from 'react-apollo';
-
-import {
-  queries,
-  localQueries,
-  viewUserByWalletQuery,
-} from '@/shared/utils/apollo';
-
-import {
   requireUserLoginAndSupportedNetwork,
 } from '@/shared/utils';
-
+import { withGlobalContext } from '@/shared/utils/context';
+import { withRoot } from '@/components/wrappers';
 import FeatureFlag from '@/components/featureflag';
 import BGButton from '@/components/bgbutton';
 import BGIcon from '@/components/bgicon';
@@ -40,6 +30,8 @@ import style from '@/shared/constants/style';
     layout: state.layout,
   })
 )
+@withGlobalContext
+@withRoot
 class GameList extends Component {
   static propTypes = {
     games: PropTypes.shape({
@@ -48,7 +40,7 @@ class GameList extends Component {
     }),
     analytics: PropTypes.object,
     layout: PropTypes.object,
-    user: PropTypes.object,
+    ctx: PropTypes.object,
     root: PropTypes.object,
   }
 
@@ -97,7 +89,7 @@ class GameList extends Component {
 
     playableGames = uniq(playableGames.concat(unsortedPlayableGames));
 
-    if (path(['user', 'viewUserByWallet'], props)) {
+    if (path(['ctx', 'me'], props)) {
       return { newsletter: 'false', playableGames, bannerGames };
     } else {
       return { newsletter: state.newsletter, playableGames, bannerGames };
@@ -105,8 +97,8 @@ class GameList extends Component {
   }
 
   navigateToGame(slug) {
-    const { user, root } = this.props;
-    if (!requireUserLoginAndSupportedNetwork(user, path(['network'], root))) return log.info('User not logged in, rejecting navigateToGame.');
+    const { ctx, root } = this.props;
+    if (!requireUserLoginAndSupportedNetwork(ctx.me, path(['network'], root))) return log.info('User not logged in, rejecting navigateToGame.');
     this.props.analytics.ga.event({
       category: 'Site Interaction',
       action: 'Play',
@@ -180,7 +172,7 @@ class GameList extends Component {
       <div onClick={() => Router.push({ pathname: '/presale', query: { slug } }, `/presale/${slug}`)} className="promotional-banner presale-banner">
         <style jsx>{`
           .promotional-banner.presale-banner {
-            background: linear-gradient(to right, #8AAFF2, #5180EB);;
+            background: linear-gradient(to right, #8AAFF2, #5180EB);
             color: ${style.colors.logos};
             border-bottom: 1px solid #c7c6f2;
             height: 200px;
@@ -354,8 +346,4 @@ class GameList extends Component {
   }
 }
 
-export default compose(
-  viewUserByWalletQuery,
-  graphql(queries.listGames, { name: 'games' }),
-  graphql(localQueries.root, { name: 'root' })
-)(GameList);
+export default GameList;
