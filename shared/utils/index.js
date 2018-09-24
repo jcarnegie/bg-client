@@ -10,6 +10,8 @@ import {
 
 const env = process.env.DEPLOYED_ENV || 'local';
 
+export const toHex = text => `0x${Buffer.from(text, 'utf8').toString('hex')}`;
+
 export const showRegistrationWorkflow = () => client.mutate({ mutation: localMutations.toggleUserRegistrationWorkflow, variables: { on: true } });
 
 export function featureRouteGuard({ res }, featureOn) {

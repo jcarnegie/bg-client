@@ -144,7 +144,10 @@
   },
   "pages": {
     "register": {
-      "already-registered": "Already registered",
+      "title": "Welcome to BitGuild!",
+      "questions-faq": "Questions? FAQ",
+      "already-registered": "Already registered? Login here.",
+      "no-account": "Don't have an account?",
       "register": "register",
       "login": "login"
     },

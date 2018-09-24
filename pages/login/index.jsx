@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Layout from '@/components/layouts';
-import Login from '@/components/login';
+import { SessionActionsContainer, Login } from '@/components/SessionActions';
 
 
 class LoginPage extends Component {
@@ -12,7 +12,9 @@ class LoginPage extends Component {
   render() {
     return (
       <Layout showFooter={false}>
-        <Login {...this.props} />
+        <SessionActionsContainer>
+          <Login {...this.props} />
+        </SessionActionsContainer>
       </Layout>
     );
   }

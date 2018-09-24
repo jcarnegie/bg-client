@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Layout from '@/components/layouts';
-import Register from '@/components/Register';
+import { SessionActionsContainer, Register } from '@/components/SessionActions';
 
 
 class RegisterPage extends Component {
@@ -12,7 +12,9 @@ class RegisterPage extends Component {
   render() {
     return (
       <Layout showFooter={false}>
-        <Register {...this.props} />
+        <SessionActionsContainer>
+          <Register {...this.props} />
+        </SessionActionsContainer>
       </Layout>
     );
   }

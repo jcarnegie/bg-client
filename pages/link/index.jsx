@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Layout from '@/components/layouts';
-import LinkWallets from '@/components/link';
+import { SessionActionsContainer, Link } from '@/components/SessionActions';
 
 
 class LinkWalletsPage extends Component {
@@ -11,7 +11,9 @@ class LinkWalletsPage extends Component {
   render() {
     return (
       <Layout showFooter={false}>
-        <LinkWallets {...this.props} />
+        <SessionActionsContainer>
+          <Link {...this.props} />
+        </SessionActionsContainer>
       </Layout>
     );
   }
