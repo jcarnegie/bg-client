@@ -13,7 +13,7 @@ class LoginButton extends Component {
   render() {
     if (!this.props.show) return null;
     const pathname = path(['router', 'pathname'], Router);
-    const shouldShowButton = pathname !== '/login' && pathname !== '/register' && pathname !== 'link';
+    const shouldShowButton = pathname !== '/login' && pathname !== '/register' && pathname !== '/link';
     if (!shouldShowButton) return null;
     return (
       <button className="register-button" onClick={() => Router.push('/login')}>
