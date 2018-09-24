@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import * as log from 'loglevel';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isEmpty } from 'ramda';
+import { isEmpty, path } from 'ramda';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 import MdAddCircle from 'react-icons/lib/md/add-circle';
+import Router from 'next/router';
 
 import {
   client,
@@ -145,6 +146,8 @@ class Balance extends Component {
   }
 
   render() {
+    const pathname = path(['router', 'pathname'], Router);
+    if (!pathname || pathname === '/login' || pathname === '/register') return null;
     return (
       <div className="balance">
         <style jsx>{`
