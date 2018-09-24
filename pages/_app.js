@@ -117,11 +117,13 @@ class BGApp extends App {
   async handleWalletHasChanged(me, web3Wallet) {
     const { apolloClient } = this.props;
     const isCurrentWalletLinked = me && this.isWalletLinked(me, web3Wallet);
+    const isLoggedIn = web3Wallet && this.hasSession(me);
     log.info('calling updateUserBalances mutation');
     await apolloClient.mutate({ mutation: localMutations.updateWallet, variables: { wallet: web3Wallet } });
     await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
-    if (this.hasSession(me)) {
-      if (!isCurrentWalletLinked) {
+    if (isLoggedIn) {
+      /* state.web3Wallet is null if user just logged in, should not trigger */
+      if (this.state.web3Wallet && !isCurrentWalletLinked) {
         log.info('redirecting to link wallet page');
         redirect({}, '/link');
       } else {
