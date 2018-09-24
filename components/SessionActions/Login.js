@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as log from 'loglevel';
+import Cookies from 'js-cookie';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { path, pathOr } from 'ramda';
@@ -70,6 +71,7 @@ class Login extends Component {
 
       bgLocalStorage.setItem('refreshToken', refreshToken);
       bgLocalStorage.setItem('accessToken', accessToken);
+      Cookies.set('accessToken', accessToken);
 
       // add me data into apollo cache
       await client.query({ query: queries.me });
