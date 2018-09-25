@@ -203,6 +203,10 @@ class BGApp extends App {
   }
 
   async componentWillMount() {
+    if (process.browser && web3IsInstalled()) {
+      const meQuery = await this.props.apolloClient.query({ query: queries.me });
+      ::this.handleWalletHasChanged(pathOr({}, ['data', 'me'], meQuery), getWeb3Wallet());
+    }
     this.handlePageStateUpdate();
   }
 
