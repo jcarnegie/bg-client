@@ -25,7 +25,8 @@ const parseCookies = (req, options = {}) => {
 
 const getToken = req => {
   if (process.browser) {
-    return localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem('accessToken');
+    log.info('getToken: accessToken (localStorage):', accessToken);
   } else {
     return parseCookies(req).accessToken;
   }
@@ -37,12 +38,8 @@ export default App => {
     static propTypes = { apolloState: PropTypes.object.isRequired }
 
     static async getInitialProps(ctx) {
-      log.info('withApollo.getInitialProps');
-      const {
-        Component,
-        router,
-        ctx: { req, res, pathname = '' },
-      } = ctx;
+      console.log('withApollo.getInitialProps');
+      const { Component, router, ctx: { req, res } } = ctx;
       const apollo = initApollo({}, {
         getToken: () => getToken(req),
       });
@@ -54,6 +51,7 @@ export default App => {
       const { me } = data;
 
       // route guard
+      const pathname = pathOr('', ['url'], req);
       const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
       const hasSession = pathOr(false, ['id'], me);
       const hasAccessToken = pathOr(false, ['cookies', 'accessToken'], req);
@@ -64,7 +62,8 @@ export default App => {
        */
       if (
         !process.browser &&
-        hasAccessToken &&
+        // TODO: revert "hasAccessToken" once we keep accessToken cookie never expire
+        !hasAccessToken &&
         !hasSession &&
         !isPagePublic &&
         pathname !== '/refreshtoken'
@@ -114,7 +113,7 @@ export default App => {
 
       // Extract query data from the Apollo's store
       const apolloState = apollo.cache.extract();
-      // log.info('apolloState from cache: ', apolloState);
+      // console.log('apolloState from cache: ', apolloState);
       return {
         ...appProps,
         apolloState,
