@@ -196,7 +196,15 @@ class BGApp extends App {
     setTimeout(::this.networkAndWalletPoller, WEB3_ACCOUNT_POLLING_INTERVAL);
   }
 
+  async componentDidUpdate() {
+    this.handlePageStateUpdate();
+  }
+
   async componentWillMount() {
+    this.handlePageStateUpdate();
+  }
+
+  async handlePageStateUpdate() {
     const {
       apolloClient,
       mobileDetect,
@@ -213,7 +221,7 @@ class BGApp extends App {
       payload: { type: mobileDetect },
     });
     if (!process.browser) return null;
-    this.props.store.dispatch({ type: APP_RESIZE });
+    store.dispatch({ type: APP_RESIZE });
     const web3Wallet = getWeb3Wallet();
     const isLoggedIn = web3Wallet && this.hasSession(me);
 
@@ -246,10 +254,12 @@ class BGApp extends App {
     }
 
     const wallets = pathOr([], ['wallets'], me);
+    const isCurrentWalletLinked = contains(web3Wallet, wallets);
+    if (isCurrentWalletLinked !== this.state.isCurrentWalletLinked) {
+      this.setState({ isCurrentWalletLinked });
+    }
 
-    this.setState({ isCurrentWalletLinked: contains(web3Wallet, wallets) });
-
-    if (web3Wallet) {
+    if (web3Wallet !== this.state.web3Wallet) {
       await apolloClient.mutate({
         mutation: localMutations.updateWallet,
         variables: { wallet: web3Wallet },
