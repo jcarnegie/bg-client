@@ -220,7 +220,7 @@ class Inventory extends Component {
         query={inventoryQuery}
       >
         {({ loading, error, data, refetch }) => {
-          if (data.loading) return <DataLoading />;
+          if (!data || data.loading) return <DataLoading />;
           if (data.error) return <DataError />;
           return (
           <div className="inventory">
