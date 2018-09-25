@@ -61,8 +61,7 @@ export default App => {
        */
       if (
         !process.browser &&
-        // TODO: revert "hasAccessToken" once we keep accessToken cookie never expire
-        !hasAccessToken &&
+        hasAccessToken &&
         !hasSession &&
         !isPagePublic &&
         pathname !== '/refreshtoken'
