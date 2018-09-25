@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 
 import {
@@ -15,6 +16,11 @@ export const withRoot = Component => function ComponentWithRoot(props) {
     </Query>
   );
 };
+
+export const rootShape = PropTypes.shape({
+  network: PropTypes.object,
+  wallet: PropTypes.string,
+});
 
 export const withMe = Component => function ComponentWithMe(props) {
  return (

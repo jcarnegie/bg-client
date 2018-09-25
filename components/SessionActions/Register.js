@@ -162,7 +162,9 @@ class Register extends Component {
                 }
                 .register h1 {
                   text-align: center;
+                  font-size: ${mobile ? '1.8em' : '2.6em'};
                   margin-bottom: 40px;
+                  ${mobile ? 'margin-top: 0;' : ''}
                 }
                 .register p {
                   text-align: center;
@@ -193,6 +195,9 @@ class Register extends Component {
                 }
                 .register .bg-link {
                   margin: 5px auto 0 auto;
+                }
+                .register .bg-link:last-child {
+                  margin-bottom: 15px;
                 }
                 .register .register-link {
                   margin-top: 20px;

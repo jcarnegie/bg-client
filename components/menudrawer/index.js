@@ -6,11 +6,13 @@ import ActiveLink from '@/components/activelink';
 import Language from '@/components/language';
 import Balance from '@/components/balance';
 import User from '@/components/user';
-import FeatureFlag from '@/components/featureflag';
-
+import { withRoot, rootShape } from '@/components/wrappers';
+import { withGlobalContext, ctxShape } from '@/shared/utils/context';
 import style from '@/shared/constants/style';
 
 
+@withGlobalContext
+@withRoot
 class MenuDrawer extends Component {
   static defaultProps = {
     show: false,
@@ -18,9 +20,17 @@ class MenuDrawer extends Component {
 
   static propTypes = {
     show: PropTypes.bool,
+    ctx: ctxShape,
+    root: rootShape,
   }
 
   render() {
+    const {
+      balanceETH,
+      balancePLAT,
+      rate,
+    } = this.props.root;
+    const { me } = this.props.ctx;
     const menuLinkActiveStyle = {
       background: 'rgba(255, 255, 255, .15)',
       borderLeft: `4px solid ${style.colors.logos}`,
@@ -75,7 +85,7 @@ class MenuDrawer extends Component {
         }
         `}</style>
 
-        <User />
+        {this.props.ctx.isCurrentWalletLinked && <User user={me} />}
 
         <div className="links">
           <ActiveLink
@@ -95,7 +105,7 @@ class MenuDrawer extends Component {
           <ActiveLink
             href={{
               pathname: '/presale',
-              query: { slug: 'bitizens' }
+              query: { slug: 'bitizens' },
             }}
             as="/presale/bitizens"
             style={menuLinkDefaultStyle}
@@ -106,11 +116,11 @@ class MenuDrawer extends Component {
         </div>
 
         <div className="balance-mobile">
-          <Balance />
+          <Balance user={me} balanceETH={balanceETH} balancePLAT={balancePLAT} rate={rate} />
         </div>
 
         <div className="language-mobile">
-          <Language />
+          <Language user={me} />
         </div>
 
       </div>

@@ -20,12 +20,14 @@ import * as bgLocalStorage from '@/client/utils/localStorage';
 
 @connect(
   state => ({
+    layout: state.layout,
     analytics: state.analytics,
   })
 )
 class LinkWallets extends Component {
   static propTypes = {
     analytics: PropTypes.object,
+    layout: PropTypes.object,
     dispatch: PropTypes.func,
     web3Wallet: PropTypes.string,
     query: PropTypes.object, // TODO - redirect context
@@ -99,16 +101,20 @@ class LinkWallets extends Component {
 
   render() {
     const { web3Wallet } = this.props;
+    const { mobile } = this.props.layout.type;
     return (
       <div className="link-wallet-container">
         <style jsx>{`
           .link-wallet-container {
             width: 500px;
-            margin: 100px auto;
+            margin: 0 auto;
+            width: ${mobile ? '70%' : '70%'};
           }
           .link-wallet-header {
             margin-bottom: 40px;
             text-align: center;
+            font-size: ${mobile ? '1.8em' : '2.6em'};
+            ${mobile ? 'margin-top: 0;' : ''}
           }
           .link-wallet-button-group {
             margin-top: 20px;

@@ -175,7 +175,7 @@ class GameList extends Component {
             background: linear-gradient(to right, #8AAFF2, #5180EB);
             color: ${style.colors.logos};
             border-bottom: 1px solid #c7c6f2;
-            height: 200px;
+            height: ${mobile ? '250px' : '200px'};
             width: 100%;
             max-width: 100%;
             text-align: center;

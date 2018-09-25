@@ -6,7 +6,7 @@ import LoginButton from '@/components/LoginButton';
 import {
   LAYOUT_MOBILE_MENU_SHOW,
 } from '@/shared/constants/actions';
-
+import { withGlobalContext, ctxShape } from '@/shared/utils/context';
 import style from '@/shared/constants/style';
 
 
@@ -86,7 +86,12 @@ class MenuToggle extends Component {
 }
 
 
+@withGlobalContext
 class MobileMenu extends Component {
+  static propTypes = {
+    ctx: ctxShape,
+  }
+
   render() {
     return (
       <div className="menu-wrapper">
@@ -98,7 +103,7 @@ class MobileMenu extends Component {
           }
         `}</style>
         <MenuToggle />
-        <LoginButton />
+        <LoginButton show={!this.props.ctx.me} />
       </div>
     );
   }
