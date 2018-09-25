@@ -1,5 +1,6 @@
 import bluebird from 'bluebird';
 import * as log from 'loglevel';
+import { path } from 'ramda';
 
 import topupABI from '@/shared/contracts/BGTopup/abi.json';
 import bitGuildTokenABI from '@/shared/contracts/BGToken/abi.json';
@@ -68,6 +69,14 @@ export function web3IsInstalled() {
 
 export function getWeb3Wallet() {
   return web3IsInstalled() ? (window.web3.eth.accounts && window.web3.eth.accounts[0]) : null;
+}
+
+export function web3NetworkStateHasBeenChecked(network = {}) {
+  if (!network) {
+    log.warn('Bad argument. network: ', network);
+    return null;
+  }
+  return typeof network.available === 'boolean';
 }
 
 export function getOracleContractAddress(network) {

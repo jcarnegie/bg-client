@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { path } from 'ramda';
 
+import { web3NetworkStateHasBeenChecked } from '@/shared/utils/network';
 import {
   withGlobalContext,
 } from '@/shared/utils/context';
@@ -36,25 +38,23 @@ class SessionActionsContainer extends Component {
   }
 
   component() {
-    const { root } = this.props;
+    const { children, root } = this.props;
     const { web3Wallet } = this.props.ctx;
-
-    const { children } = this.props;
 
     const childrenWithProps = React.Children.map(children, child =>
       React.cloneElement(child, { web3Wallet }));
 
-    if (!process.browser) {
+    if (!web3NetworkStateHasBeenChecked(path(['network'], root))) {
       return childrenWithProps;
     }
-    if (!root.network) return null;
+
     if (!web3Wallet) {
       return <LoginToWeb3 />;
     }
-    if (!root.network.available) {
+    if (root.network.available === false) {
       return <InstallWeb3 />;
     }
-    if (!root.network.supported) {
+    if (root.network.supported === false) {
       return <NetworkNotSupported />;
     }
     if (this.state.loading) {
