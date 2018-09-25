@@ -218,7 +218,6 @@ class Inventory extends Component {
     return (
       <Query
         query={inventoryQuery}
-        variables={{ userId: me.id, language: me.language }}
       >
         {({ loading, error, data, refetch }) => {
           if (data.loading) return <DataLoading />;

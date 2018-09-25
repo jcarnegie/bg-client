@@ -50,6 +50,7 @@ import {
   APP_RESIZE,
   APP_LAYOUT_SET_DEFAULTS,
   GA_CREATE,
+  LAYOUT_MOBILE_MENU_SHOW,
 } from '@/shared/constants/actions';
 
 
@@ -75,6 +76,7 @@ class BGApp extends App {
       mobileDetect = mobileParser(req);
       store.dispatch(setMobileDetect(mobileDetect));
     }
+    store.dispatch({ type: LAYOUT_MOBILE_MENU_SHOW, payload: { showMenu: false } });
     return { pageProps, locals, mobileDetect };
   }
 

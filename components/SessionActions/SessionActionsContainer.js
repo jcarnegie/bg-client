@@ -14,6 +14,7 @@ import LoginToWeb3 from '@/components/LoginToWeb3';
 import InstallWeb3 from '@/components/InstallWeb3';
 import { withRoot } from '@/components/wrappers';
 
+import style from '@/shared/constants/style';
 
 @connect(
   state => ({
@@ -73,7 +74,7 @@ class SessionActionsContainer extends Component {
         <style jsx>{`
           .session-actions-container {
             background: linear-gradient(to bottom, #B4D0F5, #D8D8EF);
-            height: ${mobile ? null : 'calc(100vh - 62px)'};
+            min-height: calc(100vh - ${style.header.height});
             display: flex;
             flex-direction: ${mobile ? 'column' : 'row'};
           }
@@ -87,12 +88,12 @@ class SessionActionsContainer extends Component {
             display: flex;
             align-items: center;
             justify-content: ${mobile ? 'center' : 'flex-start'};
-            width: ${mobile ? '100%' : '100%'};
+            width: 100%;
             float: left;
-            height: ${mobile ? null : '100%'};
             margin-top: ${mobile ? '30px' : null};
             margin-bottom: ${mobile ? '30px' : null};
             padding-right: ${mobile ? 0 : '5%'};
+            ${mobile ? '' : `min-height: calc(100vh - ${style.header.height});`}
           }
           .session-actions-container-image {
             border-radius: 50%;

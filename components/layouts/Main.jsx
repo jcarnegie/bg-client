@@ -20,6 +20,7 @@ class Main extends Component {
             width: 100%;
             margin-top: ${style.header.height};
             transition: ${style.transition.default};
+            min-height: calc(100vh - ${style.header.height});
           }
         `}</style>
         {this.props.children}

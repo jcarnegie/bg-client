@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export const GlobalContext = React.createContext({
   me: null,
@@ -14,3 +15,7 @@ export const withGlobalContext = Component => function ComponentWithGlobalContex
     </GlobalContext.Consumer>
   );
 };
+
+export const ctxShape = PropTypes.shape({
+  me: PropTypes.object,
+});

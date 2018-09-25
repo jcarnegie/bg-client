@@ -536,6 +536,7 @@ export default class Presale extends Component {
   render() {
     log.info('rendering presale page');
     const { me } = this.props.ctx;
+    const { mobile } = this.props.layout.type;
     return (
       <Query
         query={presaleQuery}
@@ -548,6 +549,10 @@ export default class Presale extends Component {
             .presale .row {
               margin-bottom: 20px;
             }
+            ${mobile ? `
+            .presale .row:nth-child(1) {
+              margin-bottom: 40px;
+            }` : ''}
             .presale .popover {
               padding: 0;
             }
