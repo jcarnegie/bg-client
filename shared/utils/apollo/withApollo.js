@@ -27,6 +27,7 @@ const getToken = req => {
   if (process.browser) {
     const accessToken = localStorage.getItem('accessToken');
     log.info('getToken: accessToken (localStorage):', accessToken);
+    return accessToken;
   } else {
     return parseCookies(req).accessToken;
   }
