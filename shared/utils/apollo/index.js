@@ -113,8 +113,8 @@ export const queries = {
     }
   `,
   listUserPresaleTickets: gql`
-    query listUserPresaleTickets($wallet: String!, $userId: ID!) {
-      listUserPresaleTickets(wallet: $wallet, userId: $userId) {
+    {
+      listUserPresaleTickets {
         id wallet setId
       }
     }
