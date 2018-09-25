@@ -5,7 +5,7 @@ import Router from 'next/router';
 import { path, pathOr } from 'ramda';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
-
+import { Query } from 'react-apollo';
 import { toHex } from '@/shared/utils';
 import {
   email as emailPlaceholder,
@@ -20,6 +20,7 @@ import {
   client,
   mutations,
   queries,
+  localQueries,
 } from '@/shared/utils/apollo';
 
 import * as bgLocalStorage from '@/client/utils/localStorage';
@@ -144,93 +145,102 @@ class Register extends Component {
     const { web3Wallet } = this.props;
     const { mobile } = this.props.layout.type;
     return (
-      <div className="register">
-        <style jsx>{`
-          .register {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            width: ${mobile ? '70%' : '70%'};
-          }
-          :global(.register .form-group) {
-            width: 100%;
-          }
-          .register h1 {
-            text-align: center;
-            margin-bottom: 40px;
-          }
-          .register p {
-            text-align: center;
-          }
-          :global(.btn-register) {
-            font-size: 18px !important;
-            font-weight: 500 !important
-          }
-          :global(.register .form-control) {
-            border: 0;
-            outline: 0;
-            width: 100%;
-            border-bottom: 1px solid black;
-            height: 45px;
-          }
-          :global(.register label) {
-            text-transform: uppercase;
-            font-weight: 300;
-            font-size: 12px;
-          }
-          :global(.register .form-control[disabled], .form-control[readonly], fieldset[disabled]){
-            background-color: #E0E6FC;
-            border: none;
-          }
-          .register-select-btn {
-            width: ${mobile ? '80%' : '50%'};
-            margin: auto;
-          }
-          .register .bg-link {
-            margin: 5px auto 0 auto;
-          }
-          .register .register-link {
-            margin-top: 20px;
-          }
-        `}</style>
-        <h1><FormattedMessage id="pages.register.title" /></h1>
-        <InputGroupValidation
-          name="nickName"
-          type="text"
-          onChange={e => ::this.onChange('nickName', e.target.value)}
-          placeholder={nickNamePlaceholder}
-          required
-        />
-        <InputGroupValidation
-          name="email"
-          type="email"
-          pattern={reEmail.source.replace('a-z', 'a-zA-Z')/* there is no `i` flag */}
-          onChange={e => ::this.onChange('email', e.target.value)}
-          placeholder={emailPlaceholder}
-          required
-        />
-        <InputGroupValidation
-          type="text"
-          name="wallet"
-          value={web3Wallet}
-          maxLength="42"
-          minLength="42"
-          required
-          readOnly
-        />
+      <Query query={localQueries.validationMessages}>
+        {({ data }) => {
+          const validationMessages = pathOr([], ['validationMessages'], data);
+          return (
+            <div className="register">
+              <style jsx>{`
+                .register {
+                  display: flex;
+                  align-items: center;
+                  flex-direction: column;
+                  width: ${mobile ? '70%' : '70%'};
+                }
+                :global(.register .form-group) {
+                  width: 100%;
+                }
+                .register h1 {
+                  text-align: center;
+                  margin-bottom: 40px;
+                }
+                .register p {
+                  text-align: center;
+                }
+                :global(.btn-register) {
+                  font-size: 18px !important;
+                  font-weight: 500 !important
+                }
+                :global(.register .form-control) {
+                  border: 0;
+                  outline: 0;
+                  width: 100%;
+                  border-bottom: 1px solid black;
+                  height: 45px;
+                }
+                :global(.register label) {
+                  text-transform: uppercase;
+                  font-weight: 300;
+                  font-size: 12px;
+                }
+                :global(.register .form-control[disabled], .form-control[readonly], fieldset[disabled]){
+                  background-color: #E0E6FC;
+                  border: none;
+                }
+                .register-select-btn {
+                  width: ${mobile ? '80%' : '50%'};
+                  margin: auto;
+                }
+                .register .bg-link {
+                  margin: 5px auto 0 auto;
+                }
+                .register .register-link {
+                  margin-top: 20px;
+                }
+              `}</style>
+              <h1><FormattedMessage id="pages.register.title" /></h1>
+              <InputGroupValidation
+                name="nickName"
+                type="text"
+                onChange={e => ::this.onChange('nickName', e.target.value)}
+                placeholder={nickNamePlaceholder}
+                required
+                data={{ validationMessages }}
+              />
+              <InputGroupValidation
+                name="email"
+                type="email"
+                pattern={reEmail.source.replace('a-z', 'a-zA-Z')/* there is no `i` flag */}
+                onChange={e => ::this.onChange('email', e.target.value)}
+                placeholder={emailPlaceholder}
+                required
+                data={{ validationMessages }}
+              />
+              <InputGroupValidation
+                type="text"
+                name="wallet"
+                value={web3Wallet}
+                maxLength="42"
+                minLength="42"
+                required
+                readOnly
+              />
 
-        <br />
+              <br />
 
-        <BGButton className="btn-block btn-register text-uppercase" onClick={::this.sign}>
-          <FormattedMessage id="buttons.register" />
-        </BGButton>
-        <div className="bg-link register-link" onClick={() => Router.push('/login')}>
-          <FormattedMessage id="pages.register.already-registered" />
-        </div>
-        <div className="bg-link" onClick={() => Router.push('/register')}>
-          <FormattedMessage id="pages.register.questions-faq" />
-        </div>
-      </div>
+              <BGButton className="btn-block btn-register text-uppercase" onClick={::this.sign}>
+                <FormattedMessage id="buttons.register" />
+              </BGButton>
+              <div className="bg-link register-link" onClick={() => Router.push('/login')}>
+                <FormattedMessage id="pages.register.already-registered" />
+              </div>
+              <div className="bg-link" onClick={() => Router.push('/register')}>
+                <FormattedMessage id="pages.register.questions-faq" />
+              </div>
+            </div>
+          );
+        }}
+      </Query>
     );
   }
 }

@@ -140,6 +140,11 @@ export const localQueries = {
       average fast fastest
     }
   }`,
+  validationMessages: gql`{
+    validationMessages @client {
+      name reason
+    }
+  }`,
   gas: gql`{
     gas @client {
       average fast fastest
