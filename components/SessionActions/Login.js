@@ -32,7 +32,10 @@ class Login extends Component {
     query: PropTypes.object, // TODO - redirect context
   };
 
-  state = {};
+  state = {
+    loggingIn: false,
+    errors: [],
+  };
 
   async sign() {
     const { web3Wallet } = this.props;
@@ -53,36 +56,44 @@ class Login extends Component {
         return;
       }
 
-      const { data } = await client.mutate({
+      const { data, errors } = await client.mutate({
+        errorPolicy: 'all',
         mutation: mutations.login,
         variables: {
           wallet: web3Wallet,
           signature: result.result,
         },
       });
-      const {
-        // user,
-        tokenData,
-      } = data.login;
-      const {
-        accessToken,
-        refreshToken,
-      } = tokenData;
+      const { login } = data;
+      this.setState({
+        loggingIn: false,
+        errors: errors || [],
+      }, async() => {
+        if (!login) return;
+        const {
+          // user,
+          tokenData,
+        } = login;
+        const {
+          accessToken,
+          refreshToken,
+        } = tokenData;
 
-      bgLocalStorage.setItem('refreshToken', refreshToken);
-      bgLocalStorage.setItem('accessToken', accessToken);
-      Cookies.set('accessToken', accessToken);
+        bgLocalStorage.setItem('accessToken', accessToken);
+        bgLocalStorage.setItem('refreshToken', refreshToken);
+        Cookies.set('accessToken', accessToken);
 
-      // add me data into apollo cache
-      await client.query({ query: queries.me });
+        // add me data into apollo cache
+        await client.query({ query: queries.me });
 
-      this.props.analytics.ga.event({
-        category: 'Site Interaction',
-        action: 'Sign-up',
-        label: 'Create account',
+        this.props.analytics.ga.event({
+          category: 'Site Interaction',
+          action: 'Sign-up',
+          label: 'Create account',
+        });
+        const referrer = pathOr('/', ['query', 'pathname'], this.props);
+        Router.replace(referrer);
       });
-      const referrer = pathOr('/', ['query', 'pathname'], this.props);
-      Router.replace(referrer);
     });
   }
 
@@ -152,6 +163,7 @@ class Login extends Component {
         <BGButton className="btn-block login-btn text-uppercase" onClick={::this.sign}>
           <FormattedMessage id="buttons.login" />
         </BGButton>
+        {this.state.errors.map(e => e.message).map((m, i) => <p key={i} className="bg-error-message">{m}</p>)}
 
         <div className="line-break">
           <div className="line" />

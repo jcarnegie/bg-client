@@ -37,6 +37,10 @@ function GlobalStyles({ style }) {
           color: #C1C1C1;
         }
 
+        .bg-error-message {
+          color: #D0021B;
+        }
+
         .wrapper {
           min-height: 100%;
           margin-bottom: -130px;

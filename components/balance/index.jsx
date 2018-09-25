@@ -12,11 +12,11 @@ import {
   localMutations,
 } from '@/shared/utils/apollo';
 
+// import Convert from '@/components/popups/convert';
 import {
   GlobalContext,
 } from '@/shared/utils/context';
 
-import Convert from '@/components/popups/convert';
 
 import { SHOW_CONVERT_MODAL } from '@/shared/constants/actions';
 
@@ -170,7 +170,7 @@ class Balance extends Component {
             font-weight: 100;
           }
         `}</style>
-        <Convert show={this.state.show || this.props.layout.showConvertModal} onHide={::this.onHide} />
+        {/* <Convert show={this.state.show || this.props.layout.showConvertModal} onHide={::this.onHide} /> */}
         {/* {::this.plus()} */}
         {::this.balances()}
       </div>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as log from 'loglevel';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import Cookies from 'js-cookie';
 import { connect } from 'react-redux';
 import { path } from 'ramda';
 import Router from 'next/router';
@@ -30,7 +31,10 @@ class LinkWallets extends Component {
     query: PropTypes.object, // TODO - redirect context
   };
 
-  state = {};
+  state = {
+    linking: false,
+    errors: [],
+  };
 
   async sign() {
     const { web3Wallet } = this.props;
@@ -50,37 +54,46 @@ class LinkWallets extends Component {
         log.error(err || result.error);
         return;
       }
-
-      const { data } = await client.mutate({
+      const { data, errors } = await client.mutate({
+        errorPolicy: 'all',
         mutation: mutations.linkWallet,
         variables: {
           wallet: web3Wallet,
           signature: result.result,
         },
       });
-      const {
-        // user,
-        tokenData,
-      } = data.linkWallet;
-      const {
-        accessToken,
-        refreshToken,
-      } = tokenData;
+      const { linkWallet } = data;
 
-      bgLocalStorage.setItem('accessToken', accessToken);
-      bgLocalStorage.setItem('refreshToken', refreshToken);
+      this.setState({
+        linking: false,
+        errors: errors || [],
+      }, async() => {
+        if (!linkWallet) return;
+        const {
+          // user,
+          tokenData,
+        } = linkWallet;
+        const {
+          accessToken,
+          refreshToken,
+        } = tokenData;
 
-      // add me data into apollo cache
-      await client.query({ query: queries.me });
+        bgLocalStorage.setItem('accessToken', accessToken);
+        bgLocalStorage.setItem('refreshToken', refreshToken);
+        Cookies.set('accessToken', accessToken);
 
-      this.props.analytics.ga.event({
-        category: 'Site Interaction',
-        action: 'Link-Wallet',
-        label: 'Link wallet',
+        // add me data into apollo cache
+        await client.query({ query: queries.me });
+
+        this.props.analytics.ga.event({
+          category: 'Site Interaction',
+          action: 'Link-Wallet',
+          label: 'Link wallet',
+        });
+
+        // TODO - redirect to last context / requested route
+        Router.replace('/');
       });
-
-      // TODO - redirect to last context / requested route
-      Router.replace('/');
     });
   }
 
@@ -133,6 +146,9 @@ class LinkWallets extends Component {
           .link-wallet-container .register-link {
             margin-top: 20px;
           }
+          .bg-error-message {
+            text-align: center;
+          }
         `}</style>
         <h1 className="link-wallet-header"><FormattedMessage id="pages.link-wallet.new-wallet-found" /></h1>
         <span className="link-wallet"><FormattedMessage id="components.login.wallet" /></span>
@@ -141,6 +157,7 @@ class LinkWallets extends Component {
         <BGButton className="btn-block text-uppercase" onClick={::this.sign}>
           <FormattedMessage id="pages.link-wallet.cta" />
         </BGButton>
+        {this.state.errors.map(e => e.message).map((m, i) => <p key={i} className="bg-error-message">{m}</p>)}
         <div className="link-wallet-button-group">
           <div className="bg-link" onClick={() => Router.push('/login')}>
             <FormattedHTMLMessage id="pages.register.already-registered" />
