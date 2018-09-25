@@ -37,8 +37,12 @@ export default App => {
     static propTypes = { apolloState: PropTypes.object.isRequired }
 
     static async getInitialProps(ctx) {
-      console.log('withApollo.getInitialProps');
-      const { Component, router, ctx: { req, res } } = ctx;
+      log.info('withApollo.getInitialProps');
+      const {
+        Component,
+        router,
+        ctx: { req, res, pathname = '' },
+      } = ctx;
       const apollo = initApollo({}, {
         getToken: () => getToken(req),
       });
@@ -50,7 +54,6 @@ export default App => {
       const { me } = data;
 
       // route guard
-      const pathname = pathOr('', ['url'], req);
       const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
       const hasSession = pathOr(false, ['id'], me);
       const hasAccessToken = pathOr(false, ['cookies', 'accessToken'], req);
@@ -111,7 +114,7 @@ export default App => {
 
       // Extract query data from the Apollo's store
       const apolloState = apollo.cache.extract();
-      // console.log('apolloState from cache: ', apolloState);
+      // log.info('apolloState from cache: ', apolloState);
       return {
         ...appProps,
         apolloState,
