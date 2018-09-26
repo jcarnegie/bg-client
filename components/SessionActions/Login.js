@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as log from 'loglevel';
-import Cookies from 'js-cookie';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { path, pathOr } from 'ramda';
@@ -11,10 +10,8 @@ import BGButton from '@/components/bgbutton';
 import {
   client,
   mutations,
-  queries,
 } from '@/shared/utils/apollo';
 import { toHex } from '@/shared/utils';
-import * as bgLocalStorage from '@/client/utils/localStorage';
 
 
 @connect(

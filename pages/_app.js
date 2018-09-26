@@ -3,6 +3,7 @@ import React from 'react';
 import { Provider as IntlProvider, updateIntl } from 'react-intl-redux';
 import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
+import doSetCurrentWallet from '@/actions/setCurrentWallet';
 import * as log from 'loglevel';
 import { contains, pathOr, path } from 'ramda';
 
@@ -15,7 +16,6 @@ import { localization } from '@/shared/intl/setup';
 import withApollo from '@/shared/utils/apollo/withApollo';
 
 import {
-  mutations,
   queries,
   localQueries,
   localMutations,
@@ -161,12 +161,8 @@ class BGApp extends App {
     }
 
     if (isCurrentWalletLinked) {
-      await apolloClient.mutate({
-        mutation: mutations.setCurrentWallet,
-        variables: {
-          currentWallet: web3Wallet,
-        },
-      });
+      log.info('calling setCurrentWallet mutation');
+      await doSetCurrentWallet(apolloClient, web3Wallet);
     }
 
     this.setState({
