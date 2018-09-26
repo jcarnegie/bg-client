@@ -64,15 +64,44 @@ if (process.env.DEPLOYED_ENV === 'production') {
   log.setDefaultLevel(log.levels.INFO);
 }
 
-// redirect user to /register page if metamask isn't installed
 class BGApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
-    const { isServer, store } = ctx;
+    const {
+      isServer,
+      me,
+      store,
+      req,
+      pathname = '',
+    } = ctx;
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+
+    /* Route guards */
+    const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
+    const hasSession = pathOr(false, ['id'], me);
+    const hasAccessToken = pathOr(false, ['cookies', 'accessToken'], req);
+
+    /* Server side: refreshToken is stored on localStorage on client only.
+       We should always redirect to /refreshtoken page first to check for
+       refreshToken
+     */
+    if (
+      !process.browser &&
+      hasAccessToken &&
+      !hasSession &&
+      !isPagePublic &&
+      pathname !== '/refreshtoken'
+    ) {
+      redirect(ctx, '/refreshtoken');
+    }
+
+    if (!hasSession && !isPagePublic) {
+      redirect(ctx, '/login');
+    }
+    /* Route guards end */
+
     let locals = {};
     let mobileDetect = {};
     if (isServer) {
-      const { req } = ctx;
       mobileDetect = mobileParser(req);
       store.dispatch(setMobileDetect(mobileDetect));
     }
@@ -98,8 +127,10 @@ class BGApp extends App {
     return !router.pathname.match(AUTH_ROUTES_REGEX);
   }
 
-  userWalletHasChanged() {
+  userWalletHasChanged(me) {
+    // const sessionWallet = path(['lastWalletUsed'], me);
     return getWeb3Wallet() !== this.state.web3Wallet;
+    // return sessionWallet !== this.state.web3Wallet;
   }
 
   isWalletLinked(wallet, me) {
@@ -118,7 +149,7 @@ class BGApp extends App {
 
   async handleWalletHasChanged(me, web3Wallet) {
     const { apolloClient } = this.props;
-    const isCurrentWalletLinked = me && this.isWalletLinked(me, web3Wallet);
+    const isCurrentWalletLinked = me && this.isWalletLinked(web3Wallet, me);
     const isLoggedIn = web3Wallet && this.hasSession(me);
     log.info('calling updateUserBalances mutation');
     await apolloClient.mutate({ mutation: localMutations.updateWallet, variables: { wallet: web3Wallet } });
@@ -230,6 +261,7 @@ class BGApp extends App {
     store.dispatch({ type: APP_RESIZE });
     const web3Wallet = getWeb3Wallet();
     const isLoggedIn = web3Wallet && this.hasSession(me);
+    const isCurrentWalletLinked = me && this.isWalletLinked(web3Wallet, me);
 
     /* Redirect to landing page if user is already logged in but on login or register page */
     if (isLoggedIn && (pathname === '/login' || pathname === '/register')) {
@@ -242,7 +274,7 @@ class BGApp extends App {
         /* User not logged in, cannot link, redirect to login */
         redirect({}, '/login');
       }
-      if (isLoggedIn && !this.userWalletHasChanged(me)) {
+      if (isLoggedIn && isCurrentWalletLinked) {
         /* User wallet has not changed, nothing to link, redirect to landing page */
         redirect({}, '/');
       }
@@ -259,8 +291,6 @@ class BGApp extends App {
       }
     }
 
-    const wallets = pathOr([], ['wallets'], me);
-    const isCurrentWalletLinked = contains(web3Wallet, wallets);
     if (isCurrentWalletLinked !== this.state.isCurrentWalletLinked) {
       this.setState({ isCurrentWalletLinked });
     }

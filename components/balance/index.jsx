@@ -158,7 +158,7 @@ class Balance extends Component {
 
   render() {
     const pathname = path(['router', 'pathname'], Router);
-    if (!pathname || pathname === '/login' || pathname === '/register') return null;
+    if (!pathname || pathname === '/login' || pathname === '/register' || pathname === '/link') return null;
     return (
       <div className="balance">
         <style jsx>{`
