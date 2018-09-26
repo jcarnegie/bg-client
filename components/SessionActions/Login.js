@@ -121,8 +121,14 @@ class Login extends Component {
             border-bottom: 1px solid black;
             flex-grow: 1;
           }
-          .login .bg-error-message {
+          .login .bg-error-message,
+          .login .bg-link {
             text-align: center;
+          }
+          .login .bg-link {
+            margin: 20px auto;
+          }
+          .login .bg-error-message {
             margin: 0 auto;
           }
         `}</style>
