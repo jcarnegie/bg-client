@@ -150,24 +150,25 @@ class BGApp extends App {
   async handleWalletHasChanged(me, web3Wallet) {
     const { apolloClient } = this.props;
     const isCurrentWalletLinked = me && this.isWalletLinked(web3Wallet, me);
-    const isLoggedIn = web3Wallet && this.hasSession(me);
     log.info('calling updateUserBalances mutation');
     await apolloClient.mutate({ mutation: localMutations.updateWallet, variables: { wallet: web3Wallet } });
     await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
-    if (isLoggedIn) {
-      /* state.web3Wallet is null if user just logged in, should not trigger */
-      if (this.state.web3Wallet && !isCurrentWalletLinked) {
-        log.info('redirecting to link wallet page');
-        redirect({}, '/link');
-      } else {
-        await apolloClient.mutate({
-          mutation: mutations.setCurrentWallet,
-          variables: {
-            currentWallet: web3Wallet,
-          },
-        });
-      }
+
+    /* state.web3Wallet is null if user just logged in, should not trigger */
+    if (web3Wallet && !isCurrentWalletLinked) {
+      log.info('redirecting to link wallet page');
+      redirect({}, '/link');
     }
+
+    if (isCurrentWalletLinked) {
+      await apolloClient.mutate({
+        mutation: mutations.setCurrentWallet,
+        variables: {
+          currentWallet: web3Wallet,
+        },
+      });
+    }
+
     this.setState({
       web3Wallet,
       isCurrentWalletLinked,
@@ -262,25 +263,7 @@ class BGApp extends App {
     if (!process.browser) return null;
     store.dispatch({ type: APP_RESIZE });
     const web3Wallet = getWeb3Wallet();
-    const isLoggedIn = web3Wallet && this.hasSession(me);
     const isCurrentWalletLinked = me && this.isWalletLinked(web3Wallet, me);
-
-    /* Redirect to landing page if user is already logged in but on login or register page */
-    if (isLoggedIn && (pathname === '/login' || pathname === '/register')) {
-      redirect({}, '/');
-    }
-
-    /* Link wallets page route guard */
-    if (pathname === '/link') {
-      if (!isLoggedIn) {
-        /* User not logged in, cannot link, redirect to login */
-        redirect({}, '/login');
-      }
-      if (isLoggedIn && isCurrentWalletLinked) {
-        /* User wallet has not changed, nothing to link, redirect to landing page */
-        redirect({}, '/');
-      }
-    }
 
     if (!this.isPagePublic()) {
       /* Web3 install guard */
