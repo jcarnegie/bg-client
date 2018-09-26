@@ -15,8 +15,7 @@ export default async(apollo, email, wallet, nickName, signature, language) => {
   const { register } = data;
   if (register) {
     const { user, tokenData } = register;
-    const { accessToken, refreshToken } = tokenData;
-    updateTokensAndMe(apollo, accessToken, refreshToken, user);
+    updateTokensAndMe(apollo, tokenData, user);
   }
   return { data, errors };
 };

@@ -12,8 +12,7 @@ export default async(apollo, wallet, signature) => {
   const { login } = data;
   if (login) {
     const { user, tokenData } = login;
-    const { accessToken, refreshToken } = tokenData;
-    updateTokensAndMe(apollo, accessToken, refreshToken, user);
+    updateTokensAndMe(apollo, tokenData, user);
   }
   return { data, errors };
 };

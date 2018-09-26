@@ -5,11 +5,7 @@ import Head from 'next/head';
 import * as log from 'loglevel';
 import { queries } from '@/shared/utils/apollo';
 import { initApollo } from './client';
-
-import {
-  getToken,
-  parseCookies,
-} from '@/shared/utils/cookies';
+import { getToken } from '@/shared/utils/cookies';
 
 export let client = null;
 

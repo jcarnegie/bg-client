@@ -6,27 +6,24 @@ import Router from 'next/router';
 import doSetCurrentWallet from '@/actions/setCurrentWallet';
 import * as log from 'loglevel';
 import { contains, pathOr, path } from 'ramda';
-
-import {
-  ApolloProvider,
-} from 'react-apollo';
-
+import { ApolloProvider } from 'react-apollo';
 import { setMobileDetect, mobileParser } from 'react-responsive-redux';
-import { localization } from '@/shared/intl/setup';
-import withApollo from '@/shared/utils/apollo/withApollo';
 
+import withApollo from '@/shared/utils/apollo/withApollo';
+import redirect from '@/shared/utils/redirect';
+import BGReactGA from '@/client/utils/BGReactGA';
+import configureStore from '@/client/utils/store';
+import ResizeListener from '@/components/resizelistener';
+import GlobalStyles from '@/components/GlobalStyles';
+import GlobalLoadingScreen from '@/components/GlobalLoadingScreen';
+import style from '@/shared/constants/style';
+import { localization } from '@/shared/intl/setup';
 import {
   queries,
   localQueries,
   localMutations,
 } from '@/shared/utils/apollo';
-
-import redirect from '@/shared/utils/redirect';
-
-import {
-  createCrate,
-} from '@/shared/utils/discord';
-
+import { createCrate } from '@/shared/utils/discord';
 import {
   asyncGetNetworkId,
   web3IsInstalled,
@@ -34,18 +31,8 @@ import {
   networkIdToName,
   networkIdIsSupported,
 } from '@/shared/utils/network';
-
 import { GlobalContext } from '@/shared/utils/context';
 import { AUTH_ROUTES_REGEX } from '@/shared/utils';
-
-import BGReactGA from '@/client/utils/BGReactGA';
-import configureStore from '@/client/utils/store';
-
-import ResizeListener from '@/components/resizelistener';
-import GlobalStyles from '@/components/GlobalStyles';
-import GlobalLoadingScreen from '@/components/GlobalLoadingScreen';
-
-import style from '@/shared/constants/style';
 import {
   APP_INIT,
   APP_RESIZE,
@@ -53,7 +40,8 @@ import {
   GA_CREATE,
   LAYOUT_MOBILE_MENU_SHOW,
 } from '@/shared/constants/actions';
-
+import doRefreshToken from '@/actions/refreshtoken';
+import { accessTokenExpired, refreshTokenExpired } from '@/client/utils/tokens';
 
 /* Poll web3 interface for user account with this frequency */
 const WEB3_ACCOUNT_POLLING_INTERVAL = process.env.NODE_ENV === 'development' ? 1000 : 200;
@@ -68,6 +56,7 @@ if (process.env.DEPLOYED_ENV === 'production') {
 class BGApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
     const {
+      apolloClient,
       isServer,
       me,
       store,
@@ -89,10 +78,25 @@ class BGApp extends App {
       !process.browser &&
       hasAccessToken &&
       !hasSession &&
-      !isPagePublic &&
       pathname !== '/refreshtoken'
     ) {
       redirect(ctx, '/refreshtoken');
+    }
+
+    /*
+      Client side: we may have an expired access token but a valid session/me object.
+      In this case refresh, no matter if we're on a protected page or not.
+    */
+    if (process.browser) {
+      if (refreshTokenExpired() && !isPagePublic) {
+        log.info('browser: refresh token expired and page not public --> /login');
+        redirect(ctx, '/login');
+      }
+
+      if (accessTokenExpired() && !refreshTokenExpired()) {
+        log.info('browser: access token exired, but have valid refresh token --> refresh tokens');
+        await doRefreshToken(apolloClient);
+      }
     }
 
     if (!hasSession && !isPagePublic) {

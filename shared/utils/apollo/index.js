@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 import gql from 'graphql-tag';
 import { dissoc } from 'ramda';
 import * as bgLocalStorage from '@/client/utils/localStorage';
+import { storeTokenData } from '@/client/utils/tokens';
 export { client } from '@/shared/utils/apollo/withApollo';
 
 if (typeof global !== 'undefined') {
@@ -216,11 +217,10 @@ export const updateUser = async(id, payload) => {
   });
 };
 
-export const updateTokensAndMe = async(apollo, accessToken, refreshToken, user) => {
+export const updateTokensAndMe = async(apollo, tokenData, user) => {
   // store tokens in localStorage and accessToken in cookie
-  bgLocalStorage.setItem('accessToken', accessToken);
-  bgLocalStorage.setItem('refreshToken', refreshToken);
-  Cookies.set('accessToken', accessToken);
+  storeTokenData(tokenData);
+  Cookies.set('accessToken', tokenData.accessToken);
 
   // update me query in apollo cache
   await apollo.writeQuery({

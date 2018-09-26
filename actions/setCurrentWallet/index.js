@@ -12,9 +12,7 @@ export default async(apollo, wallet) => {
   const { setCurrentWallet } = data;
   if (setCurrentWallet) {
     const { user, tokenData } = setCurrentWallet;
-    const { accessToken, refreshToken } = tokenData;
-
-    updateTokensAndMe(apollo, accessToken, refreshToken, user);
+    updateTokensAndMe(apollo, tokenData, user);
   }
 
   return { data };

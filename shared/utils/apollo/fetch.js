@@ -1,7 +1,9 @@
-import { merge, find, propEq } from 'ramda';
-import { uri as apiUri } from './client';
-import { getItem, setItem } from '@/client/utils/localStorage';
+import * as log from 'loglevel';
+import { find, propEq } from 'ramda';
 import redirect from '../redirect';
+import { uri as apiUri } from './client';
+import { getItem } from '@/client/utils/localStorage';
+import { storeTokenData } from '@/client/utils/tokens';
 
 if (typeof global !== 'undefined') {
   global.fetch = require('node-fetch');
@@ -18,6 +20,7 @@ const requestAuthorized = respData => {
 };
 
 const refreshTokens = async token => {
+  log.info('refreshing tokens (fetchWithRefresh)');
   const mutation = `
     mutation {
       refreshToken(refreshToken: "${token}") {
@@ -54,11 +57,10 @@ export default async(uri, options) => {
   }
   const refreshRespData = await refreshRequest;
   if (!requestAuthorized(refreshRespData)) redirect({}, '/login');
-  const { data: { refreshToken: { accessToken, refreshToken } } } = refreshRespData;
 
   // save new/refreshed tokens to localStorage
-  setItem('accessToken', accessToken);
-  setItem('refreshToken', refreshToken);
+  log.info('refreshRespData:', refreshRespData);
+  storeTokenData(refreshRespData.refreshToken);
 
   // null out the refresh request promise
   refreshRequest = null;
