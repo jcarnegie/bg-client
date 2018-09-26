@@ -43,6 +43,7 @@ import configureStore from '@/client/utils/store';
 
 import ResizeListener from '@/components/resizelistener';
 import GlobalStyles from '@/components/GlobalStyles';
+import GlobalLoadingScreen from '@/components/GlobalLoadingScreen';
 
 import style from '@/shared/constants/style';
 import {
@@ -374,6 +375,7 @@ class BGApp extends App {
             <IntlProvider store={store}>
               <>
                 <ResizeListener />
+                <GlobalLoadingScreen show={!::this.isPagePublic() ? !web3Wallet : false} />
                 <Component {...pageProps} {...locals} />
               </>
             </IntlProvider>
