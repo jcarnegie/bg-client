@@ -10,17 +10,13 @@ import {
 } from 'react-apollo';
 
 import {
-  localQueries,
-  viewUserByWalletQuery,
-} from '@/shared/utils/apollo';
-
-import {
   networkAddressMap,
   // getERC721ConformingContract,
   // getMarketplaceContract,
   // getMarketplaceContractAddress,
   // getBitGuildTokenContract,
 } from '@/shared/utils/network';
+
 
 import {
   buyItem,
@@ -33,6 +29,9 @@ import {
   dataHexForContractAndTokenId,
 } from '@/shared/utils/contracts';
 
+import { withGlobalContext } from '@/shared/utils/context';
+import { withRoot } from '@/components/wrappers';
+
 import style from '@/shared/constants/style';
 
 import BGButton from '@/components/bgbutton';
@@ -40,7 +39,8 @@ import BGButton from '@/components/bgbutton';
 const testGameContractAddress = '0x856c82b392fa4041c3a63b3a8c8a7f258d2f27e0';
 const etherOnlineRinkeby = '0xca68213bce717c256628936a9ea4570f52ab2ed2';
 
-
+@withGlobalContext
+@withRoot
 class Web3SandboxPage extends React.Component {
   static propTypes = {
     data: PropTypes.object,
@@ -48,6 +48,12 @@ class Web3SandboxPage extends React.Component {
 
   static defaultProps = {
     data: {},
+    ctx: PropTypes.shape({
+      isCurrentWalletLinked: PropTypes.bool,
+      userNeedsToLogInOrRegister: PropTypes.bool,
+      me: PropTypes.object,
+    }),
+    root: PropTypes.object,
   }
 
   state = {
@@ -67,7 +73,7 @@ class Web3SandboxPage extends React.Component {
   }
 
   addressInfo() {
-    const { wallet } = this.props.data;
+    const { wallet } = this.props.root;
     return (
       <div className="web3-sandbox-card">
         <h3>Addresses</h3>
@@ -104,8 +110,9 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onListItem() {
-    const { user } = this.props;
-    const { gas, network } = this.props.data;
+    const { me } = this.props.ctx;
+
+    const { gas, network } = this.props.root;
     const contract = this.dom.list.contract.value;
     const to = this.dom.list.to.value;
     const itemId = this.dom.list.itemId.value;
@@ -115,7 +122,7 @@ class Web3SandboxPage extends React.Component {
 
     /* Create item listing */
     const res = await listItem({
-      user: user.viewUserByWallet,
+      user: me,
       item: { id: itemId, tokenId },
       contract,
       to,
@@ -157,7 +164,7 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onWithdrawItem() {
-    const { network, gas } = this.props.data;
+    const { network, gas } = this.props.root;
 
     const contract = this.dom.withdraw.gameContract.value;
     const tokenId = this.dom.withdraw.tokenId.value;
@@ -204,8 +211,8 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onBuyItem() {
-    const { user } = this.props;
-    const { network, gas } = this.props.data;
+    const { me } = this.props.ctx;
+    const { network, gas } = this.props.root;
 
     const price = parseFloat(this.dom.buy.price.value, 10);
     const tokenId = parseInt(this.dom.buy.tokenId.value, 10);
@@ -220,7 +227,7 @@ class Web3SandboxPage extends React.Component {
 
     /* Buy item from Marketplace */
     const res = await buyItem({
-      user: user.viewUserByWallet,
+      user: me,
       network,
       item,
       price,
@@ -262,8 +269,8 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onBuyItemWithEther() {
-    const { user } = this.props;
-    const { gas, network } = this.props.data;
+    const { me } = this.props.ctx;
+    const { gas, network } = this.props.root;
 
     const price = parseFloat(this.dom.buyWithEther.price.value, 10);
     const tokenId = parseInt(this.dom.buyWithEther.tokenId.value, 10);
@@ -278,7 +285,7 @@ class Web3SandboxPage extends React.Component {
 
     /* Buy item from Marketplace */
     const res = await buyItemWithEther({
-      user: user.viewUserByWallet,
+      user: me,
       network,
       item,
       price,
@@ -318,7 +325,7 @@ class Web3SandboxPage extends React.Component {
 
 
   async onExtendItem() {
-    const { gas, network } = this.props.data;
+    const { gas, network } = this.props.root;
 
     const contract = this.dom.extend.gameContract.value;
     const tokenId = this.dom.extend.tokenId.value;
@@ -365,7 +372,7 @@ class Web3SandboxPage extends React.Component {
   }
 
   async onGetFee() {
-    const { network } = this.props.data;
+    const { network } = this.props.root;
 
     const price = this.dom.fee.price.value;
     const buyer = this.dom.fee.buyer.value;
@@ -484,7 +491,4 @@ class Web3SandboxPage extends React.Component {
 }
 
 
-export default process.env.DEPLOYED_ENV === 'production' ? <div>Not Allowed</div> : compose(
-  viewUserByWalletQuery,
-  graphql(localQueries.root),
-)(Web3SandboxPage);
+export default process.env.DEPLOYED_ENV === 'production' ? <div>Not Allowed</div> : Web3SandboxPage;
