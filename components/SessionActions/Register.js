@@ -6,6 +6,7 @@ import { path, pathOr } from 'ramda';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Query } from 'react-apollo';
+import { inHTMLData } from 'xss-filters';
 import { toHex } from '@/shared/utils';
 import {
   email as emailPlaceholder,
@@ -78,6 +79,10 @@ class Register extends Component {
       email,
       nickName,
     } = this.state;
+
+    if (!email || !nickName) {
+      return null;
+    }
 
     const { data } = await client.mutate({
       mutation: mutations.createSigningMessage,
@@ -207,7 +212,7 @@ class Register extends Component {
               <InputGroupValidation
                 name="nickName"
                 type="text"
-                onChange={e => ::this.onChange('nickName', e.target.value)}
+                onChange={e => ::this.onChange('nickName', inHTMLData(e.target.value.trim()))}
                 placeholder={nickNamePlaceholder}
                 required
                 data={{ validationMessages }}
@@ -216,7 +221,7 @@ class Register extends Component {
                 name="email"
                 type="email"
                 pattern={reEmail.source.replace('a-z', 'a-zA-Z')/* there is no `i` flag */}
-                onChange={e => ::this.onChange('email', e.target.value)}
+                onChange={e => ::this.onChange('email', inHTMLData(e.target.value.trim()))}
                 placeholder={emailPlaceholder}
                 required
                 data={{ validationMessages }}
@@ -233,13 +238,13 @@ class Register extends Component {
 
               <br />
 
-              <BGButton className="btn-block btn-register text-uppercase" onClick={::this.sign}>
+              <BGButton disabled={!(this.state.nickName && this.state.email)} className="btn-block btn-register text-uppercase" onClick={::this.sign}>
                 <FormattedMessage id="buttons.register" />
               </BGButton>
               <div className="bg-link register-link" onClick={() => Router.push('/login')}>
                 <FormattedMessage id="pages.register.already-registered" />
               </div>
-              <div className="bg-link" onClick={() => Router.push('/register')}>
+              <div className="bg-link" onClick={() => Router.push('/faq')}>
                 <FormattedMessage id="pages.register.questions-faq" />
               </div>
             </div>

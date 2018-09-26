@@ -20,7 +20,7 @@ class BGButton extends PureComponent {
 
   render() {
     return (
-      <button className={`bg-button ${this.props.className}`} onClick={::this.props.onClick} style={this.props.style}>
+      <button {...this.props} className={`bg-button ${this.props.className}`}>
         <style jsx>{`
           .bg-button {
             color: white;
@@ -35,9 +35,13 @@ class BGButton extends PureComponent {
             text-transform: uppercase;
             letter-spacing: 1px;
           }
-          .bg-button:hover {
+          .bg-button:not([disabled]):hover {
             background: #3958a0;
             color: white;
+          }
+          .bg-button:disabled, .bg-button[disabled] {
+            background: rgb(87, 112, 160);
+            cursor: not-allowed;
           }
         `}</style>
         {this.props.children}

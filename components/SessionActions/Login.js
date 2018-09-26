@@ -171,10 +171,10 @@ class Login extends Component {
           <div className="line" />
         </div>
 
-        <BGButton className="btn-block text-uppercase">
+        <BGButton className="btn-block text-uppercase" onClick={() => Router.push('/register')}>
           <FormattedHTMLMessage id="pages.register.register" />
         </BGButton>
-        <div className="bg-link" onClick={() => Router.push('/register')}>
+        <div className="bg-link" onClick={() => Router.push('/faq')}>
           <FormattedMessage id="pages.register.questions-faq" />
         </div>
       </div>
