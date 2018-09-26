@@ -71,7 +71,7 @@ class Login extends Component {
       }, async() => {
         if (!login) return;
         const {
-          // user,
+          user,
           tokenData,
         } = login;
         const {
@@ -82,6 +82,12 @@ class Login extends Component {
         bgLocalStorage.setItem('accessToken', accessToken);
         bgLocalStorage.setItem('refreshToken', refreshToken);
         Cookies.set('accessToken', accessToken);
+
+        // update me query
+        await client.writeQuery({
+          query: queries.me,
+          data: { me: { ...user } },
+        });
 
         // add me data into apollo cache
         await client.query({ query: queries.me });

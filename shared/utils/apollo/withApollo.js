@@ -28,7 +28,7 @@ export default App => {
       ctx.ctx.apolloClient = apollo;
 
       // get user
-      const { data } = await apollo.query({ query: queries.me, fetchPolicy: 'no-cache' });
+      const { data } = await apollo.query({ query: queries.me });
       const { me } = data;
       ctx.ctx.me = me;
 
