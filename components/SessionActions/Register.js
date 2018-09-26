@@ -234,6 +234,7 @@ class Register extends Component {
                 minLength="42"
                 required
                 readOnly
+                data={{ validationMessages }}
               />
 
               <br />
