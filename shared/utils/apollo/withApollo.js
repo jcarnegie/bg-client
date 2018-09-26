@@ -86,6 +86,9 @@ export default App => {
     }
 
     render() {
+      if (process.browser) {
+        log.info(`Time to first render: ${new Date().getTime() - window._$start.getTime()} ms`);
+      }
       return <App {...this.props} apolloClient={this.apolloClient} />;
     }
   };

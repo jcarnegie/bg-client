@@ -24,6 +24,10 @@ export default class BGDocument extends Document {
           <link rel="stylesheet" href="https://use.typekit.net/woi6egk.css" />
           <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous" />
+          <script>
+            {/* see how long it takes to bootstrap next/react/etc */}
+            window._$start = new Date();
+          </script>
 
           {this.props.styles}
         </Head>

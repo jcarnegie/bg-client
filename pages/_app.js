@@ -218,7 +218,9 @@ class BGApp extends App {
     }
 
     try {
+      // const start = new Date();
       const currentNetworkId = await asyncGetNetworkId();
+      // log.info(`Fetched network info in ${new Date().getTime() - start.getTime()} ms`);
       if (await this.networkChanged(currentNetworkId)) {
         await this.handleNetworkChanged(currentNetworkId, web3Wallet);
       }
