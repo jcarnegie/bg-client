@@ -7,6 +7,7 @@
     "expired": "Expired",
     "expires-in": "Expires in",
     "faq": "About Bitizens",
+    "login": "Login",
     "remaining": "remaining",
     "rules": "Rules",
     "all-games": "Games",
@@ -34,11 +35,17 @@
       "marketplace": "Marketplace Beta",
       "exchange": "Exchange",
       "community": "Community",
-      "presale": "IGO"
+      "presale": "IGO",
+      "tronsr": "Super Representative"
     },
     "newsletter": {
       "subscribe": "Subscribe to our mailing list",
       "sub-button": "Subscribe"
+    },
+    "login": {
+      "welcome-back": "Welcome Back!",
+      "wallet": "Wallet",
+      "register": "Need to register? Register here."
     },
     "footer": {
       "for-players": "For Players",
@@ -61,19 +68,19 @@
       "required": "Language is required."
     },
     "nickName": {
-      "label": "Display Name",
+      "label": "Nickname",
       "required": "Please enter your nick name.",
       "duplicate": "Display Name already taken"
     },
     "email": {
-      "label": "Email Address",
+      "label": "Email",
       "required": "Please enter your email address.",
       "duplicate": "Email Address already taken",
       "invalid": "Please enter a valid email address format such as yourname@email.com.",
       "conflict": "This email already exists"
     },
     "wallet": {
-      "label": "Wallet Address",
+      "label": "Wallet",
       "required": "Please enter your wallet address.",
       "duplicate": "Wallet Address already taken",
       "minlength": "The wallet address you entered is incomplete, please check this field and try again.",
@@ -95,7 +102,8 @@
     "install": "Install MetaMask",
     "renew": "renew",
     "withdraw": "Withdraw",
-    "send": "Send"
+    "send": "Send",
+    "create-password": "Create Password"
   },
   "errors": {
     "method-not-allowed": "Method not allowed",
@@ -127,8 +135,7 @@
     },
     "register": {
       "title": "Welcome to BitGuild",
-      "n1": "Make sure you save your MetaMask login information and account recovery details!",
-      "n2": "We can’t help you recover it if you lose access.",
+      "n1": "Make sure you save your MetaMask login information and account recovery details! We can’t help you recover it if you lose access.",
       "text": "BitGuild requires all users to sign with their private key in order to safeguard against spoofing attempts.\n\nOur mission is to revolutionize the global gaming industry by creating a platform for a brand new class of games that live on the blockchain. Blockchain games completely redefine the relationship between players and developers by facilitating full and true ownership of in-game assets, cheap & safe item trading, cross-game compatibility of items & currency, and more. BitGuild’s team consists of cryptocurrency and gaming veterans with decades of experience building international large-scale gaming platforms and communities. BitGuild aims to host the best blockchain games and the largest blockchain gamer community online."
     },
     "sell-feature-coming": {
@@ -137,6 +144,19 @@
     }
   },
   "pages": {
+    "register": {
+      "title": "Welcome to BitGuild!",
+      "questions-faq": "Questions? FAQ",
+      "already-registered": "Already registered? Login here.",
+      "no-account": "Don't have an account?",
+      "register": "register",
+      "login": "login"
+    },
+    "link-wallet": {
+      "cta": "Link Wallet",
+      "new-wallet-found": "New Wallet Found",
+      "link-wallet": "Link new wallet to your account?"
+    },
     "bugbounty": {
       "title": "Bug Bounty",
       "hey-bitizens": "Hey Bitizen!",
@@ -194,6 +214,55 @@
       "bitguild-fee-4": "for this sale",
       "buy-for": "BUY FOR ",
       "empty": "No items are listed for sale right now, check back later!"
+    },
+    "super-rep": {
+      "intro": "Intro",
+      "intro-info-1": "BitGuild is a team of blockchain and gaming industry veterans that aims to create the go-to platform for blockchain gaming and entertainment. We believe that next-generation blockchains like TRON will finally allow us to build the application layer of the blockchain. At BitGuild, our goal is to create fun, useful applications that can help take cryptocurrency mainstream.",
+      "intro-info-2": "Through the power of blockchain, BitGuild redefines what it means to own digital assets in video games (characters, items, gold, etc). Our mission is to bring together the existing cryptogaming crowd with more traditional PC, console, and mobile gaming audiences by providing a single destination for users to find the best blockchain gaming experiences out there.",
+      "intro-info-3": "We successfully completed our initial token sale in April 2018, raising over $20 million USD in public and private funding. Our platform is open to all, and currently hosts a variety of games for cryptocurrency gamer/aficionados to enjoy.",
+      "why-bitguild-header": "Why BitGuild for SR?",
+      "why-bitguild-info-1": "As a gaming and entertainment company, we represent one of the industries that is most apt at pushing new technologies into mainstream markets, and as such, we are a perfect choice for TRON Super Representative status. BitGuild will promote TRON awareness to wider audiences by developing and hosting fun and compelling games, community interactions, and offering real-world adoption avenues for TRON, TRX, and cryptocurrency in general.",
+      "why-bitguild-info-2": "BitGuild and TRON have collaborated in the past, and BitGuild’s status as a TRON Super Representative is one of many steps we hope to take in solidifying our partnership with TRON and the TRX community.",
+      "why-bitguild-info-3": "To cast votes for BitGuild as a TRON Super Representative, go to: <a href='https://tronscan.org/#/votes' target='_blank' rel='noopener noreferrer'>https://tronscan.org/#/votes</a>",
+      "team-header": "Team",
+      "team-info": "BitGuild is comprised of an experienced core team, with talented and passionate individuals driving the company forward. Key members include:",
+      "jared-header": "Jared Psigoda - CEO / Guildmaster of BitGuild",
+      "jared-info-1": "Before founding BitGuild, Jared was CEO and co-founder of Reality Squared Games, a successful video game developer and publisher with over 80 million gamers, which he took public in Asia in 2016. He has since founded Livestar; a development studio focused on bringing live streaming and other social media apps to a global audience.",
+      "jared-info-2": "Jared has been an important player in the Real Money Trade industry of virtual in -game item sales since before the invention of Bitcoin, and is a cryptocurrency veteran, having personally invested in multiple blockchain - related projects.Like Justin Sun, Jared was nominated for Forbes China 30 under 30, and is a student of Jack Ma’ s Hupan University.Justin has served as an advisor to the BitGuild project since February of 2018.",
+      "curtis-header": "Curtis Chiu - COO of BitGuild",
+      "curtis-info": "Curtis has over 18 years of experience in the video game industry, having worked in development, publishing, and operations roles over every major platform for the likes of Konami, Kabam, and Sega in the US and Asia.",
+      "mikhail-header": "Mikhail Larionov - CTO of BitGuild",
+      "mikhail-info": "Mikhail comes from a background of game production and development, having worked for Disney in 2011 on some of their high profile web games. Mikhail later moved on to Facebook, where he was the engineering manager for the Messenger platform. He now serves as lead engineer and chief technology officer at BitGuild.",
+      "rainy-header": "Rainy Xiao - Head of Blockchain Engineering at BitGuild",
+      "rainy-info": "Rainy serves as the Head of Blockchain Engineering in Asia for BitGuild - ensuring that our backend systems are running as smooth as can be. She’s built and maintained online platforms and data centers for audiences of over 100 million.",
+      "and-more-1": "… and more!",
+      "and-more-2": "BitGuild isn't just a handful of names, we are a large group of highly serious people. We have an established presence in two of the largest tech hubs in the world - San Francisco and Shenzhen, as well as operations in Tokyo and Hong Kong. Our SF office is where we develop the foundation for BitGuild - the website, backend systems, smart contracts, and more - as well as the main location from which we handle business development. The game development team in Shenzhen, China is hard at work creating blockchain gaming experiences for our fans to enjoy.Also in Shenzhen you can find most of our marketing team, as well as general operations and specialized blockchain application development teams.Finally, we have a BitGuild outpost in Tokyo, Japan focused on community and business development in Asia.",
+      "and-more-3": "BitGuild is still growing! We currently have over 80 employees from 10+ countries working on game development, platform engineering, business development, marketing, public relations, and more!",
+      "rewards-header": "Rewards",
+      "rewards-info-1": "For BitGuild, becoming a Super Representative allows us the possibility to expand TRON and blockchain adoption to more general gaming audiences. As such, we are committed to distributing rewards to the community in thanks for their support.",
+      "rewards-info-2": "For a limited time, as the TRON community gets to know us, we will be giving back 115% of our block rewards to voters - more than what we stand to earn! We sincerely hope this encourages community growth and blockchain gaming adoption. At BitGuild, we believe gaming could be the key to driving mass adoption for blockchain and cryptocurrencies. Voting rewards will be automatically distributed to voters’ TRON wallets every 24 hours.",
+      "server-config-header": "Server Configuration",
+      "server-config-info": "Our current server configuration is standing by, and we are ready to upgrade it as needed.",
+      "server-config-placement-header": "Server Location and Placement:",
+      "server-config-placement-info": "United States East Region (US EAST - N.Virginia)",
+      "system-config-header": "System Configuration:",
+      "system-config-1-1": "Operating System",
+      "system-config-1-2": " - CENTOS 7.5",
+      "system-config-2-1": "System Type",
+      "system-config-2-2": " - AWS EC2 Instance",
+      "system-config-3-1": "CPUs",
+      "system-config-3-2": " - 64 CPU cores",
+      "system-config-4-1": "RAM",
+      "system-config-4-2": " - 144 GB",
+      "system-config-5-1": "SSD",
+      "system-config-5-2": " - 7T(EBS)",
+      "system-config-6-1": "Network Bandwidth",
+      "system-config-6-2": " - 20Gbps",
+      "budget-header": "Budget",
+      "budget-info-1": "Below you’ll find a detailed outline of out planned budget expenses relating to TRON Super Representative status:",
+      "budget-info-2": "$60,000/year for technical infrastructure (fullnode, secondary, backup server, & room for expansion)",
+      "budget-info-3": "$100,000/year for community initiatives - We strive to offer incentives to help spread the word about TRON, BitGuild, blockchain, and cryptocurrency in general in the form of coin drops, on-site events, game item giveaways, fan meetups, etc.",
+      "budget-info-4": "All operational costs will be covered by the BitGuild foundation."
     },
     "faq": {
       "title": "FAQ",

@@ -3,6 +3,7 @@
     "about": "About",
     "description": "预售",
     "faq": "关于 Bitizen",
+    "login": "登录",
     "remaining": "剩余",
     "rules": "规则",
     "all-games": "All Games",
@@ -22,6 +23,10 @@
       "pt": "Português",
       "es": "Español",
       "ru": "Русский"
+    },
+    "login": {
+      "wallet": "钱包",
+      "register": "需要注册？在这里 注册."
     },
     "menu": {
       "inventory": "我的物品",
@@ -121,6 +126,9 @@
     }
   },
   "pages": {
+    "register": {
+      "already-registered": "已经注册？在此登录。"
+    },
     "bugbounty": {
       "title": "漏洞悬赏",
       "hey-bitizens": "Bitizen，您好！",
@@ -152,6 +160,55 @@
       "back-to-game": "回到游戏",
       "empty": "您还没任何物品，请加油",
       "faq": "了解更多请查看<a href='/faq'>FAQ</a>"
+    },
+    "super-rep": {
+      "intro": "介绍",
+      "intro-info-1": "BitGuild是一个由区块链和游戏行业资深人士组成的团队，旨在为区块链游戏和娱乐创建平台。我们相信像波场这样的新一代的区块链可以实现我们构建区块链的应用层的目标。在BitGuild，我们的宗旨是创建有趣、好用的应用，推动加密货币成为市场的主流。",
+      "intro-info-2": "通过区块链的强大功能，BitGuild重新定义了游戏中拥有数字资产（角色，物品，金币等）的意义。我们的使命是通过为用户提供最佳的区块链游戏体验，将现有的区块链游戏用户与传统的PC，游戏机和手机游戏受众汇集在一起。",
+      "intro-info-3": "我们在2018年4月成功完成了初始代币发售，筹集了超过2000万美元的公共资金和私人资金。我们的平台向所有人开放，目前为加密货币游戏玩家和爱好者们提供各种不同的游戏。",
+      "why-bitguild-header": "为什么选择BitGuild为超级代表？",
+      "why-bitguild-info-1": "作为一家游戏娱乐公司，我们代表着最适合将新技术推向主流市场的行业之一。因此，我们是波场超级代表的最佳选择。 BitGuild将通过开发和引入好玩有趣的游戏、社区互动以及为波场，TRX和加密货币提供真实场景的使用途径，向更广泛的受众宣传和推广波场。",
+      "why-bitguild-info-2": "BitGuild和波场曾进行过紧密高效的合作，我们希望BitGuild成为波场超级代表可以继续巩固BitGuild和波场以及TRX社区的紧密合作伙伴关系。",
+      "why-bitguild-info-3": "要为BitGuild投票选举TRON超级代表，请转到: <a href='https://tronscan.org/#/votes' target='_blank' rel='noopener noreferrer'>https://tronscan.org/#/votes</a>",
+      "team-header": "团队",
+      "team-info": "BitGuild由经验丰富的核心团队组成，拥有才华横溢，充满激情的成员一齐推动公司的前进。 主要成员包括：",
+      "jared-header": "Jared Psigoda - CEO / Guildmaster of BitGuild",
+      "jared-info-1": "在创立BitGuild之前，Jared是Reality Squared Games的CEO兼联合创始人，Reality Squared Games是一家成功的电子游戏开发商和发行商，拥有超过8000万玩家，2016年在亚洲上市。他还创立了Livestar，一家专注于向全球用户提供直播平台和其他社交媒体应用的开发工作室。",
+      "jared-info-2": "早在比特币发明以前，Jared一直是游戏内虚拟物品销售的现金交易行业的重要参与者，并且是加密货币的一名老将，个人投资过多个区块链相关项目。 与Justin Sun一样，Jared被提名”福布斯中国30位30岁以下精英榜“，并且是马云的湖畔大学的学生。 自2018年2月以来，Justin一直担任BitGuild项目的顾问。",
+      "curtis-header": "Curtis Chiu - COO of BitGuild",
+      "curtis-info": "Curtis在电子游戏行业拥有超过18年的经验，曾在美国和亚洲的Konami，Kabam和Sega等游戏软件上的各个主要平台上负责游戏开发，发行和运营职务。",
+      "mikhail-header": "Mikhail Larionov - CTO of BitGuild",
+      "mikhail-info": "米哈伊尔拥有游戏制作和开发的背景。他曾在2011年参与制作迪士尼的一些备受瞩目的网页游戏。 米哈伊尔后来转到Facebook，作为Messenger平台的技术部经理。 目前，他担任BitGuild的首席工程师和首席技术官。",
+      "rainy-header": "Rainy Xiao - Head of Blockchain Engineering at BitGuild",
+      "rainy-info": "Rainy担任BitGuild区块链技术负责人，她的职责是确保我们的后端系统运行顺畅。 她曾经为超过1亿的用户建立并维护了在线平台和数据中心。",
+      "and-more-1": "……以及更多！",
+      "and-more-2": "BitGuild不仅仅是几个个体组成，我们更是一个严谨、认真、负责的团队。我们在世界上最大的两个高科技中心—​旧金山和深圳，以及东京和香港的业务中占有一席之地。我们的旧金山办公室是我们为BitGuild开发基础的地方，包括网站、后端系统、智能合约等，以及我们处理业务开发的主要地点。中国深圳的游戏开发团队，主要负责为我们的粉丝创造最佳的区块链游戏体验。在深圳，您还可以找到我们的市场团队、运营团队和专业的区块链应用开发团队。并且，我们在日本东京设有BitGuild前哨站，专注于亚洲地区的社区和业务发展。",
+      "and-more-3": "BitGuild仍在迅速地成长！我们目前拥有来自10多个国家的80多名员工，从事游戏开发、平台技术、业务开发、市场以及公共关系等方面的工作。",
+      "rewards-header": "社区计划",
+      "rewards-info-1": "对于BitGuild而言，成为超级代表使我们有可能将波场和区块链的应用扩展到更广泛的普通游戏用户。因此，我们致力于向社区分发奖励，作为对他们支持的感谢。",
+      "rewards-info-2": "在一段有限的时间内，随着波场社区对我们的逐步认识，我们将向选民提供115％——超过我们的收益的块奖励！我们真诚地希望这能够鼓励社区的发展和区块链游戏的应用。在BitGuild，我们认为游戏将会是推动区块链和加密货币大规模应用的关键。投票奖励将会每24小时自动分配给投票者的波场钱包。",
+      "server-config-header": "服务器配置",
+      "server-config-info": "我们当前的服务器配置已经部署完毕，并随时准备根据需要进行升级。",
+      "server-config-placement-header": "服务器地点和放置：",
+      "server-config-placement-info": "美国东部地区（美国北弗吉尼亚州）",
+      "system-config-header": "系统配置：",
+      "system-config-1-1": "操作系统",
+      "system-config-1-2": " - CENTOS 7.5",
+      "system-config-2-1": "系统类型",
+      "system-config-2-2": " - AWS EC2 Instance",
+      "system-config-3-1": "CPU",
+      "system-config-3-2": " - 64 CPU cores",
+      "system-config-4-1": "RAM",
+      "system-config-4-2": " - 144 GB",
+      "system-config-5-1": "SSD",
+      "system-config-5-2": " - 7T(EBS)",
+      "system-config-6-1": "网络带宽",
+      "system-config-6-2": " - 20Gbps",
+      "budget-header": "预算费用",
+      "budget-info-1": "在这里，您可以找到与波场超级代表相关的预算费用的详细：",
+      "budget-info-2": "技术基础设施费每年60,000美元（fullnode，secondary，备用服务器和扩展空间）",
+      "budget-info-3": "社区推动每年10万美元—我们努力提供激励措施，通过空投、现场活动、游戏道具赠送、粉丝聚会等形式，帮助宣传有关波场、BitGuild、区块链和加密货币的信息。",
+      "budget-info-4": "所有运营成本都将由BitGuild基金会承担。"
     },
     "faq": {
       "title": "FAQ",
