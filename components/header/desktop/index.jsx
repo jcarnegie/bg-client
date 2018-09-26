@@ -108,6 +108,13 @@ class Header extends Component {
         >
           <span className="navigation-link"><FormattedMessage id="components.menu.presale" /></span>
         </ActiveLink>
+        <ActiveLink
+          href="/tronsr"
+          activeStyle={activeNavigationLinkStyle}
+          style={defaultNavigationLinkStyle}
+        >
+          <span className="navigation-link"><FormattedMessage id="components.menu.tronsr" /></span>
+        </ActiveLink>
       </div>
     );
   }
