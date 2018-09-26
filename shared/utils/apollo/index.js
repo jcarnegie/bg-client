@@ -22,7 +22,7 @@ export const mutations = {
   register: gql`
     mutation register($email: String!, $wallet: String!, $signature: String!, $nickName: String!, $language: String!) {
       register(email: $email, wallet: $wallet, signature: $signature, nickName: $nickName, language: $language) {
-        user { id nickName language wallets }
+        user { id nickName language wallets lastWalletUsed }
         tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
       }
     }
@@ -38,7 +38,7 @@ export const mutations = {
   login: gql`
     mutation login($wallet: String!, $signature: String!) {
       login(wallet: $wallet, signature: $signature) {
-        user { id nickName language wallets }
+        user { id nickName language wallets lastWalletUsed }
         tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
       }
     }
@@ -54,7 +54,7 @@ export const mutations = {
   setCurrentWallet: gql`
     mutation setCurrentWallet($currentWallet: String) {
       setCurrentWallet(currentWallet: $currentWallet) {
-        user { id nickName language wallets }
+        user { id nickName language wallets lastWalletUsed }
         tokenData { accessToken refreshToken refreshExpiresAt accessExpiresAt }
       }
     }

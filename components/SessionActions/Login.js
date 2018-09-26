@@ -6,7 +6,7 @@ import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { path, pathOr } from 'ramda';
 import Router from 'next/router';
-
+import doLogin from '@/actions/login';
 import BGButton from '@/components/bgbutton';
 import {
   client,
@@ -55,43 +55,13 @@ class Login extends Component {
         log.error(err || result.error);
         return;
       }
-
-      const { data, errors } = await client.mutate({
-        errorPolicy: 'all',
-        mutation: mutations.login,
-        variables: {
-          wallet: web3Wallet,
-          signature: result.result,
-        },
-      });
+      const { data, errors } = await doLogin(client, web3Wallet, result.result);
       const { login } = data;
       this.setState({
         loggingIn: false,
         errors: errors || [],
       }, async() => {
         if (!login) return;
-        const {
-          user,
-          tokenData,
-        } = login;
-        const {
-          accessToken,
-          refreshToken,
-        } = tokenData;
-
-        bgLocalStorage.setItem('accessToken', accessToken);
-        bgLocalStorage.setItem('refreshToken', refreshToken);
-        Cookies.set('accessToken', accessToken);
-
-        // update me query
-        await client.writeQuery({
-          query: queries.me,
-          data: { me: { ...user } },
-        });
-
-        // add me data into apollo cache
-        await client.query({ query: queries.me });
-
         this.props.analytics.ga.event({
           category: 'Site Interaction',
           action: 'Sign-up',
