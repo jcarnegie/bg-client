@@ -7,6 +7,7 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { Query } from 'react-apollo';
 import { inHTMLData } from 'xss-filters';
+import doRegister from '@/actions/register';
 import { toHex } from '@/shared/utils';
 import {
   email as emailPlaceholder,
@@ -102,16 +103,10 @@ class Register extends Component {
       }
 
       this.setState({ registering: true }, async() => {
-        const { data, error } = await client.mutate({
-          mutation: mutations.register,
-          variables: {
-            email,
-            wallet: web3Wallet,
-            nickName,
-            signature: result.result,
-            language: intl.locale,
-          },
-        });
+        const wallet = web3Wallet;
+        const signature = result.result;
+        const language = intl.locale;
+        const { data, error } = await doRegister(client, email, wallet, nickName, signature, language);
         const registerSuccess = path(['register'], data);
         this.setState({
           registering: false,
@@ -119,26 +114,11 @@ class Register extends Component {
           error,
         }, async() => {
           if (!registerSuccess) return;
-          const {
-            // user,
-            tokenData,
-          } = data.register;
-          const {
-            accessToken,
-            refreshToken,
-          } = tokenData;
-
-          bgLocalStorage.setItem('accessToken', accessToken);
-          bgLocalStorage.setItem('refreshToken', refreshToken);
-
-          await client.query({ query: queries.me });
-
           this.props.analytics.ga.event({
             category: 'Site Interaction',
             action: 'Sign-up',
             label: 'Create account',
           });
-
           const referrer = pathOr('/', ['query', 'pathname'], this.props);
           Router.replace(referrer, referrer);
         });

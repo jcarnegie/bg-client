@@ -1,10 +1,7 @@
+import Cookies from 'js-cookie';
 import gql from 'graphql-tag';
-import {
-  dissoc,
-} from 'ramda';
-
-import { client } from '@/shared/utils/apollo/withApollo';
-
+import { dissoc } from 'ramda';
+import * as bgLocalStorage from '@/client/utils/localStorage';
 export { client } from '@/shared/utils/apollo/withApollo';
 
 if (typeof global !== 'undefined') {
@@ -216,5 +213,18 @@ export const updateUser = async(id, payload) => {
   return client.mutate({
     mutation: mutations.updateUser,
     variables,
+  });
+};
+
+export const updateTokensAndMe = async(apollo, accessToken, refreshToken, user) => {
+  // store tokens in localStorage and accessToken in cookie
+  bgLocalStorage.setItem('accessToken', accessToken);
+  bgLocalStorage.setItem('refreshToken', refreshToken);
+  Cookies.set('accessToken', accessToken);
+
+  // update me query in apollo cache
+  await apollo.writeQuery({
+    query: queries.me,
+    data: { me: { ...user } },
   });
 };
