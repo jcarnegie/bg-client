@@ -121,9 +121,9 @@ class Login extends Component {
             border-bottom: 1px solid black;
             flex-grow: 1;
           }
-          .login .bg-link {
+          .login .bg-error-message {
             text-align: center;
-            margin: 20px auto;
+            margin: 0 auto;
           }
         `}</style>
         <h1 className="login-header">
