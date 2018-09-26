@@ -7,7 +7,7 @@ export const marketplaceQuery = gql`
         bannerImage thumbnailImage categoryIcon config
       }
       listMarketplaceItems(language: $language, gameId: $gameId, categories: $categories, andNotCategories: $andNotCategories, sort: $sort) {
-         id lan tokenId name description image attrs categories salePrice saleExpiration saleState lastOwner {id} saleExpiration saleCurrency game {id} user {id}
+         id lan tokenId name description image attrs categories salePrice saleExpiration saleState lastOwner {id} saleExpiration saleCurrency game {id} user {id} wallet
       }
     }
   `;

@@ -77,8 +77,8 @@ class MarketplaceItem extends ItemBase {
 
   renderButtons() {
     const { item, ctx } = this.props;
-    const lastOwner = path(['lastOwner', 'id'], item);
-    const userId = path(['me', 'id'], ctx);
+    const lastOwnerWallet = path(['wallet'], item);
+    const userLastWallet = path(['me', 'lastWalletUsed'], ctx);
 
     const extendAndWithdrawButtons = (
       <div className="item-button-bar">
@@ -125,7 +125,7 @@ class MarketplaceItem extends ItemBase {
             display: flex;
           }
         `}</style>
-        {((lastOwner && userId) && (lastOwner === userId)) ? extendAndWithdrawButtons : buyButton}
+        {((lastOwnerWallet && userLastWallet) && (lastOwnerWallet === userLastWallet)) ? extendAndWithdrawButtons : buyButton}
       </ButtonGroup>
     );
   }
