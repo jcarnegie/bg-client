@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import * as log from 'loglevel';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isEmpty, path } from 'ramda';
+import {
+  contains,
+  isEmpty,
+  path,
+  pathOr,
+} from 'ramda';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 import MdAddCircle from 'react-icons/lib/md/add-circle';
 import Router from 'next/router';
@@ -116,11 +121,14 @@ class Balance extends Component {
   }
 
   balances() {
-    const { balanceETH, balancePLAT } = this.props;
+    const { balanceETH, balancePLAT, user } = this.props;
+    /* Hide if no user session */
+    if (!user || !user.id) return null;
     return (
       <GlobalContext.Consumer>
         {({ web3Wallet }) => {
-          if (!web3Wallet) return null;
+          /* If no wallet, or wallet not linked, hide */
+          if (!web3Wallet || !contains(web3Wallet, pathOr([], ['wallets'], user))) return null;
           return (
             <span className="balance-text">
               <style jsx>{`
