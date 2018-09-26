@@ -25,9 +25,7 @@ const parseCookies = (req, options = {}) => {
 
 const getToken = req => {
   if (process.browser) {
-    const accessToken = localStorage.getItem('accessToken');
-    log.info('getToken: accessToken (localStorage):', accessToken);
-    return accessToken;
+    return localStorage.getItem('accessToken');
   } else {
     return parseCookies(req).accessToken;
   }

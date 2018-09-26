@@ -53,7 +53,6 @@ const create = (initialState, { getToken }) => {
   const request = async operation => {
     const accessToken = getToken();
     const headers = { Authorization: `Bearer ${accessToken}` };
-    log.info('Adding auth header:', headers);
     operation.setContext({ headers });
   };
 
