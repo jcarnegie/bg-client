@@ -17,14 +17,6 @@ import {
 import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
 
 import {
-  Query,
-} from 'react-apollo';
-
-import {
-  inventoryQuery,
-} from '@/shared/utils/apollo/inventory';
-
-import {
   getConfigForGame,
 } from '@/shared/utils/games';
 
@@ -35,17 +27,13 @@ import {
   getCategoriesFromItemAttrs,
 } from '@/client/utils/item';
 
-import { withGlobalContext } from '@/shared/utils/context';
 import { withRoot } from '@/components/wrappers';
 
-import DataLoading from '@/components/DataLoading';
-import DataError from '@/components/DataError';
 
 import { InventoryItem } from '@/components/item';
 
 
 @injectIntl
-@withGlobalContext
 @withRoot
 class Inventory extends Component {
 	static propTypes = {
@@ -60,6 +48,8 @@ class Inventory extends Component {
       userNeedsToLogInOrRegister: PropTypes.bool,
       me: PropTypes.object,
     }),
+    listItems: PropTypes.array,
+    listGames: PropTypes.array,
 	};
 
 	state = {
@@ -79,8 +69,8 @@ class Inventory extends Component {
   }
 
   onSell(item, listItemResult) {
-    const { items } = this.props;
-    setTimeout(::items.refetch, 3000);
+    const { listItems } = this.props;
+    setTimeout(::listItems.refetch, 3000);
   }
 
 	onSelect(key) {
@@ -89,8 +79,10 @@ class Inventory extends Component {
 		}
 	}
 
-	renderInventory(queryData) {
-		return queryData.listItems && queryData.listItems.length ? this.renderTabs(queryData.listGames, queryData.listItems) : this.renderEmpty();
+	renderInventory() {
+    console.log(this.props);
+    const { listItems, listGames } = this.props;
+		return listItems && listItems.length ? this.renderTabs(listGames, listItems) : this.renderEmpty();
 	}
 
 	renderBackToGameButton() {
@@ -212,23 +204,11 @@ class Inventory extends Component {
 
 
 	render() {
-    const { me } = this.props.ctx;
-    if (!me) return null;
     return (
-      <Query
-        query={inventoryQuery}
-      >
-        {({ loading, error, data, refetch }) => {
-          if (!data || data.loading) return <DataLoading />;
-          if (data.error) return <DataError />;
-          return (
-          <div className="inventory">
-              {this.indexStyle()}
-              {::this.renderInventory(data, me)}
-          </div>
-          );
-        }}
-      </Query>
+      <div className="inventory">
+          {this.indexStyle()}
+          {::this.renderInventory()}
+      </div>
 		);
 	}
 

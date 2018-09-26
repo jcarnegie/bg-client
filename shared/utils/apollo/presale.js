@@ -5,5 +5,8 @@ export const presaleQuery = gql`
     listUserPresaleTickets {
       id wallet setId
     }
+     me {
+       id nickName language wallets lastWalletUsed
+     }
   }
 `;

@@ -10,7 +10,6 @@ import Router from 'next/router';
 import {
   requireUserLoginAndSupportedNetwork,
 } from '@/shared/utils';
-import { withGlobalContext } from '@/shared/utils/context';
 import { withRoot } from '@/components/wrappers';
 import FeatureFlag from '@/components/featureflag';
 import BGButton from '@/components/bgbutton';
@@ -30,7 +29,6 @@ import style from '@/shared/constants/style';
     layout: state.layout,
   })
 )
-@withGlobalContext
 @withRoot
 class GameList extends Component {
   static propTypes = {
@@ -40,7 +38,7 @@ class GameList extends Component {
     }),
     analytics: PropTypes.object,
     layout: PropTypes.object,
-    ctx: PropTypes.object,
+    me: PropTypes.object,
     root: PropTypes.object,
   }
 
@@ -89,7 +87,7 @@ class GameList extends Component {
 
     playableGames = uniq(playableGames.concat(unsortedPlayableGames));
 
-    if (path(['ctx', 'me'], props)) {
+    if (path(['me'], props)) {
       return { newsletter: 'false', playableGames, bannerGames };
     } else {
       return { newsletter: state.newsletter, playableGames, bannerGames };
@@ -97,8 +95,8 @@ class GameList extends Component {
   }
 
   navigateToGame(slug) {
-    const { ctx, root } = this.props;
-    if (!requireUserLoginAndSupportedNetwork(ctx.me, path(['network'], root))) return log.info('User not logged in, rejecting navigateToGame.');
+    const { me, root } = this.props;
+    if (!requireUserLoginAndSupportedNetwork(me, path(['network'], root))) return log.info('User not logged in, rejecting navigateToGame.');
     this.props.analytics.ga.event({
       category: 'Site Interaction',
       action: 'Play',

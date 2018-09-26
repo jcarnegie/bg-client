@@ -10,7 +10,7 @@ const SiteLandingPage = props => (
     <Query query={sitelandingQuery}>
       {({ data, loading }) => {
         if (loading) return null;
-        return <Landing {...props} games={data} />;
+        return <Landing {...props} games={data} me={data.me} />;
       }}
     </Query>
   </Layout>

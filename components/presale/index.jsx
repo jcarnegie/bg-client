@@ -7,7 +7,6 @@ import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import MDCheck from 'react-icons/lib/md/check';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
-import { Query } from 'react-apollo';
 
 import redirect from '@/shared/utils/redirect';
 
@@ -26,7 +25,6 @@ import {
 } from '@/shared/constants/actions';
 
 import { client } from '@/shared/utils/apollo';
-import { presaleQuery } from '@/shared/utils/apollo/presale';
 
 import { withGlobalContext } from '@/shared/utils/context';
 import { withRoot } from '@/components/wrappers';
@@ -88,8 +86,9 @@ export default class Presale extends Component {
     layout: PropTypes.object,
     items: PropTypes.object,
     dispatch: PropTypes.func,
-    ctx: PropTypes.object,
+    me: PropTypes.object,
     root: PropTypes.object,
+    listUserPresaleTickets: PropTypes.object,
   }
 
   state = {
@@ -102,7 +101,7 @@ export default class Presale extends Component {
   }
 
   async logPurchase(tx, set) {
-    const { me } = this.props.ctx;
+    const { me } = this.props;
     const mutation = gql`
       mutation createPresaleTicket($payload:CreatePresaleTicketPayload!) {
         createPresaleTicket(payload:$payload) {
@@ -194,7 +193,7 @@ export default class Presale extends Component {
 
   purchase(set, tickets) {
     log.info('User purchase flow for set: ', set);
-    const { me } = this.props.ctx;
+    const { me } = this.props;
     const { balancePLAT, network } = this.props.root;
     if (!network) {
       log.error('Network has not loaded.');
@@ -535,71 +534,60 @@ export default class Presale extends Component {
 
   render() {
     log.info('rendering presale page');
-    const { me } = this.props.ctx;
+    const { listUserPresaleTickets } = this.props;
     const { mobile } = this.props.layout.type;
     return (
-      <Query
-        query={presaleQuery}
-        skip={!me}
-      >
-        {({ loading, error, data, refetch }) => {
-          return (
-            <div className="presale">
-              <style jsx global>{`
-            .presale .row {
-              margin-bottom: 20px;
-            }
-            ${mobile ? `
-            .presale .row:nth-child(1) {
-              margin-bottom: 40px;
-            }` : ''}
-            .presale .popover {
-              padding: 0;
-            }
-          `}</style>
-          {::this.presaleTitles()}
-          {::this.presaleBanner()}
-          {::this.presaleInfo()}
-    
-          {SETS.map(set => ::this.setSection(set, data.listUserPresaleTickets))}
-    
-          <br />
+      <div className="presale">
+        <style jsx global>{`
+          .presale .row {
+            margin-bottom: 20px;
+          }
+          ${mobile ? `
+          .presale .row:nth-child(1) {
+            margin-bottom: 40px;
+          }` : ''}
+          .presale .popover {
+            padding: 0;
+          }
+        `}</style>
+        {::this.presaleTitles()}
+        {::this.presaleBanner()}
+        {::this.presaleInfo()}
+        {SETS.map(set => ::this.setSection(set, listUserPresaleTickets))}
 
-              <Row>
-                <Col xs={12}>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.dividing-text`} /></p>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs={12} sm={2}>
-                  <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_drillrbot.png`} />
-                </Col>
-                <Col xs={12} sm={10}>
-                  <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-title`} /></strong></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-text-1`} /></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-text-2`} /></p>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs={12} sm={2}>
-                  <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_rocket.png`} />
-                </Col>
-                <Col xs={12} sm={10}>
-                  <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-title`} /></strong></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-text-1`} /></p>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-text-2`} /></p>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs={12}>
-                  <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.final-text`} /></p>
-                </Col>
-              </Row>
-            </div>
-          );
-        }
-      }
-      </Query>
+        <br />
+
+        <Row>
+          <Col xs={12}>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.dividing-text`} /></p>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} sm={2}>
+            <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_drillrbot.png`} />
+          </Col>
+          <Col xs={12} sm={10}>
+            <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-title`} /></strong></p>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-text-1`} /></p>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.drillrbot-text-2`} /></p>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} sm={2}>
+            <Image responsive src={`/static/images/games/${this.props.slug}/presale/pioneers_rocket.png`} />
+          </Col>
+          <Col xs={12} sm={10}>
+            <p><strong><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-title`} /></strong></p>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-text-1`} /></p>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.rocket-text-2`} /></p>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12}>
+            <p><FormattedHTMLMessage id={`pages.presale.${this.props.slug}.final-text`} /></p>
+          </Col>
+        </Row>
+      </div>
     );
   }
 }

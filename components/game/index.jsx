@@ -2,20 +2,7 @@ import * as log from 'loglevel';
 import queryString from 'query-string';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Query,
-} from 'react-apollo';
 import { path } from 'ramda';
-
-import {
-  gameQuery,
-} from '@/shared/utils/apollo/game';
-
-import {
-  GlobalContext,
-} from '@/shared/utils/context';
-
-import DataLoading from '@/components/DataLoading';
 
 import GameIframeConnection from '@/components/GameIframeConnection';
 import { defaultLanguage } from '@/shared/constants/language';
@@ -28,13 +15,12 @@ class Game extends Component {
     slug: PropTypes.string,
     query: PropTypes.object,
     root: PropTypes.object,
+    me: PropTypes.object,
   };
 
   static defaultProps = {
     dispatch: () => {},
-    game: {
-      viewGameBySlug: {},
-    },
+    game: {},
     slug: '',
     query: {},
     root: {
@@ -78,8 +64,8 @@ class Game extends Component {
   shouldComponentUpdate(nextProps) {
     const nextNetworkId = path(['network', 'id'], nextProps.root);
     const networkId = path(['network', 'id'], this.props.root);
-    const nextGameId = path(['viewGameBySlug', 'id'], nextProps.game);
-    const gameId = path(['viewGameBySlug', 'id'], this.props.game);
+    const nextGameId = path(['id'], nextProps.game);
+    const gameId = path(['id'], this.props.game);
     const shouldRender = (
       nextNetworkId !== networkId ||
       nextGameId !== gameId
@@ -88,7 +74,7 @@ class Game extends Component {
   }
 
   render() {
-    const { query } = this.props;
+    const { query, me, game } = this.props;
     return (
       <div id="game-component-wrapper">
         <style jsx global>{`
@@ -99,25 +85,7 @@ class Game extends Component {
             display: block;
           }
         `}</style>
-        <GlobalContext.Consumer>
-          {({ web3Wallet, me }) => {
-            if (!web3Wallet) return <DataLoading />;
-            return (
-              <Query
-                query={gameQuery}
-                variables={{ slug: this.props.slug }}
-              >
-                {({ data }) => {
-                  if (!data || data.error || data.loading) {
-                    if (path(['error'], data)) log.error('error occurred');
-                    return <DataLoading />;
-                  }
-                  return ::this.renderGame(data.viewGameBySlug, me, query);
-                }}
-              </Query>
-            );
-          }}
-        </GlobalContext.Consumer>
+        {this.renderGame(game, me, query)}
       </div>
     );
   }

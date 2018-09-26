@@ -21,5 +21,8 @@ export const gameQuery = gql`
       gas @client {
         average fast fastest
       }
+      me {
+        id nickName language wallets lastWalletUsed
+      }
     }
   `;
