@@ -13,46 +13,6 @@ export default class TronSR extends Component {
     layout: PropTypes.object,
   }
 
-  renderLinks() {
-    const { mobile } = this.props.layout.type;
-
-    return (
-      <div className="intro-links">
-        <style jsx>{`
-          .intro-links {
-            float: left;
-            width: ${mobile ? '100%' : '30%'};
-            margin-top: ${mobile ? '0px' : '40px'}
-          }
-        `}</style>
-        <div>
-          <FormattedHTMLMessage id="pages.super-rep.links-1" />
-        </div>
-        <div>
-          <FormattedHTMLMessage id="pages.super-rep.links-2" />
-        </div>
-        <div>
-          <FormattedHTMLMessage id="pages.super-rep.links-3" />
-        </div>
-        <div>
-          <FormattedHTMLMessage id="pages.super-rep.links-4" />
-        </div>
-        <div>
-          <FormattedHTMLMessage id="pages.super-rep.links-5" />
-        </div>
-        <div>
-          <FormattedHTMLMessage id="pages.super-rep.links-6" />
-        </div>
-        <div>
-          <FormattedHTMLMessage id="pages.super-rep.links-7" />
-        </div>
-        <div>
-          <FormattedHTMLMessage id="pages.super-rep.links-8" />
-        </div>
-      </div>
-    );
-  }
-
   render() {
     const { mobile } = this.props.layout.type;
 
@@ -181,7 +141,6 @@ export default class TronSR extends Component {
             <div className="sr-header">
               <FormattedMessage id="pages.super-rep.intro" />
             </div>
-              {mobile ? null : this.renderLinks() }
             <div className="info">
               <FormattedMessage id="pages.super-rep.intro-info-1" />
             </div>
@@ -191,7 +150,6 @@ export default class TronSR extends Component {
             <div className="info">
               <FormattedMessage id="pages.super-rep.intro-info-3" />
             </div>
-            {mobile ? this.renderLinks() : null}
           </div>
           <div className="section-container">
             <div className="sr-header">
@@ -202,6 +160,9 @@ export default class TronSR extends Component {
             </div>
             <div className="info">
               <FormattedMessage id="pages.super-rep.why-bitguild-info-2" />
+            </div>
+            <div className="info">
+              <FormattedHTMLMessage id="pages.super-rep.why-bitguild-info-3" />
             </div>
           </div>
           <div className="section-container">
