@@ -57,7 +57,6 @@ class Inventory extends Component {
       pathname: PropTypes.string,
     }),
     ctx: PropTypes.shape({
-      isCurrentWalletLinked: PropTypes.bool,
       userNeedsToLogInOrRegister: PropTypes.bool,
       me: PropTypes.object,
     }),

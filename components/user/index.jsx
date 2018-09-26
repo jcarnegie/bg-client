@@ -39,6 +39,7 @@ class User extends Component {
 
   render() {
     const { layout, user } = this.props;
+    if (!user) return null;
     const pathname = path(['router', 'pathname'], Router);
     if (!pathname || pathname === '/login' || pathname === '/register') return null;
     return (

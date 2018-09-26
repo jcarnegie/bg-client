@@ -21,7 +21,6 @@ import { withRoot } from '@/components/wrappers';
 class Header extends Component {
   static propTypes = {
     ctx: PropTypes.shape({
-      isCurrentWalletLinked: PropTypes.bool,
       userNeedsToLogInOrRegister: PropTypes.bool,
       me: PropTypes.object,
     }),
@@ -137,10 +136,7 @@ class Header extends Component {
           }
         `}</style>
         <Balance user={me} balanceETH={balanceETH} balancePLAT={balancePLAT} rate={rate} />
-        {
-          this.props.ctx.isCurrentWalletLinked &&
-          <User user={me} />
-        }
+        <User user={me} />
         <Language user={me} />
         <LoginButton show={!me} />
       </div>

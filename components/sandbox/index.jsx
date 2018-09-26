@@ -21,8 +21,6 @@ class SandBox extends Component {
     }),
     root: PropTypes.object,
     ctx: PropTypes.shape({
-      isCurrentWalletLinked: PropTypes.bool,
-      userNeedsToLogInOrRegister: PropTypes.bool,
       me: PropTypes.object,
     }),
   };

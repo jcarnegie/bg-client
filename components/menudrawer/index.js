@@ -85,7 +85,7 @@ class MenuDrawer extends Component {
         }
         `}</style>
 
-        {this.props.ctx.isCurrentWalletLinked && <User user={me} />}
+        <User user={me} />
 
         <div className="links">
           <ActiveLink

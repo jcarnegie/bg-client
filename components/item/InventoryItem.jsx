@@ -54,7 +54,6 @@ class InventoryItem extends ItemBase {
     onBuy: PropTypes.func,
     root: PropTypes.object,
     ctx: PropTypes.shape({
-      isCurrentWalletLinked: PropTypes.bool,
       userNeedsToLogInOrRegister: PropTypes.bool,
       me: PropTypes.object,
     }),
