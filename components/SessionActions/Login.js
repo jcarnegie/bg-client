@@ -138,7 +138,7 @@ class Login extends Component {
         <span className="login-wallet">
           <FormattedMessage id="components.login.wallet" />
         </span>
-        <input className="login-wallet-input" readOnly defaultValue={this.props.web3Wallet}></input>
+        <input className="login-wallet-input" readOnly value={this.props.web3Wallet}></input>
         <BGButton className="btn-block login-btn text-uppercase" onClick={::this.sign}>
           <FormattedMessage id="buttons.login" />
         </BGButton>

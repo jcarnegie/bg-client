@@ -158,7 +158,7 @@ class LinkWallets extends Component {
         `}</style>
         <h1 className="link-wallet-header"><FormattedMessage id="pages.link-wallet.new-wallet-found" /></h1>
         <span className="link-wallet"><FormattedMessage id="components.login.wallet" /></span>
-        <input className="link-wallet-input" readOnly defaultValue={web3Wallet}></input>
+        <input className="link-wallet-input" readOnly value={web3Wallet}></input>
         <div className="link-wallet-text"><FormattedMessage id="pages.link-wallet.link-wallet" /></div>
         <BGButton className="btn-block text-uppercase" onClick={::this.sign}>
           <FormattedMessage id="pages.link-wallet.cta" />
