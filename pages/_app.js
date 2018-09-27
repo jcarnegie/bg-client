@@ -134,9 +134,7 @@ class BGApp extends App {
   }
 
   userWalletHasChanged(me) {
-    // const sessionWallet = path(['lastWalletUsed'], me);
     return getWeb3Wallet() !== this.state.web3Wallet;
-    // return sessionWallet !== this.state.web3Wallet;
   }
 
   isWalletLinked(wallet, me) {
@@ -361,7 +359,7 @@ class BGApp extends App {
       isCurrentWalletLinked,
     } = this.state;
 
-    const showGlobalLoadingScreen = this.isPagePublic() ? false : (!web3Wallet || !isCurrentWalletLinked);
+    const showGlobalLoadingScreen = ::this.isPagePublic() ? false : (!web3Wallet || !isCurrentWalletLinked);
 
     return (
       <Container>
