@@ -44,5 +44,6 @@ module.exports = withBundleAnalyzer({
       analyzerMode: 'static',
       reportFilename: './analyzer-output/client.html',
     },
-  },
+	},
+	generateEtags: false,
 });
