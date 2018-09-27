@@ -5,7 +5,9 @@ import Sandbox from '@/components/sandbox';
 
 
 class SandboxPage extends Component {
-  static getInitialProps = ctx => Sandbox.getInitialProps(ctx);
+  static getInitialProps({ me, query }) {
+    return { me, query };
+  }
 
   render() {
     return (
