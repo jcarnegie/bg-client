@@ -24,11 +24,12 @@ export default App => {
       ctx.ctx.apolloClient = apollo;
 
       // get user
-      const { data } = await apollo.query({ query: queries.me });
+      const resp = await apollo.query({ query: queries.me });
+      const { data } = resp;
       const { me } = data;
       ctx.ctx.me = me;
 
-      log.info('me:', me);
+      log.info('me: resp, me', resp, me);
 
       let appProps = {};
       if (App.getInitialProps) {
