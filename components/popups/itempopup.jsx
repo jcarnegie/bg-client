@@ -290,8 +290,8 @@ class ItemPopup extends Component {
             margin-top: -30px;
           }
           .buyImage{
-            height: 70%;
-            width: 70%;
+            height: 60%;
+            width: 60%;
           }
           .buy .modal-content .modal-body form{
             margin: 0px;
@@ -299,7 +299,7 @@ class ItemPopup extends Component {
             height: 100%;
           }
           .buy .modal-content .modal-body {
-            padding: 50px 10px;
+            padding: 50px 40px !important;
             min-height: 310px;
             display: flex;
             justify-content: center;
