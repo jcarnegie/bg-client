@@ -167,7 +167,7 @@ class BGApp extends App {
 
     if (isCurrentWalletLinked) {
       log.info('calling setCurrentWallet mutation');
-      await doSetCurrentWallet({ apollo: apolloClient, web3Wallet, resetStore });
+      await doSetCurrentWallet({ apollo: apolloClient, wallet: web3Wallet, resetStore });
     }
 
     this.setState({

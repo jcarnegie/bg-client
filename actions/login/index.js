@@ -1,11 +1,11 @@
 import { mutations, updateTokensAndMe } from '@/shared/utils/apollo';
 
-export default async({ apollo, web3Wallet, signature }) => {
+export default async({ apollo, wallet, signature }) => {
   const { data, errors } = await apollo.mutate({
     errorPolicy: 'all',
     mutation: mutations.login,
     variables: {
-      wallet: web3Wallet,
+      wallet,
       signature,
     },
   });

@@ -52,7 +52,7 @@ class Login extends Component {
         log.error(err || result.error);
         return;
       }
-      const { data, errors } = await doLogin({ apollo: client, web3Wallet, signature: result.result });
+      const { data, errors } = await doLogin({ apollo: client, wallet: web3Wallet, signature: result.result });
       const { login } = data;
       this.setState({
         loggingIn: false,
