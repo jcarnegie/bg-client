@@ -88,6 +88,7 @@ class BGApp extends App {
       In this case refresh, no matter if we're on a protected page or not.
     */
     if (process.browser) {
+      log.info('accessTokenExpired(), refreshTokenExpired()', accessTokenExpired(), refreshTokenExpired());
       if (refreshTokenExpired() && !isPagePublic) {
         log.info('browser: refresh token expired and page not public --> /login');
         redirect(ctx, '/login');

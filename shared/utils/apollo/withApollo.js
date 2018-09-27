@@ -28,6 +28,8 @@ export default App => {
       const { me } = data;
       ctx.ctx.me = me;
 
+      log.info('me:', me);
+
       let appProps = {};
       if (App.getInitialProps) {
         appProps = await App.getInitialProps(ctx);
