@@ -5,13 +5,23 @@ import { updateIntl } from 'react-intl-redux';
 import { injectIntl, intlShape } from 'react-intl';
 import { Image, MenuItem, DropdownButton } from 'react-bootstrap';
 import { withRouter } from 'next/router';
-import { path, pathOr } from 'ramda';
+import { path, pathOr, dissoc } from 'ramda';
 import { MobileScreen, DesktopScreen } from 'react-responsive-redux';
 import { enabledLanguages, enabledLanguagesNativeText } from '@/shared/constants/language';
 import { localization } from '@/shared/intl/setup';
 import {
-  updateUser,
+  client,
+  mutations,
 } from '@/shared/utils/apollo';
+
+const updateUser = (id, payload) => {
+  const variables = { id, payload: dissoc('__typename', payload) };
+  return client.mutate({
+    mutation: mutations.updateUser,
+    variables,
+  });
+};
+
 
 @withRouter
 @injectIntl

@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
 import gql from 'graphql-tag';
-import { dissoc } from 'ramda';
 import * as bgLocalStorage from '@/client/utils/localStorage';
 import { storeTokenData } from '@/client/utils/tokens';
+/* NOTE: client exported to support dependent modules */
 export { client } from '@/shared/utils/apollo/withApollo';
 
 if (typeof global !== 'undefined') {
@@ -208,14 +208,6 @@ export const localMutations = {
   `,
 };
 
-
-export const updateUser = async(id, payload) => {
-  const variables = { id, payload: dissoc('__typename', payload) };
-  return client.mutate({
-    mutation: mutations.updateUser,
-    variables,
-  });
-};
 
 export const updateTokensAndMe = async(apollo, tokenData, user) => {
   // store tokens in localStorage and accessToken in cookie
