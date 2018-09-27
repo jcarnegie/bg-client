@@ -64,6 +64,7 @@ class Register extends Component {
     nickName: '',
     email: '',
     registering: false,
+    errors: [],
   };
 
   onChange(k, v) {
@@ -106,12 +107,12 @@ class Register extends Component {
         const wallet = web3Wallet;
         const signature = result.result;
         const language = intl.locale;
-        const { data, error } = await doRegister(client, email, wallet, nickName, signature, language);
+        const { data, errors } = await doRegister(client, email, wallet, nickName, signature, language);
         const registerSuccess = path(['register'], data);
         this.setState({
           registering: false,
           registerSuccess,
-          error,
+          errors,
         }, async() => {
           if (!registerSuccess) return;
           this.props.analytics.ga.event({
@@ -222,6 +223,9 @@ class Register extends Component {
               <BGButton disabled={!(this.state.nickName && this.state.email)} className="btn-block btn-register text-uppercase" onClick={::this.sign}>
                 <FormattedMessage id="buttons.register" />
               </BGButton>
+              {this.state.errors.map(e => e.message).map((m, i) => {
+                if (m !== 'unique_constraint_error') return <p key={i} className="bg-error-message"><FormattedMessage id={m} /></p>;
+              })}
               <div className="bg-link register-link" onClick={() => Router.push('/login')}>
                 <FormattedMessage id="pages.register.already-registered" />
               </div>

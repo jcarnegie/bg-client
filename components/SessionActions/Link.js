@@ -163,7 +163,7 @@ class LinkWallets extends Component {
         <BGButton className="btn-block text-uppercase" onClick={::this.sign}>
           <FormattedMessage id="pages.link-wallet.cta" />
         </BGButton>
-        {this.state.errors.map(e => e.message).map((m, i) => <p key={i} className="bg-error-message">{m}</p>)}
+        {this.state.errors.map(e => e.message).map((m, i) => <p key={i} className="bg-error-message"><FormattedMessage id={m} /></p>)}
         <div className="link-wallet-button-group">
           <div className="bg-link" onClick={() => Router.push('/login')}>
             <FormattedHTMLMessage id="pages.register.already-registered" />

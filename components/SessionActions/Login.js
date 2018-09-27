@@ -142,7 +142,7 @@ class Login extends Component {
         <BGButton className="btn-block login-btn text-uppercase" onClick={::this.sign}>
           <FormattedMessage id="buttons.login" />
         </BGButton>
-        {this.state.errors.map(e => e.message).map((m, i) => <p key={i} className="bg-error-message">{m}</p>)}
+        {this.state.errors.map(e => e.message).map((m, i) => <p key={i} className="bg-error-message"><FormattedMessage id={m} /></p>)}
 
         <div className="line-break">
           <div className="line" />

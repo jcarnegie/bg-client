@@ -94,7 +94,15 @@
     "not-found": "`{name}` 未找到",
     "conflict": "名字{name}已存在",
     "server-error": "服务器错误",
-    "spoofing-attempt": "对比{wallet1}和{wallet2}时，核实发起人签名失败"
+    "spoofing-attempt": "对比{wallet1}和{wallet2}时，核实发起人签名失败",
+    "auth": {
+      "invalid-signature": "签名无效",
+      "no-user": "用户未找到，请注册",
+      "unknown-action": "未知的行动",
+      "no-access": "拒绝访问",
+      "wallet-linked": "电子钱包已与另一个帐户相关联.",
+      "no-auth": "擅自"
+    }
   },
   "modals": {
     "metamask-install": {

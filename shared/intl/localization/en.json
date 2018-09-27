@@ -114,7 +114,15 @@
     "not-found": "`{name}` not found",
     "conflict": "This {name} already exists in db",
     "server-error": "Internal Server Error",
-    "spoofing-attempt": "Failed to verify signer when comparing {wallet1} to {wallet2}"
+    "spoofing-attempt": "Failed to verify signer when comparing {wallet1} to {wallet2}",
+    "auth": {
+      "invalid-signature": "Invalid Signature",
+      "no-user": "User not found, please register",
+      "unknown-action": "Unknown action",
+      "no-access": "Access denied",
+      "wallet-linked": "Wallet is already linked to another account.",
+      "no-auth": "Unauthorized"
+    }
   },
   "modals": {
     "metamask-install": {

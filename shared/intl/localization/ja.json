@@ -93,7 +93,15 @@
     "not-found": "`{name}` が見つかりません。",
     "conflict": " {name} はすでにサーバーに登録されています。",
     "server-error": "Internal Server Error",
-    "spoofing-attempt": "{wallet1} と {wallet2}の情報が異なるため,確認することができません。"
+    "spoofing-attempt": "{wallet1} と {wallet2}の情報が異なるため,確認することができません。",
+    "auth": {
+      "invalid-signature": "無効な署名",
+      "no-user": "ユーザーが見つかりませんでした、登録してください",
+      "unknown-action": "不明な操作",
+      "no-access": "アクセスが拒否されました",
+      "wallet-linked": "ウォレットは既に別のアカウントにリンクされています。",
+      "no-auth": "無許可"
+    }
   },
   "modals": {
     "metamask-install": {

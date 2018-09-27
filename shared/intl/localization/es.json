@@ -93,7 +93,15 @@
     "not-found": "`{name}` extraviado",
     "conflict": "Este {name} ya existe en la base de datos",
     "server-error": "Internal Server Error",
-    "spoofing-attempt": "Error al verificar el firmante al comparar {wallet1} a {wallet2}"
+    "spoofing-attempt": "Error al verificar el firmante al comparar {wallet1} a {wallet2}",
+    "auth": {
+      "invalid-signature": "Firma inválida",
+      "no-user": "Usuario no encontrado, por favor regístrese",
+      "unknown-action": "Acción desconocida",
+      "no-access": "Acceso denegado",
+      "wallet-linked": "Wallet ya está vinculado a otra cuenta.",
+      "no-auth": "No autorizado"
+    }
   },
   "modals": {
     "metamask-install": {

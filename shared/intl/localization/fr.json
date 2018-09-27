@@ -94,7 +94,15 @@
     "not-found": "`{name}` introuvable",
     "conflict": "Ce {name} existe déjà dans la base de données",
     "server-error": "Erreur de serveur interne",
-    "spoofing-attempt": "Échec lors de la vérification du signataire de {wallet1} à {wallet2}"
+    "spoofing-attempt": "Échec lors de la vérification du signataire de {wallet1} à {wallet2}",
+    "auth": {
+      "invalid-signature": "Signature non valide",
+      "no-user": "Utilisateur introuvable, veuillez vous enregistrer",
+      "unknown-action": "Action inconnue",
+      "no-access": "Accès refusé",
+      "wallet-linked": "Wallet est déjà lié à un autre compte.",
+      "no-auth": "Non autorisé"
+    }
   },
   "modals": {
     "metamask-install": {
