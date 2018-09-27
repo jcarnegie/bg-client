@@ -7,6 +7,7 @@ import { FormattedHTMLMessage, FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import MDCheck from 'react-icons/lib/md/check';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
+import { path } from 'ramda';
 
 import redirect from '@/shared/utils/redirect';
 
@@ -101,7 +102,7 @@ export default class Presale extends Component {
   }
 
   async logPurchase(tx, set) {
-    const { me } = this.props;
+    const me = path(['ctx', 'me'], this.props);
     const mutation = gql`
       mutation createPresaleTicket($payload:CreatePresaleTicketPayload!) {
         createPresaleTicket(payload:$payload) {
@@ -193,7 +194,7 @@ export default class Presale extends Component {
 
   purchase(set, tickets) {
     log.info('User purchase flow for set: ', set);
-    const { me } = this.props;
+    const me = path(['ctx', 'me'], this.props);
     const { balancePLAT, network } = this.props.root;
     if (!network) {
       log.error('Network has not loaded.');
