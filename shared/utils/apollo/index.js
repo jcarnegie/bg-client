@@ -221,10 +221,7 @@ export const updateTokensAndMe = async(apollo, tokenData, user) => {
   // store tokens in localStorage and accessToken in cookie
   storeTokenData(tokenData);
   Cookies.set('accessToken', tokenData.accessToken);
-
-  // update me query in apollo cache
-  await apollo.writeQuery({
-    query: queries.me,
-    data: { me: { ...user } },
-  });
+  // refretch all queries
+  await apollo.resetStore();
 };
+
