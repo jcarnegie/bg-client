@@ -5,7 +5,7 @@ import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
 import doSetCurrentWallet from '@/actions/setCurrentWallet';
 import * as log from 'loglevel';
-import { contains, pathOr, path } from 'ramda';
+import { pathOr, path } from 'ramda';
 import { ApolloProvider } from 'react-apollo';
 import { setMobileDetect, mobileParser } from 'react-responsive-redux';
 
@@ -32,7 +32,7 @@ import {
   networkIdIsSupported,
 } from '@/shared/utils/network';
 import { GlobalContext } from '@/shared/utils/context';
-import { AUTH_ROUTES_REGEX } from '@/shared/utils';
+import { AUTH_ROUTES_REGEX, isWalletLinked } from '@/shared/utils';
 import {
   APP_INIT,
   APP_RESIZE,
@@ -98,6 +98,16 @@ class BGApp extends App {
         log.info('browser: access token exired, but have valid refresh token --> refresh tokens');
         await doRefreshToken({ apollo: apolloClient });
       }
+
+      const web3Wallet = getWeb3Wallet();
+      const isCurrentWalletLinked = me && isWalletLinked(web3Wallet, me);
+      const isLoggedIn = me && path(['id'], me);
+      const allowedPagesForUnlinkedWallet = ['/link', '/login', '/register'];
+      const isPageAllowedForUnlinkedWallet = allowedPagesForUnlinkedWallet.indexOf(pathname) > -1;
+      if (web3Wallet && isLoggedIn && !isCurrentWalletLinked && !isPageAllowedForUnlinkedWallet) {
+        log.info('redirecting to link wallet page');
+        redirect({}, '/link');
+      }
     }
 
     if (!hasSession && !isPagePublic) {
@@ -137,11 +147,6 @@ class BGApp extends App {
     return getWeb3Wallet() !== this.state.web3Wallet;
   }
 
-  isWalletLinked(wallet, me) {
-    const wallets = pathOr([], ['wallets'], me);
-    return contains(wallet, wallets);
-  }
-
   async networkChanged(currentNetworkId) {
     const { apolloClient } = this.props;
     const { data } = await apolloClient.query({
@@ -153,7 +158,7 @@ class BGApp extends App {
 
   async handleWalletHasChanged({ me, web3Wallet, resetStore = true }) {
     const { apolloClient } = this.props;
-    const isCurrentWalletLinked = me && this.isWalletLinked(web3Wallet, me);
+    const isCurrentWalletLinked = me && isWalletLinked(web3Wallet, me);
     const isLoggedIn = me && me.id;
     log.info('calling updateUserBalances mutation');
     await apolloClient.mutate({ mutation: localMutations.updateWallet, variables: { wallet: web3Wallet } });
@@ -265,7 +270,7 @@ class BGApp extends App {
     if (!process.browser) return null;
     store.dispatch({ type: APP_RESIZE });
     const web3Wallet = getWeb3Wallet();
-    const isCurrentWalletLinked = me && this.isWalletLinked(web3Wallet, me);
+    const isCurrentWalletLinked = me && isWalletLinked(web3Wallet, me);
 
     if (!this.isPagePublic()) {
       /* Web3 install guard */

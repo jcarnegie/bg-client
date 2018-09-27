@@ -1,5 +1,5 @@
 import Router from 'next/router';
-import { contains, propOr, path } from 'ramda';
+import { contains, propOr, path, pathOr } from 'ramda';
 
 import features from '@/shared/constants/features.json';
 
@@ -40,4 +40,9 @@ export const requireUserLoginAndSupportedNetwork = (user = {}, network = {}) => 
 
   /* User is defined */
   return true;
+};
+
+export const isWalletLinked = (wallet, me) => {
+  const wallets = pathOr([], ['wallets'], me);
+  return contains(wallet, wallets);
 };
