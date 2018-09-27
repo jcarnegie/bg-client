@@ -361,7 +361,7 @@ class BGApp extends App {
       isCurrentWalletLinked,
     } = this.state;
 
-    const showGlobalLoadingScreen = !this.isPagePublic() ? (!web3Wallet || !isCurrentWalletLinked) : false;
+    const showGlobalLoadingScreen = this.isPagePublic() ? false : (!web3Wallet || !isCurrentWalletLinked);
 
     return (
       <Container>
