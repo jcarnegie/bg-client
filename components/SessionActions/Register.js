@@ -104,10 +104,9 @@ class Register extends Component {
       }
 
       this.setState({ registering: true }, async() => {
-        const wallet = web3Wallet;
         const signature = result.result;
         const language = intl.locale;
-        const { data, errors } = await doRegister(client, email, wallet, nickName, signature, language);
+        const { data, errors } = await doRegister({ apollo: client, email, web3Wallet, nickName, signature, language });
         const registerSuccess = path(['register'], data);
         this.setState({
           registering: false,

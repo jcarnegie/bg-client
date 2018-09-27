@@ -5,8 +5,7 @@ import doRefreshToken from '@/actions/refreshtoken';
 
 const refresh = async() => {
   if (!process.browser) return;
-  const apollo = initApollo({}, { getToken: () => null });
-  const refreshed = await doRefreshToken(apollo);
+  const refreshed = await doRefreshToken({ apollo: initApollo({}, { getToken: () => null }) });
   if (refreshed) {
     // eslint-disable-next-line no-undef
     const pathname = pathOr('/', ['query', 'pathname'], __NEXT_DATA__);

@@ -96,7 +96,7 @@ class BGApp extends App {
 
       if (accessTokenExpired() && !refreshTokenExpired()) {
         log.info('browser: access token exired, but have valid refresh token --> refresh tokens');
-        await doRefreshToken(apolloClient);
+        await doRefreshToken({ apollo: apolloClient });
       }
     }
 
@@ -151,7 +151,7 @@ class BGApp extends App {
     return !network.id || (parseInt(network.id, 10) !== parseInt(currentNetworkId, 10));
   }
 
-  async handleWalletHasChanged(me, web3Wallet) {
+  async handleWalletHasChanged({ me, web3Wallet, resetStore = true }) {
     const { apolloClient } = this.props;
     const isCurrentWalletLinked = me && this.isWalletLinked(web3Wallet, me);
     const isLoggedIn = me && me.id;
@@ -167,7 +167,7 @@ class BGApp extends App {
 
     if (isCurrentWalletLinked) {
       log.info('calling setCurrentWallet mutation');
-      await doSetCurrentWallet(apolloClient, web3Wallet);
+      await doSetCurrentWallet({ apollo: apolloClient, web3Wallet, resetStore });
     }
 
     this.setState({
@@ -216,7 +216,7 @@ class BGApp extends App {
     const me = pathOr({}, ['data', 'me'], meQuery);
     const web3Wallet = getWeb3Wallet();
     if (this.userWalletHasChanged(me)) {
-      await this.handleWalletHasChanged(me, web3Wallet);
+      await this.handleWalletHasChanged({ me, web3Wallet });
     }
 
     try {
@@ -240,7 +240,8 @@ class BGApp extends App {
   async componentWillMount() {
     if (process.browser && web3IsInstalled()) {
       const meQuery = await this.props.apolloClient.query({ query: queries.me });
-      await ::this.handleWalletHasChanged(pathOr({}, ['data', 'me'], meQuery), getWeb3Wallet());
+      const me = pathOr({}, ['data', 'me'], meQuery);
+      await ::this.handleWalletHasChanged({ me, web3Wallet: getWeb3Wallet(), resetStore: false });
     }
     this.handlePageStateUpdate();
   }

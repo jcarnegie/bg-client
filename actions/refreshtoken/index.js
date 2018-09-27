@@ -6,7 +6,7 @@ import * as bgLocalStorage from '@/client/utils/localStorage';
 import { storeTokenData } from '@/client/utils/tokens';
 import { mutations } from '@/shared/utils/apollo';
 
-export default async apollo => {
+export default async({ apollo }) => {
   if (!process.browser) return;
 
   log.info('refreshing tokens');

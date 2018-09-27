@@ -209,11 +209,10 @@ export const localMutations = {
 };
 
 
-export const updateTokensAndMe = async(apollo, tokenData, user) => {
+export const updateTokensAndMe = async(apollo, tokenData, user, resetStore = true) => {
   // store tokens in localStorage and accessToken in cookie
   storeTokenData(tokenData);
   Cookies.set('accessToken', tokenData.accessToken);
-  // refretch all queries
-  await apollo.resetStore();
+  // refretch active queries
+  if (resetStore) await apollo.resetStore();
 };
-
