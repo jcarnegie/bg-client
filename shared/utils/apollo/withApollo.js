@@ -23,6 +23,13 @@ export default App => {
 
       ctx.ctx.apolloClient = apollo;
 
+      try {
+        const rqResp = await apollo.readQuery({ query: queries.me });
+        log.info('readQuery (me) response:', rqResp);
+      } catch (e) {
+        log.info('readQuery me - not in cache', e.message);
+      }
+
       // get user
       const resp = await apollo.query({ query: queries.me });
       const { data } = resp;
