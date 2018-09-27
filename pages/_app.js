@@ -242,7 +242,7 @@ class BGApp extends App {
   async componentWillMount() {
     if (process.browser && web3IsInstalled()) {
       const meQuery = await this.props.apolloClient.query({ query: queries.me });
-      ::this.handleWalletHasChanged(pathOr({}, ['data', 'me'], meQuery), getWeb3Wallet());
+      await ::this.handleWalletHasChanged(pathOr({}, ['data', 'me'], meQuery), getWeb3Wallet());
     }
     this.handlePageStateUpdate();
   }
@@ -361,6 +361,8 @@ class BGApp extends App {
       isCurrentWalletLinked,
     } = this.state;
 
+    const showGlobalLoadingScreen = !this.isPagePublic() ? (!web3Wallet || (web3Wallet !== this.state.web3Wallet) || !isCurrentWalletLinked) : false;
+
     return (
       <Container>
         <GlobalStyles style={style} />
@@ -380,7 +382,7 @@ class BGApp extends App {
             <IntlProvider store={store}>
               <>
                 <ResizeListener />
-                <GlobalLoadingScreen show={!::this.isPagePublic() ? !web3Wallet : false} />
+                <GlobalLoadingScreen show={showGlobalLoadingScreen} />
                 <Component {...pageProps} {...locals} />
               </>
             </IntlProvider>
