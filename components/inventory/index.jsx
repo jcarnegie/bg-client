@@ -50,6 +50,7 @@ class Inventory extends Component {
     }),
     listItems: PropTypes.array,
     listGames: PropTypes.array,
+    refetch: PropTypes.func,
 	};
 
 	state = {
@@ -69,8 +70,8 @@ class Inventory extends Component {
   }
 
   onSell(item, listItemResult) {
-    const { listItems } = this.props;
-    setTimeout(::listItems.refetch, 3000);
+    const { refetch } = this.props;
+    setTimeout(refetch, 3000);
   }
 
 	onSelect(key) {
@@ -80,7 +81,6 @@ class Inventory extends Component {
 	}
 
 	renderInventory() {
-    console.log(this.props);
     const { listItems, listGames } = this.props;
 		return listItems && listItems.length ? this.renderTabs(listGames, listItems) : this.renderEmpty();
 	}

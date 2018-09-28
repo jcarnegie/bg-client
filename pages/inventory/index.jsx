@@ -13,18 +13,18 @@ class InventoryPage extends Component {
   render() {
     return (
         <Query query={inventoryQuery}>
-          {({ data, loading }) => {
+          {({ data, loading, refetch }) => {
             if (loading) return null;
             return (
               <>
                 <Layout.Mobile>
                   <Content.Mobile>
-                    <Inventory {...this.props} listItems={data.listItems} listGames={data.listGames} />
+                    <Inventory {...this.props} listItems={data.listItems} listGames={data.listGames} refetch={refetch} />
                   </Content.Mobile>
                 </Layout.Mobile>
                 <Layout.Desktop>
                   <Content.Desktop>
-                    <Inventory {...this.props} listItems={data.listItems} listGames={data.listGames} />
+                    <Inventory {...this.props} listItems={data.listItems} listGames={data.listGames} refetch={refetch}/>
                   </Content.Desktop>
                 </Layout.Desktop>
               </>
