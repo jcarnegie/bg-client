@@ -171,7 +171,7 @@ class Item extends Component {
             font-size: 0.9em;
             height: 32px;
           }
-          :global(.item .thumbnail .caption .attrs .badge) {
+          :global(.bg-item .thumbnail .caption .attrs .badge) {
             margin-right: 8px;
             background-color: #E7EDFD;
             border: 1px solid #BECFFB;
@@ -195,9 +195,9 @@ class Item extends Component {
   render() {
     const { item, className } = this.props;
     return (
-      <div className={`item ${className}`}>
+      <div className={`bg-item ${className}`}>
         <style jsx global>{`
-          .item {
+          .bg-item {
             width: ${this.props.layout.innerWidth >= 1600
             ? '170px'
             : this.props.layout.innerWidth >= 1400
@@ -208,14 +208,14 @@ class Item extends Component {
             display: inline-block;
             font-size: 0.9em;
           }
-          .item .thumbnail {
+          .bg-item .thumbnail {
             padding: 0;
             border: 0;
             background-color: #FAFAFA;
             border-radius: 6px;
             box-shadow: ${style.boxShadow.default};
           }
-          .item .thumbnail .itemImage {
+          .bg-item .thumbnail .itemImage {
             display: block;
             margin: auto auto;
             height: 100%;
@@ -223,23 +223,23 @@ class Item extends Component {
             border-top-left-radius: 6px;
             border-top-right-radius: 6px;
           }
-          .item .thumbnail .caption {
+          .bg-item .thumbnail .caption {
             padding: 0;
             background-color: #ffffff;
             border-radius: 6px;
           }
-          .item .thumbnail .caption h4 {
+          .bg-item .thumbnail .caption h4 {
             font-size: 0.9em;
             font-weight: 500;
             padding: 5px 15px 3px 15px;
             margin: 0;
           }
-          .item .thumbnail .caption dl,
-          .item .thumbnail .caption dl dt,
-          .item .thumbnail .caption dl dd {
+          .bg-item .thumbnail .caption dl,
+          .bg-item .thumbnail .caption dl dt,
+          .bg-item .thumbnail .caption dl dd {
             font-size: 0.85em;
           }
-          .item .thumbnail .caption dl {
+          .bg-item .thumbnail .caption dl {
             display: grid;
             grid-template-columns: minmax(0%, 35%);
             column-gap: 5px;
@@ -248,23 +248,23 @@ class Item extends Component {
             columns: 2;
             min-height: 30px;
           }
-          .item .thumbnail .caption dl dt {
+          .bg-item .thumbnail .caption dl dt {
             grid-column-start: 1;
             display: inline-block;
             font-weight: 300;
           }
-          .item .thumbnail .caption dl dd {
+          .bg-item .thumbnail .caption dl dd {
             grid-column-start: 2;
             display: inline-block;
             font-weight: 300;
           }
-          .item .thumbnail .caption .btn {
+          .bg-item .thumbnail .caption .btn {
             font-size: 11px;
             line-height: 16px;
             border-radius: 0;
             border: 0;
           }
-          .item .thumbnail .caption .btn.buy {
+          .bg-item .thumbnail .caption .btn.buy {
             height: 30px;
             font-weight: 500;
             color: #ffffff;
@@ -272,10 +272,10 @@ class Item extends Component {
             font-size: 13px;
             border-radius: 0px 0px 6px 6px;
           }
-          .item .thumbnail .caption .btn.buy:hover {
+          .bg-item .thumbnail .caption .btn.buy:hover {
             background-color: rgb(83, 110, 173);
           }
-          .item .thumbnail .platToken {
+          .bg-item .thumbnail .platToken {
             display: inline-block;
             height: 20px;
             width: auto;
@@ -288,7 +288,7 @@ class Item extends Component {
             height: 15px;
             width: auto;
           }
-          .item .thumbnail .caption .tx {
+          .bg-item .thumbnail .caption .tx {
             height: 28px;
             line-height: 28px;
             color: #FF6845;
