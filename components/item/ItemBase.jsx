@@ -14,20 +14,20 @@ import {
 
 class ItemBase extends React.Component {
   static propTypes = {
-    data: PropTypes.object,
+    /* NOTE: provided by extending classes */
+    root: PropTypes.object,
     game: PropTypes.object,
     item: PropTypes.object,
   }
 
   static defaultProps = {
-    data: {},
+    root: {},
     game: {},
     item: {},
   }
 
   async withdraw() {
-    const { game, item } = this.props;
-    const { network } = this.props.data;
+    const { game, item, root: { network } } = this.props;
     await withdrawItem({
       contract: getContractFromGame(game, network),
       network,
@@ -36,8 +36,7 @@ class ItemBase extends React.Component {
   }
 
   async extend() {
-    const { game, item } = this.props;
-    const { network } = this.props.data;
+    const { game, item, root: { network } } = this.props;
     await extendItem({
       contract: getContractFromGame(game, network),
       network,

@@ -22,9 +22,11 @@ import Item from './Item';
 import ItemBase from './ItemBase';
 
 import { withGlobalContext } from '@/shared/utils/context';
+import { withRoot } from '@/components/wrappers';
 
 @injectIntl
 @withGlobalContext
+@withRoot
 class MarketplaceItem extends ItemBase {
   static propTypes = {
     dispatch: PropTypes.func,
@@ -61,8 +63,8 @@ class MarketplaceItem extends ItemBase {
   }
 
   async onSubmit() {
-    const { data, game, item, ctx, onBuy } = this.props;
-    const { network } = data;
+    const { root, game, item, ctx, onBuy } = this.props;
+    const { network } = root;
 
     const results = await buyItem({
       network,
