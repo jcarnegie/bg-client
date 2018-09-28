@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 import Router from 'next/router';
-import { path } from 'ramda';
+import { contains, path, pathOr } from 'ramda';
 
 import {
   GlobalContext,
@@ -39,12 +39,14 @@ class User extends Component {
 
   render() {
     const { layout, user } = this.props;
-    if (!user) return null;
+    if (!user || !user.id) return null;
     const pathname = path(['router', 'pathname'], Router);
     if (!pathname || pathname === '/login' || pathname === '/register') return null;
     return (
       <GlobalContext.Consumer>
         {({ web3Wallet }) => {
+          /* If no wallet, or wallet not linked, hide */
+          if (!web3Wallet || !contains(web3Wallet, pathOr([], ['wallets'], user))) return null;
           return (
             <div className="user">
               <style jsx global>{`
