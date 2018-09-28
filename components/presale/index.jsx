@@ -268,7 +268,11 @@ export default class Presale extends Component {
             disabled={(remainingForSet === 0 || ::this.userHasAlreadyPurchasedItem(set.tokenId, tickets))}
             onClick={() => ::this.purchase(set, tickets)}
             title={<FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.name`} />}
-            subtitle={<>{remainingForSet || remainingForSet === 0 ? <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> : ::this.textLoading()}}</>}
+            subtitle={
+              remainingForSet || remainingForSet === 0 ?
+                <div>{`${remainingForSet} / ${set.total}`} <FormattedMessage id="global.remaining" /></div> :
+                ::this.textLoading()
+            }
             itemImage={<Image responsive src={remainingForSet === 0 ? `/static/images/games/${this.props.slug}/presale/sold.png` : `/static/images/games/${this.props.slug}/presale/${set.id}/thumbnail.jpg`} />}
             setDetails={
               set.tokenId !== 20 ? itemIndices.map((v, k) => <li key={k}><FormattedMessage id={`pages.presale.${this.props.slug}.sets.${set.id}.item${v}.name`} /></li>) : null
