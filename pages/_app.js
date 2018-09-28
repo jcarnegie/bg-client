@@ -1,10 +1,11 @@
+import * as log from 'loglevel';
 import App, { Container } from 'next/app';
 import React from 'react';
-import { Provider as IntlProvider, updateIntl } from 'react-intl-redux';
 import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
 import doSetCurrentWallet from '@/actions/setCurrentWallet';
-import * as log from 'loglevel';
+import urlParse from 'url-parse';
+import { Provider as IntlProvider, updateIntl } from 'react-intl-redux';
 import { pathOr, path } from 'ramda';
 import { ApolloProvider } from 'react-apollo';
 import { setMobileDetect, mobileParser } from 'react-responsive-redux';
@@ -62,6 +63,7 @@ class BGApp extends App {
       store,
       req,
       pathname = '',
+      query,
     } = ctx;
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
 
@@ -69,6 +71,8 @@ class BGApp extends App {
     const isPagePublic = !pathname.match(AUTH_ROUTES_REGEX);
     const hasSession = pathOr(false, ['id'], me);
     const hasAccessToken = pathOr(false, ['cookies', 'accessToken'], req);
+
+    log.info('pathname, query:', pathname, query);
 
     /* Server side: refreshToken is stored on localStorage on client only.
        We should always redirect to /refreshtoken page first to check for
@@ -80,7 +84,9 @@ class BGApp extends App {
       !hasSession &&
       pathname !== '/refreshtoken'
     ) {
-      redirect(ctx, '/refreshtoken');
+      const redirectUrl = urlParse(pathname);
+      redirectUrl.query = query;
+      redirect(ctx, `/refreshtoken?pathname=${redirectUrl.toString()}`);
     }
 
     /*
