@@ -11,7 +11,7 @@ import { typeDefs } from './typedefs';
 
 export const clientState = {
   defaults: {
-    wallet: getWeb3Wallet(),
+    wallet: getWeb3Wallet() || null,
     rate: null,
     gifts: [],
     balanceETH: 0,
