@@ -8,7 +8,7 @@ const morgan = require('morgan');
 const Next = require('next');
 const pathMatch = require('path-match');
 const { parse } = require('url');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 
 const dev = process.env.NODE_ENV !== 'production';
 const next = Next({ dev });

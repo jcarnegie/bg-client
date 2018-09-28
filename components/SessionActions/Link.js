@@ -4,7 +4,7 @@ import * as log from 'loglevel';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Cookies from 'js-cookie';
 import { connect } from 'react-redux';
-import { path } from 'ramda';
+import { path, pathOr } from 'ramda';
 import Router from 'next/router';
 
 import BGButton from '@/components/bgbutton';
@@ -93,8 +93,8 @@ class LinkWallets extends Component {
           label: 'Link wallet',
         });
 
-        // TODO - redirect to last context / requested route
-        Router.replace('/');
+        const referrer = pathOr('/', ['query', 'referrer'], this.props);
+        Router.replace(referrer);
       });
     });
   }

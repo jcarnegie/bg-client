@@ -21,11 +21,8 @@ import withFormHelper from '@/components/inputs/withFormHelper';
 import {
   client,
   mutations,
-  queries,
   localQueries,
 } from '@/shared/utils/apollo';
-
-import * as bgLocalStorage from '@/client/utils/localStorage';
 
 
 @withFormHelper
@@ -48,7 +45,9 @@ class Register extends Component {
         desktop: PropTypes.bool,
       }),
     }),
-    query: PropTypes.object, // TODO - redirect context
+    query: PropTypes.shape({
+      referrer: PropTypes.string,
+    }),
   };
 
   static defaultProps = {
@@ -111,7 +110,7 @@ class Register extends Component {
         this.setState({
           registering: false,
           registerSuccess,
-          errors,
+          errors: errors || [],
         }, async() => {
           if (!registerSuccess) return;
           this.props.analytics.ga.event({
@@ -119,8 +118,8 @@ class Register extends Component {
             action: 'Sign-up',
             label: 'Create account',
           });
-          const referrer = pathOr('/', ['query', 'pathname'], this.props);
-          Router.replace(referrer, referrer);
+          const referrer = pathOr('/', ['query', 'referrer'], this.props);
+          Router.replace(referrer);
         });
       });
     });

@@ -53,7 +53,7 @@ export const clientState = {
       },
       updateUserBalances: async(_, $, { cache, getCacheKey }) => {
         const { network, wallet } = await cache.readQuery({ query: localQueries.root });
-        log.info('updateUserBalances data: ', network, wallet);
+        // log.info('updateUserBalances data: ', network, wallet);
         if (!network || !network.available || !wallet) return null;
         let balanceETH = 0;
         let balancePLAT = 0;
@@ -61,21 +61,21 @@ export const clientState = {
         balanceETH = window.web3.fromWei(balanceResponseETH, 'ether').toNumber();
         const balanceResponsePLAT = await bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(wallet);
         balancePLAT = window.web3.fromWei(balanceResponsePLAT, 'ether').toNumber();
-        log.info('balanceETH:', balanceETH);
-        log.info('balancePLAT:', balancePLAT);
+        // log.info('balanceETH:', balanceETH);
+        // log.info('balancePLAT:', balancePLAT);
         await cache.writeData({ data: { balanceETH, balancePLAT } });
         return null;
       },
       updateWallet: async(_, { wallet }, { cache, getCacheKey }) => {
-        log.info('updateWallet wallet: ', wallet);
+        // log.info('updateWallet wallet: ', wallet);
         if (!wallet) return null;
         log.info(`Setting wallet to ${wallet}.`);
         await cache.writeData({ data: { wallet } });
         return null;
       },
       updateNetwork: async(_, { ...network }, { cache, getCacheKey }) => {
-        log.info('updateNetwork network: ', network);
-        log.info(`Setting network to ${network.name} with id ${network.id}.`);
+        // log.info('updateNetwork network: ', network);
+        // log.info(`Setting network to ${network.name} with id ${network.id}.`);
         let data = {
           network: {
             ...network,

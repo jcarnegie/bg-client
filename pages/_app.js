@@ -2,7 +2,6 @@ import * as log from 'loglevel';
 import App, { Container } from 'next/app';
 import React from 'react';
 import withRedux from 'next-redux-wrapper';
-import Router from 'next/router';
 import doSetCurrentWallet from '@/actions/setCurrentWallet';
 import urlParse from 'url-parse';
 import { Provider as IntlProvider, updateIntl } from 'react-intl-redux';
@@ -72,8 +71,6 @@ class BGApp extends App {
     const hasSession = pathOr(false, ['id'], me);
     const hasAccessToken = pathOr(false, ['cookies', 'accessToken'], req);
 
-    log.info('pathname, query:', pathname, query);
-
     /* Server side: refreshToken is stored on localStorage on client only.
        We should always redirect to /refreshtoken page first to check for
        refreshToken
@@ -93,6 +90,10 @@ class BGApp extends App {
       Client side: we may have an expired access token but a valid session/me object.
       In this case refresh, no matter if we're on a protected page or not.
     */
+    if (!hasSession && !isPagePublic) {
+      redirect(ctx, '/login');
+    }
+
     if (process.browser) {
       log.info('accessTokenExpired(), refreshTokenExpired()', accessTokenExpired(), refreshTokenExpired());
       if (refreshTokenExpired() && !isPagePublic) {
@@ -112,13 +113,10 @@ class BGApp extends App {
       const isPageAllowedForUnlinkedWallet = allowedPagesForUnlinkedWallet.indexOf(pathname) > -1;
       if (web3Wallet && isLoggedIn && !isCurrentWalletLinked && !isPageAllowedForUnlinkedWallet) {
         log.info('redirecting to link wallet page');
-        redirect({}, '/link');
+        redirect(ctx, '/link');
       }
     }
 
-    if (!hasSession && !isPagePublic) {
-      redirect(ctx, '/login');
-    }
     /* Route guards end */
 
     let locals = {};
@@ -128,6 +126,7 @@ class BGApp extends App {
       store.dispatch(setMobileDetect(mobileDetect));
     }
     store.dispatch({ type: LAYOUT_MOBILE_MENU_SHOW, payload: { showMenu: false } });
+
     return { pageProps, locals, mobileDetect };
   }
 
@@ -166,18 +165,17 @@ class BGApp extends App {
     const { apolloClient } = this.props;
     const isCurrentWalletLinked = me && isWalletLinked(web3Wallet, me);
     const isLoggedIn = me && me.id;
-    log.info('calling updateUserBalances mutation');
     await apolloClient.mutate({ mutation: localMutations.updateWallet, variables: { wallet: web3Wallet } });
     await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
 
     /* state.web3Wallet is null if user just logged in, should not trigger */
     if (web3Wallet && isLoggedIn && !isCurrentWalletLinked) {
-      log.info('redirecting to link wallet page');
-      redirect({}, '/link');
+      log.info('Redirecting to link wallet page');
+      redirect({ pathname: window.location.pathname }, '/link');
     }
 
     if (isCurrentWalletLinked) {
-      log.info('calling setCurrentWallet mutation');
+      log.info('Calling setCurrentWallet mutation');
       await doSetCurrentWallet({ apollo: apolloClient, wallet: web3Wallet, resetStore });
     }
 
@@ -189,7 +187,7 @@ class BGApp extends App {
 
   async handleNetworkChanged(currentNetworkId, web3Wallet) {
     const { apolloClient } = this.props;
-    log.info('network changed:', currentNetworkId);
+    log.info('Network changed:', currentNetworkId);
     const currentNetwork = {
       id: currentNetworkId,
       name: networkIdToName(currentNetworkId),
@@ -219,8 +217,8 @@ class BGApp extends App {
     const { apolloClient } = this.props;
 
     if (!this.metamaskLoggedIn() && !this.isPagePublic()) {
-      log.info('not logged in to metamask on route guarded page - redirecting to /login');
-      redirect({}, '/login');
+      log.info('Not logged in to metamask on route guarded page - redirecting to /login');
+      redirect({ pathname: window.location.pathname }, '/login');
     }
 
     const meQuery = await apolloClient.query({ query: queries.me });
@@ -261,10 +259,8 @@ class BGApp extends App {
     const {
       apolloClient,
       mobileDetect,
-      router,
       store,
     } = this.props;
-    const { pathname } = router;
     const meQuery = await apolloClient.query({ query: queries.me });
     const me = pathOr({}, ['data', 'me'], meQuery);
     const language = path(['language'], me);
@@ -281,11 +277,11 @@ class BGApp extends App {
     if (!this.isPagePublic()) {
       /* Web3 install guard */
       if (!web3IsInstalled()) {
-        return Router.push({ pathname: '/register', query: { pathname } }, '/register');
+        return redirect({ pathname: window.location.pathname }, '/register');
       }
       /* MetaMask login guard */
       if (!web3Wallet) {
-        return Router.push({ pathname: '/login', query: { pathname } }, '/login');
+        return redirect({ pathname: window.location.pathname }, '/login');
       }
     }
 

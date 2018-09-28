@@ -17,19 +17,20 @@ class LinkWalletsPage extends Component {
     const web3Wallet = getWeb3Wallet();
     const wallets = pathOr([], ['me', 'wallets'], this.props);
     const isWalletLinked = contains(web3Wallet, wallets);
+    const pathname = pathOr('/', ['query', 'referrer'], this.props);
     if (!web3Wallet || isEmpty(wallets)) {
-      redirect({}, '/login');
+      redirect({ pathname }, '/login');
     }
     if (isWalletLinked) {
-      redirect({}, '/');
+      redirect({ pathname }, pathname);
     }
   }
 
-  UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount() { /* eslint-disable-line camelcase */
     this.checkCurrentState();
   }
 
-  UNSAFE_componentWillUpdate() {
+  UNSAFE_componentWillUpdate() { /* eslint-disable-line camelcase */
     this.checkCurrentState();
   }
 

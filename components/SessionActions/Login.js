@@ -26,7 +26,9 @@ class Login extends Component {
     layout: PropTypes.object,
     dispatch: PropTypes.func,
     web3Wallet: PropTypes.string,
-    query: PropTypes.object, // TODO - redirect context
+    query: PropTypes.shape({
+      referrer: PropTypes.string,
+    }),
   };
 
   state = {
@@ -64,7 +66,7 @@ class Login extends Component {
           action: 'Sign-up',
           label: 'Create account',
         });
-        const referrer = pathOr('/', ['query', 'pathname'], this.props);
+        const referrer = pathOr('/', ['query', 'referrer'], this.props);
         Router.replace(referrer);
       });
     });

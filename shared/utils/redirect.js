@@ -1,4 +1,5 @@
 import Router from 'next/router';
+import { path } from 'ramda';
 
 export default (context, target) => {
   if (context.res) {
@@ -10,6 +11,11 @@ export default (context, target) => {
     context.res.end();
   } else {
     // In the browser, we just pretend like this never even happened ;)
-    Router.replace(target, target);
+    const referrer = path(['pathname'], context);
+    if (!referrer) {
+      Router.replace(target);
+    } else {
+      Router.replace({ pathname: target, query: { referrer } }, target);
+    }
   }
 };
