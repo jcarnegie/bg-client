@@ -1,4 +1,5 @@
 import * as log from 'loglevel';
+import bluebird from 'bluebird';
 import App, { Container } from 'next/app';
 import React from 'react';
 import withRedux from 'next-redux-wrapper';
@@ -28,6 +29,7 @@ import {
   asyncGetNetworkId,
   web3IsInstalled,
   getWeb3Wallet,
+  getBitGuildTokenContract,
   networkIdToName,
   networkIdIsSupported,
 } from '@/shared/utils/network';
@@ -134,6 +136,21 @@ class BGApp extends App {
     web3Wallet: getWeb3Wallet(),
   }
 
+  async getBalances() {
+    const { apolloClient } = this.props;
+    const wallet = getWeb3Wallet();
+    const { data } = await apolloClient.query({
+      query: localQueries.root,
+    });
+    const network = pathOr({}, ['network'], data);
+    const balanceResponseETH = await bluebird.promisify(window.web3.eth.getBalance)(wallet);
+    const balanceETH = window.web3.fromWei(balanceResponseETH, 'ether').toNumber();
+    const balanceResponsePLAT = await bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(wallet);
+    const balancePLAT = window.web3.fromWei(balanceResponsePLAT, 'ether').toNumber();
+    this.setState({ balanceETH, balancePLAT });
+    return { balanceETH, balancePLAT };
+  }
+
   metamaskLoggedIn() {
     if (!web3IsInstalled()) return false;
     return window.web3.eth.accounts[0];
@@ -166,7 +183,7 @@ class BGApp extends App {
     const isCurrentWalletLinked = me && isWalletLinked(web3Wallet, me);
     const isLoggedIn = me && me.id;
     await apolloClient.mutate({ mutation: localMutations.updateWallet, variables: { wallet: web3Wallet } });
-    await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
+    await ::this.getBalances();
 
     /* state.web3Wallet is null if user just logged in, should not trigger */
     if (web3Wallet && isLoggedIn && !isCurrentWalletLinked) {
@@ -175,7 +192,7 @@ class BGApp extends App {
     }
 
     if (isCurrentWalletLinked) {
-      log.info('Calling setCurrentWallet mutation');
+      log.info('Calling setCurrentWallet mutation: ', web3Wallet);
       await doSetCurrentWallet({ apollo: apolloClient, wallet: web3Wallet, resetStore });
     }
 
@@ -201,9 +218,7 @@ class BGApp extends App {
       },
     });
     if (web3Wallet) {
-      await apolloClient.mutate({
-        mutation: localMutations.updateUserBalances,
-      });
+      ::this.getBalances();
     }
   }
 
@@ -294,7 +309,8 @@ class BGApp extends App {
         mutation: localMutations.updateWallet,
         variables: { wallet: web3Wallet },
       });
-      await apolloClient.mutate({ mutation: localMutations.updateUserBalances });
+      const { balancePLAT, balanceETH } = await ::this.getBalances();
+      this.setState({ balancePLAT, balanceETH });
     }
   }
 
@@ -365,6 +381,8 @@ class BGApp extends App {
       userNeedsToLogInOrRegister,
       userWalletHasChanged,
       isCurrentWalletLinked,
+      balancePLAT,
+      balanceETH,
     } = this.state;
 
     const showGlobalLoadingScreen = ::this.isPagePublic() ? false : (!web3Wallet || !isCurrentWalletLinked);
@@ -382,6 +400,8 @@ class BGApp extends App {
             userWalletHasChanged,
             isCurrentWalletLinked,
             me,
+            balancePLAT,
+            balanceETH,
           }}
         >
           <ApolloProvider client={apolloClient}>

@@ -53,7 +53,6 @@ export const clientState = {
       },
       updateUserBalances: async(_, $, { cache, getCacheKey }) => {
         const { network, wallet } = await cache.readQuery({ query: localQueries.root });
-        // log.info('updateUserBalances data: ', network, wallet);
         if (!network || !network.available || !wallet) return null;
         let balanceETH = 0;
         let balancePLAT = 0;

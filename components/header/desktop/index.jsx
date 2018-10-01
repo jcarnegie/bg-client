@@ -25,8 +25,6 @@ class Header extends Component {
       me: PropTypes.object,
     }),
     root: PropTypes.shape({
-      balanceETH: PropTypes.number,
-      balancePLAT: PropTypes.number,
       rate: PropTypes.number,
     }),
   };
@@ -121,11 +119,9 @@ class Header extends Component {
 
   settings() {
     const {
-      balanceETH,
-      balancePLAT,
       rate,
     } = this.props.root;
-    const { me } = this.props.ctx;
+    const { me, balanceETH, balancePLAT } = this.props.ctx;
 
     return (
       <div className="settings">
