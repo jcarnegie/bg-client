@@ -138,17 +138,21 @@ class BGApp extends App {
 
   async getBalances() {
     const { apolloClient } = this.props;
-    const wallet = getWeb3Wallet();
-    const { data } = await apolloClient.query({
-      query: localQueries.root,
-    });
-    const network = pathOr({}, ['network'], data);
-    const balanceResponseETH = await bluebird.promisify(window.web3.eth.getBalance)(wallet);
-    const balanceETH = window.web3.fromWei(balanceResponseETH, 'ether').toNumber();
-    const balanceResponsePLAT = await bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(wallet);
-    const balancePLAT = window.web3.fromWei(balanceResponsePLAT, 'ether').toNumber();
-    this.setState({ balanceETH, balancePLAT });
-    return { balanceETH, balancePLAT };
+    try {
+      const wallet = getWeb3Wallet();
+      const { data } = await apolloClient.query({
+        query: localQueries.root,
+      });
+      const network = pathOr({}, ['network'], data);
+      const balanceResponseETH = await bluebird.promisify(window.web3.eth.getBalance)(wallet);
+      const balanceETH = window.web3.fromWei(balanceResponseETH, 'ether').toNumber();
+      const balanceResponsePLAT = await bluebird.promisify(getBitGuildTokenContract(network).balanceOf)(wallet);
+      const balancePLAT = window.web3.fromWei(balanceResponsePLAT, 'ether').toNumber();
+      this.setState({ balanceETH, balancePLAT });
+      return { balanceETH, balancePLAT };
+    } catch (e) {
+      return { balanceETH: 0, balancePLAT: 0 };
+    }
   }
 
   metamaskLoggedIn() {
