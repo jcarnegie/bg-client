@@ -141,7 +141,7 @@ class GameList extends Component {
             opacity: 1;
           }
           :global(.hero-carousel .carousel-image) {
-            background-size: ${mobile ? 'auto 350px' : 'cover'};
+            background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
           }
