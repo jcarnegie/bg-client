@@ -1,51 +1,24 @@
 # PortalClient
 
-## To Do
+## Prereqs + Installation
 
-General
-- Style jsx / eslint and editor support
-- Style updates, component rewrites.
+1. Make sure you have node.js 10.5 installed locally. yarn install will fail since it can't build fsevents.
+2. git clone git@github.com:BitGuildPlatform/PortalClient.git
+3. cd PortalApi
+4. yarn install
+5. docker-compose up
 
-Marketplace
-  x - Search feature - not doing
-  x - Sort feature
+## Development
 
-## Dependencies
+Branches map to environments configured in AWS ECS
 
-## Setup
+- master --> staging env (portalClientService-staging service, https://staging.bitguild.com)
+- dev --> dev env (portalClient-dev service, https://dev.bitguild.com)
+- production --> production env (portalClientService-prod service, https://www.bitguild.com)
 
-```bash
-yarn
-```
-
-## Run
-
-```bash
-yarn dev
-```
-
-## Build
-
-- To build
-```bash
-yarn build
-```
-
-- To start built files
-```bash
-yarn start
-```
-
-## Test
-
-- To test
-```bash
-yarn test
-```
-- To watch tests
-```bash
-yarn test --watch
-```
+Pushing to one of these branches will automatically kick off the associated build pipeline
+in AWS CodePipeline, starting with a new docker image being built and culminating with it
+being deployed to the associated ECS cluster.
 
 ## Bundles
 
@@ -74,29 +47,3 @@ yarn analyze-bundles
 - - intl/
 - static/
 
-## State Management Flows
-
-Bootstrap success flow:
-
--> APP_INIT
-  -> APP_RESIZE
-  -> GA_CREATE
-  -> ACCOUNT_INIT
-    -> ACCOUNT_GET
-      -> ACCOUNT_LOGGED_IN
-        -> ACCOUNT_BEGIN_POLLING
-        -> USER_LOADING
-          (success) -> USER_CHANGED
-                        -> CHAT_INIT
-          (fail) -> USER_ERROR
-          (fail) -> ACCOUNT_SIGN_OUT
-                        -> CHAT_INIT
-      -> ACCOUNT_LOGGED_OUT
-        -> ACCOUNT_BEGIN_POLLING
-    -> NETWORK_GET
-      -> NETWORK_AVAILABLE
-      -> NETWORK_LOADING
-        -> NETWORK_CHANGED
-          (success) -> NETWORK_GET_BALANCE_ETH
-          (success) -> NETWORK_GET_BALANCE_PLAT
-          (success) -> NETWORK_BEGIN_LISTENING
