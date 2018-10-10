@@ -22,7 +22,7 @@ export const gameQuery = gql`
         average fast fastest
       }
       me {
-        id nickName language wallets lastWalletUsed
+        id nickName language wallets lastWalletUsed data
       }
     }
   `;

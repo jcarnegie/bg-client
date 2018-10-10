@@ -6,7 +6,7 @@ export const presaleQuery = gql`
       id wallet setId
     }
      me {
-       id nickName language wallets lastWalletUsed
+       id nickName language wallets lastWalletUsed data
      }
   }
 `;

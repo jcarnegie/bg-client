@@ -149,7 +149,8 @@
     "sell-feature-coming": {
       "title": "Stay tuned!",
       "p1": "We will let you know as soon as you are able to sell items."
-    }
+    },
+    "giveaway": "Congratulations! You're automatically entered into a draw to win one of 50 cuties! Winners will be notified after 48 hours, so stay tuned!"
   },
   "pages": {
     "register": {

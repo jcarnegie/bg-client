@@ -7,6 +7,6 @@ export const sitelandingQuery = gql`
       bannerImage thumbnailImage categoryIcon config
     }
     me {
-      id nickName language wallets lastWalletUsed
+      id nickName language wallets lastWalletUsed data
     }
   }`;

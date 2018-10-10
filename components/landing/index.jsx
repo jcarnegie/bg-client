@@ -21,6 +21,8 @@ import NewsletterDesktop from '@/components/newsletter/desktop';
 
 import style from '@/shared/constants/style';
 
+// Banner games: list game slugs here in order. TODO: move to DB
+const BANNER_GAMES = ['bitizens', 'blockchain.cuties', 'mythereum'];
 
 @injectIntl
 @connect(
@@ -65,25 +67,17 @@ class GameList extends Component {
   static getDerivedStateFromProps(props, state) {
     const listGames = pathOr([], ['games', 'listGames'], props);
     const unsortedPlayableGames = listGames.filter(game => game.enabled);
-    const bitizens = unsortedPlayableGames.find(g => g.slug === 'bitizens');
-    const mythereum = unsortedPlayableGames.find(g => g.slug === 'mythereum');
-    const magicAcademy = unsortedPlayableGames.find(g => g.slug === 'magicacademy');
 
     let playableGames = [];
     let bannerGames = [];
 
-    if (bitizens) {
-      playableGames.push(bitizens);
-      bannerGames.push(bitizens);
-    }
-    if (mythereum) {
-      playableGames.push(mythereum);
-      bannerGames.push(mythereum);
-    }
-    if (magicAcademy) {
-      playableGames.push(magicAcademy);
-      bannerGames.push(magicAcademy);
-    }
+    BANNER_GAMES.forEach(slug => {
+      const game = unsortedPlayableGames.find(g => g.slug === slug);
+      if (game) {
+        bannerGames.push(game);
+        playableGames.push(game);
+      }
+    });
 
     playableGames = uniq(playableGames.concat(unsortedPlayableGames));
 
@@ -109,6 +103,7 @@ class GameList extends Component {
   banner() {
     const { games, layout } = this.props;
     const { mobile } = layout.type;
+
     if (games.loading) return null;
     return (
       <Row>

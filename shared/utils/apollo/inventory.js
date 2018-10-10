@@ -10,7 +10,7 @@ export const inventoryQuery = gql`
         id presale lan tokenId image name description attrs saleExpiration salePrice saleState lastOwner {id} categories game { id }
       }
       me {
-        id nickName language wallets lastWalletUsed
+        id nickName language wallets lastWalletUsed data
       }
     }
   `;
