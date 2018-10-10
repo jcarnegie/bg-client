@@ -85,6 +85,8 @@ class Game extends Component {
     const now = Date.now();
     isCampaignActive = startTime > 0 && endTime > 0 && now >= startTime && now <= endTime;
 
+    log.info('_shouldShowGiveaway: isCampaignActive, hasVisited', isCampaignActive, hasVisited);
+
     return hasUser && !hasVisited && isCampaignActive;
   }
 
