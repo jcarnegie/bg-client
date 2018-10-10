@@ -91,6 +91,7 @@ class Game extends Component {
   }
 
   _logTimestamp(user, slug) {
+    log.info('_logTimestamp: user, slug', user, slug);
     if (
       !slug ||
       !GIVEAWAY_CAMPAIGNS[slug] ||
@@ -128,6 +129,7 @@ class Game extends Component {
       return 'Error';
     }
 
+    log.info('calling this._logTimestamp');
     ::this._logTimestamp(user, path(['slug'], game));
 
     return (
