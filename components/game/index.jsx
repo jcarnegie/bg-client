@@ -28,7 +28,7 @@ const GIVEAWAY_CAMPAIGNS = {
     gameId: 9,
     handle: 'BLOCKCHAIN_CUTIES_GIVEAWAY',
     startTime: '2018-10-04T00:00:00Z',
-    endTime: '2018-10-07T07:00:00Z',
+    endTime: '2018-10-31T07:00:00Z',
   },
 };
 
